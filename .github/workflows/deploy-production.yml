@@ -1,0 +1,300 @@
+name: Deploy CertNode T17+ to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend/requirements.txt
+        pip install pytest pytest-cov
+    
+    - name: Run tests
+      run: |
+        cd backend && pytest --cov=. --cov-report=xml
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install frontend dependencies
+      run: |
+        cd frontend/customer-portal && npm ci
+    
+    - name: Run frontend tests
+      run: |
+        cd frontend/customer-portal && npm test -- --coverage --watchAll=false
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+    
+    - name: Upload Trivy scan results
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  build-and-push:
+    needs: [test, security-scan]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    strategy:
+      matrix:
+        component: [customer-portal-backend, customer-portal-frontend, monitoring, stripe-integration]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.component }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+    
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: infrastructure/docker/Dockerfile.${{ matrix.component }}
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+
+  deploy-infrastructure:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.6.0
+    
+    - name: Terraform Init
+      run: |
+        cd infrastructure/terraform
+        terraform init
+    
+    - name: Terraform Plan
+      run: |
+        cd infrastructure/terraform
+        terraform plan -var-file="production.tfvars"
+    
+    - name: Terraform Apply
+      run: |
+        cd infrastructure/terraform
+        terraform apply -auto-approve -var-file="production.tfvars"
+
+  deploy-kubernetes:
+    needs: deploy-infrastructure
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Configure kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'v1.28.0'
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
+    - name: Update kubeconfig
+      run: |
+        aws eks update-kubeconfig --region us-east-1 --name certnode-production
+    
+    - name: Create Kubernetes secrets
+      run: |
+        kubectl create secret generic certnode-secrets \
+          --from-literal=database-password="${{ secrets.DATABASE_PASSWORD }}" \
+          --from-literal=stripe-secret-key="${{ secrets.STRIPE_SECRET_KEY }}" \
+          --from-literal=stripe-webhook-secret="${{ secrets.STRIPE_WEBHOOK_SECRET }}" \
+          --from-literal=encryption-key="${{ secrets.ENCRYPTION_KEY }}" \
+          --from-literal=jwt-secret-key="${{ secrets.JWT_SECRET_KEY }}" \
+          --dry-run=client -o yaml | kubectl apply -f -
+    
+    - name: Deploy to Kubernetes
+      run: |
+        # Update image tags in manifests
+        sed -i "s|IMAGE_TAG|${{ github.sha }}|g" infrastructure/kubernetes/*.yaml
+        
+        # Apply manifests
+        kubectl apply -f infrastructure/kubernetes/
+    
+    - name: Wait for deployment
+      run: |
+        kubectl rollout status deployment/customer-portal-backend -n certnode --timeout=600s
+        kubectl rollout status deployment/customer-portal-frontend -n certnode --timeout=600s
+        kubectl rollout status deployment/monitoring -n certnode --timeout=600s
+
+  deploy-monitoring:
+    needs: deploy-kubernetes
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Configure kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'v1.28.0'
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
+    - name: Update kubeconfig
+      run: |
+        aws eks update-kubeconfig --region us-east-1 --name certnode-production
+    
+    - name: Deploy Grafana dashboards
+      run: |
+        kubectl create configmap grafana-dashboards \
+          --from-file=monitoring/grafana/dashboards/ \
+          --dry-run=client -o yaml | kubectl apply -f -
+    
+    - name: Deploy Prometheus configuration
+      run: |
+        kubectl create configmap prometheus-config \
+          --from-file=monitoring/prometheus/prometheus.yml \
+          --dry-run=client -o yaml | kubectl apply -f -
+
+  health-check:
+    needs: [deploy-kubernetes, deploy-monitoring]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Wait for services to be ready
+      run: |
+        sleep 60  # Wait for services to start
+    
+    - name: Health check - API
+      run: |
+        curl -f https://api.certnode.io/health || exit 1
+    
+    - name: Health check - Portal
+      run: |
+        curl -f https://portal.certnode.io/health || exit 1
+    
+    - name: Health check - Monitoring
+      run: |
+        curl -f https://monitoring.certnode.io/api/health || exit 1
+    
+    - name: Run integration tests
+      run: |
+        ./scripts/integration-tests.sh
+
+  notify:
+    needs: [health-check]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Notify Slack on success
+      if: success()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: success
+        text: '🚀 CertNode T17+ deployed successfully to production!'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+    
+    - name: Notify Slack on failure
+      if: failure()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: failure
+        text: '❌ CertNode T17+ deployment failed!'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+    
+    - name: Create GitHub release
+      if: success()
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}
+        release_name: Release v${{ github.run_number }}
+        body: |
+          ## CertNode T17+ Production Deployment
+          
+          **Deployed:** ${{ github.sha }}
+          **Branch:** ${{ github.ref_name }}
+          **Workflow:** ${{ github.run_id }}
+          
+          ### Changes
+          ${{ github.event.head_commit.message }}
+          
+          ### Services
+          - ✅ Customer Portal: https://portal.certnode.io
+          - ✅ API: https://api.certnode.io
+          - ✅ Monitoring: https://monitoring.certnode.io
+          
+          ### Health Checks
+          All services are healthy and operational.
+        draft: false
+        prerelease: false
+

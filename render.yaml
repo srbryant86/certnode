@@ -5,7 +5,7 @@ services:
     rootDir: backend
     buildCommand: ""
     startCommand: python main.py
-    preDeployCommand: pip install -r ../frontend/customer-portal/requirements.txt
+    preDeployCommand: pip install -r backend/requirements.txt
     autoDeploy: true
     region: oregon
     plan: free

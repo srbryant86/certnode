@@ -8,3 +8,4 @@ cryptography
 fastapi
 prometheus_client
 sqlalchemy
+structlog

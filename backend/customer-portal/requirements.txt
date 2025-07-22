@@ -4,3 +4,4 @@ stripe
 aioredis
 bcrypt
 PyJWT
+cryptography

@@ -2,7 +2,7 @@ services:
   - type: web
     name: certnode-backend
     env: python
-    rootDir: frontend/customer-portal
+    rootDir: backend/customer-portal
     buildCommand: ""
     startCommand: python main.py
     preDeployCommand: pip install -r requirements.txt

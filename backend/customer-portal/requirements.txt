@@ -9,4 +9,4 @@ fastapi
 prometheus_client
 sqlalchemy
 structlog
-psycopg2
+psycopg2-binary

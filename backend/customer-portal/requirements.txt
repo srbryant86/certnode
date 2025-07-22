@@ -7,3 +7,4 @@ PyJWT
 cryptography
 fastapi
 prometheus_client
+sqlalchemy

@@ -43,4 +43,4 @@ jobs:
         run: |
           set -euo pipefail
           APP=$(awk -F'"' '/^app = "/{print $2; exit}' fly.toml)
-          flyctl deploy -a "$APP" -c fly.toml -o personal --remote-only --strategy immediate --verbose
+          flyctl deploy -a "$APP" -c fly.toml --remote-only --strategy immediate --verbose

@@ -1,1 +1,7 @@
-from fastapi import FastAPI\n\napp = FastAPI(title="CertNode API")\n\n@app.get("/healthz")\ndef health(): return {"ok": True}\n
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+def root():
+    return {"ok": True, "app": "certnode"}

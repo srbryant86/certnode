@@ -22,18 +22,16 @@ jobs:
       - name: Setup flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: Ensure Fly app exists
+      - name: Ensure Fly app exists (idempotent)
         shell: bash
         run: |
           set -euo pipefail
           APP_NAME="$(sed -n 's/^app = "\([^"]*\)"/\1/p' fly.toml)"
-          echo "App from fly.toml: $APP_NAME"
-          if ! flyctl apps show "$APP_NAME" >/dev/null 2>&1; then
-            echo "Creating app $APP_NAME in org $FLY_ORG_SLUG (region iad)..."
-            flyctl apps create "$APP_NAME" --org "$FLY_ORG_SLUG" --region iad
-          else
-            echo "App $APP_NAME already exists."
-          fi
+          echo "Ensuring app exists: ${APP_NAME} in org ${FLY_ORG_SLUG:-personal} (region iad)"
+          # Try to create; if it already exists, keep going
+          flyctl apps create "$APP_NAME" --org "${FLY_ORG_SLUG:-personal}" --region iad || echo "App may already exist."
 
       - name: Deploy
-        run: flyctl deploy -c fly.toml --remote-only --strategy immediate
+        run: |
+          APP_NAME=$(sed -n 's/^app = "\([^"]*\)"/\1/p' fly.toml)
+          flyctl deploy -a "$APP_NAME" -c fly.toml --remote-only --strategy immediate

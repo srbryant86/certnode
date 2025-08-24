@@ -12,33 +12,35 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-      FLY_ORG_SLUG: ${{ vars.FLY_ORG_SLUG || 'personal' }}
-
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: Ensure app exists (GitHub-only, robust)
+      - name: Ensure app exists (org=personal)
         shell: bash
         run: |
           set -euo pipefail
-          APP_NAME=$(awk -F'"' '/^app = "/ {print $2; exit}' fly.toml)
-          ORG="${FLY_ORG_SLUG:-personal}"
-          echo "APP=$APP_NAME ORG=$ORG"
-          if ! flyctl apps show "$APP_NAME" >/dev/null 2>&1; then
-            echo "Creating app..."
-            flyctl apps create "$APP_NAME" --org "$ORG" || echo "App may already exist."
-            PRIMARY=$(awk -F'"' '/^primary_region = "/ {print $2; exit}' fly.toml || true)
-            if [ -n "${PRIMARY:-}" ]; then
-              flyctl regions set -a "$APP_NAME" "$PRIMARY" || true
-            fi
-          else
-            echo "App already exists."
-          fi
+          APP=$(awk -F'"' '/^app = "/{print $2; exit}' fly.toml)
+          ORG="personal"
+          echo "APP=$APP ORG=$ORG"
+          flyctl apps create "$APP" --org "$ORG" || echo "create skipped"
+          # Verify visibility in the target org
+          flyctl apps list --org "$ORG" | awk '{print $1}' | grep -qx "$APP"
 
-      - name: Deploy
+          # Set region from fly.toml if provided
+          PRIM=$(awk -F'"' '/^primary_region = "/{print $2; exit}' fly.toml || true)
+          [ -n "${PRIM:-}" ] && flyctl regions set -a "$APP" "$PRIM" || true
+
+      - name: Preflight (paths)
+        shell: bash
+        run: |
+          set -e
+          test -f infra/Dockerfile || { echo "infra/Dockerfile missing"; exit 1; }
+          echo "OK: infra/Dockerfile present"
+
+      - name: Deploy (explicit org/app)
         shell: bash
         run: |
           set -euo pipefail
-          APP_NAME=$(awk -F'"' '/^app = "/ {print $2; exit}' fly.toml)
-          flyctl deploy -a "$APP_NAME" -c fly.toml --remote-only --strategy immediate
+          APP=$(awk -F'"' '/^app = "/{print $2; exit}' fly.toml)
+          flyctl deploy -a "$APP" -c fly.toml -o personal --remote-only --strategy immediate --verbose

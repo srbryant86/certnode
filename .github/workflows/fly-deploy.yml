@@ -21,7 +21,7 @@ jobs:
         uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy
-        run: flyctl deploy -c infra/fly.toml --remote-only --strategy immediate
+        run: flyctl deploy -c fly.toml --remote-only --strategy immediate
 
       # Optional: set app secrets from GitHub → Fly (enable by adding a repo var SET_SECRETS=true)
       - name: Set app secrets

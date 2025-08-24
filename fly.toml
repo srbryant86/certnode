@@ -2,7 +2,7 @@ app = "certnode"
 primary_region = "iad"
 
 [build]
-dockerfile = "./infra/Dockerfile"
+  dockerfile = "./infra/Dockerfile"
 
 [http_service]
   internal_port = 8080

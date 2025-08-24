@@ -4,11 +4,10 @@ primary_region = "iad"
 [build]
   dockerfile = "./infra/Dockerfile"
 
-# Machine sizing (applies on next deploy)
 [vm]
-  memory = "1024MB"         # or "2048MB"
-  cpu_kind = "shared"       # "shared" or "performance"
-  cpus = 2
+  cpu_kind = "shared"
+  cpus = 1
+  memory = "1024MB"
 
 [http_service]
   internal_port = 8080
@@ -16,14 +15,13 @@ primary_region = "iad"
   auto_start_machines = true
   auto_stop_machines = false
   min_machines_running = 1
-  processes = ["app"]       # <- fixes the “Service has no processes set…” error
+  processes = ["app"]
 
 [http_service.concurrency]
   type = "requests"
   soft_limit = 50
   hard_limit = 100
 
-# Machines v2 health check
 [[checks]]
   name = "http"
   type = "http"

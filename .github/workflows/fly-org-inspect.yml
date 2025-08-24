@@ -1,0 +1,14 @@
+name: Fly org inspector
+on: { workflow_dispatch: {} }
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    steps:
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: |
+          echo "=== Orgs (text) ==="
+          flyctl orgs list || true
+          echo "=== Orgs (JSON) ==="
+          flyctl orgs list --json || true

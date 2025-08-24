@@ -31,3 +31,5 @@ primary_region = "iad"
   interval     = "10s"
   timeout      = "2s"
   grace_period = "15s"
+[processes]
+  app = "gunicorn apps.api.main:app -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8080 --workers 2 --timeout 90"

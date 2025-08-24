@@ -12,27 +12,33 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      FLY_ORG_SLUG: ${{ vars.FLY_ORG_SLUG || 'personal' }}
 
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: Ensure app exists (GitHub-only)
+      - name: Ensure app exists (GitHub-only, robust)
         shell: bash
         run: |
           set -euo pipefail
-          APP_NAME=$(grep -m1 '^app = "' fly.toml | cut -d'" -f2)
-          ORG=personal
+          APP_NAME=$(awk -F'"' '/^app = "/ {print $2; exit}' fly.toml)
+          ORG="${FLY_ORG_SLUG:-personal}"
           echo "APP=$APP_NAME ORG=$ORG"
-          # Create app (no --region; not supported by your flyctl build)
-          flyctl apps create "$APP_NAME" --org "$ORG" || echo "App may already exist."
-          # Set region based on fly.toml (safe to ignore if already set)
-          PRIMARY=$(grep -m1 '^primary_region = "' fly.toml | cut -d'" -f2)
-          [ -n "$PRIMARY" ] && flyctl regions set -a "$APP_NAME" "$PRIMARY" || true
+          if ! flyctl apps show "$APP_NAME" >/dev/null 2>&1; then
+            echo "Creating app..."
+            flyctl apps create "$APP_NAME" --org "$ORG" || echo "App may already exist."
+            PRIMARY=$(awk -F'"' '/^primary_region = "/ {print $2; exit}' fly.toml || true)
+            if [ -n "${PRIMARY:-}" ]; then
+              flyctl regions set -a "$APP_NAME" "$PRIMARY" || true
+            fi
+          else
+            echo "App already exists."
+          fi
 
       - name: Deploy
         shell: bash
         run: |
           set -euo pipefail
-          APP_NAME=$(grep -m1 '^app = "' fly.toml | cut -d'" -f2)
+          APP_NAME=$(awk -F'"' '/^app = "/ {print $2; exit}' fly.toml)
           flyctl deploy -a "$APP_NAME" -c fly.toml --remote-only --strategy immediate

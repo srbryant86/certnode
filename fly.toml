@@ -1,4 +1,4 @@
-app = "certnode-srbry"
+app = "certnode-srbryant86"
 primary_region = "iad"
 
 [build]

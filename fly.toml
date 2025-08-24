@@ -11,11 +11,17 @@ primary_region = "iad"
   auto_start_machines = true
   min_machines_running = 1
 
-  concurrency = { type = "requests", soft_limit = 20, hard_limit = 25 }[[checks]]
-  name         = "http"
-  type         = "http"
-  interval     = "10s"
-  timeout      = "2s"
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 20
+    hard_limit = 25
+
+[[checks]]
+  name = "http"
+  type = "http"
+  port = 8080
+  interval = "10s"
+  timeout = "2s"
   grace_period = "15s"
-  path         = "/healthz"
-  port         = 8080
+  method = "GET"
+  path = "/healthz"

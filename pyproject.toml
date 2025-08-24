@@ -1,1 +1,29 @@
-[build-system]\nrequires = ["setuptools", "wheel"]\nbuild-backend = "setuptools.build_meta"\n\n[project]\nname = "certnode"\nversion = "0.1.0"\nrequires-python = ">=3.10"\n
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "certnode"
+version = "0.1.0"
+description = "CertNode API and core"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Steven Bryant" }]
+
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.30.0",
+  "SQLAlchemy>=2.0.30",
+  "alembic>=1.13.2",
+  "psycopg[binary]>=3.1.18",
+  "redis>=5.0.4",
+  "pydantic>=2.7.0",
+  "python-dotenv>=1.0.1",
+  "prometheus-client>=0.20.0",
+  "slowapi>=0.1.9",
+  "stripe>=10.0.0",
+  "httpx>=0.27.0",
+  "orjson>=3.10.0",
+  "structlog>=24.1.0",
+  "pyjwt[crypto]>=2.8.0",
+]

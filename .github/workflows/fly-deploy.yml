@@ -1,5 +1,4 @@
 name: Deploy CertNode to Fly.io
-
 on:
   push:
     branches: [main]
@@ -13,43 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-      FLY_ORG_SLUG: ${{ vars.FLY_ORG_SLUG || '' }}
 
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: Show orgs / apps (debug)
-        run: |
-          flyctl orgs list || true
-          flyctl apps list || true
-
-      - name: Ensure app exists (auto-detect org)
+      - name: Deploy (create-then-deploy)
         shell: bash
         run: |
           set -euo pipefail
-          APP_NAME="$(sed -n 's/^app = "\([^"]*\)"/\1/p' fly.toml)"
-          echo "APP_NAME=$APP_NAME"
-
-          SLUG="${FLY_ORG_SLUG}"
-          if [ -z "$SLUG" ]; then
-            sudo apt-get update -y >/dev/null
-            sudo apt-get install -y jq >/dev/null
-            SLUG=$(flyctl orgs list --json | jq -r 'map(select(.type=="personal"))[0].slug // .[0].slug')
-          fi
-          echo "Using org slug: $SLUG"
-
-          if ! flyctl apps show "$APP_NAME" >/dev/null 2>&1; then
-            echo "Creating app..."
-            if ! flyctl apps create "$APP_NAME" --org "$SLUG" --region iad; then
-              echo "Create failed. Available orgs:"; flyctl orgs list; exit 1
-            fi
-          else
-            echo "App already exists."
-          fi
-
-      - name: Deploy
-        shell: bash
-        run: |
-          APP_NAME="$(sed -n 's/^app = "\([^"]*\)"/\1/p' fly.toml)"
-          flyctl deploy -a "$APP_NAME" -c fly.toml --remote-only --strategy immediate
+          APP_NAME=$(grep -m1 '^app = "' fly.toml | cut -d'"' -f2)
+          echo "APP=$APP_NAME"
+          # ensure app exists in Personal org; ignore if it already exists
+          flyctl apps create "$APP_NAME" --org personal --region iad || true
+          # deploy using explicit app + config
+          flyctl deploy -a "$APP_NAME" -c fly.toml --remote-only --strategy immediate --verbose

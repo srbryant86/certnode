@@ -1,0 +1,1 @@
+from fastapi import FastAPI\n\napp = FastAPI(title="CertNode API")\n\n@app.get("/healthz")\ndef health(): return {"ok": True}\n

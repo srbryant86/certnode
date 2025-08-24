@@ -1,0 +1,44 @@
+name: Deploy CertNode to Fly.io
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: fly-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      # Optional: ensure app is reachable & config parses
+      - name: Sanity
+        run: |
+          flyctl version
+          flyctl status || true
+
+      # If your fly.toml is not at repo root, adjust the path below:
+      - name: Deploy
+        run: flyctl deploy -c infra/fly.toml --remote-only --strategy immediate
+
+      # Push secrets from repo to Fly (only if you store them in GitHub)
+      - name: Set app secrets
+        if: ${{ env.SET_SECRETS == 'true' }}
+        run: |
+          flyctl secrets set \
+            DATABASE_URL='${{ secrets.DATABASE_URL }}' \
+            REDIS_URL='${{ secrets.REDIS_URL }}' \
+            STRIPE_SECRET_KEY='${{ secrets.STRIPE_SECRET_KEY }}' \
+            STRIPE_WEBHOOK_SECRET='${{ secrets.STRIPE_WEBHOOK_SECRET }}' \
+            STRIPE_PRICE_ID_STARTER='${{ secrets.STRIPE_PRICE_ID_STARTER }}' \
+            STRIPE_PRICE_ID_GROWTH='${{ secrets.STRIPE_PRICE_ID_GROWTH }}' \
+            STRIPE_PRICE_ID_SCALE='${{ secrets.STRIPE_PRICE_ID_SCALE }}'

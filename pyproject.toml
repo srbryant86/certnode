@@ -1,0 +1,1 @@
+[build-system]\nrequires = ["setuptools", "wheel"]\nbuild-backend = "setuptools.build_meta"\n\n[project]\nname = "certnode"\nversion = "0.1.0"\nrequires-python = ">=3.10"\n

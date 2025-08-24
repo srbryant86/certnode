@@ -17,13 +17,22 @@ jobs:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: Deploy (create-then-deploy)
+      - name: Ensure app exists (GitHub-only)
         shell: bash
         run: |
           set -euo pipefail
-          APP_NAME=$(grep -m1 '^app = "' fly.toml | cut -d'"' -f2)
-          echo "APP=$APP_NAME"
-          # ensure app exists in Personal org; ignore if it already exists
-          flyctl apps create "$APP_NAME" --org personal --region iad || true
-          # deploy using explicit app + config
-          flyctl deploy -a "$APP_NAME" -c fly.toml --remote-only --strategy immediate --verbose
+          APP_NAME=$(grep -m1 '^app = "' fly.toml | cut -d'" -f2)
+          ORG=personal
+          echo "APP=$APP_NAME ORG=$ORG"
+          # Create app (no --region; not supported by your flyctl build)
+          flyctl apps create "$APP_NAME" --org "$ORG" || echo "App may already exist."
+          # Set region based on fly.toml (safe to ignore if already set)
+          PRIMARY=$(grep -m1 '^primary_region = "' fly.toml | cut -d'" -f2)
+          [ -n "$PRIMARY" ] && flyctl regions set -a "$APP_NAME" "$PRIMARY" || true
+
+      - name: Deploy
+        shell: bash
+        run: |
+          set -euo pipefail
+          APP_NAME=$(grep -m1 '^app = "' fly.toml | cut -d'" -f2)
+          flyctl deploy -a "$APP_NAME" -c fly.toml --remote-only --strategy immediate

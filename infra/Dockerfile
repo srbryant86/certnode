@@ -6,9 +6,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# System deps
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# System deps needed for building some wheels (cryptography, httptools, etc.)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential libffi-dev libssl-dev \
+ && rm -rf /var/lib/apt/lists/*
 
 # Python deps
 COPY requirements.txt .

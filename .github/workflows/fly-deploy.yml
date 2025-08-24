@@ -8,9 +8,23 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      FLY_APP: certnode
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: |
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Verify auth (no token leak)
+        run: flyctl auth whoami --access-token "$FLY_API_TOKEN"
+
+      - name: Deploy (Machines)
+        run: |
           set -e
-          flyctl deploy -c fly.toml --remote-only --strategy immediate
+          flyctl deploy -c fly.toml --remote-only --strategy immediate -a "$FLY_APP" --access-token "$FLY_API_TOKEN"
+
+      - name: Show status
+        run: flyctl status -a "$FLY_APP" --access-token "$FLY_API_TOKEN"

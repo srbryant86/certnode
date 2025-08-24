@@ -4,32 +4,32 @@ primary_region = "iad"
 [build]
   dockerfile = "./infra/Dockerfile"
 
-# VM resources (1 GB RAM on shared-cpu-1x)
+# Machine sizing (applies on next deploy)
 [vm]
-  size   = "shared-cpu-1x"
-  memory = "1024"
+  memory = "1024MB"         # or "2048MB"
+  cpu_kind = "shared"       # "shared" or "performance"
+  cpus = 2
 
 [http_service]
-  internal_port        = 8080
-  force_https          = true
-  auto_stop_machines   = true
-  auto_start_machines  = true
+  internal_port = 8080
+  force_https = true
+  auto_start_machines = true
+  auto_stop_machines = false
   min_machines_running = 1
+  processes = ["app"]       # <- fixes the “Service has no processes set…” error
 
 [http_service.concurrency]
-  type       = "requests"
-  soft_limit = 20
-  hard_limit = 25
+  type = "requests"
+  soft_limit = 50
+  hard_limit = 100
 
-# Single Machines v2 health check
+# Machines v2 health check
 [[checks]]
-  name         = "http"
-  type         = "http"
-  method       = "GET"
-  path         = "/healthz"
-  port         = 8080
-  interval     = "10s"
-  timeout      = "2s"
+  name = "http"
+  type = "http"
+  method = "GET"
+  path = "/healthz"
+  port = 8080
+  interval = "10s"
+  timeout = "2s"
   grace_period = "15s"
-[processes]
-  app = "gunicorn apps.api.main:app -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8080 --workers 2 --timeout 90"

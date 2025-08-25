@@ -1,0 +1,26 @@
+name: Deploy CertNode to Fly.io
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          APP_ENV: "prod"
+          LOG_LEVEL: "INFO"
+          CRYPTO_ALGO: "ed25519"
+        run: |
+          set -e
+          flyctl status || true
+          flyctl deploy --remote-only

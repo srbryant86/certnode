@@ -1,0 +1,41 @@
+name: Provision Fly certs for certnode.io
+
+on:
+  workflow_dispatch:
+
+jobs:
+  certs:
+    runs-on: ubuntu-latest
+    env:
+      FLY_APP: certnode
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Create certs (apex + www)
+        run: |
+          set -e
+          flyctl certs create certnode.io      -a "$FLY_APP" --access-token "$FLY_API_TOKEN" || true
+          flyctl certs create www.certnode.io  -a "$FLY_APP" --access-token "$FLY_API_TOKEN" || true
+
+      - name: Show cert status
+        run: |
+          flyctl certs show certnode.io      -a "$FLY_APP" --access-token "$FLY_API_TOKEN" || true
+          flyctl certs show www.certnode.io  -a "$FLY_APP" --access-token "$FLY_API_TOKEN" || true
+
+      - name: Poll until Ready (up to ~5 min)
+        run: |
+          set -e
+          for i in {1..30}; do
+            apex_ready=$(flyctl certs show certnode.io     -a "$FLY_APP" --access-token "$FLY_API_TOKEN" | grep -i "Status" | grep -ci "Ready" || true)
+            www_ready=$(flyctl certs show www.certnode.io -a "$FLY_APP" --access-token "$FLY_API_TOKEN" | grep -i "Status" | grep -ci "Ready" || true)
+            if [ "$apex_ready" = "1" ] && [ "$www_ready" = "1" ]; then
+              echo "Both certs Ready."
+              exit 0
+            fi
+            echo "Waiting for DNS/ACME…"
+            sleep 10
+          done
+          echo "Timed out waiting for certs to be Ready."
+          exit 1

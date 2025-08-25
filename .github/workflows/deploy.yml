@@ -1,26 +1,41 @@
-name: Deploy CertNode to Fly.io
+name: Deploy to Fly.io
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   workflow_dispatch:
+
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup Flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-          APP_ENV: "prod"
-          LOG_LEVEL: "INFO"
-          CRYPTO_ALGO: "ed25519"
         run: |
-          set -e
-          flyctl status || true
-          flyctl deploy --remote-only
+          echo "🚀 Deploying to Fly.io..."
+          flyctl deploy --config fly.toml --remote-only --strategy immediate --wait-timeout 600 --verbose \
+          || (echo "❌ Deploy failed, showing logs..." && flyctl logs -a certnode --since 10m && exit 1)
+
+      - name: Smoke test
+        run: |
+          echo "⏳ Waiting before smoke test..."
+          sleep 10
+          for i in 1 2 3 4 5; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" https://certnode.fly.dev/healthz || echo 000)
+            echo "Attempt $i: $code"
+            if [ "$code" = "200" ]; then
+              echo "✅ Health OK"
+              curl -sf https://certnode.fly.dev/metrics | head -5 || true
+              exit 0
+            fi
+            sleep $((i*5))
+          done
+          echo "❌ Smoke test failed"; flyctl logs -a certnode --since 10m; exit 1

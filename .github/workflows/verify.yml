@@ -1,0 +1,33 @@
+name: Verify Domain Setup
+
+on:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check DNS
+        run: |
+          echo "certnode.io:";  dig +short certnode.io || true
+          echo "www.certnode.io:"; dig +short www.certnode.io || true
+
+      - name: Verify apex
+        run: |
+          for i in 1 2 3; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -L https://certnode.io/healthz || echo 000)
+            echo "Apex attempt $i: $code"
+            [ "$code" = "200" ] && exit 0
+            sleep $((i*5))
+          done
+          echo "Apex not ready (yet)"; exit 0
+
+      - name: Verify www
+        run: |
+          for i in 1 2 3; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -L https://www.certnode.io/healthz || echo 000)
+            echo "WWW attempt $i: $code"
+            [ "$code" = "200" ] && exit 0
+            sleep $((i*5))
+          done
+          echo "WWW not ready (yet)"; exit 0

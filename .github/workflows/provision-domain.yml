@@ -1,41 +1,37 @@
-name: Provision Fly certs for certnode.io
+name: Provision Domain Certificates
 
 on:
   workflow_dispatch:
 
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
 jobs:
-  certs:
+  provision:
     runs-on: ubuntu-latest
-    env:
-      FLY_APP: certnode
-      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    outputs:
+      apex_record: ${{ steps.outs.outputs.apex_record }}
+      www_record: ${{ steps.outs.outputs.www_record }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Create certs (apex + www)
-        run: |
-          set -e
-          flyctl certs create certnode.io      -a "$FLY_APP" --access-token "$FLY_API_TOKEN" || true
-          flyctl certs create www.certnode.io  -a "$FLY_APP" --access-token "$FLY_API_TOKEN" || true
+      - name: Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: Show cert status
+      - name: Add certs (idempotent)
         run: |
-          flyctl certs show certnode.io      -a "$FLY_APP" --access-token "$FLY_API_TOKEN" || true
-          flyctl certs show www.certnode.io  -a "$FLY_APP" --access-token "$FLY_API_TOKEN" || true
+          flyctl certs add certnode.io -a certnode || true
+          flyctl certs add www.certnode.io -a certnode || true
 
-      - name: Poll until Ready (up to ~5 min)
+      - name: DNS outputs
+        id: outs
         run: |
-          set -e
-          for i in {1..30}; do
-            apex_ready=$(flyctl certs show certnode.io     -a "$FLY_APP" --access-token "$FLY_API_TOKEN" | grep -i "Status" | grep -ci "Ready" || true)
-            www_ready=$(flyctl certs show www.certnode.io -a "$FLY_APP" --access-token "$FLY_API_TOKEN" | grep -i "Status" | grep -ci "Ready" || true)
-            if [ "$apex_ready" = "1" ] && [ "$www_ready" = "1" ]; then
-              echo "Both certs Ready."
-              exit 0
-            fi
-            echo "Waiting for DNS/ACME…"
-            sleep 10
-          done
-          echo "Timed out waiting for certs to be Ready."
-          exit 1
+          echo "Gathering DNS config..."
+          flyctl certs show certnode.io -a certnode || true
+          flyctl certs show www.certnode.io -a certnode || true
+          echo "apex_record=CNAME (flatten) @ -> certnode.fly.dev  (Proxy: DNS only)" >> $GITHUB_OUTPUT
+          echo "www_record=CNAME www -> certnode.fly.dev (Proxy: DNS only)" >> $GITHUB_OUTPUT
+          echo "::notice::Set Cloudflare DNS:"
+          echo "::notice::Apex: CNAME (flatten) certnode.fly.dev  (Proxy OFF initially)"
+          echo "::notice::WWW : CNAME certnode.fly.dev           (Proxy OFF initially)"

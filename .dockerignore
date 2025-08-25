@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+.tox/
+*.cover
+.hypothesis/
+.mypy_cache/
+
+# Git
+.git/
+.gitignore
+
+# Development
+*.log
+*.md
+!README.md
+!docs/*.md
+.env
+.env.*
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Tests
+tests/
+test/
+*.test.py
+*_test.py
+
+# Local CI artifacts
+.act/
+act/
+
+# Fly.io
+fly.toml.bak

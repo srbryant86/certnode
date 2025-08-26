@@ -155,17 +155,5 @@ MIT License — see [LICENSE](LICENSE) for details.
 * [FastAPI Docs](https://fastapi.tiangolo.com)
 * [Fly.io Docs](https://fly.io/docs)
 * [Cloudflare Docs](https://developers.cloudflare.com)
-* [GitHub Actions](https://docs.github.com/actions)
-
-```
-
----
-
-This README balances **enterprise-readiness** and **academic credibility**:  
-- It explains **what CertNode is**,  
-- Shows **how to run it locally**,  
-- Explains **how it deploys in production**,  
-- And documents **features + security**.  
-
-👉 Do you want me to also generate a **short academic-style abstract** (like a one-page “whitepaper summary”) to pin at the top of the README for scholars/institutions browsing your repo?
+* [GitHub Actions](https://docs.github.com/actions)the README for scholars/institutions browsing your repo?
 ```

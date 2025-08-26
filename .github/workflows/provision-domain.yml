@@ -1,37 +1,36 @@
 name: Provision Domain Certificates
-
 on:
   workflow_dispatch:
-
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
 jobs:
   provision:
     runs-on: ubuntu-latest
     outputs:
-      apex_record: ${{ steps.outs.outputs.apex_record }}
-      www_record: ${{ steps.outs.outputs.www_record }}
+      apex_record: ${{ steps.out.outputs.apex_record }}
+      www_record:  ${{ steps.out.outputs.www_record }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@master
-
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Add certs (idempotent)
         run: |
           flyctl certs add certnode.io -a certnode || true
           flyctl certs add www.certnode.io -a certnode || true
-
-      - name: DNS outputs
-        id: outs
+      - name: Wait for readiness
         run: |
-          echo "Gathering DNS config..."
-          flyctl certs show certnode.io -a certnode || true
-          flyctl certs show www.certnode.io -a certnode || true
-          echo "apex_record=CNAME (flatten) @ -> certnode.fly.dev  (Proxy: DNS only)" >> $GITHUB_OUTPUT
-          echo "www_record=CNAME www -> certnode.fly.dev (Proxy: DNS only)" >> $GITHUB_OUTPUT
-          echo "::notice::Set Cloudflare DNS:"
-          echo "::notice::Apex: CNAME (flatten) certnode.fly.dev  (Proxy OFF initially)"
-          echo "::notice::WWW : CNAME certnode.fly.dev           (Proxy OFF initially)"
+          for i in {1..30}; do
+            flyctl certs list -a certnode
+            sleep 5
+          done
+      - name: Output DNS
+        id: out
+        run: |
+          set -e
+          IPS=$(flyctl ips list -a certnode --json | jq -r '.[] | select(.type=="v4") | .address' | head -1 || true)
+          if [ -n "$IPS" ]; then
+            echo "apex_record=A $IPS (or CNAME certnode.fly.dev with flattening)" >> $GITHUB_OUTPUT
+          else
+            echo "apex_record=CNAME certnode.fly.dev (flattened)" >> $GITHUB_OUTPUT
+          fi
+          echo "www_record=CNAME certnode.fly.dev" >> $GITHUB_OUTPUT
+          echo "::notice title=Cloudflare DNS::Apex => CNAME certnode.fly.dev (DNS only); WWW => CNAME certnode.fly.dev (DNS only)"

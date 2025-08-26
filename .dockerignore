@@ -1,53 +1,15 @@
-# Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
+*.egg-info/
+build/
+dist/
 .venv/
 venv/
-ENV/
-env/
-*.egg-info/
-dist/
-build/
-.pytest_cache/
-.coverage
-.tox/
-*.cover
-.hypothesis/
-.mypy_cache/
-
-# Git
-.git/
-.gitignore
-
-# Development
-*.log
-*.md
-!README.md
-!docs/*.md
 .env
-.env.*
-
-# IDE / OS
+.git/
+.github/
 .vscode/
 .idea/
-*.swp
-*.swo
-*~
 .DS_Store
-Thumbs.db
-
-# Tests
+node_modules/
 tests/
-test/
-*.test.py
-*_test.py
-
-# Local CI artifacts
-.act/
-act/
-
-# Fly.io
-fly.toml.bak

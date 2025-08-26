@@ -1,10 +1,3 @@
-Perfect — since your repo is now ready for production, let’s make sure the **`README.md`** is polished, professional, and aligned with CertNode’s academic-grade + enterprise deployment goals.
-
-Here’s a **drop-in README.md** you can place at the root of your repo:
-
----
-
-```markdown
 # 🔐 CertNode
 
 **CertNode** is an infrastructure-grade framework for **logic, structure, and epistemic certification** of human- and AI-authored content.  

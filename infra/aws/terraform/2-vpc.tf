@@ -1,36 +1,65 @@
-﻿# infra/aws/terraform/2-vpc.tf placeholder
 #############################################
 # CertNode  VPC, Subnets, Routes, Endpoints
 # File: infra/aws/terraform/2-vpc.tf
+#
+# - 3-AZ VPC topology (AZ count configurable)
+# - Public + Private subnets per AZ
+# - NAT per-AZ toggle (HA by default)
+# - IGW + NAT + route tables/associations
+# - VPC endpoints: S3 (Gateway), KMS, ECR (api/dkr), CloudWatch Logs (Interface)
+# - Endpoint SG (443 from VPC CIDR), tags, DNS support/hostnames
 #############################################
 
-data "aws_availability_zones" "available" { state = "available" }
+# Use the first N available AZs (N = var.az_count)
+data "aws_availability_zones" "available" {
+  state = "available"
+}
 
 locals {
   azs = slice(data.aws_availability_zones.available.names, 0, var.az_count)
+
+  # Deterministic /24 allocations derived from the VPC CIDR.
+  # Public blocks use indexes [0..az_count-1], Private starts at offset 64.
+  # With the default /16 this yields non-overlapping /24s.
   public_subnet_cidrs  = [for i in range(var.az_count) : cidrsubnet(var.vpc_cidr, 8, i)]
   private_subnet_cidrs = [for i in range(var.az_count) : cidrsubnet(var.vpc_cidr, 8, i + 64)]
 }
 
+# -----------------------------
+# Core VPC & Internet Gateway
+# -----------------------------
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_support   = true
   enable_dns_hostnames = true
-  tags = merge(local.common_tags, { Name = "${local.name_prefix}-vpc" })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-vpc"
+  })
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
-  tags = merge(local.common_tags, { Name = "${local.name_prefix}-igw" })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-igw"
+  })
 }
 
+# -----------------------------
+# Subnets (public & private)
+# -----------------------------
 resource "aws_subnet" "public" {
   count                   = length(local.azs)
   vpc_id                  = aws_vpc.main.id
   availability_zone       = local.azs[count.index]
   cidr_block              = local.public_subnet_cidrs[count.index]
   map_public_ip_on_launch = true
-  tags = merge(local.common_tags, { Name = "${local.name_prefix}-public-${count.index + 1}", Tier = "public" })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-public-${count.index + 1}"
+    Tier = "public"
+  })
 }
 
 resource "aws_subnet" "private" {
@@ -38,25 +67,46 @@ resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.main.id
   availability_zone = local.azs[count.index]
   cidr_block        = local.private_subnet_cidrs[count.index]
-  tags = merge(local.common_tags, { Name = "${local.name_prefix}-private-${count.index + 1}", Tier = "private" })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-private-${count.index + 1}"
+    Tier = "private"
+  })
 }
 
+# -----------------------------
+# NAT Gateways (per-AZ toggle)
+# -----------------------------
+# Allocate one EIP per NAT (or one total if not per-AZ)
 resource "aws_eip" "nat" {
   count = var.enable_nat_per_az ? length(local.azs) : 1
   vpc   = true
-  tags  = merge(local.common_tags, { Name = "${local.name_prefix}-nat-eip-${count.index + 1}" })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-nat-eip-${count.index + 1}"
+  })
 }
 
 resource "aws_nat_gateway" "nat" {
   count         = var.enable_nat_per_az ? length(local.azs) : 1
   allocation_id = aws_eip.nat[count.index].id
-  subnet_id     = aws_subnet.public[var.enable_nat_per_az ? count.index : 0].id
-  tags          = merge(local.common_tags, { Name = "${local.name_prefix}-nat-${count.index + 1}" })
+  # If single NAT, place it in the first public subnet.
+  subnet_id = aws_subnet.public[var.enable_nat_per_az ? count.index : 0].id
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-nat-${count.index + 1}"
+  })
 }
 
+# -----------------------------
+# Route tables & associations
+# -----------------------------
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
-  tags   = merge(local.common_tags, { Name = "${local.name_prefix}-rt-public" })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-rt-public"
+  })
 }
 
 resource "aws_route" "public_default" {
@@ -71,10 +121,14 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
+# Private route tables: per-AZ if NAT per-AZ; otherwise a single shared table.
 resource "aws_route_table" "private" {
-  count = var.enable_nat_per_az ? length(local.azs) : 1
+  count  = var.enable_nat_per_az ? length(local.azs) : 1
   vpc_id = aws_vpc.main.id
-  tags = merge(local.common_tags, { Name = "${local.name_prefix}-rt-private-${count.index + 1}" })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-rt-private-${count.index + 1}"
+  })
 }
 
 resource "aws_route" "private_default" {
@@ -90,23 +144,51 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.private[var.enable_nat_per_az ? count.index : 0].id
 }
 
+# -----------------------------
+# VPC Endpoint security group
+# -----------------------------
 resource "aws_security_group" "vpce" {
   name        = "${local.name_prefix}-vpce"
   description = "VPC Interface Endpoint SG (allow 443 from VPC CIDR)"
   vpc_id      = aws_vpc.main.id
-  ingress { from_port = 443 to_port = 443 protocol = "tcp" cidr_blocks = [var.vpc_cidr] description = "HTTPS from VPC" }
-  egress  { from_port =   0 to_port =   0 protocol = "-1"  cidr_blocks = ["0.0.0.0/0"] description = "All egress" }
-  tags = merge(local.common_tags, { Name = "${local.name_prefix}-vpce-sg" })
+
+  ingress {
+    description = "HTTPS from VPC"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }
+
+  egress {
+    description = "All egress"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-vpce-sg"
+  })
 }
 
+# -----------------------------
+# VPC Endpoints
+# -----------------------------
+# S3  Gateway endpoint (attach to private route tables)
 resource "aws_vpc_endpoint" "s3" {
   vpc_id            = aws_vpc.main.id
   vpc_endpoint_type = "Gateway"
   service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
   route_table_ids   = aws_route_table.private[*].id
-  tags = merge(local.common_tags, { Name = "${local.name_prefix}-vpce-s3" })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-vpce-s3"
+  })
 }
 
+# Interface endpoints live in private subnets and use the VPCe SG
 resource "aws_vpc_endpoint" "logs" {
   vpc_id              = aws_vpc.main.id
   vpc_endpoint_type   = "Interface"
@@ -114,7 +196,10 @@ resource "aws_vpc_endpoint" "logs" {
   private_dns_enabled = true
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpce.id]
-  tags = merge(local.common_tags, { Name = "${local.name_prefix}-vpce-logs" })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-vpce-logs"
+  })
 }
 
 resource "aws_vpc_endpoint" "kms" {
@@ -124,7 +209,10 @@ resource "aws_vpc_endpoint" "kms" {
   private_dns_enabled = true
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpce.id]
-  tags = merge(local.common_tags, { Name = "${local.name_prefix}-vpce-kms" })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-vpce-kms"
+  })
 }
 
 resource "aws_vpc_endpoint" "ecr_api" {
@@ -134,7 +222,10 @@ resource "aws_vpc_endpoint" "ecr_api" {
   private_dns_enabled = true
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpce.id]
-  tags = merge(local.common_tags, { Name = "${local.name_prefix}-vpce-ecr-api" })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-vpce-ecr-api"
+  })
 }
 
 resource "aws_vpc_endpoint" "ecr_dkr" {
@@ -144,5 +235,8 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   private_dns_enabled = true
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpce.id]
-  tags = merge(local.common_tags, { Name = "${local.name_prefix}-vpce-ecr-dkr" })
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-vpce-ecr-dkr"
+  })
 }

@@ -1,0 +1,6 @@
+.auditpack/
+.DS_Store
+node_modules/
+dist/
+coverage/
+.terraform/

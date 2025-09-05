@@ -79,8 +79,8 @@ resource "aws_subnet" "private" {
 # -----------------------------
 # Allocate one EIP per NAT (or one total if not per-AZ)
 resource "aws_eip" "nat" {
-  count = var.enable_nat_per_az ? length(local.azs) : 1
-  vpc   = true
+  count  = var.enable_nat_per_az ? length(local.azs) : 1
+  domain = "vpc"
 
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}-nat-eip-${count.index + 1}"

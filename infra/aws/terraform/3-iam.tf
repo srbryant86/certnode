@@ -171,21 +171,21 @@ data "aws_iam_policy_document" "task_ssm_read" {
 data "aws_iam_policy_document" "task_combined" {
   source_policy_documents = compact([
     data.aws_iam_policy_document.task_kms_sign.json,
-    var.enable_ssm_read ? data.aws_iam_policy_document.task_ssm_read.json : null
+    var.enable_ssm_read ? data.aws_iam_policy_document task_ssm_read json : null
   ])
 }
 
 resource "aws_iam_role" "ecs_task" {
   name               = "${local.name_prefix}-ecs-task"
-  assume_role_policy = data.aws_iam_policy_document.ecs_tasks_trust.json
+  assume_role_policy = data.aws_iam_policy_document ecs_tasks_trust json
   description        = "ECS task role: KMS ES256 Sign/GetPublicKey (+ optional SSM prefix reads)"
   tags               = local.common_tags
 }
 
 resource "aws_iam_role_policy" "ecs_task_inline" {
   name   = "${local.name_prefix}-task-kms-ssm"
-  role   = aws_iam_role.ecs_task.id
-  policy = data.aws_iam_policy_document.task_combined.json
+  role   = aws_iam_role ecs_task id
+  policy = data.aws_iam_policy_document task_combined json
 }
 
 # Outputs

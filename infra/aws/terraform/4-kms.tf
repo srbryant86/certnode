@@ -46,9 +46,9 @@ data "aws_iam_policy_document" "kms_signing" {
 }
 
 resource "aws_kms_key" "sign" {
-  description = "CertNode signing key (ECC NIST P-256) for ECDSA signatures"
-  key_usage   = "SIGN_VERIFY"
-  key_spec    = "ECC_NIST_P256"
+  description              = "CertNode signing key (ECC NIST P-256) for ECDSA signatures"
+  key_usage                = "SIGN_VERIFY"
+  customer_master_key_spec = "ECC_NIST_P256"
 
   policy = data.aws_iam_policy_document.kms_signing.json
 

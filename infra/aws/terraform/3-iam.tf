@@ -3,12 +3,6 @@
 # File: infra/aws/terraform/3-iam.tf
 #############################################
 
-locals {
-  name_prefix = "${var.project}-${var.environment}"
-}
-
-data "aws_caller_identity" "current" {}
-
 # Trust policy for ECS tasks
 data "aws_iam_policy_document" "ecs_tasks_trust" {
   statement {

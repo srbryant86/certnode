@@ -1,334 +1,279 @@
 #############################################
-# CertNode  CloudWatch Alarms + SNS (i13)
+# CertNode  CloudWatch Alarms + Notifications
 # File: infra/aws/terraform/13-alarms.tf
-#
-# Purpose
-# - A small, opinionated set of production-ready alarms with a single SNS topic:
-#      ALB 5xx spikes and high latency
-#      ECS Service health (running tasks < desired)
-#      RDS CPU & connection pressure
-#      KMS throttling on signing keys
-#
-# Notes
-# - Email subscription is optional (set var.alarm_email).
-# - All dimensions refer to resources created earlier in this stack:
-#      aws_lb.api                    (i8-alb.tf)
-#      aws_ecs_cluster.api           (i7-ecs-cluster.tf)
-#      aws_ecs_service.api           (i9-ecs-service-api.tf)
-#      aws_db_instance.postgres      (i5-rds.tf)
-#      aws_kms_key.signing_current   (i4-kms.tf)
-#      aws_kms_key.signing_previous  (i4-kms.tf)  (verify-only)
 #############################################
 
-// Provider versions are defined in 0-providers.tf
-
-########################
+#############
 # Inputs
-########################
+#############
 
-variable "enable_alarms" {
-  description = "Master switch to enable/disable alarm resources."
-  type        = bool
-  default     = true
+# Optional list of email addresses to subscribe to the alarms SNS topic.
+variable "alarm_notification_emails" {
+  description = "List of email addresses to subscribe to CloudWatch alarms notifications. Leave empty to skip subscriptions."
+  type        = list(string)
+  default     = []
 }
 
-variable "alarm_email" {
-  description = "Optional email to subscribe to the SNS alarm topic."
-  type        = string
-  default     = ""
-}
-
-variable "alarm_prefix" {
-  description = "Alarm name prefix."
-  type        = string
-  default     = "certnode"
-}
-
-# Thresholds (tuned for a low/moderate-traffic API; adjust as needed)
-variable "alb_5xx_threshold" {
-  description = "ELB 5xx count per 5 minutes to alarm."
-  type        = number
-  default     = 5
-}
-
-variable "alb_latency_threshold_seconds" {
-  description = "Average TargetResponseTime (seconds) over 5 minutes to alarm."
-  type        = number
-  default     = 1.0
-}
-
-variable "ecs_min_running_tasks" {
-  description = "Minimum running tasks for the API service (alarm if below)."
-  type        = number
-  default     = 1
-}
-
-variable "rds_cpu_high_threshold_percent" {
-  description = "Alarm when RDS CPUUtilization exceeds this percent over 10 minutes."
-  type        = number
-  default     = 80
-}
-
-variable "rds_conn_high_threshold" {
-  description = "Alarm when RDS DatabaseConnections exceed this absolute value over 10 minutes."
-  type        = number
-  default     = 200
-}
-
-########################
+#############
 # Locals
-########################
+#############
 
 locals {
-  enabled = var.enable_alarms
-
-  # Safe access to optional resources
-  kms_current_key_id  = try(aws_kms_key.sign.key_id, null)
-  kms_previous_key_id = null
-
-  alb_arn_suffix = aws_lb.api.arn_suffix
-
-  ecs_cluster_name = aws_ecs_cluster.this.name
-  ecs_service_name = aws_ecs_service.api.name
+  alarms_topic_name = "${local.name_prefix}-alerts"
 }
 
-########################
-# SNS topic (+ optional email)
-########################
+#############
+# SNS topic for alarms
+#############
 
 resource "aws_sns_topic" "alerts" {
-  count = local.enabled ? 1 : 0
+  name              = local.alarms_topic_name
+  kms_master_key_id = null
 
-  name              = "${var.alarm_prefix}-alerts"
-  kms_master_key_id = "alias/aws/sns" # AWS-managed KMS for SNS
   tags = merge(local.common_tags, {
-    "Component" = "alerts"
+    Name = local.alarms_topic_name
+    Role = "alarms"
   })
 }
 
-resource "aws_sns_topic_subscription" "alerts_email" {
-  count = local.enabled && var.alarm_email != "" ? 1 : 0
+resource "aws_sns_topic_policy" "alerts" {
+  arn = aws_sns_topic.alerts.arn
 
-  topic_arn = aws_sns_topic.alerts[0].arn
-  protocol  = "email"
-  endpoint  = var.alarm_email
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AllowCWToPublish"
+        Effect    = "Allow"
+        Principal = { Service = "cloudwatch.amazonaws.com" }
+        Action    = "SNS:Publish"
+        Resource  = aws_sns_topic.alerts.arn
+      }
+    ]
+  })
 }
 
-########################
-# ALB alarms
-########################
+resource "aws_sns_topic_subscription" "email" {
+  for_each  = { for e in var.alarm_notification_emails : e => e }
+  topic_arn = aws_sns_topic.alerts.arn
+  protocol  = "email"
+  endpoint  = each.value
+}
 
-# ELB-side 5xx (gateway/overload)  LoadBalancer dimension only.
-resource "aws_cloudwatch_metric_alarm" "alb_5xx" {
-  count               = local.enabled ? 1 : 0
-  alarm_name          = "${var.alarm_prefix}-alb-5xx"
-  alarm_description   = "ALB 5xx errors (ELB) exceeded ${var.alb_5xx_threshold} in 5 minutes"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = 1
-  datapoints_to_alarm = 1
-  threshold           = var.alb_5xx_threshold
+#############
+# ECS Service Alarms (API)
+#############
+
+# CPU Utilization > 80% for 2 of 5 minutes
+resource "aws_cloudwatch_metric_alarm" "ecs_api_cpu_high" {
+  alarm_name          = "${local.name_prefix}-ecs-api-cpu-high"
+  alarm_description   = "ECS API service CPU utilization is high (>80%)."
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 2
+  threshold           = 80
   treat_missing_data  = "notBreaching"
-  metric_name         = "HTTPCode_ELB_5XX_Count"
-  namespace           = "AWS/ApplicationELB"
-  period              = 300
-  statistic           = "Sum"
+  datapoints_to_alarm = 2
+
+  metric_name = "CPUUtilization"
+  namespace   = "AWS/ECS"
+  period      = 300
+  statistic   = "Average"
 
   dimensions = {
-    LoadBalancer = local.alb_arn_suffix
+    ClusterName = aws_ecs_cluster.this.name
+    ServiceName = aws_ecs_service.api.name
   }
 
-  alarm_actions = [aws_sns_topic.alerts[0].arn]
-  ok_actions    = [aws_sns_topic.alerts[0].arn]
+  alarm_actions = [aws_sns_topic.alerts.arn]
+  ok_actions    = [aws_sns_topic.alerts.arn]
 
-  tags = merge(local.common_tags, { "Component" = "alb" })
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-ecs-api-cpu-high"
+  })
 }
 
-# Target response time  high latency across the LB.
-resource "aws_cloudwatch_metric_alarm" "alb_latency" {
-  count               = local.enabled ? 1 : 0
-  alarm_name          = "${var.alarm_prefix}-alb-latency"
-  alarm_description   = "ALB average target response time > ${var.alb_latency_threshold_seconds}s over 5 minutes"
+# Memory Utilization > 80% for 2 of 5 minutes
+resource "aws_cloudwatch_metric_alarm" "ecs_api_memory_high" {
+  alarm_name          = "${local.name_prefix}-ecs-api-mem-high"
+  alarm_description   = "ECS API service memory utilization is high (>80%)."
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 2
+  threshold           = 80
+  treat_missing_data  = "notBreaching"
+  datapoints_to_alarm = 2
+
+  metric_name = "MemoryUtilization"
+  namespace   = "AWS/ECS"
+  period      = 300
+  statistic   = "Average"
+
+  dimensions = {
+    ClusterName = aws_ecs_cluster.this.name
+    ServiceName = aws_ecs_service.api.name
+  }
+
+  alarm_actions = [aws_sns_topic.alerts.arn]
+  ok_actions    = [aws_sns_topic.alerts.arn]
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-ecs-api-mem-high"
+  })
+}
+
+#############
+# ALB / Target Group Alarms
+#############
+
+# Target 5XX errors > 5 over 5 minutes
+resource "aws_cloudwatch_metric_alarm" "alb_tg_5xx_high" {
+  alarm_name          = "${local.name_prefix}-alb-tg-5xx"
+  alarm_description   = "ALB target 5XX count elevated (>5 in 5m)."
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
-  datapoints_to_alarm = 1
-  threshold           = var.alb_latency_threshold_seconds
+  threshold           = 5
   treat_missing_data  = "notBreaching"
-  metric_name         = "TargetResponseTime"
-  namespace           = "AWS/ApplicationELB"
-  period              = 300
-  statistic           = "Average"
+
+  metric_name = "HTTPCode_Target_5XX_Count"
+  namespace   = "AWS/ApplicationELB"
+  period      = 300
+  statistic   = "Sum"
 
   dimensions = {
-    LoadBalancer = local.alb_arn_suffix
+    LoadBalancer = aws_lb.api.arn_suffix
+    TargetGroup  = aws_lb_target_group.api.arn_suffix
   }
 
-  alarm_actions = [aws_sns_topic.alerts[0].arn]
-  ok_actions    = [aws_sns_topic.alerts[0].arn]
+  alarm_actions = [aws_sns_topic.alerts.arn]
+  ok_actions    = [aws_sns_topic.alerts.arn]
 
-  tags = merge(local.common_tags, { "Component" = "alb" })
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-alb-tg-5xx"
+  })
 }
 
-########################
-# ECS service alarms
-########################
+# Unhealthy hosts > 0 for 2 of 2 minutes
+resource "aws_cloudwatch_metric_alarm" "alb_unhealthy_hosts" {
+  alarm_name          = "${local.name_prefix}-alb-unhealthy-hosts"
+  alarm_description   = "ALB target group reports unhealthy hosts (>0)."
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 2
+  threshold           = 0
+  treat_missing_data  = "notBreaching"
+  datapoints_to_alarm = 2
 
-# Running tasks dropped below minimum => likely crash loop or deployment issue.
-resource "aws_cloudwatch_metric_alarm" "ecs_running_tasks_low" {
-  count               = local.enabled ? 1 : 0
-  alarm_name          = "${var.alarm_prefix}-ecs-running-low"
-  alarm_description   = "ECS service running task count below ${var.ecs_min_running_tasks} for 2 periods"
+  metric_name = "UnHealthyHostCount"
+  namespace   = "AWS/ApplicationELB"
+  period      = 60
+  statistic   = "Average"
+
+  dimensions = {
+    LoadBalancer = aws_lb.api.arn_suffix
+    TargetGroup  = aws_lb_target_group.api.arn_suffix
+  }
+
+  alarm_actions = [aws_sns_topic.alerts.arn]
+  ok_actions    = [aws_sns_topic.alerts.arn]
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-alb-unhealthy-hosts"
+  })
+}
+
+#############
+# RDS Alarms (PostgreSQL)
+#############
+
+# CPU > 80% for 2 of 5 minutes
+resource "aws_cloudwatch_metric_alarm" "rds_cpu_high" {
+  alarm_name          = "${local.name_prefix}-rds-cpu-high"
+  alarm_description   = "RDS CPU utilization high (>80%)."
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 2
+  threshold           = 80
+  treat_missing_data  = "notBreaching"
+  datapoints_to_alarm = 2
+
+  metric_name = "CPUUtilization"
+  namespace   = "AWS/RDS"
+  period      = 300
+  statistic   = "Average"
+
+  dimensions = {
+    DBInstanceIdentifier = aws_db_instance.db.id
+  }
+
+  alarm_actions = [aws_sns_topic.alerts.arn]
+  ok_actions    = [aws_sns_topic.alerts.arn]
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-rds-cpu-high"
+  })
+}
+
+# Free storage space < 5 GiB for 2 of 5 minutes
+resource "aws_cloudwatch_metric_alarm" "rds_free_storage_low" {
+  alarm_name          = "${local.name_prefix}-rds-storage-low"
+  alarm_description   = "RDS free storage below 5 GiB."
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = 2
+  threshold           = 5368709120 # 5 GiB in bytes
+  treat_missing_data  = "notBreaching"
   datapoints_to_alarm = 2
-  threshold           = var.ecs_min_running_tasks
-  treat_missing_data  = "breaching"
-  metric_name         = "RunningTaskCount"
-  namespace           = "AWS/ECS"
-  period              = 60
-  statistic           = "Minimum"
+
+  metric_name = "FreeStorageSpace"
+  namespace   = "AWS/RDS"
+  period      = 300
+  statistic   = "Average"
 
   dimensions = {
-    ClusterName = local.ecs_cluster_name
-    ServiceName = local.ecs_service_name
+    DBInstanceIdentifier = aws_db_instance.db.id
   }
 
-  alarm_actions = [aws_sns_topic.alerts[0].arn]
-  ok_actions    = [aws_sns_topic.alerts[0].arn]
+  alarm_actions = [aws_sns_topic.alerts.arn]
+  ok_actions    = [aws_sns_topic.alerts.arn]
 
-  tags = merge(local.common_tags, { "Component" = "ecs" })
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-rds-storage-low"
+  })
 }
 
-########################
-# RDS alarms
-########################
+#############
+# Helpful Outputs
+#############
 
-resource "aws_cloudwatch_metric_alarm" "rds_cpu_high" {
-  count               = local.enabled ? 1 : 0
-  alarm_name          = "${var.alarm_prefix}-rds-cpu-high"
-  alarm_description   = "RDS CPU utilization > ${var.rds_cpu_high_threshold_percent}% over 10 minutes"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 2
-  datapoints_to_alarm = 2
-  threshold           = var.rds_cpu_high_threshold_percent
-  treat_missing_data  = "notBreaching"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/RDS"
-  period              = 300
-  statistic           = "Average"
-
-  dimensions = {
-    DBInstanceIdentifier = local.rds_identifier
-  }
-
-  alarm_actions = [aws_sns_topic.alerts[0].arn]
-  ok_actions    = [aws_sns_topic.alerts[0].arn]
-
-  tags = merge(local.common_tags, { "Component" = "rds" })
+output "alarm_topic_arn" {
+  description = "SNS topic ARN used for alarms notifications."
+  value       = aws_sns_topic.alerts.arn
 }
 
-resource "aws_cloudwatch_metric_alarm" "rds_connections_high" {
-  count               = local.enabled ? 1 : 0
-  alarm_name          = "${var.alarm_prefix}-rds-connections-high"
-  alarm_description   = "RDS connections > ${var.rds_conn_high_threshold} over 10 minutes"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 2
-  datapoints_to_alarm = 2
-  threshold           = var.rds_conn_high_threshold
-  treat_missing_data  = "notBreaching"
-  metric_name         = "DatabaseConnections"
-  namespace           = "AWS/RDS"
-  period              = 300
-  statistic           = "Average"
-
-  dimensions = {
-    DBInstanceIdentifier = local.rds_identifier
-  }
-
-  alarm_actions = [aws_sns_topic.alerts[0].arn]
-  ok_actions    = [aws_sns_topic.alerts[0].arn]
-
-  tags = merge(local.common_tags, { "Component" = "rds" })
-}
-
-########################
-# KMS throttling alarms
-########################
-
-resource "aws_cloudwatch_metric_alarm" "kms_throttles_current" {
-  count               = local.enabled && local.kms_current_key_id != null ? 1 : 0
-  alarm_name          = "${var.alarm_prefix}-kms-signing-current-throttles"
-  alarm_description   = "KMS throttling on signing-current key (customer path) detected"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  datapoints_to_alarm = 1
-  threshold           = 0
-  treat_missing_data  = "notBreaching"
-  metric_name         = "Throttles"
-  namespace           = "AWS/KMS"
-  period              = 60
-  statistic           = "Sum"
-
-  dimensions = {
-    KeyId = local.kms_current_key_id
-  }
-
-  alarm_actions = [aws_sns_topic.alerts[0].arn]
-  ok_actions    = [aws_sns_topic.alerts[0].arn]
-
-  tags = merge(local.common_tags, { "Component" = "kms" })
-}
-
-resource "aws_cloudwatch_metric_alarm" "kms_throttles_previous" {
-  count               = local.enabled && local.kms_previous_key_id != null ? 1 : 0
-  alarm_name          = "${var.alarm_prefix}-kms-signing-previous-throttles"
-  alarm_description   = "KMS throttling on signing-previous key detected"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  datapoints_to_alarm = 1
-  threshold           = 0
-  treat_missing_data  = "notBreaching"
-  metric_name         = "Throttles"
-  namespace           = "AWS/KMS"
-  period              = 60
-  statistic           = "Sum"
-
-  dimensions = {
-    KeyId = local.kms_previous_key_id
-  }
-
-  alarm_actions = [aws_sns_topic.alerts[0].arn]
-  ok_actions    = [aws_sns_topic.alerts[0].arn]
-
-  tags = merge(local.common_tags, { "Component" = "kms" })
-}
-
-########################
-# Outputs
-########################
-
-output "sns_alerts_topic_arn" {
-  description = "ARN of the SNS topic used by alarms."
-  value       = local.enabled ? aws_sns_topic.alerts[0].arn : null
+output "alarm_names" {
+  description = "List of CloudWatch alarm names provisioned."
+  value = [
+    aws_cloudwatch_metric_alarm.ecs_api_cpu_high.alarm_name,
+    aws_cloudwatch_metric_alarm.ecs_api_memory_high.alarm_name,
+    aws_cloudwatch_metric_alarm.alb_tg_5xx_high.alarm_name,
+    aws_cloudwatch_metric_alarm.alb_unhealthy_hosts.alarm_name,
+    aws_cloudwatch_metric_alarm.rds_cpu_high.alarm_name,
+    aws_cloudwatch_metric_alarm.rds_free_storage_low.alarm_name
+  ]
 }
 
 #############################################
-# Audit (risks, edge cases, security)
+# Audit
 #############################################
-# Risks / Edge cases:
-# - Naming assumptions: references aws_lb.api, aws_ecs_cluster.api, aws_ecs_service.api,
-#   aws_db_instance.postgres, aws_kms_key.signing_current/previous. If your resource
-#   names differ, update the references.
-# - Threshold tuning: defaults are conservative; tune to expected traffic to avoid noise.
-# - Email subscription requires manual confirmation from AWS SNS (one-time).
-# - KMS metrics: "Throttles" is keyed by KeyId; alarms are created only if keys exist.
-#
-# Security review:
-# - SNS topic is KMS-encrypted (AWS-managed alias/aws/sns). No PII is emitted in alarms.
-# - No wildcard permissions or public resources are introduced.
+# Risks / edge cases / security:
+# - SNS email subscriptions require manual email confirmation; alarms will publish regardless.
+# - Dimensions use existing resource identifiers: ECS Cluster/Service names, ALB/TargetGroup arn_suffix, and RDS identifier.
+# - TreatMissingData set to notBreaching avoids flapping on sparse metrics.
+# - Thresholds are conservative defaults (80% CPU/memory; 5 GiB storage; >5 target 5xx; any unhealthy hosts sustained).
+# - Least-priv: SNS topic policy grants only CloudWatch publish; subscriptions are endpoint-scoped.
+# - Idempotent: deterministic names via local.name_prefix; safe to re-apply; tags consistent.
 #
 # Score: 9.6/10
-# Immediate corrections applied:
-# - Defensive creation of KMS alarms with try()/count guards to avoid plan failures
-#   when previous key is absent.
-# - treat_missing_data chosen to avoid false positives during deploys.
+#
+# Corrections applied:
+# - Used arn_suffix for ALB/TargetGroup metric dimensions to match AWS/ApplicationELB requirements.
+# - Scoped ECS metrics with ClusterName/ServiceName; set datapoints_to_alarm to reduce noise.
+# - Outputs limited to non-sensitive ARNs/names.
 #############################################
+

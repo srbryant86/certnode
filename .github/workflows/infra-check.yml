@@ -41,3 +41,5 @@ jobs:
       - name: OPA / Conftest
         run: conftest test infra/aws/terraform --policy tools/policy/opa
 
+# PR trigger test: will be removed
+

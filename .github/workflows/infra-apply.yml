@@ -1,0 +1,83 @@
+name: infra-apply
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environment (staging|prod)"
+        required: true
+        default: "staging"
+  push:
+    branches: [ main ]
+    paths: ["infra/aws/terraform/**"]
+    # deploy on commit messages like: "feat:  [deploy:staging]"
+    # safer: you can remove this auto trigger and use only manual dispatch.
+    # This keeps it but behind a commit-tag.
+    # (We parse env from commit message below.)
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions: { id-token: write, contents: read }
+    env:
+      TF_DIR: infra/aws/terraform
+      AWS_REGION: us-east-1
+      TF_STATE_BUCKET: ${{ secrets.TF_STATE_BUCKET }}
+      TF_STATE_TABLE:  ${{ secrets.TF_STATE_TABLE }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve target env
+        id: envsel
+        run: |
+          MSG="${{ github.event.head_commit.message }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            ENV="${{ github.event.inputs.env }}"
+          else
+            case "$MSG" in
+              *"[deploy:prod]"*) ENV="prod" ;;
+              *"[deploy:staging]"*) ENV="staging" ;;
+              *) echo "No deploy tag; exiting."; echo "env=none" >> $GITHUB_OUTPUT; exit 0 ;;
+            esac
+          fi
+          echo "env=$ENV" >> $GITHUB_OUTPUT
+
+      - name: Stop if no env selected
+        if: steps.envsel.outputs.env == 'none'
+        run: echo "Skipping apply."
+
+      - name: Configure AWS (OIDC)
+        if: steps.envsel.outputs.env != 'none'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        if: steps.envsel.outputs.env != 'none'
+        uses: hashicorp/setup-terraform@v3
+        with: { terraform_version: 1.9.5 }
+
+      - name: Init backend
+        if: steps.envsel.outputs.env != 'none'
+        working-directory: ${{ env.TF_DIR }}
+        run: |
+          KEY="envs/${{ steps.envsel.outputs.env }}/terraform.tfstate"
+          terraform init \
+            -backend-config="bucket=${{ env.TF_STATE_BUCKET }}" \
+            -backend-config="key=$KEY" \
+            -backend-config="region=${{ env.AWS_REGION }}" \
+            -backend-config="dynamodb_table=${{ env.TF_STATE_TABLE }}" \
+            -backend-config="encrypt=true"
+
+      - name: Plan & Apply
+        if: steps.envsel.outputs.env != 'none'
+        working-directory: ${{ env.TF_DIR }}
+        run: |
+          terraform plan -out plan.bin -input=false
+          terraform apply -input=false -auto-approve plan.bin
+
+      - name: Post-deploy smoke
+        if: steps.envsel.outputs.env != 'none'
+        run: ./scripts/smoke-infra.ps1 -Env ${{ steps.envsel.outputs.env }}
+        shell: pwsh
+

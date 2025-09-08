@@ -1,0 +1,43 @@
+name: infra-check
+on:
+  push:
+    paths: ["infra/aws/terraform/**", ".github/workflows/infra-*.yml", "tools/policy/**"]
+  pull_request:
+    paths: ["infra/aws/terraform/**", ".github/workflows/infra-*.yml", "tools/policy/**"]
+
+jobs:
+  lint-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup tools
+        uses: grafana/setup-tools@v1
+        with:
+          terraform: '1.9.5'
+
+      - name: Install scanners
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jq
+          curl -sSfL https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | sh
+          curl -sSfL https://github.com/bridgecrewio/checkov/releases/latest/download/checkov_2.7.6_linux_amd64.zip -o /tmp/checkov.zip
+          sudo unzip -o /tmp/checkov.zip -d /usr/local/bin && sudo mv /usr/local/bin/checkov_* /usr/local/bin/checkov
+          curl -sSfL https://github.com/open-policy-agent/conftest/releases/download/v0.53.0/conftest_0.53.0_Linux_x86_64.tar.gz | sudo tar -xz -C /usr/local/bin conftest
+
+      - name: Terraform fmt & init (no backend)
+        working-directory: infra/aws/terraform
+        run: |
+          terraform fmt -recursive -check
+          terraform init -backend=false -upgrade
+          terraform validate
+
+      - name: tfsec
+        run: tfsec --soft-fail infra/aws/terraform
+
+      - name: checkov
+        run: checkov -q -d infra/aws/terraform
+
+      - name: OPA / Conftest
+        run: conftest test infra/aws/terraform --policy tools/policy/opa
+

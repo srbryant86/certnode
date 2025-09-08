@@ -125,6 +125,30 @@ resource "aws_security_group" "alb" {
 }
 
 ########################
+# Discover Public Subnets (by tags) and choose inputs
+########################
+
+# If callers don't pass public_subnet_ids, fall back to tag discovery.
+data "aws_subnets" "public" {
+  filter {
+    name   = "tag:Project"
+    values = [var.project]
+  }
+  filter {
+    name   = "tag:Environment"
+    values = [var.environment]
+  }
+  filter {
+    name   = "tag:Tier"
+    values = ["public"]
+  }
+}
+
+locals {
+  effective_public_subnet_ids = length(var.public_subnet_ids) > 0 ? var.public_subnet_ids : data.aws_subnets.public.ids
+}
+
+########################
 # Load Balancer
 ########################
 
@@ -134,7 +158,7 @@ resource "aws_lb" "api" {
   internal                   = false
   ip_address_type            = "dualstack"
   security_groups            = [aws_security_group.alb.id]
-  subnets                    = var.public_subnet_ids
+  subnets                    = local.effective_public_subnet_ids
   idle_timeout               = 60
   enable_deletion_protection = true
   drop_invalid_header_fields = true

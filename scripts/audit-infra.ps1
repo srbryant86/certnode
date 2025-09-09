@@ -2,7 +2,8 @@
 $ErrorActionPreference = 'Stop'
 Set-Location (git rev-parse --show-toplevel) 2>$null
 
-$tfDir   = "infra/aws/terraform"
+$repoRoot = (git rev-parse --show-toplevel)
+$tfDir    = Join-Path $repoRoot "infra/aws/terraform"
 $opaDir  = "tools/policy/opa"
 $work    = "tools/.audit"
 $planOut = Join-Path $work "tf.plan"
@@ -31,9 +32,12 @@ if($missing.Count){
 
 # ---------- Fmt & validate ----------
 Write-Host "`n== terraform fmt/validate =="
-terraform -chdir=$tfDir fmt -recursive | Out-Null
-$validate = terraform -chdir=$tfDir validate 2>&1
-if($LASTEXITCODE -eq 0){
+Push-Location $tfDir
+terraform fmt -recursive | Out-Null
+$validate = terraform validate 2>&1
+$tfExit = $LASTEXITCODE
+Pop-Location
+if($tfExit -eq 0){
   Write-Host "[OK ] terraform validate" -ForegroundColor Green
 }else{
   Write-Host "[FAIL] terraform validate" -ForegroundColor Red
@@ -126,12 +130,14 @@ if(Have "aws"){
 
 if($canPlan){
   Write-Host "`n== terraform plan (read-only) =="
-  terraform -chdir=$tfDir init -backend=false -upgrade | Out-Null
-  terraform -chdir=$tfDir plan -out=$planOut -input=false 2>&1 | Tee-Object -Variable planOutRaw | Out-Null
+  Push-Location $tfDir
+  terraform init -backend=false -upgrade | Out-Null
+  terraform plan -out=$planOut -input=false 2>&1 | Tee-Object -Variable planOutRaw | Out-Null
+  $planExit = $LASTEXITCODE
   if($LASTEXITCODE -ne 0){
     Write-Host "[WARN] plan returned non-zero; policies skipped. Review output above." -ForegroundColor Yellow
   } else {
-    terraform -chdir=$tfDir show -json $planOut | Set-Content -Encoding UTF8 $planJSON
+    terraform show -json $planOut | Set-Content -Encoding UTF8 $planJSON
     if(Have "conftest"){
       Write-Host "== conftest (OPA) on plan.json =="
       conftest test $planJSON -p $opaDir 2>&1 | Tee-Object -Variable opaOut | Out-Null
@@ -139,6 +145,7 @@ if($canPlan){
       else { Write-Host "[FAIL] OPA policy violations (see above)" -ForegroundColor Red }
     }
   }
+  Pop-Location
 }
 
 Write-Host "`n== Summary =="

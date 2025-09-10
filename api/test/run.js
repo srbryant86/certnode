@@ -31,3 +31,27 @@ const { createHash } = require('crypto');
   console.log('All tests passed');
 })().catch((e) => { console.error(e); process.exit(1); });
 
+
+const { verifyDetached } = require("../src/routes/verify");
+const signer = require("../src/crypto/signer");
+const { jwkThumbprint } = require("../src/util/kid");
+
+(async () => {
+  await signer.ready();
+  const pub = signer.getPublicJwk();
+  const kid = jwkThumbprint(pub);
+  const jwks = { keys: [{ kty:'EC', crv:'P-256', x:pub.x, y:pub.y, kid }] };
+
+  const payload = { demo: true, n: 7 };
+  const signed = await require("../src/routes/sign").signPayload(payload, {});
+
+  const ok1 = verifyDetached({ payload, protected: signed.protected, signature: signed.signature }, { jwks });
+  require("assert").strictEqual(ok1.valid, true, "verify should be valid");
+  require("assert").ok(ok1.payload_jcs_sha256 && typeof ok1.payload_jcs_sha256 === "string");
+
+  const bad = { demo: true, n: 8 };
+  const ok2 = verifyDetached({ payload: bad, protected: signed.protected, signature: signed.signature }, { jwks });
+  require("assert").strictEqual(ok2.valid, false, "tampered payload must fail verify");
+
+  console.log("a3 verify tests passed");
+})();

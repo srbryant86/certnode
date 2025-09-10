@@ -1,4 +1,4 @@
-const http = require('http');
+﻿const http = require('http');
 const { handle: signHandler } = require('./routes/sign');
 
 const port = process.env.PORT || 3000;
@@ -17,4 +17,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(port, () => console.log('Server on', port));
+
 

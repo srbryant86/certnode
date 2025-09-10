@@ -1,41 +1,32 @@
 ﻿const assert = require("assert");
-const http = require("http");
-const { applyRateLimit } = require("../src/plugins/ratelimit");
+const { Readable } = require("stream");
+const { createRateLimiter } = require("../src/plugins/ratelimit");
 
-function mockReq(path, ip = "1.2.3.4"){
-  const req = new http.IncomingMessage();
-  req.url = path;
-  req.method = "POST";
-  req.headers = { host: "localhost", "x-forwarded-for": ip };
-  req.socket = { remoteAddress: ip };
-  return req;
-}
-function mockRes(){
-  const headers = {};
-  return {
-    statusCode: 200,
-    setHeader: (k,v) => { headers[String(k).toLowerCase()] = v; },
-    getHeader: (k) => headers[String(k).toLowerCase()],
-    end: () => {},
-    _h: headers
-  };
+function mkReq(ip="1.2.3.4"){
+  const r = new Readable({ read(){} });
+  r.push(null);
+  r.headers = { "x-forwarded-for": ip };
+  r.socket = { remoteAddress: ip };
+  return r;
 }
 
-(function run(){
-  const path = "/v1/sign";
-  const ip = "9.9.9.9";
-  const res = mockRes();
+(async () => {
+  const max = 10, windowMs = 1000; // 10 req / 1s
+  const limiter = createRateLimiter({ max, windowMs });
 
-  process.env.RATE_LIMIT_CAPACITY = "3";
-  process.env.RATE_LIMIT_REFILL_PER_SEC = "0";
-  process.env.RATE_LIMIT_COST_SIGN = "1";
-
-  for (let i=0;i<3;i++){
-    const out = applyRateLimit(mockReq(path, ip), res);
-    assert.strictEqual(out.limited, false, "request should pass");
+  for (let i=0;i<max;i++){
+    const gate = limiter.allow(mkReq());
+    assert.ok(gate.ok, "should allow within capacity");
   }
-  const lim = applyRateLimit(mockReq(path, ip), res);
-  assert.strictEqual(lim.limited, true, "should rate-limit");
-  assert.ok(lim.retry >= 1, "retry-after present");
-  console.log("ratelimit test passed");
-})();
+  const denied = limiter.allow(mkReq());
+  assert.ok(!denied.ok, "should deny after capacity");
+  assert.ok(denied.retryAfterMs > 0, "retryAfterMs should be positive");
+
+  const other = limiter.allow(mkReq("5.6.7.8"));
+  assert.ok(other.ok, "separate bucket per IP");
+
+  await new Promise(r => setTimeout(r, windowMs + 20));
+  const again = limiter.allow(mkReq());
+  assert.ok(again.ok, "refilled should allow");
+  console.log("ratelimit tests passed");
+})().catch((e)=>{ console.error(e); process.exit(1); });

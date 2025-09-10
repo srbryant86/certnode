@@ -14,7 +14,7 @@
     .hero{padding:28px; border:1px solid var(--line); background:linear-gradient(180deg,#11131b, #0d0f17)}
     h1{margin:0 0 10px 0; font-size:28px; letter-spacing:0.2px}
     .tag{display:inline-block; font-size:12px; letter-spacing:.6px; text-transform:uppercase; color:#8aa0ff; background:#12162a; border:1px solid #243066; padding:4px 8px; border-radius:999px}
-    .grid{display:grid; gap:18px; grid-template-columns:1fr} 
+    .grid{display:grid; gap:18px; grid-template-columns:1fr}
     @media(min-width:880px){ .grid{grid-template-columns:1fr 1fr} }
     section{border:1px solid var(--line); background:var(--panel); padding:20px}
     h2{margin:0 0 8px 0; font-size:18px}
@@ -32,6 +32,10 @@
     .codebox{border:1px dashed #2a2c3b; background:#0f1117; padding:12px; overflow:auto}
     .ok{color:#8cffc9}
     .warn{color:#ffd18a}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    input[type="text"], textarea{width:100%; background:#0f1117; border:1px solid #2a2c3b; color:var(--ink); padding:8px 10px; border-radius:6px}
+    textarea{min-height:120px}
+    small.mono{display:block; margin-top:6px; color:#9aa3b2}
   </style>
 </head>
 <body>
@@ -105,12 +109,172 @@
         <li><strong>JWS</strong>  the receipt format (the signed bundle).</li>
         <li><strong>JWKS</strong>  our public key list (to verify receipts).</li>
         <li><strong>KMS</strong>  AWSs key vault; private keys never leave it.</li>
-        <li><strong>JCS / RFC 8785</strong>  a strict JSON format so 1,2,3 is always written the same before signing.</li>
-        <li><strong>RFC 3161 timestamp</strong>  a third-party notary time stamp (optional).</li>
+        <li><strong>JCS / RFC 8785</strong>  a strict JSON format so <code>1,2,3</code> is always written the same before signing.</li>
+        <li><strong>RFC 3161 timestamp</strong>  a third-party notary timestamp (optional).</li>
         <li><strong>Merkle proof</strong>  shows your item is in a daily log without revealing other items (optional).</li>
       </ul>
       <p class="muted">Translation: a standard signature, a standard receipt, and a public key list so anyone can check later.</p>
     </section>
 
     <section id="demo">
-      <h2>Try it in 60 seconds 
+      <h2>Try it in 60 seconds</h2>
+      <p class="muted">This in-browser demo uses an <em>ephemeral</em> P-256 key (for illustration only). In production, CertNode signs inside AWS KMS and serves public keys via CloudFront.</p>
+
+      <div class="row" style="margin:8px 0">
+        <button class="btn" id="genKey">1) Generate key</button>
+        <button class="btn" id="signBtn" disabled>2) Sign payload</button>
+        <button class="btn" id="verifyBtn" disabled>3) Verify</button>
+        <button class="btn" id="mutateBtn" disabled>Mutate payload</button>
+      </div>
+
+      <label class="muted">Payload (JSON)</label>
+      <textarea id="payloadBox" class="mono">{"hello":"world","n":42}</textarea>
+
+      <div style="margin-top:10px" class="grid">
+        <section>
+          <h3>Receipt (detached JWS parts)</h3>
+          <div class="codebox mono" id="receiptBox"></div>
+          <small class="mono">payload_jcs_sha256: <span id="plHash"></span></small>
+          <small class="mono">receipt_id: <span id="rid"></span></small>
+        </section>
+        <section>
+          <h3>Status</h3>
+          <div class="codebox mono" id="statusBox">Waiting</div>
+        </section>
+      </div>
+    </section>
+
+    <p class="foot"> CertNode  This is a developer preview page. Production verification uses our edge-hosted JWKS with rotation.</p>
+  </div>
+
+<script>
+/* Minimal helpers: base64url, JCS, RFC7638 thumbprint, WebCrypto ES256 demo */
+const b64u = (buf) => {
+  const b64 = (buf instanceof ArrayBuffer ? Buffer.from(buf) : Buffer.from(buf))
+    .toString('base64').replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  return b64;
+};
+
+function isObj(v){ return v && typeof v==='object' && !Array.isArray(v); }
+function jcsStringify(v){
+  if (v === null || typeof v === 'number' || typeof v === 'boolean' || typeof v === 'string') return JSON.stringify(v);
+  if (Array.isArray(v)) return '['+v.map(jcsStringify).join(',')+']';
+  if (isObj(v)) {
+    const keys = Object.keys(v).filter(k => typeof v[k] !== 'undefined').sort();
+    return '{'+keys.map(k => JSON.stringify(k)+':'+jcsStringify(v[k])).join(',')+'}';
+  }
+  return JSON.stringify(v);
+}
+function jcsBytes(v){ return new TextEncoder().encode(jcsStringify(v)); }
+
+async function sha256(buf){
+  return new Uint8Array(await crypto.subtle.digest('SHA-256', buf));
+}
+
+function jwkThumbprint(jwk){
+  if (!jwk || jwk.kty!=='EC' || jwk.crv!=='P-256') throw new Error('Thumbprint needs EC P-256');
+  const json = JSON.stringify({crv:jwk.crv,kty:jwk.kty,x:jwk.x,y:jwk.y});
+  return b64u(sha256(new TextEncoder().encode(json)));
+}
+
+// DER -> JOSE (r||s), very small parser for P-256
+function derToJose(derBuf){
+  const der = new Uint8Array(derBuf);
+  let i=0; if(der[i++]!==0x30) throw Error('DER: no seq'); i++; // len (assume <128)
+  if(der[i++]!==0x02) throw Error('DER: no int r'); let rLen=der[i++]; let r=der.slice(i,i+rLen); i+=rLen;
+  if(der[i++]!==0x02) throw Error('DER: no int s'); let sLen=der[i++]; let s=der.slice(i,i+sLen);
+  if(r[0]===0x00 && r.length>32) r=r.slice(1); if(s[0]===0x00 && s.length>32) s=s.slice(1);
+  if(r.length>32||s.length>32) throw Error('r/s too long');
+  const pad = (a)=>{ const out=new Uint8Array(32); out.set(a, 32-a.length); return out; };
+  const out = new Uint8Array(64); out.set(pad(r),0); out.set(pad(s),32); return out;
+}
+
+const state = { keyPair:null, pubJwk:null };
+
+const $ = (id)=>document.getElementById(id);
+const ui = {
+  payload: $('payloadBox'), genKey:$('genKey'), sign:$('signBtn'), verify:$('verifyBtn'), mutate:$('mutateBtn'),
+  receipt:$('receiptBox'), status:$('statusBox'), plHash:$('plHash'), rid:$('rid')
+};
+
+ui.genKey.onclick = async () => {
+  ui.status.textContent = 'Generating P-256 key';
+  state.keyPair = await crypto.subtle.generateKey({name:'ECDSA', namedCurve:'P-256'}, true, ['sign','verify']);
+  state.pubJwk = await crypto.subtle.exportKey('jwk', state.keyPair.publicKey);
+  ui.genKey.disabled = true; ui.sign.disabled = false; ui.status.textContent = 'Key ready.';
+};
+
+ui.sign.onclick = async () => {
+  try {
+    const payload = JSON.parse(ui.payload.value);
+    const jcs = jcsBytes(payload);
+    const payloadB64 = b64u(jcs);
+    const plHash = b64u(await sha256(jcs));
+    ui.plHash.textContent = plHash;
+
+    const kid = (await jwkThumbprint(state.pubJwk));
+    const protectedHeader = { alg:'ES256', kid };
+    const protectedB64 = b64u(new TextEncoder().encode(JSON.stringify(protectedHeader)));
+    const signingInput = new TextEncoder().encode(`${protectedB64}.${payloadB64}`);
+
+    const der = await crypto.subtle.sign({name:'ECDSA', hash:'SHA-256'}, state.keyPair.privateKey, signingInput);
+    const joseSig = b64u(derToJose(der));
+    const rid = b64u(await sha256(new TextEncoder().encode(`${protectedB64}.${payloadB64}.${joseSig}`)));
+    ui.rid.textContent = rid;
+
+    ui.receipt.textContent = JSON.stringify({
+      protected: protectedB64, signature: joseSig, kid, payload
+    }, null, 2);
+
+    ui.verify.disabled = false; ui.mutate.disabled = false;
+    ui.status.innerHTML = '<span class="ok">Signed  try Verify, then tweak the payload.</span>';
+  } catch (e) {
+    ui.status.innerHTML = '<span class="warn">Error: '+(e.message||e)+'</span>';
+  }
+};
+
+ui.verify.onclick = async () => {
+  try {
+    const r = JSON.parse(ui.receipt.textContent);
+    const jcs = jcsBytes(r.payload);
+    const payloadB64 = b64u(jcs);
+    const protectedB64 = r.protected;
+    const signingInput = new TextEncoder().encode(`${protectedB64}.${payloadB64}`);
+
+    // import public key from current ephemeral JWK
+    const pubKey = await crypto.subtle.importKey('jwk', state.pubJwk, {name:'ECDSA', namedCurve:'P-256'}, true, ['verify']);
+
+    // Convert JOSE sig back to DER for verify: small helper
+    function joseToDer(joseB64){
+      const sig = Buffer.from(joseB64.replace(/-/g,'+').replace(/_/g,'/'),'base64');
+      const r = sig.subarray(0,32); const s = sig.subarray(32,64);
+      function strip(b){ let i=0; while(i<b.length-1 && b[i]===0) i++; return b.subarray(i); }
+      const rS=strip(r), sS=strip(s);
+      const mk = (v)=> v[0]&0x80 ? Buffer.concat([Buffer.from([0]),v]) : v;
+      const R=mk(rS), S=mk(sS);
+      const der = Buffer.concat([Buffer.from([0x30, 4+R.length+S.length, 0x02, R.length]), R, Buffer.from([0x02, S.length]), S]);
+      return der;
+    }
+
+    const derSig = joseToDer(r.signature);
+    const ok = await crypto.subtle.verify({name:'ECDSA', hash:'SHA-256'}, pubKey, derSig, signingInput);
+    ui.status.innerHTML = ok ? '<span class="ok">RECEIPT OK  signature matches payload</span>'
+                             : '<span class="warn">RECEIPT MISMATCH  payload or receipt changed</span>';
+  } catch (e) {
+    ui.status.innerHTML = '<span class="warn">Verify error: '+(e.message||e)+'</span>';
+  }
+};
+
+ui.mutate.onclick = () => {
+  try {
+    const obj = JSON.parse(ui.payload.value);
+    obj._touched = (obj._touched||0)+1;
+    ui.payload.value = JSON.stringify(obj, null, 2);
+    ui.status.innerHTML = '<span class="warn">Payload changed  verify should now fail.</span>';
+  } catch(e) {
+    ui.status.innerHTML = '<span class="warn">Cant mutate: invalid JSON.</span>';
+  }
+};
+</script>
+</body>
+</html>

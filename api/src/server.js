@@ -1,9 +1,11 @@
 ﻿const http = require('http');
+const { checkRate } = require('./plugins/ratelimit');
 const { handle: signHandler } = require('./routes/sign');
 
 const port = process.env.PORT || 3000;
 
 const server = http.createServer(async (req, res) => {
+  if (checkRate(req, res)) { return; }
   const url = new URL(req.url, `http://${req.headers.host}`);
   if (req.method === 'GET' && (url.pathname === '/health' || url.pathname === '/v1/health')) {
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -17,5 +19,6 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(port, () => console.log('Server on', port));
+
 
 

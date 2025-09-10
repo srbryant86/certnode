@@ -1,13 +1,17 @@
-{
-  "name": "certnode-api",
-  "version": "0.1.0",
-  "private": true,
-  "type": "commonjs",
-  "scripts": {
-    "start": "node src/index.js",
-    "test": "node api/test/run-all.js",
-    "smoke": "node src/index.js & sleep 1 && bash scripts/smoke.sh"
-  },
-  "dependencies": {},
-  "devDependencies": {}
+﻿{
+    "name":  "certnode-api",
+    "version":  "0.1.0",
+    "private":  true,
+    "type":  "commonjs",
+    "scripts":  {
+                    "start":  "node src/index.js",
+                    "test":  "node api/test/run-all.js",
+                    "smoke":  "node src/index.js \u0026 sleep 1 \u0026\u0026 bash scripts/smoke.sh"
+                },
+    "dependencies":  {
+                         "@aws-sdk/client-kms":  "^3.626.0"
+                     },
+    "devDependencies":  {
+
+                        }
 }

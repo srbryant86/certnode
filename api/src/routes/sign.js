@@ -1,25 +1,9 @@
-const { createHash, createSign, generateKeyPairSync } = require('crypto');
-const derToJose = require('../util/derToJose');
+﻿const { createHash } = require('crypto');
+const signer = require('../crypto/signer');
+
 const { canonicalize } = require('../util/jcs');
-const { jwkThumbprint, b64u } = require('../util/kid');
+const { b64u } = require('../util/kid');
 const timestamp = require('../util/timestamp');
-
-let signerKeyPair;
-function getKeyPair() {
-  if (signerKeyPair) return signerKeyPair;
-  const { privateKey, publicKey } = generateKeyPairSync('ec', { namedCurve: 'P-256' });
-  signerKeyPair = { privateKey, publicKey };
-  return signerKeyPair;
-}
-
-function publicJwk() {
-  const { publicKey } = getKeyPair();
-  const spki = publicKey.export({ type: 'spki', format: 'der' });
-  const uncompressed = spki.slice(-65);
-  const x = uncompressed.slice(1, 33);
-  const y = uncompressed.slice(33, 65);
-  return { kty: 'EC', crv: 'P-256', x: b64u(x), y: b64u(y) };
-}
 
 function sha256(buf) { return createHash('sha256').update(buf).digest(); }
 
@@ -27,20 +11,16 @@ async function signPayload(payload, headers = {}) {
   if (headers.alg && headers.alg !== 'ES256') {
     const err = new Error('Unsupported alg'); err.statusCode = 400; throw err;
   }
+  await signer.ready();
   const jcsBytes = canonicalize(payload);
   const payloadB64 = b64u(jcsBytes);
   const payload_jcs_sha256 = b64u(sha256(jcsBytes));
 
-  const jwk = publicJwk();
-  const kid = headers.kid || jwkThumbprint(jwk);
+  const kid = headers.kid || signer.getKid();
   const protectedHeader = { alg: 'ES256', kid };
   const protectedB64 = b64u(Buffer.from(JSON.stringify(protectedHeader), 'utf8'));
-  const signingInput = Buffer.from(protectedB64 + '.' + payloadB64, 'utf8');
 
-  const { privateKey } = getKeyPair();
-  const derSig = createSign('SHA256').update(signingInput).sign({ key: privateKey, dsaEncoding: 'der' });
-  const joseSig = derToJose(derSig);
-  const signature = b64u(joseSig);
+  const { signature } = await signer.signDetached(protectedB64, payloadB64);
 
   const receipt_id = b64u(sha256(Buffer.from(protectedB64 + '.' + payloadB64 + '.' + signature, 'utf8')));
 
@@ -79,4 +59,3 @@ async function handle(req, res) {
 }
 
 module.exports = { signPayload, handle };
-

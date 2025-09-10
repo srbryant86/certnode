@@ -5,7 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "start": "node src/index.js",
-    "test": "node api/test/run.js",
+    "test": "node api/test/run-all.js",
     "smoke": "node src/index.js & sleep 1 && bash scripts/smoke.sh"
   },
   "dependencies": {},

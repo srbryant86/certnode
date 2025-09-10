@@ -1,63 +1,63 @@
-/* File: api/src/crypto/signer.js
-   - KMS mode (KMS_KEY_ID present): RAW ECDSA P-256 via AWS KMS
-   - Local fallback: ephemeral P-256 keypair (dev/CI)
+﻿/* File: api/src/crypto/signer.js
+   Single signing surface:
+   - SIGNING_MODE=kms  => AWS KMS RAW ECDSA_SHA_256 via adapter (retries + breaker)
+     KMS_KEY_ID required
+   - else              => local in-memory P-256 for dev/tests
 */
-const { createPublicKey, createSign, generateKeyPairSync } = require('crypto');
-const { KMSClient, GetPublicKeyCommand, SignCommand } = (function tryAws() {
-  try { return require('@aws-sdk/client-kms'); } catch { return {}; }
-})();
+const { generateKeyPairSync, createPublicKey, createSign } = require('crypto');
+const { createKmsAdapter } = require('../aws/kms');
 const derToJose = require('../util/derToJose');
 const { jwkThumbprint, b64u } = require('../util/kid');
 
-const KMS_KEY_ID = process.env.KMS_KEY_ID || process.env.AWS_KMS_KEY_ID || null;
-const AWS_REGION = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || 'us-east-1';
+const mode = String(process.env.SIGNING_MODE || 'local').toLowerCase();
+const kmsKeyId = process.env.KMS_KEY_ID;
 
-let mode = 'local';
-let cachedJwk = null, cachedKid = null, kms = null;
-let local = null;
+let _ready = false;
+let _pubJwk = null;
+let _kid = null;
+let _privLocal = null;
+let _kmsAdapter = null;
 
-async function ready() {
-  if (cachedJwk) return;
-  if (KMS_KEY_ID && KMSClient && GetPublicKeyCommand && SignCommand) {
-    try {
-      kms = new KMSClient({ region: AWS_REGION });
-      const out = await kms.send(new GetPublicKeyCommand({ KeyId: KMS_KEY_ID }));
-      if (!out || !out.PublicKey) throw new Error('KMS GetPublicKey returned no data');
-      const spkiDer = Buffer.from(out.PublicKey);
-      const keyObj = createPublicKey({ key: spkiDer, format: 'der', type: 'spki' });
-      const jwk = keyObj.export({ format: 'jwk' });
-      if (jwk.kty !== 'EC' || jwk.crv !== 'P-256') throw new Error('KMS key must be EC P-256');
-      cachedJwk = { kty: 'EC', crv: 'P-256', x: jwk.x, y: jwk.y };
-      cachedKid = jwkThumbprint(cachedJwk);
-      mode = 'kms';
-      return;
-    } catch {
-      mode = 'local';
-    }
-  }
+async function initLocal() {
   const { privateKey, publicKey } = generateKeyPairSync('ec', { namedCurve: 'P-256' });
-  const jwk = publicKey.export({ format: 'jwk' });
-  cachedJwk = { kty: 'EC', crv: 'P-256', x: jwk.x, y: jwk.y };
-  cachedKid = jwkThumbprint(cachedJwk);
-  local = { privateKey };
+  _privLocal = privateKey;
+  const jwk = publicKey.export({ format:'jwk' });
+  _pubJwk = { kty:'EC', crv:'P-256', x:jwk.x, y:jwk.y };
+  _kid = jwkThumbprint(_pubJwk);
+  _ready = true;
 }
 
-function getPublicJwk(){ if(!cachedJwk) throw new Error('signer not ready'); return cachedJwk; }
-function getKid(){ if(!cachedKid) throw new Error('signer not ready'); return cachedKid; }
+async function initKms() {
+  if (!kmsKeyId) throw new Error('KMS_KEY_ID not set but SIGNING_MODE=kms');
+  const sdk = require('@aws-sdk/client-kms');
+  _kmsAdapter = createKmsAdapter({ sdk, keyId: kmsKeyId });
+  _pubJwk = await _kmsAdapter.getPublicJwk();
+  _kid = _kmsAdapter.getKid();
+  _ready = true;
+}
 
-async function signDetached(protectedB64, payloadB64){
-  if (!cachedKid) await ready();
-  const signingInput = Buffer.from(`${protectedB64}.${payloadB64}`, 'utf8');
+async function ready(){
+  if (_ready) return;
+  if (mode === 'kms') { await initKms(); } else { await initLocal(); }
+}
+function getPublicJwk(){ if(!_ready) throw new Error('signer not ready'); return _pubJwk; }
+function getKid(){ if(!_ready) throw new Error('signer not ready'); return _kid; }
+
+async function signP1363(messageBuffer){
+  if (!_ready) throw new Error('signer not ready');
   if (mode === 'kms') {
-    const res = await kms.send(new SignCommand({
-      KeyId: KMS_KEY_ID, Message: signingInput, MessageType: 'RAW', SigningAlgorithm: 'ECDSA_SHA_256'
-    }));
-    const jose = derToJose(Buffer.from(res.Signature));
-    return { signature: b64u(jose), kid: getKid() };
+    return _kmsAdapter.signRaw(messageBuffer);
+  } else {
+    const der = createSign('SHA256').update(messageBuffer).sign({ key: _privLocal, dsaEncoding: 'der' });
+    return derToJose(der);
   }
-  const der = createSign('SHA256').update(signingInput).sign({ key: local.privateKey, dsaEncoding: 'der' });
-  const jose = derToJose(der);
-  return { signature: b64u(jose), kid: getKid() };
 }
 
-module.exports = { ready, signDetached, getPublicJwk, getKid };
+// Back-compat: signDetached(protectedB64, payloadB64) -> { signature, kid }
+async function signDetached(protectedB64, payloadB64){
+  const sigBuf = await signP1363(Buffer.from(`${protectedB64}.${payloadB64}`, 'utf8'));
+  return { signature: b64u(sigBuf), kid: getKid() };
+}
+
+module.exports = { ready, getPublicJwk, getKid, signP1363, signDetached };
+

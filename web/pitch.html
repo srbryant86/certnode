@@ -1,0 +1,116 @@
+<!-- File: web/pitch.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>CertNode  Receipts for Digital Truth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="CertNode gives digital data a tamper-evident receipt you can verify offline."/>
+  <style>
+    :root { --bg:#0b0c10; --panel:#111218; --ink:#e6e7ee; --muted:#a9abbb; --accent:#7dd3fc; --line:#202231; }
+    html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,Cantarell,"Helvetica Neue","Noto Sans",Arial,sans-serif}
+    a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:980px;margin:0 auto;padding:32px 20px}
+    .hero{padding:28px; border:1px solid var(--line); background:linear-gradient(180deg,#11131b, #0d0f17)}
+    h1{margin:0 0 10px 0; font-size:28px; letter-spacing:0.2px}
+    .tag{display:inline-block; font-size:12px; letter-spacing:.6px; text-transform:uppercase; color:#8aa0ff; background:#12162a; border:1px solid #243066; padding:4px 8px; border-radius:999px}
+    .grid{display:grid; gap:18px; grid-template-columns:1fr} 
+    @media(min-width:880px){ .grid{grid-template-columns:1fr 1fr} }
+    section{border:1px solid var(--line); background:var(--panel); padding:20px}
+    h2{margin:0 0 8px 0; font-size:18px}
+    h3{margin:12px 0 6px 0; font-size:15px; color:#bfc2d8}
+    ul{margin:8px 0 0 18px; padding:0}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace,SFMono-Regular,Consolas,Monaco,Menlo,monospace; font-size:13px}
+    .pill{display:inline-block; padding:2px 8px; border-radius:999px; border:1px solid var(--line); background:#0f111a}
+    .faq q{quotes:"" "" "" ""} .faq q:before{content:open-quote} .faq q:after{content:close-quote}
+    .cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px}
+    .btn{display:inline-block; border:1px solid #284469; background:#0f1a28; color:#cfe7ff; padding:10px 14px; border-radius:8px}
+    .btn:hover{background:#112036}
+    .kbd{border:1px solid var(--line); background:#0e1017; padding:1px 6px; border-radius:6px}
+    .foot{margin-top:24px; color:var(--muted); font-size:13px}
+    .codebox{border:1px dashed #2a2c3b; background:#0f1117; padding:12px; overflow:auto}
+    .ok{color:#8cffc9}
+    .warn{color:#ffd18a}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="hero">
+      <div class="tag">CertNode</div>
+      <h1>Receipts for Digital Truth</h1>
+      <p class="muted">CertNode gives any JSON or document a <strong>tamper-evident receipt</strong>. If someone edits it later, the receipt wont match  anyone can verify that offline in seconds.</p>
+      <div class="cta">
+        <a class="btn" href="#demo">Try a 60-second demo</a>
+        <a class="btn" href="#scripts">How to explain it</a>
+        <a class="btn" href="#decoder">Acronyms, in plain English</a>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:18px">
+      <section>
+        <h2>10 seconds</h2>
+        <p><strong>CertNode puts a tamper-evident receipt on digital stuff.</strong> If it changes, the receipt breaks.</p>
+      </section>
+      <section>
+        <h2>30 seconds</h2>
+        <p>Online files and API payloads are easy to tweak. CertNode stamps the exact bytes with a receipt and publishes public keys. Later, anyone can check <em>offline</em> that its the same version that was issued.</p>
+      </section>
+    </div>
+
+    <section>
+      <h2>Two-minute story</h2>
+      <h3>Problem</h3>
+      <ul>
+        <li>AI text, invoices, API results  <em>easy to edit</em> without leaving a trace.</li>
+        <li>Disputes, audits, and who changed this? slow teams down.</li>
+      </ul>
+      <h3>What CertNode does</h3>
+      <ul>
+        <li>Signs the data and returns a <span class="pill">receipt</span> that only matches that exact version.</li>
+        <li>Publishes <span class="pill">public keys</span> so anyone can verify without calling us.</li>
+      </ul>
+      <h3>Why it matters</h3>
+      <ul>
+        <li>Prove <strong>nothing changed</strong> to bosses, customers, or regulators.</li>
+        <li>Fast, cheap insurance against messy disputes.</li>
+      </ul>
+    </section>
+
+    <div class="grid">
+      <section>
+        <h2>Everyday uses</h2>
+        <ul>
+          <li><strong>Invoices / payouts:</strong> We paid these exact numbers.</li>
+          <li><strong>Webhooks / APIs:</strong> This payload wasnt altered in transit.</li>
+          <li><strong>Policies / PDFs:</strong> This is the exact version we published.</li>
+          <li><strong>AI outputs:</strong> This is the approved result, unchanged.</li>
+        </ul>
+      </section>
+      <section id="scripts">
+        <h2>How to say it</h2>
+        <ul>
+          <li><strong>One-liner:</strong> Its a <em>receipt for data integrity</em>  change the data and the receipt breaks.</li>
+          <li><strong>Analogy:</strong> Like a tamper-evident sticker on a box  but for files.</li>
+          <li><strong>Skeptic:</strong> You dont have to trust us  verification works offline with our public keys.</li>
+        </ul>
+      </section>
+    </div>
+
+    <section id="decoder">
+      <h2>Acronyms, decoded</h2>
+      <ul>
+        <li><strong>ES256</strong>  a modern digital signature (fast, standard).</li>
+        <li><strong>JWS</strong>  the receipt format (the signed bundle).</li>
+        <li><strong>JWKS</strong>  our public key list (to verify receipts).</li>
+        <li><strong>KMS</strong>  AWSs key vault; private keys never leave it.</li>
+        <li><strong>JCS / RFC 8785</strong>  a strict JSON format so 1,2,3 is always written the same before signing.</li>
+        <li><strong>RFC 3161 timestamp</strong>  a third-party notary time stamp (optional).</li>
+        <li><strong>Merkle proof</strong>  shows your item is in a daily log without revealing other items (optional).</li>
+      </ul>
+      <p class="muted">Translation: a standard signature, a standard receipt, and a public key list so anyone can check later.</p>
+    </section>
+
+    <section id="demo">
+      <h2>Try it in 60 seconds 

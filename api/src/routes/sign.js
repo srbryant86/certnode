@@ -4,6 +4,7 @@ const signer = require('../crypto/signer');
 const { canonicalize } = require('../util/jcs');
 const { b64u } = require('../util/kid');
 const timestamp = require('../util/timestamp');
+const { readJsonBody, validateSignRequest } = require('../plugins/validation');
 
 function sha256(buf) { return createHash('sha256').update(buf).digest(); }
 
@@ -40,22 +41,17 @@ async function handle(req, res) {
     res.writeHead(405, { 'Content-Type': 'application/json' });
     return res.end(JSON.stringify({ error: 'method_not_allowed' }));
   }
-  let body = '';
-  req.on('data', (c) => { body += c; });
-  req.on('end', async () => {
-    try {
-      const parsed = JSON.parse(body || '{}');
-      const { payload, headers } = parsed;
-      if (typeof payload === 'undefined') { res.writeHead(400, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify({ error: 'missing_payload' })); }
-      const out = await signPayload(payload, headers || {});
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(out));
-    } catch (e) {
-      const code = e.statusCode || 500;
-      res.writeHead(code, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: e.message || 'error' }));
-    }
-  });
+  try {
+    const raw = await readJsonBody(req);
+    const { payload, headers } = validateSignRequest(raw);
+    const out = await signPayload(payload, headers || {});
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(out));
+  } catch (e) {
+    const code = e.statusCode || 500;
+    res.writeHead(code, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: e.code || e.message || 'error' }));
+  }
 }
 
 module.exports = { signPayload, handle };

@@ -4,7 +4,7 @@ const signer = require('../crypto/signer');
 const { canonicalize } = require('../util/jcs');
 const { b64u } = require('../util/kid');
 const timestamp = require('../util/timestamp');
-const { readJsonBody, validateSignRequest } = require('../plugins/validation');
+const { readJsonBody, validateSignRequest, enforceCanonicalSizeOrThrow } = require('../plugins/validation');
 
 function sha256(buf) { return createHash('sha256').update(buf).digest(); }
 
@@ -44,7 +44,8 @@ async function handle(req, res) {
   try {
     const raw = await readJsonBody(req);
     const { payload, headers } = validateSignRequest(raw);
-    const out = await signPayload(payload, headers || {});
+    enforceCanonicalSizeOrThrow(payload);
+        const out = await signPayload(payload, headers || {});
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(out));
   } catch (e) {
@@ -55,3 +56,7 @@ async function handle(req, res) {
 }
 
 module.exports = { signPayload, handle };
+
+
+
+

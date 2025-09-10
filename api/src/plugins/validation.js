@@ -1,14 +1,14 @@
 ﻿/* File: api/src/plugins/validation.js
    Purpose: Defensive parsing + validation for /v1/sign
    - Enforces application/json
-   - Body size cap (default 256 KiB via SIGN_MAX_PAYLOAD_BYTES)
+   - Body size cap (default 256 KiB via API_MAX_BODY_BYTES || process.env.SIGN_MAX_PAYLOAD_BYTES)
    - Top-level shape: { payload: <object|string>, headers?: { kid?: string(b64url), tsr?: boolean } }
    - Rejects unknown top-level fields and unknown header fields
    - Provides helpers: readJsonBody(req, max), validateSignRequest(obj)
 */
 const { StringDecoder } = require("string_decoder");
 
-const DEFAULT_MAX = parseInt(process.env.SIGN_MAX_PAYLOAD_BYTES || "262144", 10); // 256 KiB
+const DEFAULT_MAX = parseInt(process.env.API_MAX_BODY_BYTES || process.env.SIGN_MAX_PAYLOAD_BYTES || "262144", 10); // 256 KiB
 
 function isObject(v){ return v !== null && typeof v === "object" && !Array.isArray(v); }
 function isB64u(str){ return typeof str === "string" && /^[A-Za-z0-9_-]+$/.test(str); }
@@ -79,3 +79,51 @@ function validateSignRequest(body){
 }
 
 module.exports = { readJsonBody, validateSignRequest, httpError, DEFAULT_MAX };
+
+
+// ---- Strict schema + canonical size helpers (a9)
+const { canonicalize } = require('../util/jcs');
+
+function limits(){
+  const bodyMax = toPosInt(process.env.API_MAX_BODY_BYTES, DEFAULT_MAX);
+  const canonMax = toPosInt(process.env.API_MAX_CANONICAL_BYTES, 262144);
+  return { bodyMax, canonMax };
+}
+function toPosInt(v, dflt){ const n = Number(v); return Number.isFinite(n) && n > 0 ? Math.floor(n) : dflt; }
+function isPlainObject(x){ return x !== null && typeof x === 'object' && !Array.isArray(x); }
+function hasOnlyKeys(obj, allowed){ return Object.keys(obj).every(k => allowed.includes(k)); }
+function bad(code, message){ const e = new Error(message || code); e.statusCode = code.endsWith('_too_large') ? 413 : 400; e.code = code; return e; }
+
+function validateHeadersStrict(headers){
+  if (headers === undefined) return {};
+  if (!isPlainObject(headers)) throw bad('invalid_request', 'headers must be an object');
+  const allowed = ['kid','tsr'];
+  if (!hasOnlyKeys(headers, allowed)) throw bad('invalid_request', 'unknown header field');
+  if (headers.kid !== undefined && typeof headers.kid !== 'string') throw bad('invalid_request', 'headers.kid must be a string');
+  if (headers.tsr !== undefined && typeof headers.tsr !== 'boolean') throw bad('invalid_request', 'headers.tsr must be a boolean');
+  return { kid: headers.kid, tsr: headers.tsr === true };
+}
+
+function validateParsed(body){
+  if (!isPlainObject(body)) throw bad('invalid_request', 'body must be a JSON object');
+  const allowed = ['payload','headers'];
+  if (!hasOnlyKeys(body, allowed)) throw bad('invalid_request', 'unknown top-level field');
+  if (!('payload' in body)) throw bad('missing_payload', 'payload is required');
+  const { payload } = body;
+  if (!(isPlainObject(payload) || typeof payload === 'string')) throw bad('invalid_request', 'payload must be an object or string');
+  const headers = validateHeadersStrict(body.headers);
+  return { payload, headers };
+}
+
+function enforceCanonicalSizeOrThrow(payload){
+  const { canonMax } = limits();
+  const jcsBytes = canonicalize(payload);
+  if (jcsBytes.byteLength > canonMax) throw bad('payload_too_large', `canonicalized payload exceeds ${canonMax} bytes`);
+  return jcsBytes;
+}
+
+module.exports.limits = limits;
+module.exports.isPlainObject = isPlainObject;
+module.exports.validateParsed = validateParsed;
+module.exports.enforceCanonicalSizeOrThrow = enforceCanonicalSizeOrThrow;
+module.exports.bad = bad;

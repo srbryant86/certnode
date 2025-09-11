@@ -6,7 +6,8 @@
     "scripts":  {
                     "start":  "node src/index.js",
                     "test":  "node test/run-all.js",
-                    "smoke":  "node src/index.js \u0026 sleep 1 \u0026\u0026 bash scripts/smoke.sh"
+                    "smoke":  "node src/index.js \u0026 sleep 1 \u0026\u0026 bash scripts/smoke.sh",
+                    "smoke:win": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smoke.ps1"
                 },
     "dependencies":  {
                          "@aws-sdk/client-kms":  "^3.626.0"

@@ -1,5 +1,8 @@
 const { execFileSync } = require('child_process');
 
+// Windows: pre-kill any stray node servers
+try{ execFileSync('taskkill', ['/IM', 'node.exe', '/F'], { stdio: 'ignore' }); }catch(_){}
+
 function run(cmd, args) {
   execFileSync(cmd, args, { stdio: 'inherit' });
 }
@@ -18,3 +21,6 @@ try {
 } catch (e) {
   process.exit(e.status || 1);
 }
+
+// Windows: post-kill any stray node servers
+try{ execFileSync('taskkill', ['/IM', 'node.exe', '/F'], { stdio: 'ignore' }); }catch(_){}

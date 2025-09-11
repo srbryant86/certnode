@@ -1,5 +1,6 @@
 ﻿const http = require("http");
 const { handle: signHandler } = require("./routes/sign");
+const { handle: jwksHandler } = require("./routes/jwks");
 const { createRateLimiter, toPosInt } = require("./plugins/ratelimit");
 
 const port = process.env.PORT || 3000;
@@ -32,6 +33,11 @@ const server = http.createServer(async (req, res) => {
       return res.end(JSON.stringify({ error: "rate_limited", retry_after_ms: gate.retryAfterMs }));
     }
     return signHandler(req, res);
+  }
+
+  // jwks (dev-only)
+  if (req.method === "GET" && (url.pathname === "/jwks" || url.pathname === "/.well-known/jwks.json")) {
+    return jwksHandler(req, res);
   }
 
   // 404

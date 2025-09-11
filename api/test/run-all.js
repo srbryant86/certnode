@@ -5,10 +5,14 @@ function run(cmd, args) {
 }
 
 try {
-  run('node', ['api/test/run.js']);
-  run('node', ['api/test/manifest.test.js']);
+  run('node', ['test/run.js']);
+  run('node', ['test/manifest.test.js']);
+  run('node', ['test/validation.test.js']);
+  run('node', ['test/validation.sign.test.js']);
+  run('node', ['test/ratelimit.test.js']);
+  run('node', ['test/ratelimit.unit.test.js']);
+  run('node', ['test/routes.jwks.test.js']);
   console.log('All tests completed');
 } catch (e) {
   process.exit(e.status || 1);
 }
-

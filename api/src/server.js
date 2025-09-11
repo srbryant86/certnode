@@ -2,15 +2,23 @@
 const { handle: signHandler } = require("./routes/sign");
 const { handle: jwksHandler } = require("./routes/jwks");
 const { createRateLimiter, toPosInt } = require("./plugins/ratelimit");
+const { createCorsMiddleware } = require("./plugins/cors");
 
 const port = process.env.PORT || 3000;
 const limiter = createRateLimiter({
   max:  toPosInt(process.env.API_RATE_LIMIT_MAX, 120),
   windowMs: toPosInt(process.env.API_RATE_LIMIT_WINDOW_MS, 60000)
 });
+const corsMiddleware = createCorsMiddleware();
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
+
+  // Apply CORS middleware first
+  const corsResult = corsMiddleware(req, res);
+  if (corsResult !== null) {
+    return; // CORS middleware handled the request (preflight or blocked)
+  }
 
   // health
   if (req.method === "GET" && (url.pathname === "/health" || url.pathname === "/v1/health")) {

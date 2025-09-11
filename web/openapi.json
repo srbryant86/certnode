@@ -1,0 +1,277 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CertNode API",
+    "version": "0.1.0",
+    "description": "Tamper-evident receipt service using detached JWS with ES256 and RFC 8785 JCS canonicalization",
+    "contact": {
+      "name": "CertNode",
+      "url": "https://certnode.io"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.certnode.io",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:3000",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "description": "Returns server health status",
+        "operationId": "getHealth",
+        "tags": ["Health"],
+        "responses": {
+          "200": {
+            "description": "Server is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  },
+                  "required": ["ok"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sign": {
+      "post": {
+        "summary": "Sign payload and return detached JWS (receipt)",
+        "description": "Creates a tamper-evident receipt for the provided payload using ES256 signature with RFC 8785 JCS canonicalization",
+        "operationId": "signPayload",
+        "tags": ["Signing"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "payload": {
+                    "description": "JSON payload to sign (will be canonicalized using RFC 8785 JCS)"
+                  },
+                  "headers": {
+                    "type": "object",
+                    "description": "Optional signing headers",
+                    "properties": {
+                      "kid": {
+                        "$ref": "#/components/schemas/JwkThumbprint",
+                        "description": "RFC7638 JWK thumbprint (optional; computed if absent)"
+                      },
+                      "tsr": {
+                        "type": "boolean",
+                        "description": "Request RFC3161 timestamp token (optional)",
+                        "example": true
+                      }
+                    }
+                  }
+                },
+                "required": ["payload"]
+              },
+              "examples": {
+                "basic": {
+                  "summary": "Basic payload signing",
+                  "value": {
+                    "payload": {
+                      "hello": "world"
+                    }
+                  }
+                },
+                "withHeaders": {
+                  "summary": "Signing with optional headers",
+                  "value": {
+                    "payload": {
+                      "document": "contract_v1.2",
+                      "timestamp": "2024-01-01T00:00:00Z"
+                    },
+                    "headers": {
+                      "tsr": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created tamper-evident receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "protected": {
+                      "$ref": "#/components/schemas/Base64Url",
+                      "description": "Base64url encoded JWS protected header containing alg and kid"
+                    },
+                    "signature": {
+                      "$ref": "#/components/schemas/Base64Url",
+                      "description": "Base64url encoded ES256 signature in JOSE format (r||s)"
+                    },
+                    "payload": {
+                      "description": "Original payload (unchanged)"
+                    },
+                    "kid": {
+                      "$ref": "#/components/schemas/JwkThumbprint",
+                      "description": "RFC7638 JWK thumbprint used for signing"
+                    },
+                    "payload_jcs_sha256": {
+                      "$ref": "#/components/schemas/Base64Url",
+                      "description": "Base64url encoded SHA-256 hash of RFC 8785 JCS canonicalized payload"
+                    },
+                    "receipt_id": {
+                      "$ref": "#/components/schemas/Base64Url",
+                      "description": "Base64url encoded SHA-256 hash of the complete JWS (protected.payload.signature)"
+                    },
+                    "tsr": {
+                      "$ref": "#/components/schemas/Base64Url",
+                      "description": "Base64url encoded RFC3161 timestamp token in DER format (optional)"
+                    }
+                  },
+                  "required": [
+                    "protected",
+                    "signature", 
+                    "payload",
+                    "kid",
+                    "payload_jcs_sha256",
+                    "receipt_id"
+                  ]
+                },
+                "examples": {
+                  "sample": {
+                    "summary": "Sample receipt response",
+                    "value": {
+                      "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6Ii0tLSJ9",
+                      "signature": "MEUCIQD7X8wZ9fEa1J2mK3N-oqL4d5mF2pQ8tR6sU7vY9wX0ZgIgK1-M2nP3qR4sT5uV6wX7yZ8aB9cD0eF1gH2iJ3kL4mN",
+                      "payload": {
+                        "hello": "world"
+                      },
+                      "kid": "abc123",
+                      "payload_jcs_sha256": "3q2+7wEB4+bUvr3TF1JNdH1XQF8t0sT5qR6uY7vZ8aB",
+                      "receipt_id": "Z1X2c3V4b5N6m7L8k9J0i1H2g3F4e5D6c7B8a9Z0y1X"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid payload or headers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "examples": ["invalid_payload", "payload_too_large", "invalid_headers"]
+                    }
+                  },
+                  "required": ["error"]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before retrying",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "X-RateLimit-Limit": {
+                "description": "Request limit per window",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Remaining requests in current window",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": ["rate_limited"]
+                    },
+                    "retry_after_ms": {
+                      "type": "integer",
+                      "description": "Milliseconds to wait before retrying"
+                    }
+                  },
+                  "required": ["error", "retry_after_ms"]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "examples": ["signing_failed", "internal_error"]
+                    }
+                  },
+                  "required": ["error"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "JwkThumbprint": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_-]{43}$",
+        "description": "RFC7638 JWK thumbprint - base64url encoded SHA-256 hash",
+        "example": "YRU7hT6Br3XlaljIJw4h8eh-E8BgFNqRtiTQDYMkwGk"
+      },
+      "Base64Url": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_-]+$",
+        "description": "Base64url encoded data (RFC 4648 Section 5)",
+        "example": "eyJhbGciOiJFUzI1NiJ9"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Health",
+      "description": "Health check endpoints"
+    },
+    {
+      "name": "Signing",
+      "description": "Digital signature and receipt generation"
+    }
+  ]
+}

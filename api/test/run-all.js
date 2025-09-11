@@ -13,6 +13,7 @@ try {
   run('node', ['test/ratelimit.unit.test.js']);
   run('node', ['test/routes.jwks.test.js']);
   run('node', ['test/cors.test.js']);
+  run('node', ['test/openapi.test.js']);
   console.log('All tests completed');
 } catch (e) {
   process.exit(e.status || 1);

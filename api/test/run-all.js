@@ -10,6 +10,7 @@ const tests = [
   'api/test/cors.test.js',
   'api/test/cors.integration.test.js',
   'api/test/verify.cli.test.js',
+  'api/test/sdk.node.test.js',
 ];
 
 function killStrays(cb) {

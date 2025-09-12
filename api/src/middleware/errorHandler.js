@@ -22,12 +22,15 @@ function createErrorHandler() {
     // Don't expose internal errors to clients in production
     const isDevelopment = process.env.NODE_ENV !== 'production';
     
-    let statusCode = 500;
+    let statusCode = error.statusCode || 500;
     let errorType = 'internal_error';
     let message = 'An unexpected error occurred';
     
     // Map known error types
-    if (error.code === 'ECONNREFUSED') {
+    if (error.statusCode && error.statusCode < 500) {
+      errorType = 'client_error';
+      message = error.message || 'Client error';
+    } else if (error.code === 'ECONNREFUSED') {
       statusCode = 503;
       errorType = 'service_unavailable';
       message = 'External service unavailable';
@@ -51,6 +54,11 @@ function createErrorHandler() {
       timestamp: new Date().toISOString()
     };
     
+    // Include request_id if available
+    if (req?.id) {
+      errorResponse.request_id = req.id;
+    }
+    
     // Include error details in development
     if (isDevelopment) {
       errorResponse.details = {
@@ -62,7 +70,14 @@ function createErrorHandler() {
     
     // Ensure response headers aren't already sent
     if (!res.headersSent) {
-      res.writeHead(statusCode, { 'Content-Type': 'application/json' });
+      const headers = { 'Content-Type': 'application/json' };
+      
+      // Include X-Request-Id header if available
+      if (req?.id) {
+        headers['X-Request-Id'] = req.id;
+      }
+      
+      res.writeHead(statusCode, headers);
       res.end(JSON.stringify(errorResponse, null, 2));
     }
   };

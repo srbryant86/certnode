@@ -7,6 +7,7 @@ const { createRateLimiter, toPosInt } = require("./plugins/ratelimit");
 const { createCorsMiddleware } = require("./plugins/cors");
 const { setupGlobalErrorHandlers, createErrorMiddleware, asyncHandler } = require("./middleware/errorHandler");
 const { securityHeaders } = require("./plugins/security");
+const { attach } = require("./plugins/requestId");
 
 const port = process.env.PORT || 3000;
 const limiter = createRateLimiter({
@@ -20,6 +21,9 @@ const errorMiddleware = createErrorMiddleware();
 setupGlobalErrorHandlers();
 
 const server = http.createServer(async (req, res) => {
+  // Attach request ID first
+  attach(req, res);
+  
   // Apply security headers first
   securityHeaders(req, res);
   

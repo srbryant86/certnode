@@ -1,49 +1,52 @@
-# CertNode Canonical Roadmap (a1–a20)
+# CertNode Canonical Roadmap (a1–a27)
 
-**Single source of truth** — Application layer components scope and delivery status.
+Single source of truth for application-layer scope and delivery status.
 
-## Core Architecture Definitions
+## Core Architecture
+- ES256 (ECDSA P‑256) only; RFC 7515/7638/8785 compliance
+- JCS canonicalization before signing/verification
+- Minimal receipt: { protected, signature, payload, kid, payload_jcs_sha256, receipt_id[, tsr] }
+- Zero-dependency SDKs (Node + browser)
+- AWS KMS integration (RAW ECDSA_SHA_256)
 
-- **ES256 (ECDSA P-256) only** — RFC compliance focus
-- **JCS canonicalization** — RFC 8785 before signing/verification  
-- **Minimal receipt format** — {protected, signature, payload, kid, payload_jcs_sha256, receipt_id[, tsr]}
-- **Zero-dependency SDK** — Node/browser compatibility
-- **AWS KMS integration** — Enterprise-grade key management
+## Delivery Map
 
----
-
-## Delivery Map (a1–a20)
-
-| Task | Status | Description | Key Files | Aliases/Notes |
-|------|--------|-------------|-----------|---------------|
-| **a1** | ✅ | Receipts-by-default: /v1/sign returns minimal receipt format | `api/src/routes/sign.js` | Core delivery mechanism |
-| **a2** | ✅ | Crypto utils: RFC8785 JCS; DER↔JOSE; RFC7638 kid | `api/src/util/jcs.js`, `api/src/util/derToJose.js`, `api/src/util/kid.js` | Cryptographic foundations |
-| **a3** | ✅ | KMS adapter (RAW) + resilience: ECDSA_SHA_256, retries, circuit breaker | `api/src/aws/kms.js` | Enterprise key management |
-| **a4** | ❌ | Env & startup guards: validates PORT, MAX_BODY_BYTES, RATE_LIMIT_RPM | `api/src/config/env.js` | *Missing - needs implementation* |
-| **a5** | ✅ | Logging & metrics base: hash-only logs; counters/timers | `api/src/plugins/logging.js`, `api/src/plugins/metrics.js` | Observability foundation |
-| **a6** | ✅ | Dev-only /v1/verify route (non-prod) | `api/src/routes/verify.js` | Development tooling |
-| **a7** | ❌ | Security headers: X-Content-Type-Options, Referrer-Policy, HSTS | `api/src/plugins/security.js` | *Missing - needs implementation* |
-| **a8** | ✅ | Validation middleware: strict schema + clear errors, body-size guard | `api/src/plugins/validation.js` | Input validation |
-| **a9** | ✅ | Smoke scripts: basic health checks | `api/scripts/smoke.sh`, `api/scripts/smoke.ps1` | *Alias: smoke scripts exist* |
-| **a10** | ✅ | Rate limit v1: basic token bucket | `api/src/plugins/ratelimit.js` | Traffic management |
-| **a11** | ✅ | Rate limit v2: tunables + tests | `api/test/ratelimit.unit.test.js` | Enhanced rate limiting |
-| **a12** | ✅ | JWKS tooling: current+previous manifest | `api/scripts/jwks-make-manifest.js` | Key rotation support |
-| **a13** | ✅ | Node SDK (thin verify) + examples/tests | `sdk/node/index.js`, `api/test/verify.sdk.node.test.js` | Client integration |
-| **a14** | ✅ | CORS hardening: allowlist + strict preflight | `api/src/plugins/cors.js` | Cross-origin security |
-| **a15** | ✅ | Structured error model: consistent JSON error schema/mapper | `api/src/plugins/errors.js` | Error standardization |
-| **a16** | ✅ | Offline verifier CLI: tools/verify-receipt.js PASS \| FAIL | `tools/verify-receipt.js` | Offline verification |
-| **a17** | ✅ | OpenAPI + pitch page | `api/src/routes/openapi.js`, `web/openapi.html`, `web/pitch.html` | API documentation |
-| **a18** | ✅ | Enhanced errors/breaker polish: categorized errors, wrapHandler | `api/src/plugins/errors.js`, `api/src/aws/kms.js` | *Alias: enhanced error handling* |
-| **a19** | ✅ | Offline web verifier page (paste receipt + JWKS) | `web/verify.html`, `web/js/verify.js` | Web-based verification |
-| **a20** | ✅ | TSA plumbing (mock path only) | `api/src/util/timestamp.js` | Timestamp authority integration |
-
----
+| Task | Status | Description | Key Files |
+|------|--------|-------------|-----------|
+| a1 | present | Receipts-by-default: /v1/sign | api/src/routes/sign.js |
+| a2 | present | Crypto utils: JCS; DER↔JOSE; kid | api/src/util/jcs.js; api/src/util/derToJose.js; api/src/util/joseToDer.js; api/src/util/kid.js |
+| a3 | present | KMS adapter (RAW) + resilience | api/src/aws/kms.js; api/src/crypto/signer.js |
+| a4 | present | Env & startup guards | api/src/config/env.js |
+| a5 | present | Logging & metrics base | api/src/plugins/logging.js; api/src/plugins/metrics.js |
+| a6 | present | Dev-only /v1/verify route | api/src/routes/verify.js |
+| a7 | present | Security headers (HSTS in prod) | api/src/plugins/security.js |
+| a8 | present | Validation middleware | api/src/plugins/validation.js |
+| a9 | present | Smoke scripts | tools/smoke-receipt.js |
+| a10 | present | Rate limit v1 (token bucket) | api/src/plugins/ratelimit.js |
+| a11 | present | Rate limit v2 + tests | api/test/ratelimit.unit.test.js |
+| a12 | present | JWKS tooling & manifest | api/src/util/manifest.js; api/src/util/jwks.js |
+| a13 | present | Dev JWKS endpoint | api/src/routes/jwks.js |
+| a14 | present | CORS hardening | api/src/plugins/cors.js |
+| a15 | present | OpenAPI spec serving | api/src/routes/openapi.js |
+| a16 | present | Offline CLI verifier | tools/verify-receipt.js; tools/verify-lib.js |
+| a17 | present | Enhanced error handling | api/src/middleware/errorHandler.js; api/src/plugins/errors.js |
+| a18 | present | SDK verification (Node + web) | sdk/node/index.js; sdk/web/index.js |
+| a19 | present | Browser WebCrypto verification | web/js/verify.js |
+| a20 | present | Correlation IDs | api/src/plugins/requestId.js |
+| a21 | present | Payload size warnings | api/src/plugins/validation.js; api/src/config/env.js |
+| a22 | present | Health & metrics | api/src/routes/health.js; api/src/plugins/metrics.js |
+| a23 | present | Performance benchmarking | tools/benchmark.js; api/test/benchmark.test.js |
 
 ## Missing Components
+- None for a1–a23. See future roadmap for upcoming work.
 
-**Priority: a4, a7** — Core infrastructure components needed for production readiness.
+## Future Roadmap (a24–a27)
+- a24 — SDK publishing (npm pack/dry‑run, README, types, versioning policy; plan browser distribution)
+- a25 — Browser demo polish (web/verify.html drag/drop; JWKS input; error mapping)
+- a26 — Advanced JWKS management (refresh detection, caching, rotation tests, integrity/staleness checks)
+- a27 — Production hardening review (security audit checklist, deployment validation, monitoring readiness)
 
-- **a4**: Environment validation prevents misconfigurations
-- **a7**: Security headers provide defense-in-depth
+## Notes
+- Track detailed task scopes and acceptance in docs/internal/TASKS_TODO.md.
+- Keep commit subjects as `feat(aNN): ...` for traceability.
 
-**Delivery**: Minimal implementations with tiny node-only tests.

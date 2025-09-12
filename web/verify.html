@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CertNode — Verify Receipt</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 0; background: #0b0f14; color: #dbe2ea; }
+    header { padding: 16px 20px; border-bottom: 1px solid #1a2330; }
+    header h1 { font-size: 18px; margin: 0; }
+    main { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; padding: 16px; }
+    .panel { background: #0f1520; border: 1px solid #182234; border-radius: 8px; padding: 12px; }
+    .panel h2 { margin: 0 0 8px; font-size: 14px; color: #9bb4d0; }
+    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+    textarea { width: 100%; min-height: 160px; background: #0b101a; color: #cfe1ff; border: 1px solid #1a2434; border-radius: 6px; padding: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+    input[type="text"], input[type="url"] { width: 100%; background: #0b101a; color: #cfe1ff; border: 1px solid #1a2434; border-radius: 6px; padding: 8px; font-size: 12px; }
+    button { background: #1e2b43; color: #e6f0ff; border: 1px solid #2a3b5c; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 12px; }
+    button:hover { background: #243351; }
+    .dropzone { border: 1px dashed #2a3b5c; border-radius: 6px; padding: 10px; text-align: center; color: #9bb4d0; font-size: 12px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .status { padding: 10px; border-radius: 6px; font-weight: 600; }
+    .ok { background: #0f2613; border: 1px solid #1d5d2a; color: #b9f6c3; }
+    .err { background: #2a1313; border: 1px solid #642222; color: #ffbaba; }
+    pre { margin: 0; white-space: pre-wrap; word-wrap: break-word; }
+    footer { padding: 12px 16px; border-top: 1px solid #1a2330; color: #8295ad; font-size: 12px; }
+    .small { font-size: 12px; color: #93a6bf; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CertNode — Verify Receipt</h1>
+  </header>
+  <main>
+    <section class="panel">
+      <h2>Receipt JSON</h2>
+      <div class="row grid-2">
+        <div class="dropzone" id="receipt-drop">Drop receipt.json here</div>
+        <div class="row" style="justify-content:flex-end; gap:6px">
+          <input type="file" id="receipt-file" accept="application/json" />
+          <button id="receipt-sample">Load sample</button>
+        </div>
+      </div>
+      <textarea id="receipt" placeholder='{"protected":"...","payload":{...},"signature":"...","kid":"..."}'></textarea>
+    </section>
+
+    <section class="panel">
+      <h2>JWKS</h2>
+      <div class="row grid-2">
+        <div class="dropzone" id="jwks-drop">Drop jwks.json here</div>
+        <div class="row" style="justify-content:flex-end; gap:6px">
+          <input type="file" id="jwks-file" accept="application/json" />
+        </div>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <input type="url" id="jwks-url" placeholder="Optional: https://.../.well-known/jwks.json" />
+        <button id="fetch-jwks">Fetch</button>
+      </div>
+      <textarea id="jwks" placeholder='{"keys":[{"kty":"EC","crv":"P-256","x":"...","y":"...","kid":"..."}]}'></textarea>
+    </section>
+
+    <section class="panel" style="grid-column: 1 / -1;">
+      <h2>Verify</h2>
+      <div class="row" style="gap:8px">
+        <button id="verify">Verify</button>
+        <button id="clear">Clear</button>
+        <span class="small">Verification uses WebCrypto (ES256) via web/js/verify.js</span>
+      </div>
+      <div id="status" class="status" style="display:none"></div>
+      <div style="margin-top:8px" class="grid-2">
+        <div>
+          <h3 class="small">Protected Header</h3>
+          <pre id="hdr"></pre>
+        </div>
+        <div>
+          <h3 class="small">Result</h3>
+          <pre id="result"></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    Paste or drop files above. For full offline verification, use the Node SDK or CLI in <code>tools/verify-receipt.js</code>.
+  </footer>
+
+  <script src="js/verify.js"></script>
+  <script src="js/verify-helper.js"></script>
+  <script>
+    const $ = (s) => document.querySelector(s);
+    function setStatus(ok, msg) {
+      const el = $('#status');
+      el.style.display = 'block';
+      el.className = 'status ' + (ok ? 'ok' : 'err');
+      el.textContent = msg;
+    }
+    function clearAll() {
+      $('#receipt').value = '';
+      $('#jwks').value = '';
+      $('#jwks-url').value = '';
+      $('#result').textContent = '';
+      $('#hdr').textContent = '';
+      $('#status').style.display = 'none';
+    }
+    async function readFileToText(file) {
+      return new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(String(r.result || ''));
+        r.onerror = (e) => rej(e);
+        r.readAsText(file);
+      });
+    }
+    function parseJsonSafe(s) {
+      try { return JSON.parse(s); } catch { return null; }
+    }
+    function decodeHeaderB64u(protectedB64u) {
+      try {
+        const padded = protectedB64u + '='.repeat((4 - protectedB64u.length % 4) % 4);
+        const base64 = padded.replace(/-/g, '+').replace(/_/g, '/');
+        return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(base64), c => c.charCodeAt(0))));
+      } catch { return null; }
+    }
+
+    // Drag & drop handlers
+    function setupDrop(zoneId, targetTextarea) {
+      const dz = document.getElementById(zoneId);
+      dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.style.background = '#0c192e'; });
+      dz.addEventListener('dragleave', () => { dz.style.background = ''; });
+      dz.addEventListener('drop', async (e) => {
+        e.preventDefault(); dz.style.background = '';
+        const f = e.dataTransfer.files && e.dataTransfer.files[0];
+        if (!f) return;
+        try {
+          const txt = await readFileToText(f);
+          document.getElementById(targetTextarea).value = txt.trim();
+        } catch (err) {
+          setStatus(false, 'Failed to read file: ' + err.message);
+        }
+      });
+    }
+
+    setupDrop('receipt-drop', 'receipt');
+    setupDrop('jwks-drop', 'jwks');
+
+    // File inputs
+    $('#receipt-file').addEventListener('change', async (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      $('#receipt').value = await readFileToText(f);
+    });
+    $('#jwks-file').addEventListener('change', async (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      $('#jwks').value = await readFileToText(f);
+    });
+
+    // Fetch JWKS from URL
+    $('#fetch-jwks').addEventListener('click', async () => {
+      const url = $('#jwks-url').value.trim();
+      if (!url) return setStatus(false, 'Enter a JWKS URL');
+      try {
+        const res = await fetch(url, { credentials: 'omit' });
+        const text = await res.text();
+        $('#jwks').value = text;
+        setStatus(true, 'Fetched JWKS');
+      } catch (e) {
+        setStatus(false, 'Failed to fetch JWKS: ' + e.message);
+      }
+    });
+
+    // Load sample
+    $('#receipt-sample').addEventListener('click', () => {
+      const sample = {
+        protected: 'eyJhbGciOiJFUzI1NiIsImtpZCI6ImRlbW8ta2lkIn0',
+        payload: { hello: 'world', n: 42 },
+        signature: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+        kid: 'demo-kid'
+      };
+      $('#receipt').value = JSON.stringify(sample, null, 2);
+    });
+
+    // Verify
+    $('#verify').addEventListener('click', async () => {
+      $('#result').textContent = '';
+      $('#hdr').textContent = '';
+      const receiptTxt = $('#receipt').value.trim();
+      const jwksTxt = $('#jwks').value.trim();
+      if (!receiptTxt || !jwksTxt) return setStatus(false, 'Provide both receipt and JWKS');
+
+      const receipt = parseJsonSafe(receiptTxt);
+      const jwks = parseJsonSafe(jwksTxt);
+      if (!receipt || !jwks) return setStatus(false, 'Invalid JSON in receipt or JWKS');
+
+      const header = decodeHeaderB64u(receipt.protected || '');
+      if (header) $('#hdr').textContent = JSON.stringify(header, null, 2);
+
+      try {
+        // Quick check first
+        if (window.CertNode && window.CertNode.quickCheck) {
+          const qc = await window.CertNode.quickCheck(receipt);
+          if (!qc.ok) return setStatus(false, `Quick check failed: ${qc.reason}`);
+        }
+        // Full WebCrypto verify
+        const res = await window.CertNode.verifyReceipt(receipt, jwks);
+        if (res && res.ok) {
+          setStatus(true, 'Receipt valid');
+          $('#result').textContent = JSON.stringify({ ok: true }, null, 2);
+        } else {
+          setStatus(false, (res && res.reason) ? ('Invalid: ' + res.reason) : 'Invalid receipt');
+          $('#result').textContent = JSON.stringify(res || { ok: false }, null, 2);
+        }
+      } catch (e) {
+        setStatus(false, 'Verification error: ' + (e && e.message ? e.message : e));
+        $('#result').textContent = String(e && e.stack ? e.stack : e);
+      }
+    });
+
+    $('#clear').addEventListener('click', clearAll);
+  </script>
+</body>
+</html>

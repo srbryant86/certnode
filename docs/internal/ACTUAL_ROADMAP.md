@@ -5,6 +5,18 @@ CertNode is a production-ready **tamper-evident receipt service** using detached
 
 ---
 
+## Roadmap Update (2025-09-12)
+
+- Completed a22: Health & Metrics (healthz, structured metrics, KMS circuit state)
+- Completed a23: Performance Benchmarking (tools/benchmark.js with p95/p99 and memory tracking)
+- Next tasks realigned to a24–a27:
+  - a24 — SDK publishing (npm pack/dry‑run, README/types, versioning policy; browser distribution plan)
+  - a25 — Browser demo page polish (web/verify.html drag/drop; JWKS input; error mapping)
+  - a26 — Advanced JWKS management (refresh detection, caching, rotation tests, integrity/staleness checks)
+  - a27 — Production hardening review (security audit checklist, deployment validation, monitoring readiness)
+
+See docs/internal/ROADMAP_CANON.md and docs/internal/TASKS_TODO.md for authoritative, up‑to‑date lists.
+
 ## **🏗️ Current Architecture (COMPLETED a1-a18)**
 
 ### **Phase 1: Core Infrastructure (a1-a6)**

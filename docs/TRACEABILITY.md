@@ -27,6 +27,8 @@
 | **a21** | Payload size warnings | `api/src/config/env.js`<br/>`api/src/plugins/validation.js`<br/>`api/src/routes/sign.js` | `api/test/payload-size.test.js` | ✅ | Soft warnings + hard limits + headers |
 | **a22** | Health & Metrics | `api/src/routes/health.js`<br/>`api/src/plugins/metrics.js`<br/>`api/src/aws/kms.js`<br/>`api/src/server.js` | `api/test/health.test.js` | ✅ | /healthz endpoint + structured console metrics + KMS circuit state |
 
+| **a23** | Performance benchmarking | `tools/benchmark.js` | `api/test/benchmark.test.js` | �o. | p95/p99 latency reporting with memory tracking |
+
 ## Test Coverage Matrix
 
 | Component | Unit Tests | Integration Tests | Smoke Tests |

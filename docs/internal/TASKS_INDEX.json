@@ -1,0 +1,170 @@
+[
+  {
+    "id": "a1",
+    "title": "Receipts-by-default",
+    "desc": "/v1/sign returns minimal receipt format with RFC7638 kid, payload_jcs_sha256, receipt_id",
+    "files": ["api/src/routes/sign.js", "api/src/util/kid.js"],
+    "tests": ["api/test/routes.sign.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a2", 
+    "title": "Crypto utils foundation",
+    "desc": "RFC8785 JCS canonicalization, DER↔JOSE conversion, RFC7638 kid generation",
+    "files": ["api/src/util/jcs.js", "api/src/util/derToJose.js", "api/src/util/joseToDer.js", "api/src/util/kid.js"],
+    "tests": ["api/test/jcs.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a3",
+    "title": "KMS adapter with resilience", 
+    "desc": "AWS KMS RAW ECDSA_SHA_256 signing with retries, backoff, circuit breaker",
+    "files": ["api/src/aws/kms.js", "api/src/crypto/signer.js"],
+    "tests": ["api/test/crypto.kms.test.js", "api/test/kms.wrapper.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a4",
+    "title": "Environment & startup guards",
+    "desc": "Validate PORT, MAX_BODY_BYTES, RATE_LIMIT_RPM with safe defaults and error checking",
+    "files": ["api/src/config/env.js"],
+    "tests": ["api/test/env.guard.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a5",
+    "title": "Logging & metrics base",
+    "desc": "Hash-only logs, structured counters/timers, no payload leakage",
+    "files": ["api/src/plugins/logging.js", "api/src/plugins/metrics.js"],
+    "tests": [],
+    "status": "present"
+  },
+  {
+    "id": "a6", 
+    "title": "Dev-only verify route",
+    "desc": "Development-only /v1/verify endpoint for testing (disabled in production)",
+    "files": ["api/src/routes/verify.js"],
+    "tests": ["api/test/verify.test.js", "api/test/verify.cli.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a7",
+    "title": "Security headers",
+    "desc": "X-Content-Type-Options, Referrer-Policy, X-Frame-Options, HSTS in prod+https",
+    "files": ["api/src/plugins/security.js"],
+    "tests": ["api/test/security.headers.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a8",
+    "title": "Validation middleware",
+    "desc": "Strict JSON schema validation, body-size guard, clear error messages",
+    "files": ["api/src/plugins/validation.js"],
+    "tests": ["api/test/validation.test.js", "api/test/validation.sign.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a9",
+    "title": "Smoke scripts",
+    "desc": "Basic health check scripts for deployment validation",
+    "files": ["api/scripts/smoke.sh", "api/scripts/smoke.ps1"],
+    "tests": [],
+    "status": "present"
+  },
+  {
+    "id": "a10",
+    "title": "Rate limiting v1",
+    "desc": "Basic per-IP token bucket rate limiting for /v1/sign",
+    "files": ["api/src/plugins/ratelimit.js"],
+    "tests": ["api/test/ratelimit.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a11",
+    "title": "Rate limiting v2 enhanced",
+    "desc": "Enhanced rate limiting with tunables and comprehensive testing",
+    "files": ["api/src/plugins/ratelimit.js"],
+    "tests": ["api/test/ratelimit.unit.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a12",
+    "title": "JWKS tooling",
+    "desc": "JWKS manifest generation for current and previous keys",
+    "files": ["api/scripts/jwks-make-manifest.js", "api/src/util/jwks.js", "api/src/util/manifest.js"],
+    "tests": ["api/test/manifest.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a13",
+    "title": "Dev JWKS endpoint", 
+    "desc": "Development-only JWKS endpoint (404 in production)",
+    "files": ["api/src/routes/jwks.js"],
+    "tests": ["api/test/routes.jwks.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a14",
+    "title": "CORS hardening",
+    "desc": "Strict CORS with API_ALLOWED_ORIGINS allowlist and preflight handling",
+    "files": ["api/src/plugins/cors.js"],
+    "tests": ["api/test/cors.test.js", "api/test/cors.integration.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a15", 
+    "title": "OpenAPI specification",
+    "desc": "OpenAPI 3.1 specification serving endpoint with caching and CORS",
+    "files": ["api/src/routes/openapi.js"],
+    "tests": ["api/test/openapi.test.js", "api/test/openapi.endpoint.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a16",
+    "title": "Offline CLI verifier",
+    "desc": "Command-line receipt verification tool with JWKS support",
+    "files": ["tools/verify-receipt.js", "tools/verify-lib.js"],
+    "tests": ["api/test/verify.cli.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a17",
+    "title": "Enhanced error handling",
+    "desc": "Comprehensive error handling middleware with categorization",
+    "files": ["api/src/middleware/errorHandler.js", "api/src/plugins/errors.js"],
+    "tests": ["api/test/errorHandler.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a18",
+    "title": "SDK verification",
+    "desc": "Node and browser SDK for receipt verification with unit tests",
+    "files": ["sdk/node/index.js", "sdk/web/index.js"],
+    "tests": ["api/test/sdk.node.test.js", "api/test/verify.sdk.node.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a19",
+    "title": "Browser WebCrypto verification",
+    "desc": "Complete WebCrypto ES256 verification for browser environments",
+    "files": ["web/js/verify.js"],
+    "tests": ["api/test/verify.sdk.browser.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a20",
+    "title": "Correlation IDs",
+    "desc": "Request correlation via X-Request-Id headers and structured error responses",
+    "files": ["api/src/plugins/requestId.js", "api/src/middleware/errorHandler.js"],
+    "tests": ["api/test/request-id.test.js"],
+    "status": "present"
+  },
+  {
+    "id": "a21",
+    "title": "Payload size warnings",
+    "desc": "Soft warnings and hard limits for request payload sizes with headers",
+    "files": ["api/src/config/env.js", "api/src/plugins/validation.js", "api/src/routes/sign.js"],
+    "tests": ["api/test/payload-size.test.js"],
+    "status": "present"
+  }
+]

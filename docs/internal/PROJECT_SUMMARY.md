@@ -5,55 +5,51 @@
 - Returns a minimal receipt `{protected, payload, signature, kid, payload_jcs_sha256, receipt_id}`.
 - Public **JWKS** used for offline verification.
 
-## Current components (presence only)
-- ✅ api/src/index.js
-- ✅ api/src/routes/sign.js
-- ✅ api/src/util/jcs.js
-- ✅ api/src/util/joseToDer.js
-- ✅ api/src/util/derToJose.js
-- ✅ api/src/util/kid.js
-- ✅ tools/verify-receipt.js
-- ✅ tools/verify-lib.js
-- ✅ sdk/node/index.js
-- ✅ sdk/node/index.d.ts
-- ✅ sdk/web/index.js
-- ✅ sdk/web/index.d.ts
-- ✅ web/js/verify.js
-- ✅ web/verify.html
+## Current Endpoints
+- `POST /v1/sign` — accepts `{ payload, headers? }`, returns receipt with correlation headers
+- `GET /v1/health` — health check with dependency status and circuit breaker state  
+- `GET /jwks` (dev-only) — JWKS endpoint (404 in production)
+- `GET /openapi.json` — OpenAPI 3.1 specification with caching
 
-## Endpoints
-- `POST /v1/sign` — accepts `{ payload, headers? }`, returns receipt (JWS-like).
+## Cryptographic Pipeline
+```
+Input JSON → RFC 8785 JCS → Protected Header (ES256 + RFC7638 kid) → 
+Signing Input → AWS KMS RAW ECDSA_SHA_256 (prod) → DER→JOSE → Receipt
+```
+
+**Receipt ID Derivation**: `SHA256(protected + '.' + b64u(JCS(payload)) + '.' + signature)`
 
 ## Tools / SDK
-- `tools/verify-receipt.js` — offline verifier CLI (JWKS file/URL).
-- `sdk/node`, `sdk/web` — verify helpers (present if listed above).
+- `tools/verify-receipt.js` — offline verifier CLI with JWKS file/URL support
+- `tools/test-fast.js` — fast test runner with 15s timeout per test
+- `tools/smoke-receipt.js` — Node-only smoke test with receipt verification
+- `sdk/node` — zero-dependency Node.js verification SDK
+- `sdk/web` — browser WebCrypto verification SDK with full ES256 support
 
-## Constraints
-- ES256 (ECDSA P-256) only.
-- RFC 8785 (JCS) canonicalization before signing/verifying.
-- DER↔JOSE conversion for ECDSA.
-- kid: RFC 7638 JWK thumbprint.
-- Node 20, CommonJS in /api. No secrets in repo.
+## Privacy and Logging Constraints
+- **No payload logging** — only hashes and correlation IDs logged
+- **Hash-only structured logs** — JSON format with request_id correlation
+- **Environment-aware errors** — sanitized responses in production mode
+- **Size warnings** — configurable soft limits with structured console warnings
 
-## Completed tasks (from git)
-- a01 — completed (see git history)
-- a02 — completed (see git history)
-- a03 — completed (see git history)
-- a04 — completed (see git history)
-- a05 — completed (see git history)
-- a06 — completed (see git history)
-- a07 — completed (see git history)
-- a08 — completed (see git history)
-- a09 — completed (see git history)
-- a10 — completed (see git history)
-- a11 — completed (see git history)
-- a12 — completed (see git history)
-- a13 — completed (see git history)
-- a14 — completed (see git history)
-- a15 — completed (see git history)
-- a16 — completed (see git history)
-- a17 — completed (see git history)
-- a18 — completed (see git history)
+## Architecture Constraints
+- ES256 (ECDSA P-256) only — no other signature algorithms
+- RFC 8785 (JCS) canonicalization before signing/verifying
+- DER↔JOSE conversion for ECDSA signatures
+- kid = RFC 7638 JWK thumbprint (never arbitrary strings)
+- JWKS served statically via S3+CloudFront (never from API)
+- Node 20, CommonJS in /api. No secrets in repository.
+- Single production dependency: `@aws-sdk/client-kms`
 
-## Next task: a19
-- Edit `docs/internal/TASKS_TODO.md` to define scope + acceptance, then implement strictly that.
+## Completed Application Layer Tasks (a1-a21)
+- **a1-a3** — Core signing, crypto utils, KMS integration with resilience
+- **a4-a8** — Environment guards, logging/metrics, dev tools, security headers, validation
+- **a9-a12** — Smoke scripts, rate limiting (v1+v2), JWKS tooling
+- **a13-a16** — Dev JWKS endpoint, CORS hardening, OpenAPI spec, offline CLI verifier
+- **a17-a21** — Enhanced errors, SDK verification, WebCrypto, correlation IDs, payload size controls
+
+## Quality Gates
+- **Fast Test Suite**: `node tools/test-fast.js` — all unit tests with timeouts
+- **Smoke Test**: `node tools/smoke-receipt.js` — end-to-end receipt verification  
+- **Health Check**: `node api/test/health.test.js` — dependency validation
+- **Audit Documentation**: QUALITY.md, AUDIT_CHECKLIST.md, TRACEABILITY.md

@@ -2,6 +2,7 @@
 const { handle: signHandler } = require("./routes/sign");
 const { handle: jwksHandler } = require("./routes/jwks");
 const { handle: healthHandler } = require("./routes/health");
+const { handle: openapiHandler } = require("./routes/openapi");
 const { createRateLimiter, toPosInt } = require("./plugins/ratelimit");
 const { createCorsMiddleware } = require("./plugins/cors");
 const { setupGlobalErrorHandlers, createErrorMiddleware, asyncHandler } = require("./middleware/errorHandler");
@@ -55,6 +56,12 @@ const server = http.createServer(async (req, res) => {
   // jwks (dev-only)
   if (req.method === "GET" && (url.pathname === "/jwks" || url.pathname === "/.well-known/jwks.json")) {
     return jwksHandler(req, res);
+  }
+
+  // openapi spec
+  if ((req.method === "GET" || req.method === "OPTIONS") && 
+      (url.pathname === "/openapi.json" || url.pathname === "/v1/openapi.json")) {
+    return openapiHandler(req, res);
   }
 
   // 404

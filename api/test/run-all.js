@@ -6,6 +6,7 @@ const tests = [
   'api/test/manifest.test.js',
   'api/test/health.test.js',
   'api/test/errorHandler.test.js',
+  'api/test/openapi.endpoint.test.js',
   'api/test/ratelimit.unit.test.js',
   'api/test/ratelimit.test.js',
   'api/test/validation.test.js',

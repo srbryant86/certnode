@@ -4,6 +4,7 @@ const { exec, execFile } = require('child_process');
 
 const tests = [
   'api/test/manifest.test.js',
+  'api/test/health.test.js',
   'api/test/ratelimit.unit.test.js',
   'api/test/ratelimit.test.js',
   'api/test/validation.test.js',

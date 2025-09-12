@@ -1,6 +1,7 @@
 ﻿const http = require("http");
 const { handle: signHandler } = require("./routes/sign");
 const { handle: jwksHandler } = require("./routes/jwks");
+const { handle: healthHandler } = require("./routes/health");
 const { createRateLimiter, toPosInt } = require("./plugins/ratelimit");
 const { createCorsMiddleware } = require("./plugins/cors");
 
@@ -22,8 +23,7 @@ const server = http.createServer(async (req, res) => {
 
   // health
   if (req.method === "GET" && (url.pathname === "/health" || url.pathname === "/v1/health")) {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    return res.end(JSON.stringify({ ok: true }));
+    return healthHandler(req, res);
   }
 
   // /v1/sign with rate limit

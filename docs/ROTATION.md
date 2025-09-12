@@ -40,3 +40,18 @@ Features:
 - Helper to compute current thumbprints
 
 These helpers are optional and have no external dependencies.
+
+## Hosting JWKS on S3 + CloudFront (Guidance)
+
+- Store JWKS at a stable path (e.g., `/.well-known/jwks.json`) and versioned backups
+- Set cache headers:
+  - `Cache-Control: public, max-age=300`
+  - Include `ETag` and `Last-Modified`
+- In CloudFront:
+  - Enable caching based on `ETag`/`Last-Modified`
+  - Restrict origin access (OAC) and TLS
+- Rotation flow:
+  1) Upload next JWKS (with overlap)
+  2) Validate: `jwks-rotate-validate` current vs next
+  3) Promote next to live path; purge CDN if necessary
+  4) Keep overlap window until clients refresh

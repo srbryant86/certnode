@@ -3,6 +3,7 @@ const { handle: signHandler } = require("./routes/sign");
 const { handle: jwksHandler } = require("./routes/jwks");
 const { handle: healthHandler } = require("./routes/health");
 const { handle: openapiHandler } = require("./routes/openapi");
+const { handle: metricsHandler } = require("./routes/metrics");
 const { createRateLimiter, toPosInt } = require("./plugins/ratelimit");
 const { createCorsMiddleware } = require("./plugins/cors");
 const { setupGlobalErrorHandlers, createErrorMiddleware, asyncHandler } = require("./middleware/errorHandler");
@@ -90,6 +91,11 @@ const server = http.createServer(async (req, res) => {
   if ((req.method === "GET" || req.method === "OPTIONS") && 
       (url.pathname === "/openapi.json" || url.pathname === "/v1/openapi.json")) {
     return openapiHandler(req, res);
+  }
+
+  // /metrics (Prometheus)
+  if (req.method === "GET" && url.pathname === "/metrics") {
+    return metricsHandler(req, res);
   }
 
   // 404

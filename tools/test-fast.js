@@ -22,6 +22,7 @@ const testFiles = [
   'api/test/payload-size.test.js'
   , 'api/test/jwks.integrity.test.js'
   , 'api/test/jwks.rotate.test.js'
+  , 'api/test/metrics.endpoint.test.js'
 ];
 
 async function runTest(testFile) {

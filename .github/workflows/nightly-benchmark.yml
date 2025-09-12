@@ -1,0 +1,24 @@
+name: Nightly Benchmark
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - name: Run benchmark
+        run: |
+          node tools/benchmark.js | tee benchmark.log
+        shell: bash
+      - name: Upload benchmark log
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-log
+          path: benchmark.log
+

@@ -6,6 +6,7 @@ const { handle: openapiHandler } = require("./routes/openapi");
 const { createRateLimiter, toPosInt } = require("./plugins/ratelimit");
 const { createCorsMiddleware } = require("./plugins/cors");
 const { setupGlobalErrorHandlers, createErrorMiddleware, asyncHandler } = require("./middleware/errorHandler");
+const { securityHeaders } = require("./plugins/security");
 
 const port = process.env.PORT || 3000;
 const limiter = createRateLimiter({
@@ -19,6 +20,9 @@ const errorMiddleware = createErrorMiddleware();
 setupGlobalErrorHandlers();
 
 const server = http.createServer(async (req, res) => {
+  // Apply security headers first
+  securityHeaders(req, res);
+  
   // Apply error middleware first
   errorMiddleware(req, res);
   

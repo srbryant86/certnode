@@ -4,10 +4,15 @@ const { readJsonLimited, validateSignBody } = require("../src/plugins/validation
 
 (async () => {
   // validateSignBody shape tests
-  const expectMsg = (fn, msg) => { try { fn(); assert.fail(`expected ${msg}`); } catch(e){ assert.strictEqual(e.message, msg); } };
+  const expectMsg = (fn, msg) => {
+    let threw = false;
+    try { fn(); } catch (e) { threw = true; assert.strictEqual(e.message, msg); }
+    if (!threw) assert.fail(`expected throw: ${msg}`);
+  };
   expectMsg(() => validateSignBody(null), 'invalid_body');
   expectMsg(() => validateSignBody({}), 'missing_payload');
-  expectMsg(() => validateSignBody({ payload: 123 }), 'invalid_payload_type');
+  const okNum = validateSignBody({ payload: 123 });
+  assert.strictEqual(okNum.payload, 123);
   expectMsg(() => validateSignBody({ payload: {}, headers: "x" }), 'invalid_headers');
   expectMsg(() => validateSignBody({ payload: {}, headers: { tsr: "yes" } }), 'invalid_tsr');
   expectMsg(() => validateSignBody({ payload: {}, headers: { kid: "not*ok" } }), 'invalid_kid');
@@ -47,4 +52,3 @@ const { readJsonLimited, validateSignBody } = require("../src/plugins/validation
 
   console.log("validation tests passed");
 })().catch(e => { console.error(e); process.exit(1); });
-

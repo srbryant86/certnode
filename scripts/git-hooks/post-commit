@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Auto-push the current branch after each commit.
+# Controls:
+#   - Set GIT_AUTOPUSH=0 to disable
+#   - Set GIT_REMOTE to override remote (default: origin)
+
+REMOTE="${GIT_REMOTE:-origin}"
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
+# Allow opt-out
+if [ "$GIT_AUTOPUSH" = "0" ]; then
+  exit 0
+fi
+
+# Push current branch to chosen remote
+git push "$REMOTE" "$BRANCH" >/dev/null 2>&1 || {
+  echo "[post-commit] Auto-push failed. Run 'git push $REMOTE $BRANCH' manually." >&2
+}
+

@@ -58,3 +58,15 @@ git push --tags
 - Verify on npmjs.com and test install in a sample app
 - Announce changes and update docs if needed
 
+## GitHub Actions Release (optional)
+
+This repo includes `.github/workflows/release.yml` to publish SDKs on tags:
+
+- For Node SDK: create a tag `sdk-node-vX.Y.Z`
+- For Web SDK:  create a tag `sdk-web-vA.B.C`
+
+Prerequisite:
+- Add `NPM_TOKEN` (repo Settings → Secrets and variables → Actions → New repository secret)
+- The workflow runs fast tests, packs the SDK, and publishes with `NODE_AUTH_TOKEN`
+
+Note: You can still publish locally if you prefer.

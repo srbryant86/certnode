@@ -28,3 +28,9 @@ jobs:
       - name: Pack Web SDK
         working-directory: sdk/web
         run: npm pack --json
+
+      - name: JWKS integrity (examples)
+        run: node tools/jwks-integrity-check.js --jwks examples/jwks.example.json
+
+      - name: JWKS rotation overlap (examples)
+        run: node tools/jwks-rotate-validate.js --current examples/jwks.example.json --next examples/jwks.example.json

@@ -28,3 +28,17 @@ node tools/verify-receipt.js --receipt path/to/receipt.json --jwks path/to/jwks.
 ## Monitoring
 - Emit structured JSON metrics via `api/src/plugins/metrics.js`
 - See `docs/MONITORING.md` for event names, SLOs, and alert suggestions
+
+## Metrics Quickstart
+- Events (one-line JSON):
+  - `request_received` — { path, method, request_id }
+  - `request_completed` — { path, method, status, ms, request_id }
+  - `rate_limit_triggered` — { path, capacity, remaining, request_id }
+- Pipeline: ship stdout to your log collector and build dashboards based on these events.
+
+## Release via Tags (GitHub Actions)
+- Add `NPM_TOKEN` to GitHub repo secrets (Actions → New repository secret)
+- Tag to publish:
+  - Node SDK: `git tag sdk-node-vX.Y.Z && git push --tags`
+  - Web  SDK: `git tag sdk-web-vA.B.C && git push --tags`
+- See `docs/RELEASE.md` for local publish steps and details.

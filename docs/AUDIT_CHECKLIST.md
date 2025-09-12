@@ -90,7 +90,7 @@ curl -X POST http://localhost:3000/v1/sign \
 - [ ] `tools/test-fast.js` ends with "ALL PASSED"
 - [ ] `tools/smoke-receipt.js` prints "RECEIPT OK" and exits 0  
 - [ ] `api/test/health.test.js` prints "health.test OK" and exits 0
-- [ ] All 21 core tasks (a1-a21) show as "present" in task index
+- [ ] All 22 core tasks (a1-a22) show as "present" in task index
 - [ ] Zero production dependencies except `@aws-sdk/client-kms`
 - [ ] Error responses include request_id correlation
 - [ ] Payload size warnings trigger at configurable thresholds

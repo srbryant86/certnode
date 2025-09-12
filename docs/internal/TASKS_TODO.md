@@ -24,39 +24,39 @@ You are operating **only** on the application layer. Do not change infra/secrets
 - **a19** — Browser WebCrypto: complete ES256 verification for web environments
 - **a20** — Correlation IDs: X-Request-Id propagation + error response correlation
 - **a21** — Payload size warnings: soft limits + hard caps + exposure headers
-- **a23** — Health & Metrics: /healthz endpoint + structured console metrics + KMS circuit state
+- **a22** — Health & Metrics: /healthz endpoint + structured console metrics + KMS circuit state
 
-## Next Tasks (a24-a28) — Aligned Priority Order
+## Next Tasks (a23-a27) — Aligned Priority Order
 
-### a24 — Performance Benchmarking ⭐ **NEXT**
+### a23 — Performance Benchmarking ⭐ **NEXT**
 **Scope**: Add performance measurement and load testing framework
 - Create tools/benchmark.js for signing throughput measurement
 - Add memory usage profiling for long-running operations
 - Implement configurable load testing scenarios with p95/p99 latency tracking
 - **Acceptance**: Consistent <100ms p99 latency for /v1/sign under sustained load
 
-### a25 — SDK Publishing Preparation
+### a24 — SDK Publishing Preparation
 **Scope**: Prepare Node SDK for npm publishing with proper metadata
 - Add comprehensive README.md with usage examples and installation guide
 - Include npm publish dry-run validation and semantic versioning
 - Add changelog generation and package.json optimization
 - **Acceptance**: `npm pack` succeeds, README covers all use cases, ready for npmjs.com
 
-### a26 — Browser Demo Page Polish
+### a25 — Browser Demo Page Polish
 **Scope**: Complete user-facing receipt verification interface
 - Complete web/verify.html with drag/drop receipt verification
 - Add copy/paste JWKS support and error reason mapping
 - Polish UX with clear success/failure states and debugging info
 - **Acceptance**: End users can verify receipts via web interface without technical knowledge
 
-### a27 — Advanced JWKS Management
+### a26 — Advanced JWKS Management
 **Scope**: Enhanced key rotation and JWKS management capabilities  
 - Add automated JWKS refresh detection and caching mechanisms
 - Implement key rollover validation tools and rotation testing
 - Add JWKS integrity verification helpers and staleness detection
 - **Acceptance**: Clean key rotation without service interruption, automated validation
 
-### a28 — Production Hardening Review
+### a27 — Production Hardening Review
 **Scope**: Final production readiness assessment and deployment automation
 - Complete security audit checklist validation (all 9.5+/10 criteria)
 - Add deployment automation validation and infrastructure checks

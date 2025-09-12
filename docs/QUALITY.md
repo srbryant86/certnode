@@ -96,7 +96,7 @@ Signing Input → AWS KMS RAW ECDSA_SHA_256 → DER→JOSE → Receipt
 
 ## Quality Metrics Summary
 
-- **Code Coverage**: 21 focused unit tests covering all critical paths
+- **Code Coverage**: 22 focused unit tests covering all critical paths
 - **Standards Compliance**: RFC 8785, RFC 7515, RFC 7638, RFC 3986
 - **Performance**: <100ms response time for signing operations
 - **Security**: Zero known vulnerabilities, minimal attack surface

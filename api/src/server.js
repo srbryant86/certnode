@@ -4,6 +4,7 @@ const { handle: jwksHandler } = require("./routes/jwks");
 const { handle: healthHandler } = require("./routes/health");
 const { createRateLimiter, toPosInt } = require("./plugins/ratelimit");
 const { createCorsMiddleware } = require("./plugins/cors");
+const { setupGlobalErrorHandlers, createErrorMiddleware, asyncHandler } = require("./middleware/errorHandler");
 
 const port = process.env.PORT || 3000;
 const limiter = createRateLimiter({
@@ -11,8 +12,16 @@ const limiter = createRateLimiter({
   windowMs: toPosInt(process.env.API_RATE_LIMIT_WINDOW_MS, 60000)
 });
 const corsMiddleware = createCorsMiddleware();
+const errorMiddleware = createErrorMiddleware();
+
+// Setup global error handlers
+setupGlobalErrorHandlers();
 
 const server = http.createServer(async (req, res) => {
+  // Apply error middleware first
+  errorMiddleware(req, res);
+  
+  try {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
   // Apply CORS middleware first
@@ -51,6 +60,19 @@ const server = http.createServer(async (req, res) => {
   // 404
   res.writeHead(404, { "Content-Type": "application/json" });
   res.end(JSON.stringify({ error: "not_found" }));
+  
+  } catch (error) {
+    // Use the error handler attached to response
+    if (res.handleError) {
+      res.handleError(error);
+    } else {
+      console.error('Unhandled server error:', error);
+      if (!res.headersSent) {
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "internal_error" }));
+      }
+    }
+  }
 });
 
 server.listen(port, () => console.log("Server on", port));

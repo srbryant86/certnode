@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CertNode � Verify Receipt</title>
+  <title>CertNode — Verify Receipt</title>
   <style>
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 0; background: #0b0f14; color: #dbe2ea; }
     header { padding: 16px 20px; border-bottom: 1px solid #1a2330; }
@@ -12,32 +12,40 @@
     .panel { background: #0f1520; border: 1px solid #182234; border-radius: 8px; padding: 12px; }
     .panel h2 { margin: 0 0 8px; font-size: 14px; color: #9bb4d0; }
     .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
-    textarea { width: 100%; min-height: 160px; background: #0b101a; color: #cfe1ff; border: 1px solid #1a2434; border-radius: 6px; padding: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+    textarea { width: 100%; min-height: 180px; background: #0b101a; color: #cfe1ff; border: 1px solid #1a2434; border-radius: 6px; padding: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.4; }
     input[type="text"], input[type="url"] { width: 100%; background: #0b101a; color: #cfe1ff; border: 1px solid #1a2434; border-radius: 6px; padding: 8px; font-size: 12px; }
-    button { background: #1e2b43; color: #e6f0ff; border: 1px solid #2a3b5c; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 12px; }
+    button { background: #1e2b43; color: #e6f0ff; border: 1px solid #2a3b5c; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 12px; transition: background .15s ease; }
     button:hover { background: #243351; }
+    button:disabled { opacity: .6; cursor: not-allowed; }
     .dropzone { border: 1px dashed #2a3b5c; border-radius: 6px; padding: 10px; text-align: center; color: #9bb4d0; font-size: 12px; }
+    .dropzone.drag { background: #0c192e; border-color: #34507a; color: #cde1ff; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .status { padding: 10px; border-radius: 6px; font-weight: 600; }
     .ok { background: #0f2613; border: 1px solid #1d5d2a; color: #b9f6c3; }
     .err { background: #2a1313; border: 1px solid #642222; color: #ffbaba; }
+    .warn { background: #27210f; border: 1px solid #6a5a1a; color: #ffe8a3; }
     pre { margin: 0; white-space: pre-wrap; word-wrap: break-word; }
     footer { padding: 12px 16px; border-top: 1px solid #1a2330; color: #8295ad; font-size: 12px; }
     .small { font-size: 12px; color: #93a6bf; }
+    .toolbar { display: flex; gap: 6px; align-items: center; }
+    .pill { padding: 2px 6px; border-radius: 999px; border: 1px solid #2a3b5c; background: #14203a; color: #b9cdf0; font-size: 11px; }
+    .muted { color: #8aa0bd; }
   </style>
 </head>
 <body>
   <header>
-    <h1>CertNode � Verify Receipt</h1>
+    <h1>CertNode — Verify Receipt</h1>
   </header>
   <main>
     <section class="panel">
       <h2>Receipt JSON</h2>
       <div class="row grid-2">
         <div class="dropzone" id="receipt-drop">Drop receipt.json here</div>
-        <div class="row" style="justify-content:flex-end; gap:6px">
+        <div class="toolbar" style="justify-content:flex-end">
           <input type="file" id="receipt-file" accept="application/json" />
           <button id="receipt-sample">Load sample</button>
+          <button id="receipt-format">Format</button>
+          <button id="receipt-minify">Minify</button>
         </div>
       </div>
       <textarea id="receipt" placeholder='{"protected":"...","payload":{...},"signature":"...","kid":"..."}'></textarea>
@@ -47,8 +55,10 @@
       <h2>JWKS</h2>
       <div class="row grid-2">
         <div class="dropzone" id="jwks-drop">Drop jwks.json here</div>
-        <div class="row" style="justify-content:flex-end; gap:6px">
+        <div class="toolbar" style="justify-content:flex-end">
           <input type="file" id="jwks-file" accept="application/json" />
+          <button id="jwks-format">Format</button>
+          <button id="jwks-minify">Minify</button>
         </div>
       </div>
       <div class="row" style="margin-top:8px">
@@ -56,6 +66,7 @@
         <button id="fetch-jwks">Fetch</button>
       </div>
       <textarea id="jwks" placeholder='{"keys":[{"kty":"EC","crv":"P-256","x":"...","y":"...","kid":"..."}]}'></textarea>
+      <div class="small muted">JWKS is cached locally in your browser for convenience.</div>
     </section>
 
     <section class="panel" style="grid-column: 1 / -1;">
@@ -68,11 +79,17 @@
       <div id="status" class="status" style="display:none"></div>
       <div style="margin-top:8px" class="grid-2">
         <div>
-          <h3 class="small">Protected Header</h3>
+          <div class="row" style="justify-content:space-between; align-items:center">
+            <h3 class="small" style="margin:0">Protected Header</h3>
+            <button id="copy-hdr" class="pill">Copy</button>
+          </div>
           <pre id="hdr"></pre>
         </div>
         <div>
-          <h3 class="small">Result</h3>
+          <div class="row" style="justify-content:space-between; align-items:center">
+            <h3 class="small" style="margin:0">Result</h3>
+            <button id="copy-result" class="pill">Copy</button>
+          </div>
           <pre id="result"></pre>
         </div>
       </div>
@@ -86,6 +103,22 @@
   <script src="js/verify-helper.js"></script>
   <script>
     const $ = (s) => document.querySelector(s);
+    const LS_JWKS = 'certnode:jwks';
+    const LS_RECEIPT = 'certnode:receipt';
+
+    const reasonMap = {
+      missing_fields: 'Receipt missing required fields (protected, payload, signature, kid).',
+      bad_protected: 'Protected header is not valid base64url‑encoded JSON.',
+      unsupported_alg: 'Unsupported algorithm in header. Only ES256 (P‑256) is supported.',
+      kid_mismatch: 'Key ID mismatch between protected header and receipt.',
+      kid_not_found: 'Key not found in the provided JWKS (check kid/thumbprint).',
+      payload_hash_mismatch: 'Payload hash mismatch (JCS) — receipt payload was modified or JCS mismatch.',
+      signature_invalid: 'Signature verification failed — receipt may be invalid or JWKS incorrect.',
+      receipt_id_mismatch: 'Receipt ID does not match computed value.',
+      bad_receipt: 'Receipt must be a JSON object.',
+      invalid_json: 'Invalid JSON provided.'
+    };
+
     function setStatus(ok, msg) {
       const el = $('#status');
       el.style.display = 'block';
@@ -99,6 +132,8 @@
       $('#result').textContent = '';
       $('#hdr').textContent = '';
       $('#status').style.display = 'none';
+      localStorage.removeItem(LS_JWKS);
+      localStorage.removeItem(LS_RECEIPT);
     }
     async function readFileToText(file) {
       return new Promise((res, rej) => {
@@ -118,19 +153,36 @@
         return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(base64), c => c.charCodeAt(0))));
       } catch { return null; }
     }
+    function formatTextarea(id) {
+      const el = document.getElementById(id);
+      const obj = parseJsonSafe(el.value);
+      if (!obj) return setStatus(false, 'invalid_json');
+      el.value = JSON.stringify(obj, null, 2);
+    }
+    function minifyTextarea(id) {
+      const el = document.getElementById(id);
+      const obj = parseJsonSafe(el.value);
+      if (!obj) return setStatus(false, 'invalid_json');
+      el.value = JSON.stringify(obj);
+    }
+    function copyText(text) {
+      try { navigator.clipboard.writeText(text); } catch {}
+    }
 
     // Drag & drop handlers
     function setupDrop(zoneId, targetTextarea) {
       const dz = document.getElementById(zoneId);
-      dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.style.background = '#0c192e'; });
-      dz.addEventListener('dragleave', () => { dz.style.background = ''; });
+      dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('drag'); });
+      dz.addEventListener('dragleave', () => { dz.classList.remove('drag'); });
       dz.addEventListener('drop', async (e) => {
-        e.preventDefault(); dz.style.background = '';
+        e.preventDefault(); dz.classList.remove('drag');
         const f = e.dataTransfer.files && e.dataTransfer.files[0];
         if (!f) return;
         try {
           const txt = await readFileToText(f);
           document.getElementById(targetTextarea).value = txt.trim();
+          if (targetTextarea === 'jwks') localStorage.setItem(LS_JWKS, txt.trim());
+          if (targetTextarea === 'receipt') localStorage.setItem(LS_RECEIPT, txt.trim());
         } catch (err) {
           setStatus(false, 'Failed to read file: ' + err.message);
         }
@@ -144,12 +196,16 @@
     $('#receipt-file').addEventListener('change', async (e) => {
       const f = e.target.files && e.target.files[0];
       if (!f) return;
-      $('#receipt').value = await readFileToText(f);
+      const txt = await readFileToText(f);
+      $('#receipt').value = txt;
+      localStorage.setItem(LS_RECEIPT, txt);
     });
     $('#jwks-file').addEventListener('change', async (e) => {
       const f = e.target.files && e.target.files[0];
       if (!f) return;
-      $('#jwks').value = await readFileToText(f);
+      const txt = await readFileToText(f);
+      $('#jwks').value = txt;
+      localStorage.setItem(LS_JWKS, txt);
     });
 
     // Fetch JWKS from URL
@@ -160,6 +216,7 @@
         const res = await fetch(url, { credentials: 'omit' });
         const text = await res.text();
         $('#jwks').value = text;
+        localStorage.setItem(LS_JWKS, text);
         setStatus(true, 'Fetched JWKS');
       } catch (e) {
         setStatus(false, 'Failed to fetch JWKS: ' + e.message);
@@ -174,20 +231,40 @@
         signature: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
         kid: 'demo-kid'
       };
-      $('#receipt').value = JSON.stringify(sample, null, 2);
+      const txt = JSON.stringify(sample, null, 2);
+      $('#receipt').value = txt;
+      localStorage.setItem(LS_RECEIPT, txt);
     });
+
+    // Format/minify buttons
+    $('#receipt-format').addEventListener('click', () => formatTextarea('receipt'));
+    $('#receipt-minify').addEventListener('click', () => minifyTextarea('receipt'));
+    $('#jwks-format').addEventListener('click', () => formatTextarea('jwks'));
+    $('#jwks-minify').addEventListener('click', () => minifyTextarea('jwks'));
+    $('#copy-hdr').addEventListener('click', () => copyText($('#hdr').textContent));
+    $('#copy-result').addEventListener('click', () => copyText($('#result').textContent));
+
+    // Restore from localStorage
+    (function restore() {
+      const jwks = localStorage.getItem(LS_JWKS);
+      const rcpt = localStorage.getItem(LS_RECEIPT);
+      if (jwks) $('#jwks').value = jwks;
+      if (rcpt) $('#receipt').value = rcpt;
+    })();
 
     // Verify
     $('#verify').addEventListener('click', async () => {
+      const btn = $('#verify');
+      btn.disabled = true; btn.textContent = 'Verifying…';
       $('#result').textContent = '';
       $('#hdr').textContent = '';
       const receiptTxt = $('#receipt').value.trim();
       const jwksTxt = $('#jwks').value.trim();
-      if (!receiptTxt || !jwksTxt) return setStatus(false, 'Provide both receipt and JWKS');
+      if (!receiptTxt || !jwksTxt) { setStatus(false, 'Provide both receipt and JWKS'); btn.disabled = false; btn.textContent = 'Verify'; return; }
 
       const receipt = parseJsonSafe(receiptTxt);
       const jwks = parseJsonSafe(jwksTxt);
-      if (!receipt || !jwks) return setStatus(false, 'Invalid JSON in receipt or JWKS');
+      if (!receipt || !jwks) { setStatus(false, 'Invalid JSON in receipt or JWKS'); btn.disabled = false; btn.textContent = 'Verify'; return; }
 
       const header = decodeHeaderB64u(receipt.protected || '');
       if (header) $('#hdr').textContent = JSON.stringify(header, null, 2);
@@ -196,7 +273,7 @@
         // Quick check first
         if (window.CertNode && window.CertNode.quickCheck) {
           const qc = await window.CertNode.quickCheck(receipt);
-          if (!qc.ok) return setStatus(false, `Quick check failed: ${qc.reason}`);
+          if (!qc.ok) { setStatus(false, `Quick check failed: ${qc.reason}`); btn.disabled = false; btn.textContent = 'Verify'; return; }
         }
         // Full WebCrypto verify
         const res = await window.CertNode.verifyReceipt(receipt, jwks);
@@ -204,16 +281,22 @@
           setStatus(true, 'Receipt valid');
           $('#result').textContent = JSON.stringify({ ok: true }, null, 2);
         } else {
-          setStatus(false, (res && res.reason) ? ('Invalid: ' + res.reason) : 'Invalid receipt');
-          $('#result').textContent = JSON.stringify(res || { ok: false }, null, 2);
+          const reason = (res && res.reason) || 'signature_invalid';
+          const friendly = reasonMap[reason] || reason;
+          setStatus(false, 'Invalid: ' + friendly);
+          $('#result').textContent = JSON.stringify({ ok: false, reason, message: friendly }, null, 2);
         }
       } catch (e) {
-        setStatus(false, 'Verification error: ' + (e && e.message ? e.message : e));
-        $('#result').textContent = String(e && e.stack ? e.stack : e);
+        const reason = e && e.message ? e.message : 'error';
+        const friendly = reasonMap[reason] || String(reason);
+        setStatus(false, 'Verification error: ' + friendly);
+        $('#result').textContent = JSON.stringify({ ok: false, error: String(reason), message: friendly }, null, 2);
       }
+      btn.disabled = false; btn.textContent = 'Verify';
     });
 
     $('#clear').addEventListener('click', clearAll);
   </script>
 </body>
 </html>
+

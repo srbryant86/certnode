@@ -45,7 +45,10 @@ function pad(n){ return n.toString().padStart(2,'0'); }
     listIfExists('tools/verify-receipt.js'),
     listIfExists('tools/verify-lib.js'),
     listIfExists('sdk/node/index.js'),
+    listIfExists('sdk/node/index.d.ts'),
     listIfExists('sdk/web/index.js'),
+    listIfExists('sdk/web/index.d.ts'),
+    listIfExists('web/js/verify.js'),
     listIfExists('web/verify.html')
   ].filter(Boolean).join('\n- ');
 

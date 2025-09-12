@@ -15,7 +15,10 @@
 - ✅ tools/verify-receipt.js
 - ✅ tools/verify-lib.js
 - ✅ sdk/node/index.js
-- —
+- ✅ sdk/node/index.d.ts
+- ✅ sdk/web/index.js
+- ✅ sdk/web/index.d.ts
+- ✅ web/js/verify.js
 - ✅ web/verify.html
 
 ## Endpoints

@@ -52,6 +52,21 @@ function createKmsAdapter({ sdk, keyId, client }) {
   let failCount = 0;
   let breakerOpenUntil = 0;
 
+  let __lastKmsError = null;
+  function __recordKmsError(e) {
+    __lastKmsError = { type: e && (e.name || e.code || 'Error'), at: new Date().toISOString() };
+  }
+  function getCircuitState() {
+    const now = Date.now();
+    const open = (typeof breakerOpenUntil === 'number') && now < breakerOpenUntil;
+    return {
+      state: open ? 'open' : 'closed',
+      opens: typeof failCount === 'number' ? failCount : 0,
+      last_open_ms_ago: (open ? 0 : (typeof breakerOpenUntil === 'number' ? Math.max(0, now - breakerOpenUntil) : null))
+    };
+  }
+  function getLastKmsError() { return __lastKmsError; }
+
   let cachedJwk = null;
   let cachedKid = null;
 
@@ -104,7 +119,12 @@ function createKmsAdapter({ sdk, keyId, client }) {
           failCount++;
           if (failCount >= brkThresh) {
             breakerOpenUntil = Date.now() + brkCooldown;
+            const { emit } = require('../plugins/metrics');
+            emit('kms_circuit_open', 1, { fail_count: failCount });
           }
+          __recordKmsError(e);
+          const { emit } = require('../plugins/metrics');
+          emit('kms_error', 1, { error_type: name || e.code || 'Error', retryable });
           e.retryable = !!retryable;
           throw e;
         }
@@ -130,7 +150,7 @@ function createKmsAdapter({ sdk, keyId, client }) {
     return derToJose(Buffer.from(out.Signature));
   }
 
-  return { getPublicJwk, getKid, signRaw };
+  return { getPublicJwk, getKid, signRaw, getCircuitState, getLastKmsError };
 }
 
 module.exports = { createKmsAdapter };

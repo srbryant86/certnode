@@ -44,6 +44,11 @@ const server = http.createServer(async (req, res) => {
     return healthHandler(req, res);
   }
 
+  // healthz
+  if (req.method === "GET" && url.pathname === "/healthz") {
+    return healthHandler(req, res);
+  }
+
   // /v1/sign with rate limit
   if (req.method === "POST" && url.pathname === "/v1/sign") {
     const gate = limiter.allow(req);

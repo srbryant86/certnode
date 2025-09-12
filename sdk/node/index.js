@@ -2,6 +2,7 @@
 // sdk/node/index.js 
 // Minimal Node SDK for CertNode receipt verification (ES256 only, no deps)
 const crypto = require('crypto');
+const { JWKSManager } = require('./jwks-manager');
 
 // Utility functions (copied from api/src/util/)
 function isObject(v) {
@@ -200,5 +201,5 @@ async function verifyReceipt({ receipt, jwks }) {
   }
 }
 
-module.exports = { verifyReceipt };
+module.exports = { verifyReceipt, JWKSManager };
 //---------------------------------------------------------------------

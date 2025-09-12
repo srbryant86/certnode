@@ -58,6 +58,7 @@ export function verifyReceipt(options: VerifyOptions): Promise<VerifyResult>;
 
 declare const _default: {
   verifyReceipt: typeof verifyReceipt;
+  JWKSManager: typeof JWKSManager;
 };
 
 export default _default;
@@ -67,6 +68,15 @@ declare global {
   interface Window {
     CertNode?: {
       verifyReceipt: typeof verifyReceipt;
+      JWKSManager: typeof JWKSManager;
     };
   }
+}
+
+export class JWKSManager {
+  constructor(options?: { ttlMs?: number });
+  getFresh(): JWKS | null;
+  setFromObject(jwks: JWKS): JWKS;
+  fetchFromUrl(url: string): Promise<JWKS>;
+  thumbprints(jwks?: JWKS): Promise<string[]>;
 }

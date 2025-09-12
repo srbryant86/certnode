@@ -13,12 +13,17 @@ Minimal, dependency‑free Node.js SDK for verifying CertNode receipts (ES256 / 
 const { verifyReceipt } = require('@certnode/sdk');
 
 (async () => {
+  // Optional: JWKS caching helper (fetch + TTL)
+  const { JWKSManager, verifyReceipt } = require('@certnode/sdk');
+
+  const jwksMgr = new JWKSManager({ ttlMs: 300000 }); // 5 minutes
+  // Load once from file/URL (example shows in-memory object)
   // Example JWKS (use your service JWKS)
-  const jwks = {
+  const jwks = jwksMgr.setFromObject({
     keys: [
       // { kty: 'EC', crv: 'P-256', x: '...', y: '...', kid: '...' }
     ]
-  };
+  });
 
   // Example receipt from CertNode /v1/sign
   const receipt = {
@@ -51,6 +56,7 @@ const { verifyReceipt } = require('@certnode/sdk');
 - Only ES256 (ECDSA P‑256) is supported.
 - Uses RFC8785 JCS canonicalization for payload hashing when `payload_jcs_sha256` is present.
 - No dependencies; uses Node `crypto` only.
+ - Optional JWKS cache helper included as `JWKSManager` (TTL + ETag/Last‑Modified)
 
 ## Obtaining JWKS
 
@@ -67,4 +73,3 @@ Inside `sdk/node`:
 ## License
 
 MIT
-

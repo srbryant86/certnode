@@ -34,4 +34,12 @@ export interface VerifyOptions {
 }
 
 export function verifyReceipt(options: VerifyOptions): Promise<VerifyResult>;
+
+export class JWKSManager {
+  constructor(options?: { ttlMs?: number, fetcher?: (url: string, headers?: Record<string, string>) => Promise<{ status: number, headers: Record<string, string>, body: string }> });
+  getFresh(): JWKS | null;
+  setFromObject(jwks: JWKS): JWKS;
+  fetchFromUrl(url: string): Promise<JWKS>;
+  thumbprints(jwks?: JWKS): string[];
+}
 //---------------------------------------------------------------------

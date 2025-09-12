@@ -13,10 +13,11 @@ ESM browser SDK for verifying CertNode receipts using WebCrypto (ES256 / P‑256
 
 ```html
 <script type="module">
-  import { verifyReceipt } from '@certnode/sdk-web';
+  import { verifyReceipt, JWKSManager } from '@certnode/sdk-web';
   // Or: import CertNode from '@certnode/sdk-web';
 
-  const jwks = { keys: [ /* { kty:'EC', crv:'P-256', x:'...', y:'...', kid:'...' } */ ] };
+  const jwksMgr = new JWKSManager({ ttlMs: 300000 });
+  const jwks = jwksMgr.setFromObject({ keys: [ /* { kty:'EC', crv:'P-256', x:'...', y:'...', kid:'...' } */ ] });
   const receipt = { /* protected, payload, signature, kid, ... */ };
 
   const result = await verifyReceipt({ receipt, jwks });
@@ -29,6 +30,7 @@ ESM browser SDK for verifying CertNode receipts using WebCrypto (ES256 / P‑256
 - Only ES256 (ECDSA P‑256) is supported.
 - Uses RFC8785 JCS for canonicalization when `payload_jcs_sha256` is present.
 - No dependencies; requires a browser with WebCrypto support.
+ - Optional JWKS cache helper included as `JWKSManager` (TTL + ETag/Last‑Modified)
 
 ## Types
 
@@ -37,4 +39,3 @@ ESM browser SDK for verifying CertNode receipts using WebCrypto (ES256 / P‑256
 ## License
 
 MIT
-

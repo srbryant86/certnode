@@ -2,6 +2,7 @@
 // sdk/web/index.js
 // Browser SDK for CertNode receipt verification (ES modules)
 // Uses WebCrypto API for cryptographic operations
+import { JWKSManager } from './jwks-manager.js';
 
 // Utility functions for JCS canonicalization
 function isObject(v) {
@@ -200,5 +201,6 @@ if (typeof window !== 'undefined') {
   window.CertNode.verifyReceipt = verifyReceipt;
 }
 
-export default { verifyReceipt };
+export { JWKSManager };
+export default { verifyReceipt, JWKSManager };
 //---------------------------------------------------------------------

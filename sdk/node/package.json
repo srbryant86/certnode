@@ -1,0 +1,31 @@
+{
+  "name": "@certnode/sdk",
+  "version": "1.0.0",
+  "description": "Minimal Node SDK for CertNode receipt verification",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "certnode",
+    "receipt",
+    "verification",
+    "es256",
+    "ecdsa",
+    "jws",
+    "cryptography"
+  ],
+  "author": "CertNode",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/srbryant86/certnode.git",
+    "directory": "sdk/node"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "README.md"
+  ]
+}

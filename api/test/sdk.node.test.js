@@ -17,7 +17,8 @@ function publicJwkFromKey(publicKey) {
 }
 
 // Happy path
-(function(){
+async function testHappyPath() {
+  console.log('Testing happy path...');
   const { privateKey, publicKey } = generateKeyPairSync('ec', { namedCurve: 'P-256' });
   const jwk = publicJwkFromKey(publicKey);
   const kid = jwkThumbprint(jwk);
@@ -35,12 +36,14 @@ function publicJwkFromKey(publicKey) {
   const receipt = { protected: protB64, signature: sigB64, payload, kid, payload_jcs_sha256, receipt_id };
   const jwks = { keys: [jwk] };
 
-  const ok = verifyReceipt(receipt, jwks);
+  const ok = await verifyReceipt({ receipt, jwks });
   assert.strictEqual(ok.ok, true, `expected ok:true got ${JSON.stringify(ok)}`);
-})();
+  console.log('✓ Happy path test passed');
+}
 
 // Negative: mutated payload must fail
-(function(){
+async function testMutatedPayload() {
+  console.log('Testing mutated payload detection...');
   const { privateKey, publicKey } = generateKeyPairSync('ec', { namedCurve: 'P-256' });
   const jwk = publicJwkFromKey(publicKey);
   const kid = jwkThumbprint(jwk);
@@ -56,9 +59,22 @@ function publicJwkFromKey(publicKey) {
   const receipt = { protected: protB64, signature: sigB64, payload: { hello: 'world', n: 43 }, kid };
   const jwks = { keys: [jwk] };
 
-  const res = verifyReceipt(receipt, jwks);
+  const res = await verifyReceipt({ receipt, jwks });
   assert.strictEqual(res.ok, false, 'mutated payload should fail');
-})();
+  console.log('✓ Mutated payload test passed');
+}
 
-console.log('sdk.node tests passed');
+async function runAllTests() {
+  try {
+    await testHappyPath();
+    await testMutatedPayload();
+    console.log('sdk.node tests passed');
+  } catch (error) {
+    console.error('❌ SDK test failed:', error.message);
+    console.error(error.stack);
+    process.exit(1);
+  }
+}
+
+runAllTests();
 //---------------------------------------------------------------------

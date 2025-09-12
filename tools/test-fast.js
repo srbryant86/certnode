@@ -20,6 +20,8 @@ const testFiles = [
   'api/test/errors.test.js',
   'api/test/request-id.test.js',
   'api/test/payload-size.test.js'
+  , 'api/test/jwks.integrity.test.js'
+  , 'api/test/jwks.rotate.test.js'
 ];
 
 async function runTest(testFile) {

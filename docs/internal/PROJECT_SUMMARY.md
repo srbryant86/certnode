@@ -41,12 +41,13 @@ Signing Input → AWS KMS RAW ECDSA_SHA_256 (prod) → DER→JOSE → Receipt
 - Node 20, CommonJS in /api. No secrets in repository.
 - Single production dependency: `@aws-sdk/client-kms`
 
-## Completed Application Layer Tasks (a1-a21)
+## Completed Application Layer Tasks (a1-a23)
 - **a1-a3** — Core signing, crypto utils, KMS integration with resilience
 - **a4-a8** — Environment guards, logging/metrics, dev tools, security headers, validation
 - **a9-a12** — Smoke scripts, rate limiting (v1+v2), JWKS tooling
 - **a13-a16** — Dev JWKS endpoint, CORS hardening, OpenAPI spec, offline CLI verifier
 - **a17-a21** — Enhanced errors, SDK verification, WebCrypto, correlation IDs, payload size controls
+- **a23** — Health monitoring: /healthz endpoint, structured console metrics, KMS circuit state exposure
 
 ## Quality Gates
 - **Fast Test Suite**: `node tools/test-fast.js` — all unit tests with timeouts

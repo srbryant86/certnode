@@ -25,6 +25,7 @@
 | **a19** | Browser WebCrypto | `web/js/verify.js` | `api/test/verify.sdk.browser.test.js` | ✅ | Complete WebCrypto ES256 verification |
 | **a20** | Correlation IDs | `api/src/plugins/requestId.js`<br/>`api/src/middleware/errorHandler.js` | `api/test/request-id.test.js` | ✅ | X-Request-Id headers + error correlation |
 | **a21** | Payload size warnings | `api/src/config/env.js`<br/>`api/src/plugins/validation.js`<br/>`api/src/routes/sign.js` | `api/test/payload-size.test.js` | ✅ | Soft warnings + hard limits + headers |
+| **a23** | Health & Metrics | `api/src/routes/health.js`<br/>`api/src/plugins/metrics.js`<br/>`api/src/aws/kms.js`<br/>`api/src/server.js` | `api/test/health.test.js` | ✅ | /healthz endpoint + structured console metrics + KMS circuit state |
 
 ## Test Coverage Matrix
 

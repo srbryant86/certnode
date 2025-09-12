@@ -5,7 +5,6 @@ const { canonicalize } = require('../util/jcs');
 const { b64u } = require('../util/kid');
 const timestamp = require('../util/timestamp');
 const { readJsonLimited, validateSignBody, toPosInt } = require('../plugins/validation');
-const { readJsonBody, validateSignRequest, enforceCanonicalSizeOrThrow } = require('../plugins/validation');
 
 function sha256(buf) { return createHash('sha256').update(buf).digest(); }
 
@@ -42,29 +41,35 @@ async function handle(req, res) {
     res.writeHead(405, { "Content-Type": "application/json" });
     return res.end(JSON.stringify({ error: "method_not_allowed" }));
   }
+  require('../plugins/metrics').emit('sign_start');
   try {
     const raw = await readJsonLimited(req, { limitBytes: toPosInt(process.env.API_MAX_BODY_BYTES, 262144) });
     const { payload, headers } = validateSignBody(raw);
     const out = await signPayload(payload, headers);
-    
+
     // Add payload size headers on success
     const responseHeaders = { "Content-Type": "application/json" };
     if (req._payloadSize !== undefined) {
       responseHeaders['X-Payload-Size'] = String(req._payloadSize);
       responseHeaders['X-Payload-Limit'] = String(require('../config/env').cfg.PAYLOAD_HARD_BYTES);
     }
-    
+
     res.writeHead(200, responseHeaders);
     res.end(JSON.stringify(out));
-  } catch (e){
+    require('../plugins/metrics').emit('sign_success');
+  } catch (e) {
+    if (typeof res.handleError === 'function') {
+      return res.handleError(e);
+    }
     const code = e.statusCode || 500;
-    res.writeHead(code, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ error: e.message || "error" }));
+    const headers = { "Content-Type": "application/json" };
+    if (req && req.id) headers['X-Request-Id'] = req.id;
+    res.writeHead(code, headers);
+    res.end(JSON.stringify({ error: e.code || 'error', message: e.message || 'error' }));
   }
 }
 
 module.exports = { signPayload, handle };
-
 
 
 

@@ -9,7 +9,9 @@
                     "test:fast": "node ../tools/test-fast.js",
                     "smoke":  "node src/index.js \u0026 sleep 1 \u0026\u0026 bash scripts/smoke.sh",
                     "smoke:win": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smoke.ps1",
-                    "smoke:node": "node ../tools/smoke-receipt.js"
+                    "smoke:node": "node ../tools/smoke-receipt.js",
+                    "benchmark": "node ../tools/benchmark.js",
+                    "benchmark:quick": "BENCH_REQUESTS=100 BENCH_WARMUP=10 node ../tools/benchmark.js"
                 },
     "dependencies":  {
                          "@aws-sdk/client-kms":  "^3.626.0"

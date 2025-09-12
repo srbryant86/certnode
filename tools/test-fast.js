@@ -4,16 +4,9 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-// Kill any stray node.exe processes on Windows
-function killStrayNodes() {
-  if (process.platform === 'win32') {
-    try {
-      require('child_process').execSync('taskkill /IM node.exe /F', { stdio: 'ignore' });
-    } catch (e) {
-      // Ignore if no processes to kill
-    }
-  }
-}
+// Note: Do NOT kill global node.exe processes.
+// Tests are run in isolated child processes with per-test timeouts.
+function killStrayNodes() { /* deprecated noop to avoid killing unrelated processes */ }
 
 // Test files to run (only if they exist)
 const testFiles = [
@@ -83,8 +76,7 @@ async function main() {
   console.log('Fast Test Runner - Starting');
   console.log('===============================');
   
-  // Kill stray processes before starting
-  killStrayNodes();
+  // No global process killing; rely on per-test timeouts
   
   const results = [];
   
@@ -93,8 +85,7 @@ async function main() {
     results.push(result);
   }
   
-  // Kill stray processes after all tests
-  killStrayNodes();
+  // No global process killing here either
   
   console.log('\n===============================');
   console.log('Test Summary:');

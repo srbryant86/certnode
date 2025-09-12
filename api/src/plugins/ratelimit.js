@@ -24,7 +24,7 @@ function createRateLimiter(opts = {}){
   const refillPerMs = capacity / windowMs;
   const buckets = new Map(); // key -> { tokens, last }
 
-  function now(){ return Date.now(); } // for tests, we can monkey-patch if needed
+  const now = typeof opts.now === 'function' ? opts.now : () => Date.now();
 
   function allow(req){
     const key = clientIp(req);
@@ -46,7 +46,12 @@ function createRateLimiter(opts = {}){
     return { ok: false, retryAfterMs, key, remaining: 0 };
   }
 
-  return { allow, capacity, windowMs };
+  function take(req){
+    const r = allow(req);
+    return Object.assign({ retryAfterSec: Math.ceil((r.retryAfterMs || 0)/1000) }, r);
+  }
+
+  return { allow, take, capacity, windowMs };
 }
 
 module.exports = { createRateLimiter, clientIp, toPosInt };

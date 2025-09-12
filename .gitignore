@@ -1,3 +1,6 @@
+
+# Ignore Windows special filename accidentally created
+nul
 .auditpack/
 .DS_Store
 node_modules/

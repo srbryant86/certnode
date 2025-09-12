@@ -7,6 +7,8 @@
    - Provides helpers: readJsonBody(req, max), validateSignRequest(obj)
 */
 const { StringDecoder } = require("string_decoder");
+const { cfg } = require('../config/env');
+const { PAYLOAD_WARN_BYTES, PAYLOAD_HARD_BYTES } = cfg;
 
 const DEFAULT_MAX = parseInt(process.env.API_MAX_BODY_BYTES || process.env.SIGN_MAX_PAYLOAD_BYTES || "262144", 10); // 256 KiB
 
@@ -134,7 +136,7 @@ function toPosInt(v, d){ const n=Number(v); return Number.isFinite(n) && n>0 ? M
 function b64uLike(s){ return typeof s==='string' && /^[A-Za-z0-9_-]{16,128}$/.test(s); }
 
 async function readJsonLimited(req, opts = {}){
-  const limitBytes = toPosInt(process.env.API_MAX_BODY_BYTES, toPosInt(opts.limitBytes, 262144));
+  const limitBytes = toPosInt(process.env.API_MAX_BODY_BYTES, toPosInt(opts.limitBytes, PAYLOAD_HARD_BYTES));
   const requireJson = opts.requireJson !== false;
   const ct = (req.headers && req.headers['content-type']) || '';
   if (requireJson && !CT_JSON.test(ct)){
@@ -143,9 +145,36 @@ async function readJsonLimited(req, opts = {}){
   let size = 0; const chunks = [];
   for await (const chunk of req){
     size += Buffer.byteLength(chunk);
-    if (size > limitBytes){ const e = new Error('payload_too_large'); e.statusCode = 413; throw e; }
+    if (size > limitBytes){ 
+      const e = new Error('payload_too_large'); 
+      e.statusCode = 413; 
+      e.details = { limit_exceeded: true };
+      throw e; 
+    }
     chunks.push(chunk);
   }
+  
+  // Track payload size on request object
+  req._payloadSize = size;
+  
+  // Check hard limit
+  if (size > PAYLOAD_HARD_BYTES) {
+    const e = new Error('payload_too_large');
+    e.statusCode = 413;
+    e.details = { limit_exceeded: true };
+    throw e;
+  }
+  
+  // Emit warning if over warn threshold
+  if (size > PAYLOAD_WARN_BYTES) {
+    console.warn(JSON.stringify({ 
+      event: 'payload_size_warning', 
+      size: size, 
+      warn: PAYLOAD_WARN_BYTES, 
+      request_id: req.id || null 
+    }));
+  }
+  
   const raw = Buffer.concat(chunks).toString('utf8');
   try { return raw ? JSON.parse(raw) : {}; } catch { const e = new Error('invalid_json'); e.statusCode = 400; throw e; }
 }

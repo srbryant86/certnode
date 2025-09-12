@@ -46,7 +46,15 @@ async function handle(req, res) {
     const raw = await readJsonLimited(req, { limitBytes: toPosInt(process.env.API_MAX_BODY_BYTES, 262144) });
     const { payload, headers } = validateSignBody(raw);
     const out = await signPayload(payload, headers);
-    res.writeHead(200, { "Content-Type": "application/json" });
+    
+    // Add payload size headers on success
+    const responseHeaders = { "Content-Type": "application/json" };
+    if (req._payloadSize !== undefined) {
+      responseHeaders['X-Payload-Size'] = String(req._payloadSize);
+      responseHeaders['X-Payload-Limit'] = String(require('../config/env').cfg.PAYLOAD_HARD_BYTES);
+    }
+    
+    res.writeHead(200, responseHeaders);
     res.end(JSON.stringify(out));
   } catch (e){
     const code = e.statusCode || 500;

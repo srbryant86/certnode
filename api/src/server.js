@@ -23,6 +23,7 @@ setupGlobalErrorHandlers();
 
 const server = http.createServer(async (req, res) => {
   const t0 = Date.now();
+  let pathname = null;
   // Attach request ID first
   attach(req, res);
   
@@ -32,13 +33,21 @@ const server = http.createServer(async (req, res) => {
   // Apply error middleware first
   errorMiddleware(req, res);
   
+  // Emit completion metric once per request
+  res.once('finish', () => {
+    try {
+      const pathOut = pathname || (req.url || '');
+      emit('request_completed', 1, { path: pathOut, method: req.method, status: res.statusCode || 0, ms: Date.now() - t0, request_id: req.id });
+    } catch (_) {}
+  });
+
   try {
   const url = new URL(req.url, `http://${req.headers.host}`);
+  pathname = url.pathname;
 
   // Apply CORS middleware first
   const corsResult = corsMiddleware(req, res);
   if (corsResult !== null) {
-    emit('request_completed', 1, { path: url.pathname, method: req.method, status: res.statusCode || 204, ms: Date.now() - t0, request_id: req.id });
     return; // CORS middleware handled the request (preflight or blocked)
   }
 
@@ -66,9 +75,7 @@ const server = http.createServer(async (req, res) => {
       });
       emit('rate_limit_triggered', 1, { path: url.pathname, capacity: limiter.capacity, remaining: gate.remaining, request_id: req.id });
       const body = JSON.stringify({ error: "rate_limited", retry_after_ms: gate.retryAfterMs });
-      res.end(body);
-      emit('request_completed', 1, { path: url.pathname, method: req.method, status: 429, ms: Date.now() - t0, request_id: req.id });
-      return;
+      return res.end(body);
     }
     emit('request_received', 1, { path: url.pathname, method: req.method, request_id: req.id });
     return signHandler(req, res);
@@ -100,7 +107,6 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(500, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ error: "internal_error" }));
       }
-      emit('request_completed', 1, { path: (req.url||''), method: req.method, status: res.statusCode || 500, ms: Date.now() - t0, request_id: req.id });
     }
   }
 });

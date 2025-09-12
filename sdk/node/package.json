@@ -1,6 +1,6 @@
 {
   "name": "@certnode/sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Minimal Node SDK for CertNode receipt verification",
   "main": "index.js",
   "types": "index.d.ts",

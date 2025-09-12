@@ -1,6 +1,6 @@
 {
   "name": "@certnode/sdk-web",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Browser SDK for CertNode receipt verification (ESM, WebCrypto)",
   "type": "module",
   "module": "index.js",

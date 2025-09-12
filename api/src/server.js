@@ -8,6 +8,7 @@ const { createCorsMiddleware } = require("./plugins/cors");
 const { setupGlobalErrorHandlers, createErrorMiddleware, asyncHandler } = require("./middleware/errorHandler");
 const { securityHeaders } = require("./plugins/security");
 const { attach } = require("./plugins/requestId");
+const { emit } = require("./plugins/metrics");
 
 const port = process.env.PORT || 3000;
 const limiter = createRateLimiter({
@@ -21,6 +22,7 @@ const errorMiddleware = createErrorMiddleware();
 setupGlobalErrorHandlers();
 
 const server = http.createServer(async (req, res) => {
+  const t0 = Date.now();
   // Attach request ID first
   attach(req, res);
   
@@ -36,6 +38,7 @@ const server = http.createServer(async (req, res) => {
   // Apply CORS middleware first
   const corsResult = corsMiddleware(req, res);
   if (corsResult !== null) {
+    emit('request_completed', 1, { path: url.pathname, method: req.method, status: res.statusCode || 204, ms: Date.now() - t0, request_id: req.id });
     return; // CORS middleware handled the request (preflight or blocked)
   }
 
@@ -61,8 +64,13 @@ const server = http.createServer(async (req, res) => {
         "X-RateLimit-Remaining": String(gate.remaining),
         "X-RateLimit-WindowMs": String(limiter.windowMs)
       });
-      return res.end(JSON.stringify({ error: "rate_limited", retry_after_ms: gate.retryAfterMs }));
+      emit('rate_limit_triggered', 1, { path: url.pathname, capacity: limiter.capacity, remaining: gate.remaining, request_id: req.id });
+      const body = JSON.stringify({ error: "rate_limited", retry_after_ms: gate.retryAfterMs });
+      res.end(body);
+      emit('request_completed', 1, { path: url.pathname, method: req.method, status: 429, ms: Date.now() - t0, request_id: req.id });
+      return;
     }
+    emit('request_received', 1, { path: url.pathname, method: req.method, request_id: req.id });
     return signHandler(req, res);
   }
 
@@ -80,6 +88,7 @@ const server = http.createServer(async (req, res) => {
   // 404
   res.writeHead(404, { "Content-Type": "application/json" });
   res.end(JSON.stringify({ error: "not_found" }));
+  emit('request_completed', 1, { path: url.pathname, method: req.method, status: 404, ms: Date.now() - t0, request_id: req.id });
   
   } catch (error) {
     // Use the error handler attached to response
@@ -91,6 +100,7 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(500, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ error: "internal_error" }));
       }
+      emit('request_completed', 1, { path: (req.url||''), method: req.method, status: res.statusCode || 500, ms: Date.now() - t0, request_id: req.id });
     }
   }
 });

@@ -9,7 +9,7 @@
 node tools/test-fast.js
 ```
 
-**Expected Output**: 
+**Expected Output** ends with  `ALL PASSED`.  
 ```
 Fast Test Runner - Starting
 ===============================
@@ -30,7 +30,7 @@ ALL PASSED
 node tools/smoke-receipt.js
 ```
 
-**Expected Output**:
+**Expected Output** ends with  `ALL PASSED`. 
 ```
 Smoke test starting...
 RECEIPT OK
@@ -41,7 +41,7 @@ RECEIPT OK
 node api/test/health.test.js
 ```
 
-**Expected Output**:
+**Expected Output** ends with  `ALL PASSED`. 
 ```
 health.test OK
 ```
@@ -85,7 +85,7 @@ curl -X POST http://localhost:3000/v1/sign \
 }
 ```
 
-## Acceptance Criteria ✅
+## Acceptance Criteria
 
 - [ ] `tools/test-fast.js` ends with "ALL PASSED"
 - [ ] `tools/smoke-receipt.js` prints "RECEIPT OK" and exits 0  
@@ -113,3 +113,116 @@ curl -X POST http://localhost:3000/v1/sign \
 - [x] `docs/TRACEABILITY.md` - Task→files→tests mapping  
 - [x] `docs/internal/TASKS_INDEX.json` - Authoritative task registry
 - [x] `docs/internal/PROJECT_SUMMARY.md` - Updated with current state
+
+
+
+
+
+# CertNode Audit Checklist
+
+One-page verification checklist for production readiness.
+
+## Fast Quality Gates
+
+1) Run Fast Test Suite
+```
+node tools/test-fast.js
+```
+Expected: ends with `ALL PASSED`.
+
+2) Smoke Test Receipt Verification
+```
+node tools/smoke-receipt.js
+```
+Expected: `RECEIPT OK` and exit code 0.
+
+3) Health Check Verification
+```
+node api/test/health.test.js
+```
+Expected: `health.test OK` and exit code 0.
+
+## Manual Verification Steps
+
+4) Check Project Structure
+```
+ls api/src/routes/sign.js          # Core signing endpoint
+ls api/src/aws/kms.js              # KMS integration with circuit breaker
+ls api/src/util/jcs.js             # RFC 8785 canonicalization
+ls api/src/plugins/validation.js   # Multi-layer input validation
+ls tools/verify-receipt.js         # Offline verification CLI
+```
+
+5) Environment Configuration (optional)
+```
+export NODE_ENV=production
+export PAYLOAD_WARN_BYTES=65536
+export PAYLOAD_HARD_BYTES=262144
+export RATE_LIMIT_RPM=120
+```
+
+6) Error Response Validation
+```
+curl -X POST http://localhost:3000/v1/sign \
+  -H "Content-Type: application/json" \
+  -d '{"invalid":true}'
+```
+Expected JSON contains: error code, message, timestamp, request_id.
+
+7) Performance Benchmark
+```
+node tools/benchmark.js
+```
+Pass: p99 < 100ms under configured load.
+
+8) JWKS Integrity and Rotation
+```
+node tools/jwks-integrity-check.js --jwks path/jwks.json
+node tools/jwks-rotate-validate.js --current path/current.json --next path/next.json
+```
+Pass: integrity OK; rotation reports overlap > 0.
+
+9) Browser Verify Page
+- Open `web/verify.html`
+- Paste/drop a real receipt and JWKS
+- Expect: “Receipt valid”, header/result displayed
+
+## Acceptance Criteria
+
+- [ ] `tools/test-fast.js` ends with "ALL PASSED"
+- [ ] `tools/smoke-receipt.js` prints "RECEIPT OK" and exits 0
+- [ ] `api/test/health.test.js` prints "health.test OK" and exits 0
+- [ ] `tools/benchmark.js` p99 < 100ms at configured load
+- [ ] `tools/jwks-integrity-check.js` succeeds on published JWKS
+- [ ] `tools/jwks-rotate-validate.js` shows overlapping keys for rotation
+- [ ] All 22 core tasks (a1–a22) present in task index
+- [ ] Zero production deps except `@aws-sdk/client-kms`
+- [ ] Error responses include request_id correlation
+- [ ] Payload size warnings trigger at configured thresholds
+- [ ] Per-IP token bucket rate limiting enforced
+- [ ] JCS canonicalization deterministic
+- [ ] Receipt verification works offline with static JWKS
+- [ ] Browser verify page validates receipts with a real JWKS
+
+## Red Flags
+
+- Test timeouts or hangs
+- Missing request correlation
+- Payload logging
+- Network dependencies in core tests
+- Non-deterministic JCS output
+- Missing circuit breaker behavior
+
+## Documentation Completeness
+
+- [x] `docs/QUALITY.md` — Evidence mapping
+- [x] `docs/TRACEABILITY.md` — Task + files + tests mapping
+- [x] `docs/internal/TASKS_INDEX.json` — Task registry
+- [x] `docs/internal/PROJECT_SUMMARY.md` — Current state
+- [x] `docs/SECURITY.md` — Security posture and reporting
+- [x] `docs/THREAT_MODEL.md` — Threats and mitigations
+- [x] `docs/ROTATION.md` — JWKS integrity and rotation guidance
+- [x] `docs/RUNBOOK.md` — Incident response
+- [x] `docs/SLOS.md` — Availability/latency SLOs
+- [x] `docs/PRIVACY.md` — Data handling
+- [x] `docs/TRUST_BOUNDARY.md` — Boundary delineation

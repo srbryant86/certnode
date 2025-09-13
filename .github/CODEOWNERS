@@ -1,0 +1,21 @@
+# See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners
+* @srbryant86
+
+# Application (API/server)
+/api/ @srbryant86
+
+# SDKs
+/sdk/ @srbryant86
+
+# Website
+/web/ @srbryant86
+
+# Tools and CI
+/.github/ @srbryant86
+/tools/ @srbryant86
+
+# Docs
+/docs/ @srbryant86
+

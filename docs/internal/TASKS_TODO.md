@@ -2,6 +2,8 @@
 
 You are operating only on the application layer. Do not change infra/secrets.
 
+Labeling: use `aNN` for application tasks. See `docs/TASK_TAXONOMY.md` for other labels (iNN, wNN, dNN, sNN, tNN, cNN, mNN, rNN, eNN, gNN).
+
 ## Completed (a1–a23)
 - a1 — Receipts-by-default: /v1/sign returns minimal receipt format
 - a2 — Crypto utils: RFC8785 JCS, DER↔JOSE, RFC7638 kid
@@ -67,4 +69,3 @@ Scope: Final production readiness assessment and deployment automation
 - No new production dependencies without architectural review
 
 > Keep commit subjects as `feat(aNN): ...` for auditability and traceability.
-

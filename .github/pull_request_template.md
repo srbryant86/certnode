@@ -21,7 +21,7 @@
 ## Checklist
 
 - [ ] Tests updated or added where appropriate
-- [ ] Docs updated where appropriate
+- [ ] Docs updated (README.md, AGENTS.md, docs/internal/*)
 - [ ] OpenAPI updated if API surface changed
 - [ ] Monitoring/metrics updated if relevant
 - [ ] Follows commit subject convention (`type(labelNN): summary`)
@@ -29,4 +29,3 @@
 ## Notes
 
 - Link issues/tasks here
-

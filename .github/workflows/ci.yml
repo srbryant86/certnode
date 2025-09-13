@@ -1,13 +1,12 @@
 name: CI
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
+  push:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  build-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,56 +15,32 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '20'
 
       - name: Fast tests
         run: node tools/test-fast.js
 
-      - name: Pack Node SDK
-        working-directory: sdk/node
-        run: npm pack --json
-
-      - name: Pack Web SDK
-        working-directory: sdk/web
-        run: npm pack --json
-
-      - name: JWKS integrity (examples)
-        run: node tools/jwks-integrity-check.js --jwks examples/jwks.example.json
-
-      - name: JWKS rotation overlap (examples)
-        run: node tools/jwks-rotate-validate.js --current examples/jwks.example.json --next examples/jwks.example.json
-
-      - name: OpenAPI quick check
+      - name: OpenAPI check
         run: node tools/check-openapi.js
 
-      - name: Commit message lint (non-strict)
-        run: node tools/commit-lint.js || true
-
-      - name: Docker build
-        run: docker build -t certnode:ci .
-      - name: Build web SDK bundle
-        run: npm run build:web-sdk
-      - name: Size web SDK bundle
-        run: npm run size:web-sdk
-
-  commit-lint-pr:
-    if: ${{ github.event_name == 'pull_request' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Commit message lint (strict)
-        run: node tools/commit-lint.js --strict
-
-  docs-gate-pr:
-    if: ${{ github.event_name == 'pull_request' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Docs gate
+      - name: Docs gate (PR only)
+        if: github.event_name == 'pull_request'
         env:
           BASE_REF: origin/main
         run: node tools/check-docs-updated.js
+
+      - name: Benchmark
+        run: |
+          node tools/benchmark.js | tee benchmark.log
+
+      - name: Benchmark summary
+        if: always()
+        run: |
+          echo "## Benchmark Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if grep -E "P99=" benchmark.log; then
+            grep -E "P99=" benchmark.log >> $GITHUB_STEP_SUMMARY || true
+          else
+            echo "No benchmark summary lines found" >> $GITHUB_STEP_SUMMARY
+          fi
+

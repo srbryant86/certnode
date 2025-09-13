@@ -1,6 +1,7 @@
 # CertNode
 
 [![CI](https://github.com/srbryant86/certnode/actions/workflows/ci.yml/badge.svg)](https://github.com/srbryant86/certnode/actions/workflows/ci.yml)
+[![Nightly Benchmark](https://github.com/srbryant86/certnode/actions/workflows/nightly-benchmark.yml/badge.svg)](https://github.com/srbryant86/certnode/actions/workflows/nightly-benchmark.yml)
 
 Tamper‑evident receipt service using ES256 (P‑256) and RFC 8785 JCS.
 

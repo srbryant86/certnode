@@ -9,9 +9,9 @@
 </head>
 <body>
   <header>
-    <div class="row" style="justify-content:space-between; align-items:center; margin:0">
+    <div class="row justify-between no-margin">
       <h1>CertNode — Verify Receipt</h1>
-      <div class="toolbar" style="margin:0">
+      <div class="toolbar no-margin">
         <button id="theme-toggle" title="Toggle theme">Theme</button>
       </div>
     </div>
@@ -22,7 +22,7 @@
       <h2>Receipt JSON</h2>
       <div class="row grid-2">
         <div class="dropzone" id="receipt-drop" role="button" tabindex="0" aria-label="Drop receipt.json here or press Enter to choose a file">Drop receipt.json here</div>
-        <div class="toolbar" style="justify-content:flex-end">
+        <div class="toolbar justify-end">
           <input type="file" id="receipt-file" accept="application/json" aria-label="Choose receipt JSON file" />
           <button id="receipt-sample">Load sample</button>
           <button id="receipt-format">Format</button>
@@ -36,13 +36,13 @@
       <h2>JWKS</h2>
       <div class="row grid-2">
         <div class="dropzone" id="jwks-drop" role="button" tabindex="0" aria-label="Drop jwks.json here or press Enter to choose a file">Drop jwks.json here</div>
-        <div class="toolbar" style="justify-content:flex-end">
+        <div class="toolbar justify-end">
           <input type="file" id="jwks-file" accept="application/json" aria-label="Choose JWKS JSON file" />
           <button id="jwks-format">Format</button>
           <button id="jwks-minify">Minify</button>
         </div>
       </div>
-      <div class="row" style="margin-top:8px">
+      <div class="row mt-8">
         <input type="url" id="jwks-url" placeholder="Optional: https://.../.well-known/jwks.json" />
         <button id="fetch-jwks">Fetch</button>
       </div>
@@ -50,25 +50,25 @@
       <div class="small muted">JWKS is cached locally in your browser for convenience.</div>
     </section>
 
-    <section class="panel" style="grid-column: 1 / -1;">
+    <section class="panel span-all">
       <h2>Verify</h2>
-      <div class="row" style="gap:8px">
+      <div class="row">
         <button id="verify">Verify</button>
         <button id="clear">Clear</button>
         <span class="small">Verification uses WebCrypto (ES256) via web/js/verify.js</span>
       </div>
-      <div id="status" class="status" style="display:none" aria-live="polite"></div>
-      <div style="margin-top:8px" class="grid-2">
+      <div id="status" class="status hidden" aria-live="polite"></div>
+      <div class="grid-2 mt-8">
         <div>
-          <div class="row" style="justify-content:space-between; align-items:center">
-            <h3 class="small" style="margin:0">Protected Header</h3>
+          <div class="row justify-between">
+            <h3 class="small no-margin">Protected Header</h3>
             <button id="copy-hdr" class="pill">Copy</button>
           </div>
           <pre id="hdr"></pre>
         </div>
         <div>
-          <div class="row" style="justify-content:space-between; align-items:center">
-            <h3 class="small" style="margin:0">Result</h3>
+          <div class="row justify-between">
+            <h3 class="small no-margin">Result</h3>
             <button id="copy-result" class="pill">Copy</button>
           </div>
           <pre id="result"></pre>
@@ -85,3 +85,4 @@
   <script type="module" src="js/verify-page.js"></script>
 </body>
 </html>
+

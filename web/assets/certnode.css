@@ -56,3 +56,13 @@ footer { padding: 12px 16px; border-top: 1px solid #1a2330; color: #8295ad; font
 .toolbar { display: flex; gap: 6px; align-items: center; }
 .pill { padding: 2px 6px; border-radius: 999px; border: 1px solid #2a3b5c; background: #14203a; color: #b9cdf0; font-size: 11px; }
 .muted { color: #8aa0bd; }
+/* Utilities */
+.justify-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+.no-margin { margin: 0 !important; }
+.mt-8 { margin-top: 8px !important; }
+.span-all { grid-column: 1 / -1; }
+.hidden { display: none; }
+/* Skip link */
+.skip-link { position: absolute; left: -999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.skip-link:focus { left: 8px; top: 8px; width: auto; height: auto; padding: 8px 12px; background: var(--accent); color: var(--text); border: 1px solid var(--accent-border); border-radius: 6px; z-index: 1000; }

@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
       - name: Fast tests
         run: node tools/test-fast.js
@@ -50,6 +51,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+          cache: 'npm'
 
       - name: Benchmark
         env:
@@ -68,3 +70,25 @@ jobs:
           else
             echo "No benchmark summary lines found" >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: Comment benchmark on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let summary;
+            try {
+              const log = fs.readFileSync('benchmark.log','utf8');
+              const lines = log.split('\n').filter(l => l.includes('P99='));
+              summary = lines.length ? lines.join('\n') : 'No P99 lines found';
+            } catch (e) {
+              summary = 'benchmark.log not found';
+            }
+            const body = `## Benchmark Summary\n\n${summary}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body
+            });

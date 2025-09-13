@@ -43,3 +43,12 @@ jobs:
 
       - name: Docker build
         run: docker build -t certnode:ci .
+
+  commit-lint-pr:
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Commit message lint (strict)
+        run: node tools/commit-lint.js --strict

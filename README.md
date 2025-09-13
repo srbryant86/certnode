@@ -16,6 +16,7 @@ Tamper-evident receipt service using ES256 (P-256) and RFC 8785 JCS.
 - Monitoring: `docs/MONITORING.md`
 - Release checklist: `docs/RELEASE.md`
 - Docker guide: `docs/DOCKER.md`
+ - Postman collection: `docs/clients/postman_collection.json`
 
 ## Fast Tests
 ```

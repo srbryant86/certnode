@@ -1,0 +1,26 @@
+{
+  "info": {
+    "name": "CertNode API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Healthz",
+      "request": { "method": "GET", "url": "http://localhost:3000/healthz" }
+    },
+    {
+      "name": "Sign Payload",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": { "mode": "raw", "raw": "{\n  \"payload\": { \"hello\": \"world\" }\n}" },
+        "url": "http://localhost:3000/v1/sign"
+      }
+    },
+    {
+      "name": "Metrics",
+      "request": { "method": "GET", "url": "http://localhost:3000/metrics" }
+    }
+  ]
+}
+

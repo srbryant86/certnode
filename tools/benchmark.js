@@ -343,9 +343,17 @@ async function runBenchmark() {
       console.log(`\nResults for ${payloadTest.name} payload:`);
       console.log(`  Duration: ${testDuration.toFixed(2)}s`);
       console.log(`  Throughput: ${results[payloadTest.name].throughput.toFixed(1)} req/s`);
-      console.log(`  Success rate: ${((1 - latencyResult.errorRate) * 100).toFixed(2)}%`);
-      console.log(`  Latency:`);
-      console.log(`    Min: ${latencyResult.min?.toFixed(2)}ms`);
+      const totalCount = (latencyResult.count || 0) + (latencyResult.errors || 0);
+      const successRate = totalCount > 0 ? ((latencyResult.count || 0) / totalCount) * 100 : 0;
+      const fmt = (v) => (typeof v === 'number' && Number.isFinite(v)) ? v.toFixed(2) + 'ms' : 'n/a';
+
+      console.log(  Success rate: %);
+      console.log(  Latency:);
+      console.log(    Min: );
+      console.log(    Avg: );
+      console.log(    P95: );
+      console.log(    P99: );
+      console.log(    Max: );
       console.log(`    Avg: ${latencyResult.avg?.toFixed(2)}ms`);
       console.log(`    P95: ${latencyResult.p95?.toFixed(2)}ms`);
       console.log(`    P99: ${latencyResult.p99?.toFixed(2)}ms`);

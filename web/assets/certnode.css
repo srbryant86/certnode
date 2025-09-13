@@ -44,6 +44,7 @@ button:hover { background: var(--accent-hover); }
 button:disabled { opacity: .6; cursor: not-allowed; }
 .dropzone { border: 1px dashed var(--drop-dash); border-radius: 6px; padding: 10px; text-align: center; color: var(--muted); font-size: 12px; }
 .dropzone.drag { background: var(--drop-hover-bg); border-color: var(--drop-hover-border); }
+.dropzone:focus-visible { outline: 2px solid var(--drop-hover-border); outline-offset: 2px; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .status { padding: 10px; border-radius: 6px; font-weight: 600; }
 .ok { background: var(--ok-bg); border: 1px solid var(--ok-border); color: var(--ok-text); }

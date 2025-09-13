@@ -2,13 +2,17 @@ const { loadLocalJwks } = require('../util/jwks');
 
 async function handle(req, res) {
   if (process.env.NODE_ENV === 'production') {
-    res.writeHead(404, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify({ error: 'not_available_in_production' }));
+    const body = { error: 'not_available_in_production' };
+    if (req && req.id) body.request_id = req.id;
+    res.writeHead(404, { 'Content-Type': 'application/json', ...(req?.id ? { 'X-Request-Id': req.id } : {}) });
+    return res.end(JSON.stringify(body));
   }
 
   if (req.method !== 'GET') {
-    res.writeHead(405, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify({ error: 'method_not_allowed' }));
+    const body = { error: 'method_not_allowed' };
+    if (req && req.id) body.request_id = req.id;
+    res.writeHead(405, { 'Content-Type': 'application/json', ...(req?.id ? { 'X-Request-Id': req.id } : {}) });
+    return res.end(JSON.stringify(body));
   }
 
   try {
@@ -19,8 +23,10 @@ async function handle(req, res) {
     });
     res.end(JSON.stringify(jwks));
   } catch (e) {
-    res.writeHead(500, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'jwks_unavailable' }));
+    const body = { error: 'jwks_unavailable' };
+    if (req && req.id) body.request_id = req.id;
+    res.writeHead(500, { 'Content-Type': 'application/json', ...(req?.id ? { 'X-Request-Id': req.id } : {}) });
+    res.end(JSON.stringify(body));
   }
 }
 

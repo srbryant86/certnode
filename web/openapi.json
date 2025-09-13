@@ -173,7 +173,17 @@
             "description": "Bad request - invalid payload or headers",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ValidationError" }
+                "schema": { "$ref": "#/components/schemas/ValidationError" },
+                "examples": {
+                  "missingPayload": {
+                    "summary": "Missing payload",
+                    "value": { "error": "missing_payload", "message": "payload is required" }
+                  },
+                  "invalidHeaders": {
+                    "summary": "Invalid headers",
+                    "value": { "error": "invalid_headers", "message": "headers.tsr must be boolean" }
+                  }
+                }
               }
             }
           },
@@ -186,7 +196,13 @@
             },
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/RateLimitError" }
+                "schema": { "$ref": "#/components/schemas/RateLimitError" },
+                "examples": {
+                  "rateLimited": {
+                    "summary": "Rate limited",
+                    "value": { "error": "rate_limited", "retry_after_ms": 1500, "request_id": "req_123" }
+                  }
+                }
               }
             }
           },
@@ -194,7 +210,13 @@
             "description": "Internal server error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "internalError": {
+                    "summary": "Generic failure",
+                    "value": { "error": "internal_error", "message": "unexpected failure", "request_id": "req_abc" }
+                  }
+                }
               }
             }
           }

@@ -55,6 +55,10 @@ This document equips agents and contributors to continue work without prior cont
    - Goal: Eliminate any remaining inline JS; ensure a11y roles/focus complete.
    - Acceptance: CSP has no `unsafe-inline`; keyboard and screen‑reader flow validated.
 
+### Recent Completions
+- w12 — Verify page hardening: inline scripts removed; CSP tightened; a11y improved for dropzones.
+- a34 — Error model consistency: standardized error schema and X-Request-Id on error responses; minor tests updated.
+
 ## Useful Commands
 - Start API: `npm run start` (or `node api/src/index.js`)
 - Compose dev: `docker compose up --build`
@@ -78,4 +82,3 @@ This document equips agents and contributors to continue work without prior cont
 - Run: `node tools/test-fast.js` to sanity‑check.
 - Pick the top “Next Steps” item; implement with minimal surface area; add/adjust tests and docs.
 - Use the commit subject convention and push each commit.
-

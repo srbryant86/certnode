@@ -5,6 +5,12 @@ CertNode is a production-ready **tamper-evident receipt service** using detached
 
 ---
 
+## Roadmap Update (2025-09-13)
+
+Completed since last update
+- w12 — Verify Page Hardening: removed inline JS; tightened CSP; added a11y attributes for dropzones
+- a34 — Error Model Consistency: standardized error bodies and X-Request-Id across routes; aligned OpenAPI; tests updated
+
 ## Roadmap Update (2025-09-12)
 
 Completed since last update

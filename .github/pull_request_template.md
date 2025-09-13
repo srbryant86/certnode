@@ -22,7 +22,10 @@
 
 - [ ] Tests updated or added where appropriate
 - [ ] Docs updated (README.md, AGENTS.md, docs/internal/*)
+- [ ] Ran `npm run docs:update` and committed generated changes (TASKS/PROJECT_SUMMARY)
+- [ ] Local docs gate passes (`node tools/check-docs-updated.js`)
 - [ ] OpenAPI updated if API surface changed
+- [ ] Benchmark passes locally (`node tools/benchmark.js`) and p99 < 100ms
 - [ ] Monitoring/metrics updated if relevant
 - [ ] Follows commit subject convention (`type(labelNN): summary`)
 

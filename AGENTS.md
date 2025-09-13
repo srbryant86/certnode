@@ -59,7 +59,8 @@ This document equips agents and contributors to continue work without prior cont
 - w12 — Verify page hardening: inline scripts removed; CSP tightened; a11y improved for dropzones.
 - a34 — Error model consistency: standardized error schema and X-Request-Id on error responses; minor tests updated.
 - bench — Benchmark script hardened: disables rate limit during bench; correct request shape; robust success/latency output.
- - ci/pr — CI benchmark summary + docs gate; PR template includes docs gate + benchmark checklist.
+- ci/pr — CI benchmark summary + docs gate; PR template includes docs gate + benchmark checklist.
+ - ci-matrix — CI runs on Node 20.x and 22.x; nightly benchmark supports manual dispatch and includes P99 summary.
 
 ## Useful Commands
 - Start API: `npm run start` (or `node api/src/index.js`)

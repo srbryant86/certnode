@@ -3,22 +3,35 @@ name: Nightly Benchmark
 on:
   schedule:
     - cron: '0 6 * * *'
+  workflow_dispatch:
 
 jobs:
   bench:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ '20.x', '22.x' ]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: ${{ matrix.node-version }}
       - name: Run benchmark
+        env:
+          API_RATE_LIMIT_MAX: '100000'
+          API_RATE_LIMIT_WINDOW_MS: '1000'
         run: |
-          node tools/benchmark.js | tee benchmark.log
+          node tools/benchmark.js | tee benchmark-${{ matrix.node-version }}.log
         shell: bash
       - name: Upload benchmark log
         uses: actions/upload-artifact@v4
         with:
-          name: benchmark-log
-          path: benchmark.log
-
+          name: benchmark-log-${{ matrix.node-version }}
+          path: benchmark-${{ matrix.node-version }}.log
+      - name: Append summary
+        if: always()
+        run: |
+          echo "### Nightly Benchmark (${{ matrix.node-version }})" >> $GITHUB_STEP_SUMMARY
+          if grep -E "P99=" benchmark-${{ matrix.node-version }}.log; then
+            grep -E "P99=" benchmark-${{ matrix.node-version }}.log >> $GITHUB_STEP_SUMMARY || true
+          fi

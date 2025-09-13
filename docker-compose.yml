@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  certnode:
+    build: .
+    image: certnode:dev
+    container_name: certnode
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      # Optional limits
+      - PAYLOAD_WARN_BYTES=65536
+      - PAYLOAD_HARD_BYTES=262144
+      - API_RATE_LIMIT_MAX=120
+      - API_RATE_LIMIT_WINDOW_MS=60000
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+

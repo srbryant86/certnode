@@ -1,0 +1,12 @@
+.git
+.github
+node_modules
+*.tgz
+examples
+docs
+.DS_Store
+.terraform
+.claude
+coverage
+dist
+

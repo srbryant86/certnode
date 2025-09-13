@@ -40,3 +40,6 @@ jobs:
 
       - name: Commit message lint (non-strict)
         run: node tools/commit-lint.js || true
+
+      - name: Docker build
+        run: docker build -t certnode:ci .

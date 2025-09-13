@@ -4,6 +4,7 @@ Tamper‑evident receipt service using ES256 (P‑256) and RFC 8785 JCS.
 
 ## Quick Links
 - Web verify page: `web/verify.html`
+- OpenAPI spec: `web/openapi.json` (served at `/openapi.json`)
 - Node SDK: `sdk/node` (package: `@certnode/sdk`)
 - Web SDK (ESM): `sdk/web` (package: `@certnode/sdk-web`)
 - CLI verifier: `tools/verify-receipt.js`
@@ -44,4 +45,9 @@ node tools/verify-receipt.js --receipt path/to/receipt.json --jwks path/to/jwks.
 - See `docs/RELEASE.md` for local publish steps and details.
 - Examples
   - Node: `examples/node-verify.js`
+  - Node (sign): `examples/node-sign.js`
   - Web:  `examples/web-embed.html`
+
+## OpenAPI Clients
+- Quick check: `node tools/check-openapi.js`
+- Simple client (Node): see `examples/node-sign.js` for calling `/v1/sign`

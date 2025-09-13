@@ -34,3 +34,6 @@ jobs:
 
       - name: JWKS rotation overlap (examples)
         run: node tools/jwks-rotate-validate.js --current examples/jwks.example.json --next examples/jwks.example.json
+
+      - name: OpenAPI quick check
+        run: node tools/check-openapi.js

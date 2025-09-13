@@ -30,6 +30,9 @@ jobs:
         run: node tools/check-docs-updated.js
 
       - name: Benchmark
+        env:
+          API_RATE_LIMIT_MAX: '100000'
+          API_RATE_LIMIT_WINDOW_MS: '1000'
         run: |
           node tools/benchmark.js | tee benchmark.log
 
@@ -43,4 +46,3 @@ jobs:
           else
             echo "No benchmark summary lines found" >> $GITHUB_STEP_SUMMARY
           fi
-

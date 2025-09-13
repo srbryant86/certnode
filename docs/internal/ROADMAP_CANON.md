@@ -46,6 +46,7 @@ Single source of truth for application-layer scope and delivery status.
 | a31 | present | Examples & dev tools | examples/*; tools/dev-generate-jwks.js |
 | a32 | present | OpenAPI/clients polish | web/openapi.json; tools/check-openapi.js; CI check |
 | a33 | present | Root scripts | package.json (root); README.md |
+| s14 | present | Web SDK bundle option | tools/build-web-sdk.js; tools/size-web-sdk.js; sdk/web/dist |
 
 ## Cross‑Cutting Items (present)
 | Label | Status  | Description | Key Files |
@@ -59,7 +60,6 @@ Single source of truth for application-layer scope and delivery status.
 - m04 — Monitoring pack (Prometheus scrape, alerts, Grafana dashboard JSON)
 - w12 — Verify hardening (CSP: no inline; a11y polish)
 - c13 — PR template, CODEOWNERS, Dependabot; consider strict commit‑lint on PRs
-- s14 — Web SDK bundle option (minified ESM; size check)
 - a34 — Error model consistency across endpoints
 - r03 — Unified `jwks-tool.js` command (integrity, rotate, thumbprints, diff)
 - e03 — Clients/Postman collection

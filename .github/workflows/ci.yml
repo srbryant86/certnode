@@ -43,6 +43,10 @@ jobs:
 
       - name: Docker build
         run: docker build -t certnode:ci .
+      - name: Build web SDK bundle
+        run: npm run build:web-sdk
+      - name: Size web SDK bundle
+        run: npm run size:web-sdk
 
   commit-lint-pr:
     if: ${{ github.event_name == 'pull_request' }}

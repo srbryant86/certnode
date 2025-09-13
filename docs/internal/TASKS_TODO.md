@@ -38,6 +38,7 @@ Labeling: use `aNN` for application tasks. See `docs/TASK_TAXONOMY.md` for other
 - a31 — Examples & Dev Tools: Node verify/sign; web embed; JWKS generator
 - a32 — OpenAPI/Clients Polish: standardized error schemas + examples; check tool; CI integration
 - a33 — Root Scripts: convenience npm scripts
+ - s14 — Web SDK Bundle Option: minified ESM and size check
 
 ## Next Tasks — Aligned Priority Order
 
@@ -64,10 +65,6 @@ Scope: PR template; CODEOWNERS; Dependabot; optional strict commit‑lint
 - Add `.github/pull_request_template.md`, `CODEOWNERS`, dependabot config
 - Acceptance: PRs show template; owners enforced; PR commit‑lint can be strict
 
-### s14 — Web SDK Bundle Option (optional)
-Scope: Minified ESM bundle and size check
-- Add build (ESBuild/Rollup) to produce small ESM; size check script
-- Acceptance: <10KB bundle; README documents usage
 
 ### a34 — Error Model Consistency
 Scope: Ensure standardized error schema across endpoints; document error map

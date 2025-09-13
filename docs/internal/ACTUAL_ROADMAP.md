@@ -32,6 +32,8 @@ Completed since last update
   - Files: web/openapi.json, tools/check-openapi.js, .github/workflows/ci.yml
 - a33 — Root Scripts: convenience npm scripts
   - Files: package.json, README.md
+\- s14 — Web SDK Bundle Option: minified ESM and size check
+  - Files: tools/build-web-sdk.js, tools/size-web-sdk.js, sdk/web/dist/, sdk/web/package.json, sdk/web/README.md
 
 Tagging & release plumbing
 - c12 — Release workflow for SDKs (tags `sdk-node-v*`, `sdk-web-v*`) with NPM_TOKEN

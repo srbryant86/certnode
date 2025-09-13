@@ -42,3 +42,6 @@ node tools/verify-receipt.js --receipt path/to/receipt.json --jwks path/to/jwks.
   - Node SDK: `git tag sdk-node-vX.Y.Z && git push --tags`
   - Web  SDK: `git tag sdk-web-vA.B.C && git push --tags`
 - See `docs/RELEASE.md` for local publish steps and details.
+- Examples
+  - Node: `examples/node-verify.js`
+  - Web:  `examples/web-embed.html`

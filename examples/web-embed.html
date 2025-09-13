@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CertNode Web Embed Example</title>
+</head>
+<body>
+  <h1>CertNode Web Embed Example</h1>
+  <p>Open the console to see verification result. This example uses the CDN ESM build.</p>
+
+  <script type="module">
+    import { verifyReceipt } from 'https://cdn.jsdelivr.net/npm/@certnode/sdk-web/+esm';
+
+    const jwks = { keys: [ /* replace with your real JWK */ ] };
+    const receipt = { /* replace with a real receipt */ };
+
+    (async () => {
+      try {
+        const result = await verifyReceipt({ receipt, jwks });
+        console.log('Verification:', result);
+      } catch (e) {
+        console.error('Verification error:', e);
+      }
+    })();
+  </script>
+</body>
+</html>
+

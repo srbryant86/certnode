@@ -1,0 +1,67 @@
+#!/bin/sh
+
+# Pre-push docs gate: ensure docs are updated when code changes
+# - Blocks push if commits being pushed modify code but do not include docs/roadmap updates
+# - Encourages running `npm run docs:update` and committing results
+#
+# Enable via:
+#   git config core.hooksPath scripts/git-hooks
+
+set -e
+
+REMOTE="$1"
+URL="$2"
+
+# Read refs from STDIN (local_ref local_sha remote_ref remote_sha)
+refs="$(cat)"
+[ -z "$refs" ] && exit 0
+
+DOCS_TOUCHED=0
+CODE_TOUCHED=0
+
+is_docs_file() {
+  case "$1" in
+    AGENTS.md|docs/*|CHANGELOG.md) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+is_code_file() {
+  case "$1" in
+    docs/*|AGENTS.md|README.md|.github/*) return 1 ;;
+    *) return 0 ;;
+  esac
+}
+
+echo "$refs" | while read -r local_ref local_sha remote_ref remote_sha; do
+  # Determine commits to push for this ref
+  if [ -z "$local_sha" ]; then
+    continue
+  fi
+  if [ "$remote_sha" = "0000000000000000000000000000000000000000" ] || [ -z "$remote_sha" ]; then
+    commits=$(git rev-list "$local_sha" --not --remotes="${REMOTE:-origin}")
+  else
+    commits=$(git rev-list "$remote_sha..$local_sha")
+  fi
+
+  for c in $commits; do
+    # List files changed in this commit
+    files=$(git diff-tree --no-commit-id --name-only -r "$c")
+    for f in $files; do
+      if is_docs_file "$f"; then DOCS_TOUCHED=1; fi
+      if is_code_file "$f"; then CODE_TOUCHED=1; fi
+    done
+  done
+done
+
+# If code changed but no docs touched, block push with guidance
+if [ "$CODE_TOUCHED" = "1" ] && [ "$DOCS_TOUCHED" = "0" ]; then
+  echo "\n[pre-push] Documentation required for code changes." >&2
+  echo "- Update AGENTS.md (Recent Completions) and docs/internal/ACTUAL_ROADMAP.md (Roadmap Update)." >&2
+  echo "- Optionally run: npm run docs:update" >&2
+  echo "- Then commit docs and push again." >&2
+  exit 1
+fi
+
+exit 0
+

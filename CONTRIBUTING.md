@@ -29,3 +29,13 @@ Environment controls
 Notes
 - If a push fails, the hook prints a message and continues (your commit is still created).
 - Hooks run locally; CI/CD should not rely on them.
+
+Pre-push docs gate (recommended)
+- Purpose: Prevent pushes of code changes without accompanying documentation updates so state stays traceable if context drops.
+- Enable via core.hooksPath (same as above):
+  1) git config core.hooksPath scripts/git-hooks
+  2) Ensure scripts/git-hooks/pre-push is executable on macOS/Linux: chmod +x scripts/git-hooks/pre-push
+- Behavior:
+  - Inspects commits being pushed; if code files changed but neither AGENTS.md nor docs/internal/ACTUAL_ROADMAP.md were touched, the push is blocked with guidance.
+  - Suggests running npm run docs:update and committing results.
+  - Does not run in CI; local-only guard.

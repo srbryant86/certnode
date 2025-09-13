@@ -2,8 +2,12 @@ const { getCircuitState, getLastKmsError } = require('../aws/kms');
 
 function handle(req, res) {
   if (req.method !== 'GET') {
-    res.writeHead(405, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify({ error: 'method_not_allowed' }));
+    const headers = { 'Content-Type': 'application/json' };
+    if (req && req.id) headers['X-Request-Id'] = req.id;
+    const body = { error: 'method_not_allowed' };
+    if (req && req.id) body.request_id = req.id;
+    res.writeHead(405, headers);
+    return res.end(JSON.stringify(body));
   }
   
   const uptime_s = Math.floor(process.uptime());

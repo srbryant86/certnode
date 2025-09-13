@@ -67,16 +67,19 @@ const server = http.createServer(async (req, res) => {
     const gate = limiter.allow(req);
     if (!gate.ok) {
       const retrySec = Math.ceil(gate.retryAfterMs/1000);
-      res.writeHead(429, {
+      const headers = {
         "Content-Type": "application/json",
         "Retry-After": String(retrySec),
         "X-RateLimit-Limit": String(limiter.capacity),
         "X-RateLimit-Remaining": String(gate.remaining),
         "X-RateLimit-WindowMs": String(limiter.windowMs)
-      });
+      };
+      if (req && req.id) headers['X-Request-Id'] = req.id;
+      res.writeHead(429, headers);
       emit('rate_limit_triggered', 1, { path: url.pathname, capacity: limiter.capacity, remaining: gate.remaining, request_id: req.id });
-      const body = JSON.stringify({ error: "rate_limited", retry_after_ms: gate.retryAfterMs });
-      return res.end(body);
+      const body = { error: "rate_limited", retry_after_ms: gate.retryAfterMs };
+      if (req && req.id) body.request_id = req.id;
+      return res.end(JSON.stringify(body));
     }
     emit('request_received', 1, { path: url.pathname, method: req.method, request_id: req.id });
     return signHandler(req, res);
@@ -99,8 +102,14 @@ const server = http.createServer(async (req, res) => {
   }
 
   // 404
-  res.writeHead(404, { "Content-Type": "application/json" });
-  res.end(JSON.stringify({ error: "not_found" }));
+  {
+    const headers = { "Content-Type": "application/json" };
+    if (req && req.id) headers['X-Request-Id'] = req.id;
+    const body = { error: "not_found" };
+    if (req && req.id) body.request_id = req.id;
+    res.writeHead(404, headers);
+    res.end(JSON.stringify(body));
+  }
   emit('request_completed', 1, { path: url.pathname, method: req.method, status: 404, ms: Date.now() - t0, request_id: req.id });
   
   } catch (error) {

@@ -21,6 +21,7 @@ function mockRes() {
   assert.strictEqual(res.statusCode, 405);
   assert.strictEqual(j.error, 'method_not_allowed');
   assert(res._headers['X-Request-Id']);
+  assert(j.request_id, 'request_id should be present in body');
   console.log('error.model.test OK');
   process.exit(0);
 })().catch((e) => { console.error(e); process.exit(1); });

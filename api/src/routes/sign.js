@@ -38,8 +38,12 @@ async function signPayload(payload, headers = {}) {
 
 async function handle(req, res) {
   if (req.method !== "POST"){
-    res.writeHead(405, { "Content-Type": "application/json" });
-    return res.end(JSON.stringify({ error: "method_not_allowed" }));
+    const headers = { "Content-Type": "application/json" };
+    if (req && req.id) headers['X-Request-Id'] = req.id;
+    const body = { error: "method_not_allowed" };
+    if (req && req.id) body.request_id = req.id;
+    res.writeHead(405, headers);
+    return res.end(JSON.stringify(body));
   }
   require('../plugins/metrics').emit('sign_start');
   try {
@@ -65,12 +69,13 @@ async function handle(req, res) {
     const headers = { "Content-Type": "application/json" };
     if (req && req.id) headers['X-Request-Id'] = req.id;
     res.writeHead(code, headers);
-    res.end(JSON.stringify({ error: e.code || 'error', message: e.message || 'error' }));
+    const body = { error: e.code || 'error', message: e.message || 'error' };
+    if (req && req.id) body.request_id = req.id;
+    res.end(JSON.stringify(body));
   }
 }
 
 module.exports = { signPayload, handle };
-
 
 
 

@@ -49,11 +49,12 @@ function handle(req, res) {
     }
     
     if (!cachedSpec) {
-      res.writeHead(503, { 'Content-Type': 'application/json' });
-      return res.end(JSON.stringify({
-        error: 'spec_unavailable',
-        message: 'OpenAPI specification could not be loaded'
-      }));
+      const headers = { 'Content-Type': 'application/json' };
+      if (req && req.id) headers['X-Request-Id'] = req.id;
+      const body = { error: 'spec_unavailable', message: 'OpenAPI specification could not be loaded' };
+      if (req && req.id) body.request_id = req.id;
+      res.writeHead(503, headers);
+      return res.end(JSON.stringify(body));
     }
     
     // Add cache headers
@@ -73,11 +74,12 @@ function handle(req, res) {
     }
     
     if (req.method !== 'GET') {
-      res.writeHead(405, { 'Content-Type': 'application/json' });
-      return res.end(JSON.stringify({
-        error: 'method_not_allowed',
-        message: 'Only GET and OPTIONS methods are supported'
-      }));
+      const headers = { 'Content-Type': 'application/json' };
+      if (req && req.id) headers['X-Request-Id'] = req.id;
+      const body = { error: 'method_not_allowed', message: 'Only GET and OPTIONS methods are supported' };
+      if (req && req.id) body.request_id = req.id;
+      res.writeHead(405, headers);
+      return res.end(JSON.stringify(body));
     }
     
     res.writeHead(200, headers);
@@ -85,11 +87,12 @@ function handle(req, res) {
     
   } catch (error) {
     console.error('Error serving OpenAPI spec:', error);
-    res.writeHead(500, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      error: 'internal_error',
-      message: 'Failed to serve OpenAPI specification'
-    }));
+    const headers = { 'Content-Type': 'application/json' };
+    if (req && req.id) headers['X-Request-Id'] = req.id;
+    const body = { error: 'internal_error', message: 'Failed to serve OpenAPI specification' };
+    if (req && req.id) body.request_id = req.id;
+    res.writeHead(500, headers);
+    res.end(JSON.stringify(body));
   }
 }
 

@@ -58,6 +58,7 @@ This document equips agents and contributors to continue work without prior cont
 ### Recent Completions
 - w12 — Verify page hardening: inline scripts removed; CSP tightened; a11y improved for dropzones.
 - a34 — Error model consistency: standardized error schema and X-Request-Id on error responses; minor tests updated.
+ - bench — Benchmark script hardened: disables rate limit during bench; correct request shape; robust success/latency output.
 
 ## Useful Commands
 - Start API: `npm run start` (or `node api/src/index.js`)

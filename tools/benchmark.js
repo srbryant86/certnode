@@ -192,7 +192,7 @@ async function runLoadTest(scenario, stats, memTracker) {
       inFlight++;
       const requestStart = performance.now();
       
-      makeRequest('/v1/sign', 'POST', payload)
+      makeRequest('/v1/sign', 'POST', { payload })
         .then((response) => {
           const latency = performance.now() - requestStart;
           stats.addLatency(latency, response.status !== 200 ? new Error(`HTTP ${response.status}`) : null);

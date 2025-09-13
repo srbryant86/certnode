@@ -34,6 +34,14 @@ if (missing.length) {
   process.exit(1);
 }
 
+// Validate error component schemas
+const comps = spec.components && spec.components.schemas;
+const requiredSchemas = ['ErrorResponse', 'ValidationError', 'RateLimitError'];
+const missingSchemas = requiredSchemas.filter(n => !comps || !comps[n]);
+if (missingSchemas.length) {
+  console.error('OpenAPI missing required schemas:', missingSchemas.join(', '));
+  process.exit(1);
+}
+
 console.log('OpenAPI check OK');
 process.exit(0);
-

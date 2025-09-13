@@ -173,57 +173,20 @@
             "description": "Bad request - invalid payload or headers",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "examples": ["invalid_payload", "payload_too_large", "invalid_headers"]
-                    }
-                  },
-                  "required": ["error"]
-                }
+                "schema": { "$ref": "#/components/schemas/ValidationError" }
               }
             }
           },
           "429": {
             "description": "Rate limit exceeded",
             "headers": {
-              "Retry-After": {
-                "description": "Seconds to wait before retrying",
-                "schema": {
-                  "type": "integer"
-                }
-              },
-              "X-RateLimit-Limit": {
-                "description": "Request limit per window",
-                "schema": {
-                  "type": "integer"
-                }
-              },
-              "X-RateLimit-Remaining": {
-                "description": "Remaining requests in current window",
-                "schema": {
-                  "type": "integer"
-                }
-              }
+              "Retry-After": { "description": "Seconds to wait before retrying", "schema": { "type": "integer" } },
+              "X-RateLimit-Limit": { "description": "Request limit per window", "schema": { "type": "integer" } },
+              "X-RateLimit-Remaining": { "description": "Remaining requests in current window", "schema": { "type": "integer" } }
             },
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "enum": ["rate_limited"]
-                    },
-                    "retry_after_ms": {
-                      "type": "integer",
-                      "description": "Milliseconds to wait before retrying"
-                    }
-                  },
-                  "required": ["error", "retry_after_ms"]
-                }
+                "schema": { "$ref": "#/components/schemas/RateLimitError" }
               }
             }
           },
@@ -231,16 +194,7 @@
             "description": "Internal server error",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "examples": ["signing_failed", "internal_error"]
-                    }
-                  },
-                  "required": ["error"]
-                }
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
               }
             }
           }
@@ -250,6 +204,32 @@
   },
   "components": {
     "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": { "type": "string" },
+          "message": { "type": "string" },
+          "request_id": { "type": "string", "description": "Correlation id if available" }
+        },
+        "required": [ "error" ]
+      },
+      "ValidationError": {
+        "allOf": [ { "$ref": "#/components/schemas/ErrorResponse" } ],
+        "description": "Validation failure: invalid payload or headers",
+        "examples": [
+          { "error": "missing_payload", "message": "payload is required" },
+          { "error": "invalid_headers", "message": "headers.tsr must be boolean" },
+          { "error": "payload_too_large", "message": "payload exceeds hard limit" }
+        ]
+      },
+      "RateLimitError": {
+        "allOf": [ { "$ref": "#/components/schemas/ErrorResponse" } ],
+        "description": "Rate limit exceeded",
+        "properties": {
+          "retry_after_ms": { "type": "integer" }
+        },
+        "required": [ "error", "retry_after_ms" ]
+      },
       "JwkThumbprint": {
         "type": "string",
         "pattern": "^[A-Za-z0-9_-]{43}$",

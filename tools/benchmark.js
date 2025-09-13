@@ -347,17 +347,13 @@ async function runBenchmark() {
       const successRate = totalCount > 0 ? ((latencyResult.count || 0) / totalCount) * 100 : 0;
       const fmt = (v) => (typeof v === 'number' && Number.isFinite(v)) ? v.toFixed(2) + 'ms' : 'n/a';
 
-      console.log(  Success rate: %);
-      console.log(  Latency:);
-      console.log(    Min: );
-      console.log(    Avg: );
-      console.log(    P95: );
-      console.log(    P99: );
-      console.log(    Max: );
-      console.log(`    Avg: ${latencyResult.avg?.toFixed(2)}ms`);
-      console.log(`    P95: ${latencyResult.p95?.toFixed(2)}ms`);
-      console.log(`    P99: ${latencyResult.p99?.toFixed(2)}ms`);
-      console.log(`    Max: ${latencyResult.max?.toFixed(2)}ms`);
+      console.log(`  Success rate: ${successRate.toFixed(2)}%`);
+      console.log(`  Latency:`);
+      console.log(`    Min: ${fmt(latencyResult.min)}`);
+      console.log(`    Avg: ${fmt(latencyResult.avg)}`);
+      console.log(`    P95: ${fmt(latencyResult.p95)}`);
+      console.log(`    P99: ${fmt(latencyResult.p99)}`);
+      console.log(`    Max: ${fmt(latencyResult.max)}`);
       
       if (memoryResult) {
         console.log(`  Memory:`);

@@ -49,13 +49,19 @@ function verifyDetached(args, opts = {}) {
 
 // Dev-only HTTP handler (NODE_ENV !== 'production')
 async function handle(req, res) {
+  const withReqId = (headers = {}) => ({
+    ...headers,
+    ...(req && req.id ? { 'X-Request-Id': req.id } : {})
+  });
+  const withBodyReqId = (obj) => (req && req.id ? { ...obj, request_id: req.id } : obj);
+
   if (process.env.NODE_ENV === 'production') {
-    res.writeHead(404, { 'Content-Type':'application/json' });
-    return res.end(JSON.stringify({ error:'not_found' }));
+    const headers = withReqId({ 'Content-Type':'application/json' });
+    return res.writeHead(404, headers).end(JSON.stringify(withBodyReqId({ error:'not_found' })));
   }
   if (req.method !== 'POST') {
-    res.writeHead(405, { 'Content-Type':'application/json' });
-    return res.end(JSON.stringify({ error:'method_not_allowed' }));
+    const headers = withReqId({ 'Content-Type':'application/json' });
+    return res.writeHead(405, headers).end(JSON.stringify(withBodyReqId({ error:'method_not_allowed' })));
   }
   let body = '';
   req.on('data', c => body += c);
@@ -63,11 +69,13 @@ async function handle(req, res) {
     try {
       const { payload, receipt } = JSON.parse(body||'{}');
       const out = verifyDetached({ payload, protected: (receipt||{}).protected, signature: (receipt||{}).signature });
-      res.writeHead(200, { 'Content-Type':'application/json' });
+      const headers = withReqId({ 'Content-Type':'application/json' });
+      res.writeHead(200, headers);
       res.end(JSON.stringify(out));
     } catch (e) {
-      res.writeHead(400, { 'Content-Type':'application/json' });
-      res.end(JSON.stringify({ error:'bad_request' }));
+      const headers = withReqId({ 'Content-Type':'application/json' });
+      res.writeHead(400, headers);
+      res.end(JSON.stringify(withBodyReqId({ error:'invalid_json', message: 'Invalid JSON in request body' })));
     }
   });
 }

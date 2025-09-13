@@ -252,7 +252,12 @@ async function runBenchmark() {
   
   const serverProcess = spawn('node', ['api/src/index.js'], {
     stdio: 'pipe',
-    cwd: process.cwd()
+    cwd: process.cwd(),
+    env: {
+      ...process.env,
+      API_RATE_LIMIT_MAX: String(config.testRequests * 10),
+      API_RATE_LIMIT_WINDOW_MS: '1000'
+    }
   });
   
   let serverReady = false;
@@ -390,3 +395,5 @@ if (require.main === module) {
 }
 
 module.exports = { runBenchmark, LatencyStats, MemoryTracker };
+
+

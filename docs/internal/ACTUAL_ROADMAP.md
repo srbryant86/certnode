@@ -13,7 +13,8 @@ Completed since last update
 - a23 (bench) — Performance benchmark script fixes: correct /v1/sign request shape; disable rate-limiting during bench; resilient output
 - a35 — Verify Route Alignment: dev verify route standardized to error model; tests added
 - w13 — Verify Page A11y Polish: aria-live status, labelled file inputs, skip link
- - s15 — SDK-web Publish Readiness: added types field, SRI tool, README CDN/SRI; CI builds/sizes web SDK
+- s15 — SDK-web Publish Readiness: added types field, SRI tool, README CDN/SRI; CI builds/sizes web SDK
+ - t15 — Fuzz/Edge Tests: added validation fuzz cases for invalid JSON, unknown fields, kid variants, and tsr type
 
 ## Roadmap Update (2025-09-12)
 

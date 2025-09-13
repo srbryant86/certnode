@@ -64,7 +64,8 @@ This document equips agents and contributors to continue work without prior cont
 - ci-release — Release workflows run tests on Node 20/22; publish on Node 20 only; CI splits benchmark into a soft-fail job.
  - a35 — Verify route aligned to error model (request_id + headers) and tests added.
 - w13 — Verify page a11y polish (aria-live on status, labelled file inputs, skip link).
- - s15 — SDK-web publish readiness: added types field, SRI tool, README CDN/SRI examples; CI builds and sizes web SDK.
+- s15 — SDK-web publish readiness: added types field, SRI tool, README CDN/SRI examples; CI builds and sizes web SDK.
+ - t15 — Fuzz/edge tests: added validation fuzz cases for invalid JSON, unknown fields, kid variants, and tsr type.
 
 ## Useful Commands
 - Start API: `npm run start` (or `node api/src/index.js`)

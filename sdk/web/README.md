@@ -41,3 +41,26 @@ ESM browser SDK for verifying CertNode receipts using WebCrypto (ES256 / P‑256
 ## License
 
 MIT
+
+## CDN & SRI
+
+If you prefer loading from a CDN, you can use jsDelivr and optionally add Subresource Integrity (SRI).
+
+Compute SRI:
+
+```
+npm run build:web-sdk
+node tools/generate-sri.js
+```
+
+Then include the script:
+
+```html
+<script
+  type="module"
+  integrity="sha384-..."
+  crossorigin="anonymous"
+  src="https://cdn.jsdelivr.net/npm/@certnode/sdk-web@X.Y.Z/dist/index.esm.min.js"></script>
+```
+
+

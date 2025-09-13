@@ -4,6 +4,7 @@
   "description": "Browser SDK for CertNode receipt verification (ESM, WebCrypto)",
   "type": "module",
   "module": "index.js",
+  "types": "index.d.ts",
   "exports": {
     ".": {
       "import": "./index.js",

@@ -32,6 +32,12 @@ jobs:
           BASE_REF: origin/main
         run: node tools/check-docs-updated.js
 
+      - name: Build web SDK (Node 20 only)
+        if: matrix.node-version == '20.x'
+        run: |
+          npm run build:web-sdk
+          npm run size:web-sdk
+
   bench-threshold:
     runs-on: ubuntu-latest
     needs: build-test

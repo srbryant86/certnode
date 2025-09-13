@@ -17,6 +17,15 @@ Tamper‑evident receipt service using ES256 (P‑256) and RFC 8785 JCS.
 node tools/test-fast.js
 ```
 
+## Root Scripts
+- `npm run start` — start API locally
+- `npm run test:fast` — run fast unit tests
+- `npm run bench` — run performance benchmark
+- `npm run openapi:check` — verify OpenAPI contains required paths
+- `npm run sdk:pack` — pack Node and Web SDKs
+- `npm run example:sign` — sign a sample payload via API
+- `npm run example:verify` — verify a sample receipt via SDK
+
 ## Verify (CLI)
 ```
 node tools/verify-receipt.js --receipt path/to/receipt.json --jwks path/to/jwks.json

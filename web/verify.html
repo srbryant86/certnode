@@ -3,12 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'strict-dynamic'; img-src 'self' data:; connect-src 'self' *;" />
   <title>CertNode — Verify Receipt</title>
   <link rel="stylesheet" href="assets/certnode.css" />
 </head>
 <body>
   <header>
-    <h1>CertNode — Verify Receipt</h1>
+    <div class="row" style="justify-content:space-between; align-items:center; margin:0">
+      <h1>CertNode — Verify Receipt</h1>
+      <div class="toolbar" style="margin:0">
+        <button id="theme-toggle" title="Toggle theme">Theme</button>
+      </div>
+    </div>
   </header>
   <main>
     <section class="panel">
@@ -75,10 +81,16 @@
 
   <script src="js/verify.js"></script>
   <script src="js/verify-helper.js"></script>
+  <script type="module">
+    import { JWKSManager } from '../sdk/web/jwks-manager.js';
+    window.CertNode = window.CertNode || {};
+    window.CertNode.JWKSManager = JWKSManager;
+  </script>
   <script>
     const $ = (s) => document.querySelector(s);
     const LS_JWKS = 'certnode:jwks';
     const LS_RECEIPT = 'certnode:receipt';
+    const LS_THEME = 'certnode:theme';
 
     const reasonMap = {
       missing_fields: 'Receipt missing required fields (protected, payload, signature, kid).',
@@ -182,13 +194,27 @@
       localStorage.setItem(LS_JWKS, txt);
     });
 
-    // Fetch JWKS from URL
+    // Theme toggle
+    (function initTheme(){
+      const t = localStorage.getItem(LS_THEME) || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+      $('#theme-toggle').addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem(LS_THEME, next);
+      });
+    })();
+
+    // Fetch JWKS from URL (with JWKSManager)
     $('#fetch-jwks').addEventListener('click', async () => {
       const url = $('#jwks-url').value.trim();
       if (!url) return setStatus(false, 'Enter a JWKS URL');
       try {
-        const res = await fetch(url, { credentials: 'omit' });
-        const text = await res.text();
+        if (!window.CertNode || !window.CertNode.JWKSManager) throw new Error('JWKSManager unavailable');
+        const mgr = new window.CertNode.JWKSManager({ ttlMs: 300000 });
+        const jwks = await mgr.fetchFromUrl(url);
+        const text = JSON.stringify(jwks, null, 2);
         $('#jwks').value = text;
         localStorage.setItem(LS_JWKS, text);
         setStatus(true, 'Fetched JWKS');
@@ -270,6 +296,23 @@
     });
 
     $('#clear').addEventListener('click', clearAll);
+
+    // Download result
+    (function addDownload(){
+      const btn = document.createElement('button');
+      btn.textContent = 'Download Result';
+      btn.id = 'download-result';
+      document.querySelector('section.panel:last-of-type .row').appendChild(btn);
+      btn.addEventListener('click', () => {
+        const txt = $('#result').textContent.trim() || '{}';
+        const blob = new Blob([txt], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'verify-result.json';
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      });
+    })();
   </script>
 </body>
 </html>

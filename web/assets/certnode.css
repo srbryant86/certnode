@@ -1,21 +1,53 @@
-body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 0; background: #0b0f14; color: #dbe2ea; }
+:root {
+  --bg: #0b0f14;
+  --panel: #0f1520;
+  --border: #182234;
+  --text: #dbe2ea;
+  --muted: #93a6bf;
+  --accent: #1e2b43;
+  --accent-border: #2a3b5c;
+  --accent-hover: #243351;
+  --drop-dash: #2a3b5c;
+  --drop-hover-bg: #0c192e;
+  --drop-hover-border: #34507a;
+  --ok-bg: #0f2613; --ok-border: #1d5d2a; --ok-text: #b9f6c3;
+  --err-bg: #2a1313; --err-border: #642222; --err-text: #ffbaba;
+}
+
+[data-theme="light"] {
+  --bg: #f6f8fb;
+  --panel: #ffffff;
+  --border: #d8e1ee;
+  --text: #0d1b2a;
+  --muted: #4c5d73;
+  --accent: #e9eff7;
+  --accent-border: #c9d8ef;
+  --accent-hover: #dfe9f7;
+  --drop-dash: #c9d8ef;
+  --drop-hover-bg: #eff4fb;
+  --drop-hover-border: #b5c9ea;
+  --ok-bg: #e7f6ea; --ok-border: #a3d5b0; --ok-text: #0d5b2a;
+  --err-bg: #fdeaea; --err-border: #efb3b3; --err-text: #7a1010;
+}
+
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); }
 header { padding: 16px 20px; border-bottom: 1px solid #1a2330; }
 header h1 { font-size: 18px; margin: 0; }
 main { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; padding: 16px; }
-.panel { background: #0f1520; border: 1px solid #182234; border-radius: 8px; padding: 12px; }
+.panel { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
 .panel h2 { margin: 0 0 8px; font-size: 14px; color: #9bb4d0; }
 .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
-textarea { width: 100%; min-height: 180px; background: #0b101a; color: #cfe1ff; border: 1px solid #1a2434; border-radius: 6px; padding: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.4; }
-input[type="text"], input[type="url"] { width: 100%; background: #0b101a; color: #cfe1ff; border: 1px solid #1a2434; border-radius: 6px; padding: 8px; font-size: 12px; }
-button { background: #1e2b43; color: #e6f0ff; border: 1px solid #2a3b5c; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 12px; transition: background .15s ease; }
-button:hover { background: #243351; }
+textarea { width: 100%; min-height: 180px; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.4; }
+input[type="text"], input[type="url"] { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px; font-size: 12px; }
+button { background: var(--accent); color: var(--text); border: 1px solid var(--accent-border); border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 12px; transition: background .15s ease; }
+button:hover { background: var(--accent-hover); }
 button:disabled { opacity: .6; cursor: not-allowed; }
-.dropzone { border: 1px dashed #2a3b5c; border-radius: 6px; padding: 10px; text-align: center; color: #9bb4d0; font-size: 12px; }
-.dropzone.drag { background: #0c192e; border-color: #34507a; color: #cde1ff; }
+.dropzone { border: 1px dashed var(--drop-dash); border-radius: 6px; padding: 10px; text-align: center; color: var(--muted); font-size: 12px; }
+.dropzone.drag { background: var(--drop-hover-bg); border-color: var(--drop-hover-border); }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .status { padding: 10px; border-radius: 6px; font-weight: 600; }
-.ok { background: #0f2613; border: 1px solid #1d5d2a; color: #b9f6c3; }
-.err { background: #2a1313; border: 1px solid #642222; color: #ffbaba; }
+.ok { background: var(--ok-bg); border: 1px solid var(--ok-border); color: var(--ok-text); }
+.err { background: var(--err-bg); border: 1px solid var(--err-border); color: var(--err-text); }
 .warn { background: #27210f; border: 1px solid #6a5a1a; color: #ffe8a3; }
 pre { margin: 0; white-space: pre-wrap; word-wrap: break-word; }
 footer { padding: 12px 16px; border-top: 1px solid #1a2330; color: #8295ad; font-size: 12px; }
@@ -23,4 +55,3 @@ footer { padding: 12px 16px; border-top: 1px solid #1a2330; color: #8295ad; font
 .toolbar { display: flex; gap: 6px; align-items: center; }
 .pill { padding: 2px 6px; border-radius: 999px; border: 1px solid #2a3b5c; background: #14203a; color: #b9cdf0; font-size: 11px; }
 .muted { color: #8aa0bd; }
-

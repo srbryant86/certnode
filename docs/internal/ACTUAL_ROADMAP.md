@@ -10,7 +10,9 @@ CertNode is a production-ready **tamper-evident receipt service** using detached
 Completed since last update
 - w12 — Verify Page Hardening: removed inline JS; tightened CSP; added a11y attributes for dropzones
 - a34 — Error Model Consistency: standardized error bodies and X-Request-Id across routes; aligned OpenAPI; tests updated
- - a23 (bench) — Performance benchmark script fixes: correct /v1/sign request shape; disable rate-limiting during bench; resilient output
+- a23 (bench) — Performance benchmark script fixes: correct /v1/sign request shape; disable rate-limiting during bench; resilient output
+ - a35 — Verify Route Alignment: dev verify route standardized to error model; tests added
+ - w13 — Verify Page A11y Polish: aria-live status, labelled file inputs, skip link
 
 ## Roadmap Update (2025-09-12)
 

@@ -1,9 +1,9 @@
-# CertNode
+﻿# CertNode
 
 [![CI](https://github.com/srbryant86/certnode/actions/workflows/ci.yml/badge.svg)](https://github.com/srbryant86/certnode/actions/workflows/ci.yml)
 [![Nightly Benchmark](https://github.com/srbryant86/certnode/actions/workflows/nightly-benchmark.yml/badge.svg)](https://github.com/srbryant86/certnode/actions/workflows/nightly-benchmark.yml)
 
-Tamper‑evident receipt service using ES256 (P‑256) and RFC 8785 JCS.
+Tamper-evident receipt service using ES256 (P-256) and RFC 8785 JCS.
 
 ## Quick Links
 - Web verify page: `web/verify.html`
@@ -15,6 +15,7 @@ Tamper‑evident receipt service using ES256 (P‑256) and RFC 8785 JCS.
 - Rotation/integrity: `docs/ROTATION.md`, tools in `tools/`
 - Monitoring: `docs/MONITORING.md`
 - Release checklist: `docs/RELEASE.md`
+- Docker guide: `docs/DOCKER.md`
 
 ## Fast Tests
 ```
@@ -65,5 +66,17 @@ node tools/verify-receipt.js --receipt path/to/receipt.json --jwks path/to/jwks.
 - Quick check: `node tools/check-openapi.js`
 - Simple client (Node): see `examples/node-sign.js` for calling `/v1/sign`
 
+## Docker
+Build and run directly:
+```
+docker build -t certnode:latest .
+docker run --rm -p 3000:3000 -e NODE_ENV=production -e PORT=3000 certnode:latest
+```
+
+Or use compose:
+```
+docker compose up --build
+```
+
 ## Contributing
-- See `CONTRIBUTING.md` for contribution guidelines and optional auto‑push hook instructions.
+- See `CONTRIBUTING.md` for contribution guidelines and optional auto-push hook instructions.

@@ -1,0 +1,39 @@
+groups:
+  - name: certnode-slo
+    interval: 30s
+    rules:
+      # 5xx error rate > 1% over 5m
+      - alert: CertNodeHighErrorRate
+        expr: |
+          (sum by() (rate(certnode_requests_total{status=~"5.."}[5m]))
+           /
+           sum by() (rate(certnode_requests_total[5m]))) > 0.01
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate (>1% over 5m)"
+          description: "Check recent deploys or upstream dependencies."
+
+      # p99 latency > 100ms over 10m
+      - alert: CertNodeHighLatencyP99
+        expr: |
+          histogram_quantile(0.99, sum by (le) (rate(certnode_request_duration_ms_bucket[10m]))) > 100
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High p99 latency (>100ms over 10m)"
+          description: "Investigate payload size, rate limiting, and infrastructure."
+
+      # Rate limiting surge (customize threshold)
+      - alert: CertNodeRateLimitSurge
+        expr: |
+          increase(certnode_rate_limit_triggered_total[5m]) > 100
+        for: 5m
+        labels:
+          severity: info
+        annotations:
+          summary: "Rate limiting surge"
+          description: "Traffic spike or abusive client behavior."
+

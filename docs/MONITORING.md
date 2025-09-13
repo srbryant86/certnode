@@ -32,3 +32,20 @@ Suggested alerts:
 - Rate limit counters and remaining capacity
 - KMS success/error counts and breaker state over time
 
+## Drop‑in Prometheus + Grafana
+
+1) Prometheus scrape
+- Use `docs/monitoring/prometheus.yml` as a starting point.
+- Ensure the API is reachable from Prometheus and `/metrics` is exposed.
+
+2) Alerts
+- Import `docs/monitoring/alerts.yml` into Alertmanager/Prometheus rule files.
+- Customize thresholds to your traffic profile.
+
+3) Grafana dashboard
+- Import `docs/monitoring/grafana-dashboard.json` into Grafana.
+- Point the panels to your Prometheus data source.
+
+## Notes
+- The `/metrics` endpoint emits Prometheus text format; cardinality is kept low by path/method/status only.
+- If you add new endpoints, keep labels consistent and bounded to avoid metric explosions.

@@ -7,13 +7,35 @@ CertNode is a production-ready **tamper-evident receipt service** using detached
 
 ## Roadmap Update (2025-09-12)
 
-- Completed a22: Health & Metrics (healthz, structured metrics, KMS circuit state)
-- Completed a23: Performance Benchmarking (tools/benchmark.js with p95/p99 and memory tracking)
-- Next tasks realigned to a24–a27:
-  - a24 — SDK publishing (npm pack/dry‑run, README/types, versioning policy; browser distribution plan)
-  - a25 — Browser demo page polish (web/verify.html drag/drop; JWKS input; error mapping)
-  - a26 — Advanced JWKS management (refresh detection, caching, rotation tests, integrity/staleness checks)
-  - a27 — Production hardening review (security audit checklist, deployment validation, monitoring readiness)
+Completed since last update
+- a22 — Health & Metrics: /healthz endpoint, structured metrics, KMS circuit state
+- a23 — Performance Benchmarking: tools/benchmark.js (p95/p99, memory tracking)
+- a24 — SDK Publishing Prep: Node SDK README/CHANGELOG/scripts; pack/dry‑run
+  - Files: sdk/node/README.md, sdk/node/CHANGELOG.md, sdk/node/package.json
+- a25 — Browser Demo Page Polish: verify UI, UX helpers, formatting/minify, copy
+  - Files: web/verify.html, web/assets/certnode.css
+- a26 — Advanced JWKS Management: integrity + rotation tools; JWKS managers (Node/Web); docs; tests
+  - Files: tools/jwks-integrity-check.js, tools/jwks-rotate-validate.js,
+    sdk/node/jwks-manager.js, sdk/web/jwks-manager.js, docs/ROTATION.md,
+    api/test/jwks.integrity.test.js, api/test/jwks.rotate.test.js
+- a27 — Production Hardening Docs: security, privacy, threat model, runbook, SLOs; audit checklist refresh
+  - Files: docs/SECURITY.md, docs/PRIVACY.md, docs/THREAT_MODEL.md, docs/RUNBOOK.md, docs/SLOS.md, docs/AUDIT_CHECKLIST.md
+- a28 — Prometheus /metrics Endpoint + Aggregator
+  - Files: api/src/plugins/metrics.js, api/src/routes/metrics.js, api/src/server.js, api/test/metrics.endpoint.test.js
+- a29 — Nightly Benchmark Workflow
+  - Files: .github/workflows/nightly-benchmark.yml
+- a30 — Web Verify Polish: CSP meta, theme toggle (light/dark), JWKSManager integration, download result
+  - Files: web/verify.html, web/assets/certnode.css
+- a31 — Examples & Dev Tools: Node verify/sign examples; web embed; JWKS generator
+  - Files: examples/node-verify.js, examples/node-sign.js, examples/web-embed.html, tools/dev-generate-jwks.js
+- a32 — OpenAPI/Clients Polish: standard error schemas + examples; OpenAPI check tool; CI check
+  - Files: web/openapi.json, tools/check-openapi.js, .github/workflows/ci.yml
+- a33 — Root Scripts: convenience npm scripts
+  - Files: package.json, README.md
+
+Tagging & release plumbing
+- c12 — Release workflow for SDKs (tags `sdk-node-v*`, `sdk-web-v*`) with NPM_TOKEN
+  - Files: .github/workflows/release.yml, docs/RELEASE.md
 
 See docs/internal/ROADMAP_CANON.md and docs/internal/TASKS_TODO.md for authoritative, up‑to‑date lists.
 

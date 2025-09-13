@@ -1,4 +1,4 @@
-# CertNode Canonical Roadmap (a1–a27)
+# CertNode Canonical Roadmap (Application + Cross‑cutting)
 
 Single source of truth for application-layer scope and delivery status.
 
@@ -9,7 +9,7 @@ Single source of truth for application-layer scope and delivery status.
 - Zero-dependency SDKs (Node + browser)
 - AWS KMS integration (RAW ECDSA_SHA_256)
 
-## Delivery Map
+## Delivery Map (Application a1–a33)
 
 | Task | Status | Description | Key Files |
 |------|--------|-------------|-----------|
@@ -36,9 +36,33 @@ Single source of truth for application-layer scope and delivery status.
 | a21 | present | Payload size warnings | api/src/plugins/validation.js; api/src/config/env.js |
 | a22 | present | Health & metrics | api/src/routes/health.js; api/src/plugins/metrics.js |
 | a23 | present | Performance benchmarking | tools/benchmark.js; api/test/benchmark.test.js |
+| a24 | present | SDK publishing prep | sdk/node/README.md; sdk/node/CHANGELOG.md; sdk/node/package.json |
+| a25 | present | Browser demo page polish | web/verify.html; web/assets/certnode.css |
+| a26 | present | Advanced JWKS management | tools/jwks-*.js; sdk/*/jwks-manager.js; docs/ROTATION.md; api/test/jwks.*.test.js |
+| a27 | present | Production hardening docs | docs/SECURITY.md; THREAT_MODEL.md; RUNBOOK.md; SLOS.md; PRIVACY.md |
+| a28 | present | Prometheus metrics endpoint | api/src/plugins/metrics.js; api/src/routes/metrics.js; api/src/server.js |
+| a29 | present | Nightly benchmark workflow | .github/workflows/nightly-benchmark.yml |
+| a30 | present | Verify UI polish | web/verify.html; web/assets/certnode.css |
+| a31 | present | Examples & dev tools | examples/*; tools/dev-generate-jwks.js |
+| a32 | present | OpenAPI/clients polish | web/openapi.json; tools/check-openapi.js; CI check |
+| a33 | present | Root scripts | package.json (root); README.md |
 
-## Missing Components
-- None for a1–a23. See future roadmap for upcoming work.
+## Cross‑Cutting Items (present)
+| Label | Status  | Description | Key Files |
+|------|---------|-------------|-----------|
+| c12  | present | Release workflow via tags | .github/workflows/release.yml; docs/RELEASE.md |
+| c13  | present | CI: CI workflow, commit lint (non‑strict), integrity checks | .github/workflows/ci.yml; tools/commit-lint.js |
+| d10  | present | Docs: MONITORING, taxonomy, CONTRIBUTING | docs/MONITORING.md; docs/TASK_TAXONOMY.md; CONTRIBUTING.md |
+
+## Missing Components / Next Up
+- i01 — Containerization (Dockerfile + compose + GHCR build)
+- m04 — Monitoring pack (Prometheus scrape, alerts, Grafana dashboard JSON)
+- w12 — Verify hardening (CSP: no inline; a11y polish)
+- c13 — PR template, CODEOWNERS, Dependabot; consider strict commit‑lint on PRs
+- s14 — Web SDK bundle option (minified ESM; size check)
+- a34 — Error model consistency across endpoints
+- r03 — Unified `jwks-tool.js` command (integrity, rotate, thumbprints, diff)
+- e03 — Clients/Postman collection
 
 ## Future Roadmap (a24–a27)
 - a24 — SDK publishing (npm pack/dry‑run, README, types, versioning policy; plan browser distribution)
@@ -49,4 +73,3 @@ Single source of truth for application-layer scope and delivery status.
 ## Notes
 - Track detailed task scopes and acceptance in docs/internal/TASKS_TODO.md.
 - Keep commit subjects as `feat(aNN): ...` for traceability.
-

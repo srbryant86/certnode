@@ -4,7 +4,7 @@ You are operating only on the application layer. Do not change infra/secrets.
 
 Labeling: use `aNN` for application tasks. See `docs/TASK_TAXONOMY.md` for other labels (iNN, wNN, dNN, sNN, tNN, cNN, mNN, rNN, eNN, gNN).
 
-## Completed (a1–a23)
+## Completed (a1–a33)
 - a1 — Receipts-by-default: /v1/sign returns minimal receipt format
 - a2 — Crypto utils: RFC8785 JCS, DER↔JOSE, RFC7638 kid
 - a3 — KMS adapter (RAW) + resilience: retries, backoff, circuit breaker
@@ -28,8 +28,61 @@ Labeling: use `aNN` for application tasks. See `docs/TASK_TAXONOMY.md` for other
 - a21 — Payload size warnings: soft limits + hard caps + exposure headers
 - a22 — Health & Metrics: /healthz endpoint + structured console metrics + KMS circuit state
 - a23 — Performance Benchmarking: tools/benchmark.js with p95/p99 latency tracking and memory snapshots
+- a24 — SDK Publishing Prep: Node SDK README/CHANGELOG/scripts; pack/dry‑run
+- a25 — Browser Demo Page Polish: verify UI UX polish
+- a26 — Advanced JWKS Management: integrity + rotation tools; JWKS managers (Node/Web); docs; tests
+- a27 — Production Hardening Docs: security/privacy/threat model/runbook/SLOs; audit refresh
+- a28 — Prometheus /metrics Endpoint + aggregator
+- a29 — Nightly Benchmark workflow
+- a30 — Verify UI polish: CSP meta, theme toggle, JWKSManager integration, download result
+- a31 — Examples & Dev Tools: Node verify/sign; web embed; JWKS generator
+- a32 — OpenAPI/Clients Polish: standardized error schemas + examples; check tool; CI integration
+- a33 — Root Scripts: convenience npm scripts
 
-## Next Tasks (a24–a27) — Aligned Priority Order
+## Next Tasks — Aligned Priority Order
+
+### i01 — Containerization (NEXT)
+Scope: Dockerfile (multi‑stage) + docker‑compose; healthcheck; quickstart docs
+- Add production Dockerfile with minimal attack surface; expose port via ENV
+- Add compose for local dev (mount volumes optional)
+- CI: build image on PRs; build/push on tags (GHCR)
+- Acceptance: `docker compose up` runs; `/healthz` 200; CI build passes
+
+### m04 — Monitoring Pack
+Scope: Prometheus scrape example, alert rules for SLOs, Grafana dashboard JSON
+- Provide sample prometheus.yml and alerting rules
+- Provide Grafana dashboard JSON (requests, latency, rate‑limit, breaker)
+- Acceptance: dashboards import cleanly; rules validate syntax
+
+### w12 — Verify Hardening
+Scope: Remove unsafe inline; a11y polish
+- Move inline JS to module file(s); add ARIA roles/labels; focus styles
+- Acceptance: CSP passes without inline; basic a11y audit OK
+
+### c13 — Contribution/CI Tightening
+Scope: PR template; CODEOWNERS; Dependabot; optional strict commit‑lint
+- Add `.github/pull_request_template.md`, `CODEOWNERS`, dependabot config
+- Acceptance: PRs show template; owners enforced; PR commit‑lint can be strict
+
+### s14 — Web SDK Bundle Option (optional)
+Scope: Minified ESM bundle and size check
+- Add build (ESBuild/Rollup) to produce small ESM; size check script
+- Acceptance: <10KB bundle; README documents usage
+
+### a34 — Error Model Consistency
+Scope: Ensure standardized error schema across endpoints; document error map
+- Audit endpoints; update OpenAPI; add tests
+- Acceptance: shared error schemas referenced; test coverage for representative cases
+
+### r03 — Unified JWKS Tooling
+Scope: Single CLI for integrity/rotation/thumbprints/diff
+- Implement `tools/jwks-tool.js` to consolidate commands; help and examples
+- Acceptance: parity with existing tools; clear CLI UX
+
+### e03 — Clients & Collection
+Scope: Postman/HTTP collection for core endpoints
+- Provide importable collection or HTTPie scripts
+- Acceptance: collection works out‑of‑the‑box
 
 ### a24 — SDK Publishing Preparation (NEXT)
 Scope: Prepare Node SDK for npm publishing with proper metadata; stage browser packaging plan

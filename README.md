@@ -1,5 +1,7 @@
 # CertNode
 
+[![CI](https://github.com/srbryant86/certnode/actions/workflows/ci.yml/badge.svg)](https://github.com/srbryant86/certnode/actions/workflows/ci.yml)
+
 Tamper‑evident receipt service using ES256 (P‑256) and RFC 8785 JCS.
 
 ## Quick Links
@@ -60,3 +62,6 @@ node tools/verify-receipt.js --receipt path/to/receipt.json --jwks path/to/jwks.
 ## OpenAPI Clients
 - Quick check: `node tools/check-openapi.js`
 - Simple client (Node): see `examples/node-sign.js` for calling `/v1/sign`
+
+## Contributing
+- See `CONTRIBUTING.md` for contribution guidelines and optional auto‑push hook instructions.

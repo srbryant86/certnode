@@ -37,3 +37,6 @@ jobs:
 
       - name: OpenAPI quick check
         run: node tools/check-openapi.js
+
+      - name: Commit message lint (non-strict)
+        run: node tools/commit-lint.js || true

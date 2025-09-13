@@ -60,7 +60,8 @@ This document equips agents and contributors to continue work without prior cont
 - a34 — Error model consistency: standardized error schema and X-Request-Id on error responses; minor tests updated.
 - bench — Benchmark script hardened: disables rate limit during bench; correct request shape; robust success/latency output.
 - ci/pr — CI benchmark summary + docs gate; PR template includes docs gate + benchmark checklist.
- - ci-matrix — CI runs on Node 20.x and 22.x; nightly benchmark supports manual dispatch and includes P99 summary.
+- ci-matrix — CI runs on Node 20.x and 22.x; nightly benchmark supports manual dispatch and includes P99 summary.
+ - ci-release — Release workflows run tests on Node 20/22; publish on Node 20 only; CI splits benchmark into a soft-fail job.
 
 ## Useful Commands
 - Start API: `npm run start` (or `node api/src/index.js`)

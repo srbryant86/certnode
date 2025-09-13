@@ -10,19 +10,23 @@ jobs:
   publish-node:
     if: startsWith(github.ref_name, 'sdk-node-v')
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ '20.x', '22.x' ]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
       - name: Run fast tests
         run: node tools/test-fast.js
       - name: Pack Node SDK
+        if: matrix.node-version == '20.x'
         working-directory: sdk/node
         run: npm pack --json
       - name: Publish Node SDK
-        if: ${{ secrets.NPM_TOKEN != '' }}
+        if: matrix.node-version == '20.x' && secrets.NPM_TOKEN != ''
         working-directory: sdk/node
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -31,21 +35,24 @@ jobs:
   publish-web:
     if: startsWith(github.ref_name, 'sdk-web-v')
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ '20.x', '22.x' ]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
       - name: Run fast tests
         run: node tools/test-fast.js
       - name: Pack Web SDK
+        if: matrix.node-version == '20.x'
         working-directory: sdk/web
         run: npm pack --json
       - name: Publish Web SDK
-        if: ${{ secrets.NPM_TOKEN != '' }}
+        if: matrix.node-version == '20.x' && secrets.NPM_TOKEN != ''
         working-directory: sdk/web
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
-

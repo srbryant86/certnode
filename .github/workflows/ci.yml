@@ -32,8 +32,20 @@ jobs:
           BASE_REF: origin/main
         run: node tools/check-docs-updated.js
 
-      - name: Benchmark (Node 20 only)
-        if: matrix.node-version == '20.x'
+  bench-threshold:
+    runs-on: ubuntu-latest
+    needs: build-test
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Benchmark
         env:
           API_RATE_LIMIT_MAX: '100000'
           API_RATE_LIMIT_WINDOW_MS: '1000'
@@ -41,7 +53,7 @@ jobs:
           node tools/benchmark.js | tee benchmark.log
 
       - name: Benchmark summary
-        if: matrix.node-version == '20.x' && always()
+        if: always()
         run: |
           echo "## Benchmark Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY

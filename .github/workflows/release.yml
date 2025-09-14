@@ -44,6 +44,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
+      - name: Build web SDK (size gate only on 20.x)
+        if: matrix.node-version == '20.x'
+        run: |
+          npm run build:web-sdk
+          node tools/check-web-sdk-size.js
       - name: Run fast tests
         run: node tools/test-fast.js
       - name: Pack Web SDK
@@ -56,3 +61,18 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
+      - name: Release summary
+        if: matrix.node-version == '20.x' && secrets.NPM_TOKEN != ''
+        run: |
+          echo "## Web SDK Publish" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Published package version:" >> $GITHUB_STEP_SUMMARY
+          npm view @certnode/sdk-web version | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "CDN usage (jsDelivr):" >> $GITHUB_STEP_SUMMARY
+          echo '\`\`\`html' >> $GITHUB_STEP_SUMMARY
+          echo '<script type="module" src="https://cdn.jsdelivr.net/npm/@certnode/sdk-web@'$(npm view @certnode/sdk-web version)'/dist/index.esm.min.js"></script>' >> $GITHUB_STEP_SUMMARY
+          echo '\`\`\`' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "SRI (sha384) for current dist:" >> $GITHUB_STEP_SUMMARY
+          node tools/generate-sri.js | sed 's/^/  /' >> $GITHUB_STEP_SUMMARY

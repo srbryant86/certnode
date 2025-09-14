@@ -29,6 +29,10 @@ This document equips agents and contributors to continue work without prior cont
 - Docker: `docker build -t certnode:latest .` (CI builds on every push)
 - Metrics endpoint: `/metrics` (Prometheus text format)
 
+### CI Signals
+- PRs include a Benchmark Summary comment with a table of P50/P95/P99 per payload.
+- Web SDK size budget enforced (<10KB) via CI gate.
+
 ## Status & Roadmap
 - Canonical mapping: `docs/internal/ROADMAP_CANON.md`
 - Latest update & completions: `docs/internal/ACTUAL_ROADMAP.md`
@@ -65,7 +69,9 @@ This document equips agents and contributors to continue work without prior cont
  - a35 — Verify route aligned to error model (request_id + headers) and tests added.
 - w13 — Verify page a11y polish (aria-live on status, labelled file inputs, skip link).
 - s15 — SDK-web publish readiness: added types field, SRI tool, README CDN/SRI examples; CI builds and sizes web SDK.
- - t15 — Fuzz/edge tests: added validation fuzz cases for invalid JSON, unknown fields, kid variants, and tsr type.
+- t15 — Fuzz/edge tests: added validation fuzz cases for invalid JSON, unknown fields, kid variants, and tsr type.
+ - s15 — Size budget: added CI gate to fail if web SDK bundle exceeds 10KB.
+ - w12 — CSP hardening: added object-src/base-uri/frame-ancestors to verify page.
 
 ## Useful Commands
 - Start API: `npm run start` (or `node api/src/index.js`)
@@ -79,6 +85,12 @@ This document equips agents and contributors to continue work without prior cont
 - Release: `docs/RELEASE.md`
 - Security/Privacy/Threat Model/Runbook/SLOs:
   - `docs/SECURITY.md`, `docs/PRIVACY.md`, `docs/THREAT_MODEL.md`, `docs/RUNBOOK.md`, `docs/SLOS.md`
+
+## Metrics Quick Reference
+- `certnode_requests_total{method,path,status}` — total requests.
+- `certnode_request_duration_ms` — histogram for request latency.
+- `certnode_rate_limit_triggered_total` — total rate limit triggers.
+- `certnode_errors_total{method,path,status}` — total error responses (status >= 400).
 
 ## Guardrails
 - No new production dependencies without justification; prefer dev‑only for tooling.

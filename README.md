@@ -45,6 +45,11 @@ node tools/verify-receipt.js --receipt path/to/receipt.json --jwks path/to/jwks.
 ## Monitoring
 - Emit structured JSON metrics via `api/src/plugins/metrics.js`
 - See `docs/MONITORING.md` for event names, SLOs, and alert suggestions
+ - Prometheus metrics under `/metrics` include:
+   - `certnode_requests_total{method,path,status}`
+   - `certnode_request_duration_ms` histogram
+   - `certnode_rate_limit_triggered_total`
+   - `certnode_errors_total{method,path,status}` (status >= 400)
 
 ## Metrics Quickstart
 - Events (one-line JSON):
@@ -82,3 +87,4 @@ docker compose up --build
 
 ## Contributing
 - See `CONTRIBUTING.md` for contribution guidelines and optional auto-push hook instructions.
+ - CI posts a Benchmark Summary table (P50/P95/P99) on PRs for quick performance visibility.

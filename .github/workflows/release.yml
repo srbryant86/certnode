@@ -22,6 +22,15 @@ jobs:
           scope: '@certnode'
       - name: Run fast tests
         run: node tools/test-fast.js
+      - name: Assert NPM_TOKEN present
+        if: matrix.node-version == '20.x'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "${NPM_TOKEN}" ]; then
+            echo 'NPM_TOKEN GitHub secret is missing. Add it in repo Settings → Secrets → Actions.' >&2
+            exit 1
+          fi
       - name: Check if version already on npm
         if: matrix.node-version == '20.x'
         id: precheck-node
@@ -42,7 +51,7 @@ jobs:
         working-directory: sdk/node
         run: npm pack --json
       - name: Publish Node SDK
-        if: matrix.node-version == '20.x' && secrets.NPM_TOKEN != '' && steps.precheck-node.outputs.exists == 'false'
+        if: matrix.node-version == '20.x' && steps.precheck-node.outputs.exists == 'false'
         working-directory: sdk/node
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

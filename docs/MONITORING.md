@@ -49,3 +49,14 @@ Suggested alerts:
 ## Notes
 - The `/metrics` endpoint emits Prometheus text format; cardinality is kept low by path/method/status only.
 - If you add new endpoints, keep labels consistent and bounded to avoid metric explosions.
+
+## Error Responses Metric
+
+The `/metrics` endpoint also exposes a counter for error responses (status >= 400):
+
+- `certnode_errors_total{method="<method>",path="<path>",status="<status>"}`
+
+Labels are strictly bounded (method, path, status). Use this for alerting on spikes in client/server errors, for example:
+
+- Alert: `increase(certnode_errors_total[5m]) / increase(certnode_requests_total[5m]) > 0.01` (error rate > 1% for 5m)
+

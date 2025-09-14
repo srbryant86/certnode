@@ -72,6 +72,37 @@ jobs:
             echo "No benchmark summary lines found" >> $GITHUB_STEP_SUMMARY
           fi
 
+      - name: Comment benchmark table on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let lines = [];
+            try {
+              const log = fs.readFileSync('benchmark.log','utf8');
+              lines = log.split('\n').filter(l => l.startsWith('BENCH_METRICS '));
+            } catch (e) {}
+            let body = '## Benchmark Summary\n\n';
+            if (lines.length) {
+              body += '| Payload | P50 (ms) | P95 (ms) | P99 (ms) |\n|---|---:|---:|---:|\n';
+              for (const l of lines) {
+                const m = l.match(/^BENCH_METRICS\s+(\S+)\s+P50=(\S+)\s+P95=(\S+)\s+P99=(\S+)/);
+                if (m) {
+                  const [_, name, p50, p95, p99] = m;
+                  body += `| ${name} | ${p50} | ${p95} | ${p99} |\n`;
+                }
+              }
+            } else {
+              body += 'No BENCH_METRICS lines found';
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body
+            });
+
   a11y-check:
     runs-on: ubuntu-latest
     needs: build-test

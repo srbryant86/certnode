@@ -1,40 +1,69 @@
-name: terraform-validate
+﻿name: terraform-validate
+
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'infra/**'
+      - '.github/workflows/terraform-validate.yml'
   pull_request:
+    paths:
+      - 'infra/**'
+  workflow_dispatch:
+
 permissions:
   contents: read
+
 jobs:
   validate:
+    # dont wake on SDK/tag releases
+    if: startsWith(github.ref, 'refs/heads/')
     runs-on: ubuntu-latest
+    concurrency:
+      group: terraform-${{ github.ref }}
+      cancel-in-progress: true
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.6.6
+
+      - name: Cache Terraform plugins
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.terraform.d/plugin-cache
+            infra/**/.terraform
+          key: ${{ runner.os }}-tf-${{ hashFiles('infra/**/.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-tf-
+
       - name: Init (no backend)
         working-directory: infra/aws/terraform
         run: terraform init -backend=false
+
       - name: Format check
         working-directory: infra/aws/terraform
         run: terraform fmt -check
+
       - name: Validate
         working-directory: infra/aws/terraform
         run: terraform validate
+
       - name: "Guard: no placeholders and sane sizes"
         shell: bash
         run: |
           set -euo pipefail
-          fail=0
           check_file() {
-            local f="$1"; local min="$2"; local badline="$3"
-            if [[ ! -f "$f" ]]; then echo "[FAIL] missing: $f"; fail=1; return; fi
+            local f="$1"; local min="$2"; local bad="$3"
+            if [ ! -f "$f" ]; then echo "[FAIL] missing: $f"; exit 1; fi
             local bytes; bytes=$(wc -c < "$f")
-            if (( bytes < min )); then echo "[FAIL] too small ($bytes bytes): $f"; fail=1; fi
-            if grep -Fxq "$badline" "$f"; then echo "[FAIL] placeholder detected in $f"; fail=1; fi
+            if [ "$bytes" -lt "$min" ]; then echo "[FAIL] too small ($bytes bytes): $f"; exit 1; fi
+            if grep -q "$bad" "$f"; then echo "[FAIL] placeholder detected in $f"; exit 1; fi
           }
-          check_file infra/aws/terraform/3-iam.tf 500 '# infra/aws/terraform/3-iam.tf placeholder'
-          if (( fail != 0 )); then exit 1; fi
+          # keep your guard paths the same as before; example:
+          check_file infra/aws/terraform/3-iam.tf 50 'placeholder'

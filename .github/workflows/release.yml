@@ -19,18 +19,34 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
+          scope: '@certnode'
       - name: Run fast tests
         run: node tools/test-fast.js
+      - name: Check if version already on npm
+        if: matrix.node-version == '20.x'
+        id: precheck-node
+        shell: bash
+        run: |
+          PKG='@certnode/sdk'
+          VER=$(node -p "require('./sdk/node/package.json').version")
+          echo "ver=$VER" >> $GITHUB_OUTPUT
+          EXISTS=$(npm view "$PKG@$VER" version 2>/dev/null || true)
+          if [ "$EXISTS" = "$VER" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Version $VER already published; skipping publish step."
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
       - name: Pack Node SDK
         if: matrix.node-version == '20.x'
         working-directory: sdk/node
         run: npm pack --json
       - name: Publish Node SDK
-        if: matrix.node-version == '20.x' && secrets.NPM_TOKEN != ''
+        if: matrix.node-version == '20.x' && secrets.NPM_TOKEN != '' && steps.precheck-node.outputs.exists == 'false'
         working-directory: sdk/node
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
+        run: npm publish --provenance --access public
 
   publish-web:
     if: startsWith(github.ref_name, 'sdk-web-v')

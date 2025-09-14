@@ -40,6 +40,7 @@ node tools/verify-receipt.js --receipt path/to/receipt.json --jwks path/to/jwks.
 ## SDK Install
 - Node: `npm install @certnode/sdk`
 - Web:  `npm install @certnode/sdk-web`
+ - CDN/SRI: see `sdk/web/README.md` for jsDelivr usage and SRI snippet; example in `examples/web-embed.html`
 
 ## Monitoring
 - Emit structured JSON metrics via `api/src/plugins/metrics.js`

@@ -38,6 +38,7 @@ jobs:
         run: |
           npm run build:web-sdk
           npm run size:web-sdk
+          node tools/check-web-sdk-size.js
 
   bench-threshold:
     runs-on: ubuntu-latest

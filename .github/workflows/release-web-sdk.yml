@@ -1,4 +1,4 @@
-name: Release Web SDK
+﻿name: Release Web SDK
 on:
   push:
     tags: [ 'sdk-web-v*' ]
@@ -14,8 +14,14 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
-      - name: Install
-        run: npm ci
+      - name: Install (if lockfile exists)
+        shell: bash
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            echo "No package-lock.json; skipping npm ci"
+          fi
         working-directory: sdk/web
       - name: Build
         run: npm run build
@@ -72,4 +78,5 @@ jobs:
             See workflow summary for the SRI <script> snippet.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 

@@ -72,7 +72,8 @@ This document equips agents and contributors to continue work without prior cont
 - t15 — Fuzz/edge tests: added validation fuzz cases for invalid JSON, unknown fields, kid variants, and tsr type.
 - s15 — Size budget: added CI gate to fail if web SDK bundle exceeds 10KB.
 - w12 — CSP hardening: added object-src/base-uri/frame-ancestors to verify page.
- - a36 — OpenAPI: add error responses for /health (405/500) referencing shared ErrorResponse.
+- a36 — OpenAPI: add error responses for /health (405/500) referencing shared ErrorResponse.
+ - s16 — Web SDK published: @certnode/sdk-web v0.1.3 tagged; CDN/SRI docs included; CI size gate enforced.
 
 ## Useful Commands
 - Start API: `npm run start` (or `node api/src/index.js`)

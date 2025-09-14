@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="row mt-8">
-        <input type="url" id="jwks-url" placeholder="Optional: https://.../.well-known/jwks.json" />
+        <input type="url" id="jwks-url" placeholder="Optional: https://.../.well-known/jwks.json" aria-label="JWKS URL" />
         <button id="fetch-jwks">Fetch</button>
       </div>
       <textarea id="jwks" placeholder='{"keys":[{"kty":"EC","crv":"P-256","x":"...","y":"...","kid":"..."}]}'></textarea>
@@ -57,7 +57,7 @@
         <button id="clear">Clear</button>
         <span class="small">Verification uses WebCrypto (ES256) via web/js/verify.js</span>
       </div>
-      <div id="status" class="status hidden" aria-live="polite"></div>
+      <div id="status" class="status hidden" aria-live="polite" role="status"></div>
       <div class="grid-2 mt-8">
         <div>
           <div class="row justify-between">

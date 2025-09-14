@@ -15,7 +15,8 @@ Completed since last update
 - w13 — Verify Page A11y Polish: aria-live status, labelled file inputs, skip link
 - s15 — SDK-web Publish Readiness: added types field, SRI tool, README CDN/SRI; CI builds/sizes web SDK
 - t15 — Fuzz/Edge Tests: added validation fuzz cases for invalid JSON, unknown fields, kid variants, and tsr type
- - a36 — OpenAPI Consistency: added error responses for /health (405/500) referencing shared ErrorResponse
+- a36 — OpenAPI Consistency: added error responses for /health (405/500) referencing shared ErrorResponse
+ - s16 — Web SDK Publish: tagged @certnode/sdk-web v0.1.3; README + CDN/SRI docs; CI enforces size gate
 
 ## Roadmap Update (2025-09-12)
 

@@ -26,8 +26,9 @@ function stripComments(src) {
 }
 
 function build() {
-  const root = process.cwd();
-  const webDir = path.join(root, 'sdk', 'web');
+  // Resolve repo root relative to this script's directory (tools/)
+  const repoRoot = path.resolve(__dirname, '..');
+  const webDir = path.join(repoRoot, 'sdk', 'web');
   const distDir = path.join(webDir, 'dist');
 
   const index = read(path.join(webDir, 'index.js'));
@@ -48,4 +49,3 @@ function build() {
 }
 
 build();
-

@@ -1,0 +1,31 @@
+name: Auto-tag Web SDK
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'sdk/web/**' ]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - id: ver
+        shell: bash
+        run: echo "ver=$(node -p \"require('./sdk/web/package.json').version\")" >> $GITHUB_OUTPUT
+      - name: Create tag if missing
+        shell: bash
+        run: |
+          TAG="sdk-web-v${{ steps.ver.outputs.ver }}"
+          if git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "Tag exists: $TAG"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "Web SDK ${TAG#sdk-web-v}"
+          git push origin "$TAG"
+          echo "Created tag $TAG"
+

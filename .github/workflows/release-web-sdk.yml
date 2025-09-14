@@ -1,0 +1,75 @@
+name: Release Web SDK
+on:
+  push:
+    tags: [ 'sdk-web-v*' ]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install
+        run: npm ci
+        working-directory: sdk/web
+      - name: Build
+        run: npm run build
+        working-directory: sdk/web
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+        working-directory: sdk/web
+      - id: verify
+        name: Verify npm publish (poll)
+        shell: bash
+        run: |
+          PKG='@certnode/sdk-web'
+          VER=$(node -p "require('./sdk/web/package.json').version")
+          echo "ver=$VER" >> $GITHUB_OUTPUT
+          for i in {1..30}; do
+            P=$(npm view "$PKG@$VER" version 2>/dev/null || true)
+            if [ "$P" = "$VER" ]; then
+              echo "published=$VER" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+            sleep 6
+          done
+          echo "Publish not visible on npm after timeout" >&2
+          exit 1
+      - name: Generate SRI snippet
+        id: sri
+        shell: bash
+        run: |
+          URL="https://cdn.jsdelivr.net/npm/@certnode/sdk-web@${{ steps.verify.outputs.published }}/dist/index.esm.min.js"
+          node tools/generate-sri.js "$URL" > snippet.html
+          echo "url=$URL" >> $GITHUB_OUTPUT
+      - name: Job summary
+        shell: bash
+        run: |
+          echo "### Web SDK published: v${{ steps.verify.outputs.published }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**jsDelivr:** ${{ steps.sri.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**UNPKG:** https://unpkg.com/@certnode/sdk-web@${{ steps.verify.outputs.published }}/dist/index.esm.min.js" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Embed:**" >> $GITHUB_STEP_SUMMARY
+          echo '```html' >> $GITHUB_STEP_SUMMARY
+          cat snippet.html >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: sdk-web-v${{ steps.verify.outputs.published }}
+          name: Web SDK v${{ steps.verify.outputs.published }}
+          body: |
+            jsDelivr: ${{ steps.sri.outputs.url }}
+            UNPKG: https://unpkg.com/@certnode/sdk-web@${{ steps.verify.outputs.published }}/dist/index.esm.min.js
+            See workflow summary for the SRI <script> snippet.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

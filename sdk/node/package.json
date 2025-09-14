@@ -1,49 +1,49 @@
-﻿{
-    "name":  "@certnode/sdk",
-    "version":  "1.0.1",
-    "description":  "Minimal Node SDK for CertNode receipt verification",
-    "main":  "index.js",
-    "types":  "index.d.ts",
-    "exports":  {
-                    ".":  {
-                              "require":  "./index.js",
-                              "types":  "./index.d.ts"
-                          }
-                },
-    "engines":  {
-                    "node":  "\u003e=20.0.0"
-                },
-    "sideEffects":  false,
-    "publishConfig":  {
-                          "access":  "public"
-                      },
-    "homepage":  "https://github.com/srbryant86/certnode/tree/main/sdk/node",
-    "bugs":  {
-                 "url":  "https://github.com/srbryant86/certnode/issues"
-             },
-    "scripts":  {
-                    "pack":  "npm pack",
-                    "publish:dry-run":  "npm publish --dry-run"
-                },
-    "keywords":  [
-                     "certnode",
-                     "receipt",
-                     "verification",
-                     "es256",
-                     "ecdsa",
-                     "jws",
-                     "cryptography"
-                 ],
-    "author":  "CertNode",
-    "license":  "MIT",
-    "repository":  {
-                       "type":  "git",
-                       "url":  "git+https://github.com/srbryant86/certnode.git",
-                       "directory":  "sdk/node"
-                   },
-    "files":  [
-                  "index.js",
-                  "index.d.ts",
-                  "README.md"
-              ]
+{
+    "name": "@certnode/sdk",
+    "version": "1.0.2",
+    "description": "Minimal Node SDK for CertNode receipt verification",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "exports": {
+        ".": {
+            "require": "./index.js",
+            "types": "./index.d.ts"
+        }
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "sideEffects": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "homepage": "https://github.com/srbryant86/certnode/tree/main/sdk/node",
+    "bugs": {
+        "url": "https://github.com/srbryant86/certnode/issues"
+    },
+    "scripts": {
+        "pack": "npm pack",
+        "publish:dry-run": "npm publish --dry-run"
+    },
+    "keywords": [
+        "certnode",
+        "receipt",
+        "verification",
+        "es256",
+        "ecdsa",
+        "jws",
+        "cryptography"
+    ],
+    "author": "CertNode",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/srbryant86/certnode.git",
+        "directory": "sdk/node"
+    },
+    "files": [
+        "index.js",
+        "index.d.ts",
+        "README.md"
+    ]
 }

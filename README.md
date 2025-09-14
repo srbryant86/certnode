@@ -1,4 +1,4 @@
-ï»¿# CertNode
+# CertNode
 
 [![CI](https://github.com/srbryant86/certnode/actions/workflows/ci.yml/badge.svg)](https://github.com/srbryant86/certnode/actions/workflows/ci.yml)
 [![Nightly Benchmark](https://github.com/srbryant86/certnode/actions/workflows/nightly-benchmark.yml/badge.svg)](https://github.com/srbryant86/certnode/actions/workflows/nightly-benchmark.yml)
@@ -24,13 +24,13 @@ node tools/test-fast.js
 ```
 
 ## Root Scripts
-- `npm run start` â€” start API locally
-- `npm run test:fast` â€” run fast unit tests
-- `npm run bench` â€” run performance benchmark
-- `npm run openapi:check` â€” verify OpenAPI contains required paths
-- `npm run sdk:pack` â€” pack Node and Web SDKs
-- `npm run example:sign` â€” sign a sample payload via API
-- `npm run example:verify` â€” verify a sample receipt via SDK
+- `npm run start` — start API locally
+- `npm run test:fast` — run fast unit tests
+- `npm run bench` — run performance benchmark
+- `npm run openapi:check` — verify OpenAPI contains required paths
+- `npm run sdk:pack` — pack Node and Web SDKs
+- `npm run example:sign` — sign a sample payload via API
+- `npm run example:verify` — verify a sample receipt via SDK
 
 ## Verify (CLI)
 ```
@@ -53,13 +53,13 @@ node tools/verify-receipt.js --receipt path/to/receipt.json --jwks path/to/jwks.
 
 ## Metrics Quickstart
 - Events (one-line JSON):
-  - `request_received` â€” { path, method, request_id }
-  - `request_completed` â€” { path, method, status, ms, request_id }
-  - `rate_limit_triggered` â€” { path, capacity, remaining, request_id }
+  - `request_received` — { path, method, request_id }
+  - `request_completed` — { path, method, status, ms, request_id }
+  - `rate_limit_triggered` — { path, capacity, remaining, request_id }
 - Pipeline: ship stdout to your log collector and build dashboards based on these events.
 
 ## Release via Tags (GitHub Actions)
-- Add `NPM_TOKEN` to GitHub repo secrets (Actions â†’ New repository secret)
+- Add `NPM_TOKEN` to GitHub repo secrets (Actions ? New repository secret)
 - Tag to publish:
   - Node SDK: `git tag sdk-node-vX.Y.Z && git push --tags`
   - Web  SDK: `git tag sdk-web-vA.B.C && git push --tags`
@@ -80,6 +80,12 @@ docker build -t certnode:latest .
 docker run --rm -p 3000:3000 -e NODE_ENV=production -e PORT=3000 certnode:latest
 ```
 
+
+### Maintainer shortcut (Web SDK)
+- To automate web SDK normalize ? version bump ? tag ? publish via Actions:
+  - PowerShell:
+    - `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish-web-sdk.ps1`
+  - Requires `NPM_TOKEN` repo secret and will output CDN + SRI snippet after publish.
 Or use compose:
 ```
 docker compose up --build

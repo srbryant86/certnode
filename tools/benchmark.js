@@ -359,6 +359,11 @@ async function runBenchmark() {
         console.log(`  Memory:`);
         console.log(`    Heap: ${formatBytes(memoryResult.heapUsed.min)} - ${formatBytes(memoryResult.heapUsed.max)}`);
         console.log(`    RSS: ${formatBytes(memoryResult.rss.min)} - ${formatBytes(memoryResult.rss.max)}`);
+      // Emit machine-readable metrics line for CI parsing
+      const p50v = (typeof latencyResult.p50 === 'number' && Number.isFinite(latencyResult.p50)) ? latencyResult.p50.toFixed(2) : 'n/a';
+      const p95v = (typeof latencyResult.p95 === 'number' && Number.isFinite(latencyResult.p95)) ? latencyResult.p95.toFixed(2) : 'n/a';
+      const p99v = (typeof latencyResult.p99 === 'number' && Number.isFinite(latencyResult.p99)) ? latencyResult.p99.toFixed(2) : 'n/a';
+      console.log(`BENCH_METRICS ${payloadTest.name} P50=${p50v} P95=${p95v} P99=${p99v}`);
       }
     }
 

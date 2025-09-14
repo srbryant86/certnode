@@ -24,7 +24,7 @@ jobs:
       - name: Validate
         working-directory: infra/aws/terraform
         run: terraform validate
-      - name: Guard: no placeholders and sane sizes
+      - name: "Guard: no placeholders and sane sizes"
         shell: bash
         run: |
           set -euo pipefail

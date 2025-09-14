@@ -1,42 +1,45 @@
-{
-    "name": "@certnode/sdk-web",
-    "version": "0.1.4",
-    "description": "Browser SDK for CertNode receipt verification (ESM, WebCrypto)",
-    "type": "module",
-    "module": "index.js",
-    "types": "index.d.ts",
-    "exports": {
-        ".": {
-            "import": "./index.js",
-            "types": "./index.d.ts"
-        }
-    },
-    "sideEffects": false,
-    "keywords": [
-        "certnode",
-        "receipt",
-        "verification",
-        "es256",
-        "ecdsa",
-        "jws",
-        "webcrypto"
-    ],
-    "publishConfig": {
-        "access": "public"
-    },
-    "homepage": "https://github.com/srbryant86/certnode/tree/main/sdk/web",
-    "bugs": {
-        "url": "https://github.com/srbryant86/certnode/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/srbryant86/certnode.git",
-        "directory": "sdk/web"
-    },
-    "files": [
-        "dist",
-        "README.md",
-        "LICENSE"
-    ],
-    "license": "MIT"
+﻿{
+    "name":  "@certnode/sdk-web",
+    "version":  "0.1.4",
+    "description":  "Browser SDK for CertNode receipt verification (ESM, WebCrypto)",
+    "type":  "module",
+    "module":  "index.js",
+    "types":  "index.d.ts",
+    "exports":  {
+                    ".":  {
+                              "import":  "./index.js",
+                              "types":  "./index.d.ts"
+                          }
+                },
+    "sideEffects":  false,
+    "keywords":  [
+                     "certnode",
+                     "receipt",
+                     "verification",
+                     "es256",
+                     "ecdsa",
+                     "jws",
+                     "webcrypto"
+                 ],
+    "publishConfig":  {
+                          "access":  "public"
+                      },
+    "homepage":  "https://github.com/srbryant86/certnode/tree/main/sdk/web",
+    "bugs":  {
+                 "url":  "https://github.com/srbryant86/certnode/issues"
+             },
+    "repository":  {
+                       "type":  "git",
+                       "url":  "git+https://github.com/srbryant86/certnode.git",
+                       "directory":  "sdk/web"
+                   },
+    "files":  [
+                  "dist",
+                  "README.md",
+                  "LICENSE"
+              ],
+    "license":  "MIT",
+    "scripts":  {
+                    "build":  "node ../../tools/build-web-sdk.js"
+                }
 }

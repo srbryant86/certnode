@@ -1,6 +1,7 @@
 // Simple in-memory registry for Prometheus exposition
 const registry = {
   requests: Object.create(null), // key: `${method}|${path}|${status}` -> count
+  errors: Object.create(null),   // key: `${method}|${path}|${status}` (status >=400) -> count
   duration: Object.create(null), // key: `${method}|${path}` -> histogram
   rateLimited: 0
 };
@@ -29,6 +30,13 @@ function incRequest(method, path, status) {
   registry.requests[key] = (registry.requests[key] || 0) + 1;
 }
 
+function incError(method, path, status) {
+  if (Number(status) >= 400) {
+    const key = `${method}|${path}|${status}`;
+    registry.errors[key] = (registry.errors[key] || 0) + 1;
+  }
+}
+
 function incRateLimited() {
   registry.rateLimited++;
 }
@@ -44,6 +52,7 @@ const emit = (name, value = 1, extra = {}) => {
     if (name === 'request_completed') {
       const { method = 'GET', path = '/', status = 0, ms = 0 } = out;
       incRequest(method, path, status);
+      incError(method, path, status);
       if (typeof ms === 'number') observeDuration(method, path, ms);
     } else if (name === 'rate_limit_triggered') {
       incRateLimited();
@@ -83,6 +92,14 @@ function getPrometheusMetrics() {
   out += '\n# HELP certnode_rate_limit_triggered_total Number of times rate limiting was triggered\n';
   out += '# TYPE certnode_rate_limit_triggered_total counter\n';
   out += `certnode_rate_limit_triggered_total ${registry.rateLimited}\n`;
+
+  out += '\n# HELP certnode_errors_total Total number of error responses by method, path, and status (>=400)\n';
+  out += '# TYPE certnode_errors_total counter\n';
+  for (const key of Object.keys(registry.errors)) {
+    const [method, path, status] = key.split('|');
+    const val = registry.errors[key];
+    out += `certnode_errors_total{method="${escapeLabel(method)}",path="${escapeLabel(path)}",status="${escapeLabel(status)}"} ${val}\n`;
+  }
 
   return out;
 }

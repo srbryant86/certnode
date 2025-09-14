@@ -89,3 +89,17 @@ Prerequisite:
 - The workflow runs fast tests, packs the SDK, and publishes with `NODE_AUTH_TOKEN`
 
 Note: You can still publish locally if you prefer.
+
+## Troubleshooting
+
+- Release failed with 401/403 or package not found on npm:
+  - Ensure `NPM_TOKEN` is configured in repo secrets and has publish rights for the `@certnode` scope.
+  - Re-run the workflow for the existing tag in Actions → Release SDKs → select the run → Rerun all jobs.
+  - If you prefer a new version, bump the package version and create a new tag (e.g., `sdk-web-v0.1.4`).
+
+- Web SDK bundle too large (>10KB):
+  - CI enforces a size budget. Trim exports/comments, avoid adding prod deps; re-run `npm run build:web-sdk` and commit the updated bundle.
+
+- Need a CDN snippet/SRI after publish:
+  - Use jsDelivr with the published version: `<script type="module" src="https://cdn.jsdelivr.net/npm/@certnode/sdk-web@X.Y.Z/dist/index.esm.min.js"></script>`
+  - Generate SRI: `node tools/generate-sri.js` (after `npm run build:web-sdk`).

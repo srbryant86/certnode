@@ -14,14 +14,17 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
-            - name: Build
+
+      - name: Build
         run: npm run build
         working-directory: sdk/web
+
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
         working-directory: sdk/web
+
       - id: verify
         name: Verify npm publish (poll)
         shell: bash
@@ -39,6 +42,7 @@ jobs:
           done
           echo "Publish not visible on npm after timeout" >&2
           exit 1
+
       - name: Generate SRI snippet
         id: sri
         shell: bash
@@ -46,6 +50,7 @@ jobs:
           URL="https://cdn.jsdelivr.net/npm/@certnode/sdk-web@${{ steps.verify.outputs.published }}/dist/index.esm.min.js"
           node tools/generate-sri.js "$URL" > snippet.html
           echo "url=$URL" >> $GITHUB_OUTPUT
+
       - name: Job summary
         shell: bash
         run: |
@@ -58,6 +63,7 @@ jobs:
           echo '```html' >> $GITHUB_STEP_SUMMARY
           cat snippet.html >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
+
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
@@ -69,6 +75,3 @@ jobs:
             See workflow summary for the SRI <script> snippet.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-

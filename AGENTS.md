@@ -70,8 +70,9 @@ This document equips agents and contributors to continue work without prior cont
 - w13 — Verify page a11y polish (aria-live on status, labelled file inputs, skip link).
 - s15 — SDK-web publish readiness: added types field, SRI tool, README CDN/SRI examples; CI builds and sizes web SDK.
 - t15 — Fuzz/edge tests: added validation fuzz cases for invalid JSON, unknown fields, kid variants, and tsr type.
- - s15 — Size budget: added CI gate to fail if web SDK bundle exceeds 10KB.
- - w12 — CSP hardening: added object-src/base-uri/frame-ancestors to verify page.
+- s15 — Size budget: added CI gate to fail if web SDK bundle exceeds 10KB.
+- w12 — CSP hardening: added object-src/base-uri/frame-ancestors to verify page.
+ - a36 — OpenAPI: add error responses for /health (405/500) referencing shared ErrorResponse.
 
 ## Useful Commands
 - Start API: `npm run start` (or `node api/src/index.js`)

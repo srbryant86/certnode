@@ -14,7 +14,8 @@ Completed since last update
 - a35 — Verify Route Alignment: dev verify route standardized to error model; tests added
 - w13 — Verify Page A11y Polish: aria-live status, labelled file inputs, skip link
 - s15 — SDK-web Publish Readiness: added types field, SRI tool, README CDN/SRI; CI builds/sizes web SDK
- - t15 — Fuzz/Edge Tests: added validation fuzz cases for invalid JSON, unknown fields, kid variants, and tsr type
+- t15 — Fuzz/Edge Tests: added validation fuzz cases for invalid JSON, unknown fields, kid variants, and tsr type
+ - a36 — OpenAPI Consistency: added error responses for /health (405/500) referencing shared ErrorResponse
 
 ## Roadmap Update (2025-09-12)
 

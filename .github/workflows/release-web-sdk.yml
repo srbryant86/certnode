@@ -14,16 +14,7 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
-      - name: Install (if lockfile exists)
-        shell: bash
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            echo "No package-lock.json; skipping npm ci"
-          fi
-        working-directory: sdk/web
-      - name: Build
+            - name: Build
         run: npm run build
         working-directory: sdk/web
       - name: Publish to npm
@@ -78,5 +69,6 @@ jobs:
             See workflow summary for the SRI <script> snippet.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
 

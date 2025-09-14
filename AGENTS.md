@@ -97,6 +97,12 @@ This document equips agents and contributors to continue work without prior cont
 - Keep metrics label cardinality bounded (method, path, status only).
 - Avoid logging payload contents; logs should be hash‑only and correlation‑safe.
 
+## CI Failures — Quick Fixes
+- Web SDK size gate failed: run `npm run build:web-sdk` and ensure `sdk/web/dist/index.esm.min.js` <10KB. If needed, trim comments/exports; avoid adding prod deps.
+- A11y check failed: open `http://localhost:8080/verify.html` locally and address reported axe-core violations (labels, roles, color contrast). Utility classes are in `web/assets/certnode.css`.
+- Benchmark regression: run `node tools/benchmark.js`; target p99 <100ms. Inspect server logs and rate-limit env in bench step.
+- Docs gate: update `AGENTS.md`, `docs/internal/ACTUAL_ROADMAP.md`, or run `npm run docs:update` and commit.
+
 ## If Context Is Lost
 - Read: ROADMAP_CANON, ACTUAL_ROADMAP, TASKS_TODO, MONITORING, DOCKER, RELEASE, CONTRIBUTING.
 - Run: `node tools/test-fast.js` to sanity‑check.

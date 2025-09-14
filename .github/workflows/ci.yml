@@ -106,7 +106,6 @@ jobs:
   a11y-check:
     runs-on: ubuntu-latest
     needs: build-test
-    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4

@@ -14,15 +14,32 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
+          scope: '@certnode'
+
+      - name: Check if version already on npm
+        id: precheck
+        shell: bash
+        run: |
+          PKG='@certnode/sdk-web'
+          VER=$(node -p "require('./sdk/web/package.json').version")
+          echo "version=$VER" >> $GITHUB_OUTPUT
+          EXISTS=$(npm view "$PKG@$VER" version 2>/dev/null || true)
+          if [ "$EXISTS" = "$VER" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Version $VER already published; skipping publish step."
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Build
         run: npm run build
         working-directory: sdk/web
 
       - name: Publish to npm
+        if: steps.precheck.outputs.exists == 'false'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
+        run: npm publish --provenance --access public
         working-directory: sdk/web
 
       - id: verify

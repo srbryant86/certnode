@@ -1,6 +1,6 @@
 # @certnode/sdk (Node)
 
-Minimal, dependency‑free Node.js SDK for verifying CertNode receipts (ES256 / P‑256).
+Minimal, dependency-free Node.js SDK for verifying CertNode receipts (ES256 / P-256).
 
 ## Install
 
@@ -10,15 +10,11 @@ Minimal, dependency‑free Node.js SDK for verifying CertNode receipts (ES256 / 
 ## Quick Start
 
 ```js
-const { verifyReceipt } = require('@certnode/sdk');
+const { verifyReceipt, JWKSManager } = require('@certnode/sdk');
 
 (async () => {
   // Optional: JWKS caching helper (fetch + TTL)
-  const { JWKSManager, verifyReceipt } = require('@certnode/sdk');
-
-  const jwksMgr = new JWKSManager({ ttlMs: 300000 }); // 5 minutes
-  // Load once from file/URL (example shows in-memory object)
-  // Example JWKS (use your service JWKS)
+  const jwksMgr = new JWKSManager({ ttlMs: 300000 });
   const jwks = jwksMgr.setFromObject({
     keys: [
       // { kty: 'EC', crv: 'P-256', x: '...', y: '...', kid: '...' }
@@ -27,36 +23,29 @@ const { verifyReceipt } = require('@certnode/sdk');
 
   // Example receipt from CertNode /v1/sign
   const receipt = {
-    protected: 'eyJhbGciOiJFUzI1NiIsImtpZCI6Ii...' ,
+    protected: 'eyJhbGciOiJFUzI1NiIsImtpZCI6Ii...',
     payload: { hello: 'world', n: 42 },
     signature: 'MEYCIQ...',
-    kid: '8sDq...thumbprint',
-    // Optional extras:
-    // payload_jcs_sha256: '...',
-    // receipt_id: '...'
+    kid: '8sDq...thumbprint'
   };
 
   const result = await verifyReceipt({ receipt, jwks });
-  if (result.ok) {
-    console.log('Receipt valid');
-  } else {
-    console.error('Receipt invalid:', result.reason);
-  }
+  console.log(result.ok ? 'Receipt valid' : `Receipt invalid: ${result.reason}`);
 })();
 ```
 
 ## API
 
-- `verifyReceipt({ receipt, jwks })` → `{ ok: boolean, reason?: string }`
+- `verifyReceipt({ receipt, jwks })` -> `{ ok: boolean, reason?: string }`
   - `receipt`: object or JSON string of the receipt returned by CertNode `/v1/sign`.
-  - `jwks`: JSON Web Key Set with EC P‑256 keys. The SDK matches by RFC7638 thumbprint or `kid` field.
+  - `jwks`: JSON Web Key Set with EC P-256 keys. The SDK matches by RFC7638 thumbprint or `kid` field.
 
 ## Notes
 
-- Only ES256 (ECDSA P‑256) is supported.
+- Only ES256 (ECDSA P-256) is supported.
 - Uses RFC8785 JCS canonicalization for payload hashing when `payload_jcs_sha256` is present.
 - No dependencies; uses Node `crypto` only.
- - Optional JWKS cache helper included as `JWKSManager` (TTL + ETag/Last‑Modified)
+- Optional JWKS cache helper included as `JWKSManager` (TTL + ETag/Last-Modified)
 
 ## Obtaining JWKS
 
@@ -67,9 +56,10 @@ const { verifyReceipt } = require('@certnode/sdk');
 
 Inside `sdk/node`:
 
-- `npm pack` → creates a tarball that will be published.
-- `npm run publish:dry-run` → shows publish contents without publishing.
+- `npm pack` — creates a tarball that will be published.
+- `npm run publish:dry-run` — shows publish contents without publishing.
 
 ## License
 
 MIT
+

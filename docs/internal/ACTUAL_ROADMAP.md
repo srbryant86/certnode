@@ -1,4 +1,5 @@
 # CertNode Application Roadmap - Complete Implementation Guide
+ - s17 — Node SDK Docs: README cleaned and examples updated; no new publish required
 
 ## **Executive Summary**
 CertNode is a production-ready **tamper-evident receipt service** using detached JWS with ES256 ECDSA and RFC 8785 JCS canonicalization. The application layer is **100% complete** (a1-a18) with comprehensive error handling, health monitoring, SDKs, and robust testing infrastructure.

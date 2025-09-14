@@ -73,7 +73,8 @@ This document equips agents and contributors to continue work without prior cont
 - s15 — Size budget: added CI gate to fail if web SDK bundle exceeds 10KB.
 - w12 — CSP hardening: added object-src/base-uri/frame-ancestors to verify page.
 - a36 — OpenAPI: add error responses for /health (405/500) referencing shared ErrorResponse.
- - s16 — Web SDK published: @certnode/sdk-web v0.1.3 tagged; CDN/SRI docs included; CI size gate enforced.
+- s16 — Web SDK published: @certnode/sdk-web v0.1.3 tagged; CDN/SRI docs included; CI size gate enforced.
+ - s17 — Node SDK docs aligned: README cleaned and examples updated; no new publish required.
 
 ## Useful Commands
 - Start API: `npm run start` (or `node api/src/index.js`)

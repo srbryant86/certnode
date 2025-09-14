@@ -46,6 +46,25 @@ npm publish --dry-run --access public
 npm publish --access public
 ```
 
+4) CDN + SRI (jsDelivr)
+- After publish, you can load the minified ESM bundle via jsDelivr:
+  ```html
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@certnode/sdk-web@A.B.C/dist/index.esm.min.js"></script>
+  ```
+- To generate Subresource Integrity (SRI):
+  ```
+  npm run build:web-sdk
+  node tools/generate-sri.js
+  ```
+  Then include:
+  ```html
+  <script
+    type="module"
+    integrity="sha384-..."
+    crossorigin="anonymous"
+    src="https://cdn.jsdelivr.net/npm/@certnode/sdk-web@A.B.C/dist/index.esm.min.js"></script>
+  ```
+
 ## Tagging
 After publishing, tag the repo and push tags:
 ```

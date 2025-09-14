@@ -33,7 +33,10 @@ You are operating **only** on the application layer. Do not change infra/secrets
 - a34 — completed (see git history)
 
 ## Next (define scope + acceptance clearly, then implement only that task)
-- a35 — **TBD** (fill scope & acceptance)
+- s18 — Node SDK publish finalize
+  - Scope: Publish `@certnode/sdk` to npm and align docs.
+  - Steps: Bump version; tag `sdk-node-vX.Y.Z`; ensure `NPM_TOKEN` secret; run publish workflow; verify `npm view @certnode/sdk` shows new version.
+  - Acceptance: Published version visible on npm; README/RELEASE reflect install command; CI release job green.
 
 ## Backlog (candidates; pick and spec one at a time)
 - aXX — SDK packaging & npm publish (node+browser, types, README, size checks, CI dry-run)

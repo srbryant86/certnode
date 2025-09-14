@@ -73,6 +73,46 @@
         }
       }
     },
+    "/healthz": {
+      "get": {
+        "summary": "Health check (alias)",
+        "description": "Alias of /health for health probes",
+        "operationId": "getHealthAlias",
+        "tags": ["Health"],
+        "responses": {
+          "200": {
+            "description": "Server is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "example": true }
+                  },
+                  "required": ["ok"]
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/sign": {
       "post": {
         "summary": "Sign payload and return detached JWS (receipt)",

@@ -103,3 +103,15 @@ Note: You can still publish locally if you prefer.
 - Need a CDN snippet/SRI after publish:
   - Use jsDelivr with the published version: `<script type="module" src="https://cdn.jsdelivr.net/npm/@certnode/sdk-web@X.Y.Z/dist/index.esm.min.js"></script>`
   - Generate SRI: `node tools/generate-sri.js` (after `npm run build:web-sdk`).
+
+## Maintainer Shortcuts
+
+To automate publish via GitHub Actions with normalized package metadata and tagging:
+
+- Web SDK:
+  - PowerShell: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish-web-sdk.ps1`
+  - Requires `NPM_TOKEN` repo secret; script bumps version, tags `sdk-web-vX.Y.Z`, and prints CDN + SRI snippet once published.
+
+- Node SDK:
+  - PowerShell: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish-node-sdk.ps1`
+  - Requires `NPM_TOKEN` repo secret; script bumps version, tags `sdk-node-vX.Y.Z`, and prints the published version from npm.

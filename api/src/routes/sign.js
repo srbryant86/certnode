@@ -56,6 +56,16 @@ async function handle(req, res) {
     res.writeHead(405, headers);
     return res.end(JSON.stringify(body));
   }
+
+  // Enforce usage limits for free tier
+  const { enforceUsageLimits } = require('../plugins/usage-limits');
+  const limitResult = enforceUsageLimits(req, res);
+
+  // If limit exceeded, response is already sent
+  if (!limitResult.allowed) {
+    return;
+  }
+
   require('../plugins/metrics').emit('sign_start');
   try {
     const raw = await readJsonLimited(req, { limitBytes: toPosInt(process.env.API_MAX_BODY_BYTES, 262144) });
@@ -72,6 +82,15 @@ async function handle(req, res) {
     res.writeHead(200, responseHeaders);
     res.end(JSON.stringify(out));
     require('../plugins/metrics').emit('sign_success');
+
+    // Emit revenue tracking event for successful sign
+    require('../plugins/metrics').emit('revenue_event', 1, {
+      type: 'sign',
+      value: 0.001, // $0.001 per sign for pricing intelligence
+      receipt_id: out.receipt_id,
+      ip: req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.connection?.remoteAddress || '127.0.0.1',
+      usage_status: limitResult.status
+    });
   } catch (e) {
     // Special-case TSA strict requirement to ensure standardized error body
     if (e && (e.code === 'tsa_unavailable' || (e.statusCode === 503 && String(e.message||'').toLowerCase().includes('timestamp authority')))) {

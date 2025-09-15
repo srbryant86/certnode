@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
+  <title>CertNode — Receipts for Digital Truth</title>
+  <link rel="stylesheet" href="assets/certnode.css" />
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <header>
+    <div class="row justify-between no-margin" role="navigation" aria-label="Primary">
+      <h1 class="no-margin"><a href="index.html" aria-current="page">CertNode</a></h1>
+      <nav class="toolbar no-margin">
+        <a href="verify.html">Verify</a>
+        <a href="openapi.html">API</a>
+        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="panel">
+      <h2>Receipts for Digital Truth</h2>
+      <p>CertNode gives any JSON or document a tamper‑evident receipt you can verify offline.</p>
+      <div class="row">
+        <a class="pill" href="verify.html">Try the demo</a>
+        <a class="pill" href="openapi.html">View the API</a>
+        <a class="pill" href="https://www.npmjs.com/package/@certnode/sdk" rel="noopener" target="_blank">Install SDKs</a>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>How It Works</h2>
+      <div class="grid-2">
+        <div>
+          <h3 class="small no-margin">1) Canonicalize &amp; Sign</h3>
+          <p>We apply RFC 8785 JCS and sign with ES256 (P‑256).</p>
+        </div>
+        <div>
+          <h3 class="small no-margin">2) Receipt</h3>
+          <p>JSON: { protected, signature, payload, kid, payload_jcs_sha256, receipt_id[, tsr] }.</p>
+        </div>
+        <div>
+          <h3 class="small no-margin">3) Verify Offline</h3>
+          <p>Use our SDK/CLI with published JWKS; no vendor call required.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Benefits</h2>
+      <ul>
+        <li><strong>Offline verifiability</strong> — Verify anywhere with public JWKS.</li>
+        <li><strong>Tamper‑evident receipts</strong> — JCS + ES256.</li>
+        <li><strong>Simple to adopt</strong> — Zero‑dependency SDKs for Node/Web.</li>
+        <li><strong>Production‑ready</strong> — Metrics, rate limiting, provenance releases.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>Use Cases</h2>
+      <div class="grid-2">
+        <div><strong>Invoices &amp; payouts</strong> — Prove exact numbers sent.</div>
+        <div><strong>Webhooks &amp; APIs</strong> — Detect tampering in transit.</div>
+        <div><strong>Policies &amp; PDFs</strong> — Match the published version.</div>
+        <div><strong>AI outputs</strong> — Sign the approved result.</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>For Developers</h2>
+      <ul>
+        <li>OpenAPI: <a href="openapi.html">/openapi.html</a></li>
+        <li>Node SDK: <code>npm i @certnode/sdk</code></li>
+        <li>Web SDK: <code>npm i @certnode/sdk-web</code></li>
+        <li>CLI: <code>tools/verify-receipt.js</code></li>
+      </ul>
+
+      <div class="row mt-8">
+        <button id="enterprise-demo" class="pill">Request Enterprise Demo</button>
+        <button id="contact-sales" class="pill">Contact Sales</button>
+      </div>
+    </section>
+
+    <section class="panel" id="contact-form" style="display: none;">
+      <h2>Contact Sales</h2>
+      <form id="lead-form">
+        <div class="row">
+          <input type="text" id="company" placeholder="Company Name *" required />
+          <input type="email" id="email" placeholder="Email Address *" required />
+        </div>
+        <div class="row mt-8">
+          <input type="text" id="name" placeholder="Full Name *" required />
+          <input type="text" id="use-case" placeholder="Use Case (e.g., Financial Compliance)" />
+        </div>
+        <div class="row mt-8">
+          <select id="company-size">
+            <option value="">Company Size</option>
+            <option value="startup">Startup (1-50)</option>
+            <option value="smb">Small Business (51-200)</option>
+            <option value="mid-market">Mid-Market (201-1000)</option>
+            <option value="enterprise">Enterprise (1000+)</option>
+          </select>
+          <select id="urgency">
+            <option value="">Timeline</option>
+            <option value="immediate">Immediate (< 30 days)</option>
+            <option value="quarter">This Quarter</option>
+            <option value="next-quarter">Next Quarter</option>
+            <option value="research">Research Phase</option>
+          </select>
+        </div>
+        <div class="row mt-8">
+          <button type="submit" id="submit-lead">Send Request</button>
+          <button type="button" id="cancel-form">Cancel</button>
+        </div>
+        <div id="form-status" class="status hidden" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    © CertNode. Verify page uses WebCrypto; API serves OpenAPI at <code>/openapi.json</code>.
+  </footer>
+
+  <script src="js/lead-capture.js"></script>
+</body>
+</html>
+

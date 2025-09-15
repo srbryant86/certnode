@@ -107,6 +107,50 @@ const server = http.createServer(async (req, res) => {
     return leadsHandler(req, res);
   }
 
+  // Static file serving
+  if (req.method === "GET") {
+    const fs = require('fs');
+    const path = require('path');
+
+    let filePath;
+    if (url.pathname === "/") {
+      filePath = path.join(process.cwd(), "web", "index.html");
+    } else if (url.pathname === "/verify") {
+      filePath = path.join(process.cwd(), "web", "verify.html");
+    } else if (url.pathname === "/openapi") {
+      filePath = path.join(process.cwd(), "web", "openapi.html");
+    } else if (url.pathname === "/pitch") {
+      filePath = path.join(process.cwd(), "web", "pitch.html");
+    } else if (url.pathname.startsWith("/web/")) {
+      filePath = path.join(process.cwd(), url.pathname);
+    } else if (url.pathname.startsWith("/assets/")) {
+      filePath = path.join(process.cwd(), "web", "assets", path.basename(url.pathname));
+    } else if (url.pathname.startsWith("/css/")) {
+      filePath = path.join(process.cwd(), "web", "css", path.basename(url.pathname));
+    } else if (url.pathname.startsWith("/js/")) {
+      filePath = path.join(process.cwd(), "web", "js", path.basename(url.pathname));
+    }
+
+    if (filePath && fs.existsSync(filePath)) {
+      const ext = path.extname(filePath);
+      let contentType = "text/html";
+      if (ext === ".js") contentType = "application/javascript";
+      if (ext === ".css") contentType = "text/css";
+      if (ext === ".json") contentType = "application/json";
+      if (ext === ".png") contentType = "image/png";
+      if (ext === ".jpg" || ext === ".jpeg") contentType = "image/jpeg";
+      if (ext === ".svg") contentType = "image/svg+xml";
+
+      try {
+        const content = fs.readFileSync(filePath);
+        res.writeHead(200, { "Content-Type": contentType });
+        return res.end(content);
+      } catch (e) {
+        // Fall through to 404
+      }
+    }
+  }
+
   // 404
   {
     const headers = { "Content-Type": "application/json" };

@@ -4,53 +4,213 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-  <title>CertNode — Receipt Verification</title>
+  <title>CertNode — Cryptographic Verification Interface</title>
   <link rel="stylesheet" href="assets/certnode.css" />
   <style>
-    body { background: #ffffff; color: #1a1a1a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    .verify-hero { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); color: white; padding: 3rem 0; text-align: center; }
-    .verify-hero h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
-    .verify-hero p { font-size: 1.25rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
-    .nav-brand { font-size: 1.5rem; font-weight: 700; color: #2563eb; text-decoration: none; }
-    .nav-link { color: #64748b; text-decoration: none; padding: 0.5rem 1rem; border-radius: 0.375rem; transition: all 0.2s; }
-    .nav-link:hover { background: #f1f5f9; color: #2563eb; }
-    .enterprise-panel { background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    .enterprise-panel h2 { color: #1e293b; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; }
-    .status-success { background: #dcfce7; border-color: #16a34a; color: #15803d; }
-    .status-error { background: #fef2f2; border-color: #dc2626; color: #dc2626; }
-    .btn-primary { background: #2563eb; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-    .btn-primary:hover { background: #1d4ed8; }
-    .btn-secondary { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-    .btn-secondary:hover { background: #f1f5f9; }
+    :root {
+      --bg: #fafbfc;
+      --bg-primary: #475569;
+      --panel: #ffffff;
+      --border: #e1e5e9;
+      --border-light: #f1f5f9;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --primary: #475569;
+      --primary-dark: #334155;
+      --accent: #6366f1;
+    }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      letter-spacing: -0.01em;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 400;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .nav a:hover {
+      color: var(--primary);
+    }
+
+    .nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .nav a:hover::after {
+      width: 100%;
+    }
+
+    .verify-hero {
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 100px 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .verify-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(30, 41, 59, 0.2);
+      pointer-events: none;
+    }
+
+    .verify-hero h1 {
+      font-size: 48px;
+      font-weight: 400;
+      margin-bottom: 32px;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .verify-hero p {
+      font-size: 22px;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0 auto;
+      line-height: 1.6;
+      font-weight: 300;
+      max-width: 700px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .technical-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .technical-panel h2 {
+      color: var(--text);
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      font-family: 'Georgia', serif;
+    }
+
+    .status-success { background: #ecfdf5; border-color: #a7f3d0; color: #059669; }
+    .status-error { background: #fef2f2; border-color: #fecaca; color: #dc2626; }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: 1px solid var(--primary);
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Georgia', serif;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: var(--bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Georgia', serif;
+    }
+
+    .btn-secondary:hover {
+      background: var(--border-light);
+      color: var(--text);
+    }
   </style>
 </head>
 <body>
-  <header style="background: white; border-bottom: 1px solid #e2e8f0; padding: 1rem 0;">
-    <div class="row justify-between no-margin" role="navigation" aria-label="Primary" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-      <h1 class="no-margin"><a href="/" class="nav-brand">CertNode</a></h1>
-      <nav class="toolbar no-margin">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/pricing" class="nav-link">Pricing</a>
-        <a href="/openapi" class="nav-link">API</a>
-        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank" class="nav-link">GitHub</a>
+  <header>
+    <div class="header-container">
+      <a href="/" class="logo">CertNode</a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/verify">Verify</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/openapi">API</a>
+        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
       </nav>
     </div>
   </header>
 
   <div class="verify-hero">
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-      <h1>Receipt Verification</h1>
-      <p>Instantly validate cryptographic receipts with enterprise-grade security and compliance reporting</p>
+      <h1>Cryptographic Verification Interface</h1>
+      <p>Technical interface for validating JWS cryptographic receipts using ECDSA P-256 digital signatures and RFC 7515 standards</p>
     </div>
   </div>
   <a href="#main" class="skip-link">Skip to main content</a>
   <main id="main" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
-    <section class="enterprise-panel">
-      <h2>📄 Receipt Upload</h2>
-      <p style="color: #64748b; margin-bottom: 1.5rem;">Upload your cryptographic receipt for instant verification and compliance validation</p>
+    <section class="technical-panel">
+      <h2>JWS Receipt Input</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Provide the cryptographic receipt (JWS format) for signature verification and integrity validation</p>
       <div class="row grid-2">
-        <div class="dropzone" id="receipt-drop" role="button" tabindex="0" aria-label="Drop receipt.json here or press Enter to choose a file" style="border: 2px dashed #cbd5e1; padding: 2rem; text-align: center; border-radius: 0.5rem; background: #f8fafc; color: #64748b; cursor: pointer; transition: all 0.2s;">
-          📁 Drop receipt.json here or click to browse
+        <div class="dropzone" id="receipt-drop" role="button" tabindex="0" aria-label="Drop receipt.json here or press Enter to choose a file" style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+          Drop receipt.json here or click to browse
         </div>
         <div class="toolbar justify-end">
           <input type="file" id="receipt-file" accept="application/json" aria-label="Choose receipt JSON file" style="display: none;" />
@@ -62,12 +222,12 @@
       <textarea id="receipt" placeholder='{"protected":"...","payload":{...},"signature":"...","kid":"..."}' style="width: 100%; min-height: 120px; margin-top: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.875rem;"></textarea>
     </section>
 
-    <section class="enterprise-panel">
-      <h2>🔐 Public Key Configuration</h2>
-      <p style="color: #64748b; margin-bottom: 1.5rem;">Provide the JWKS (JSON Web Key Set) containing the public keys for signature verification</p>
+    <section class="technical-panel">
+      <h2>JWKS Public Key Configuration</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Provide the JSON Web Key Set (JWKS) containing public keys for ECDSA signature verification</p>
       <div class="row grid-2">
-        <div class="dropzone" id="jwks-drop" role="button" tabindex="0" aria-label="Drop jwks.json here or press Enter to choose a file" style="border: 2px dashed #cbd5e1; padding: 2rem; text-align: center; border-radius: 0.5rem; background: #f8fafc; color: #64748b; cursor: pointer; transition: all 0.2s;">
-          🔑 Drop jwks.json here or click to browse
+        <div class="dropzone" id="jwks-drop" role="button" tabindex="0" aria-label="Drop jwks.json here or press Enter to choose a file" style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+          Drop jwks.json here or click to browse
         </div>
         <div class="toolbar justify-end">
           <input type="file" id="jwks-file" accept="application/json" aria-label="Choose JWKS JSON file" style="display: none;" />
@@ -80,43 +240,43 @@
         <button id="fetch-jwks" class="btn-primary">Fetch JWKS</button>
       </div>
       <textarea id="jwks" placeholder='{"keys":[{"kty":"EC","crv":"P-256","x":"...","y":"...","kid":"..."}]}' style="width: 100%; min-height: 120px; margin-top: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.875rem;"></textarea>
-      <div style="color: #64748b; font-size: 0.875rem; margin-top: 0.5rem;">💡 JWKS is cached locally in your browser for convenience and security</div>
+      <div style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.5rem;">JWKS cached locally for performance and security</div>
     </section>
 
-    <section class="enterprise-panel">
-      <h2>✅ Verification & Compliance Report</h2>
-      <p style="color: #64748b; margin-bottom: 1.5rem;">Generate instant cryptographic verification with detailed compliance reporting</p>
+    <section class="technical-panel">
+      <h2>Cryptographic Verification</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Execute ECDSA P-256 signature verification using WebCrypto API implementation</p>
       <div class="row" style="margin-bottom: 1.5rem;">
-        <button id="verify" class="btn-primary" style="margin-right: 1rem;">🔍 Verify Receipt</button>
-        <button id="clear" class="btn-secondary">🗑️ Clear All</button>
-        <span style="color: #64748b; font-size: 0.875rem; margin-left: auto; align-self: center;">🔒 Verification uses WebCrypto (ES256) - fully client-side</span>
+        <button id="verify" class="btn-primary" style="margin-right: 1rem;">Verify Signature</button>
+        <button id="clear" class="btn-secondary">Clear Interface</button>
+        <span style="color: var(--text-muted); font-size: 0.875rem; margin-left: auto; align-self: center;">Client-side WebCrypto ES256 implementation</span>
       </div>
       <div id="status" class="status hidden" aria-live="polite" role="status" style="padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; font-weight: 500;"></div>
       <div class="grid-2 mt-8" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
         <div>
           <div class="row justify-between" style="margin-bottom: 0.5rem;">
-            <h3 style="margin: 0; color: #1e293b; font-size: 1rem; font-weight: 600;">📋 Protected Header</h3>
+            <h3 style="margin: 0; color: var(--text); font-size: 1rem; font-weight: 500;">Protected Header</h3>
             <button id="copy-hdr" class="btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Copy</button>
           </div>
-          <pre id="hdr" style="background: #f8fafc; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.875rem; overflow-x: auto;"></pre>
+          <pre id="hdr" style="background: var(--bg); padding: 1rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.875rem; overflow-x: auto;"></pre>
         </div>
         <div>
           <div class="row justify-between" style="margin-bottom: 0.5rem;">
-            <h3 style="margin: 0; color: #1e293b; font-size: 1rem; font-weight: 600;">📊 Verification Result</h3>
+            <h3 style="margin: 0; color: var(--text); font-size: 1rem; font-weight: 500;">Verification Result</h3>
             <button id="copy-result" class="btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Copy</button>
           </div>
-          <pre id="result" style="background: #f8fafc; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.875rem; overflow-x: auto;"></pre>
+          <pre id="result" style="background: var(--bg); padding: 1rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.875rem; overflow-x: auto;"></pre>
         </div>
       </div>
     </section>
   </main>
-  <footer style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 2rem 0; text-align: center; margin-top: 3rem;">
+  <footer style="background: var(--bg); border-top: 1px solid var(--border); padding: 2rem 0; text-align: center; margin-top: 3rem;">
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-      <p style="color: #64748b; margin: 0;">
-        🔒 All verification is performed client-side for maximum security.
-        For enterprise integrations and offline verification, explore our
-        <a href="/openapi" style="color: #2563eb; text-decoration: none;">REST API</a>
-        and Node.js SDK.
+      <p style="color: var(--text-muted); margin: 0;">
+        All cryptographic verification executed client-side using WebCrypto API.
+        For production integrations and technical documentation, see the
+        <a href="/openapi" style="color: var(--primary); text-decoration: none;">REST API specification</a>
+        and implementation guides.
       </p>
     </div>
   </footer>

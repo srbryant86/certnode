@@ -44,6 +44,16 @@ node tools/verify-receipt.js --receipt path/to/receipt.json --jwks path/to/jwks.
 - Web:  `npm install @certnode/sdk-web`
  - CDN/SRI: see `sdk/web/README.md` for jsDelivr usage and SRI snippet; example in `examples/web-embed.html`
 
+## TSA (RFC3161) Configuration
+- By default, timestamping uses a deterministic stub token to keep tests and offline verification stable.
+- To use a real TSA, set environment variables for the API:
+  - `TSA_URL` — e.g., `https://tsa.example.com/tsp`
+  - `TSA_TIMEOUT_MS` — request timeout (default `3000`)
+  - `TSA_RETRIES` — retries on failure (default `1`)
+  - `TSA_CA_PEM` — optional custom CA PEM (inline)
+  - `TSA_CERT_IGNORE` — set to `1` to ignore TLS errors (dev only)
+  The `/v1/sign` route adds a `tsr` field to receipts when `headers.tsr === true` and a token is obtained.
+
 ## Monitoring
 - Emit structured JSON metrics via `api/src/plugins/metrics.js`
 - See `docs/MONITORING.md` for event names, SLOs, and alert suggestions
@@ -101,4 +111,3 @@ docker compose up --build
 ## Contributing
 - See `CONTRIBUTING.md` for contribution guidelines and optional auto-push hook instructions.
  - CI posts a Benchmark Summary table (P50/P95/P99) on PRs for quick performance visibility.
-

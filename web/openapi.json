@@ -164,6 +164,11 @@
                         "type": "boolean",
                         "description": "Request RFC3161 timestamp token (optional)",
                         "example": true
+                      },
+                      "require_tsr": {
+                        "type": "boolean",
+                        "description": "If true, fail with 503 if TSA is unavailable",
+                        "example": false
                       }
                     }
                   }

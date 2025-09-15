@@ -66,12 +66,12 @@ function validateSignBody(body){
   if (!(pt==='string' || pt==='number' || pt==='boolean' || p===null || pt==='object')){ const e = new Error('invalid_payload_type'); e.statusCode = 400; throw e; }
   let outHeaders = {};
   if ('headers' in body){ const h = body.headers; if (h===null || typeof h!=='object' || Array.isArray(h)){ const e = new Error('invalid_headers'); e.statusCode = 400; throw e; }
-    const allowedH = new Set(['kid','tsr']); for (const k of Object.keys(h)){ if (!allowedH.has(k)){ const e = new Error('unknown_header:'+k); e.statusCode = 400; throw e; } }
+    const allowedH = new Set(['kid','tsr','require_tsr']); for (const k of Object.keys(h)){ if (!allowedH.has(k)){ const e = new Error('unknown_header:'+k); e.statusCode = 400; throw e; } }
     if ('kid' in h){ if (!b64uLike(h.kid)){ const e = new Error('invalid_kid'); e.statusCode = 400; throw e; } outHeaders.kid = h.kid; }
     if ('tsr' in h){ if (typeof h.tsr !== 'boolean'){ const e = new Error('invalid_tsr'); e.statusCode = 400; throw e; } outHeaders.tsr = h.tsr; }
+    if ('require_tsr' in h){ if (typeof h.require_tsr !== 'boolean'){ const e = new Error('invalid_require_tsr'); e.statusCode = 400; throw e; } outHeaders.require_tsr = h.require_tsr; }
   }
   return { payload: p, headers: outHeaders };
 }
 
 module.exports = { readJsonLimited, validateSignBody, toPosInt };
-

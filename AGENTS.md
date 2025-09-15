@@ -45,19 +45,14 @@ This document equips agents and contributors to continue work without prior cont
 - CI: tests, OpenAPI check, Docker build, commit‑lint (strict on PRs).
 
 ## Next Steps (prioritized)
-1) s14 — Web SDK bundle option (optional)
-   - Goal: Provide minified ESM bundle and a size check script for @certnode/sdk‑web.
-   - Constraints: Add only dev dependencies (no new prod deps). Keep output <10KB if feasible.
-   - Acceptance:
-     - `npm run build:web-sdk` produces `sdk/web/dist/index.esm.min.js`
-     - `npm run size:web-sdk` reports size; README documents CDN/ESM usage
-2) a34 — Error model consistency
-   - Goal: Ensure standardized error schema across endpoints and reflected in OpenAPI.
-   - Steps: Audit responses, reuse shared schemas, add/adjust tests.
-   - Acceptance: Shared schemas referenced; tests cover representative 400/429/500.
-3) w12 — Verify page hardening (final polish)
-   - Goal: Eliminate any remaining inline JS; ensure a11y roles/focus complete.
-   - Acceptance: CSP has no `unsafe-inline`; keyboard and screen‑reader flow validated.
+1) d26 — Docs sync (AGENTS/STATUS)
+   - Goal: Reflect that both SDKs are published and align status docs.
+   - Acceptance: Docs gate passes; AGENTS “Next Steps” updated; STATUS checklist current.
+2) a34+ polish — OpenAPI/error examples consistency
+   - Goal: Ensure all endpoints reference shared error schemas; examples reflect final error model.
+   - Acceptance: OpenAPI check passes; tests green.
+3) w12 — Verify page polish (ongoing)
+   - Goal: Maintain CSP/a11y; minor UX refinements only.
 
 ### Recent Completions
 - w12 — Verify page hardening: inline scripts removed; CSP tightened; a11y improved for dropzones.
@@ -75,6 +70,7 @@ This document equips agents and contributors to continue work without prior cont
 - a36 — OpenAPI: add error responses for /health (405/500) referencing shared ErrorResponse.
 - s16 — Web SDK published: @certnode/sdk-web v0.1.3 tagged; CDN/SRI docs included; CI size gate enforced.
  - s17 — Node SDK docs aligned: README cleaned and examples updated; no new publish required.
+ - s18 — Node SDK published: @certnode/sdk v1.0.7 live on npm; release workflow verified.
 
 ## Useful Commands
 - Start API: `npm run start` (or `node api/src/index.js`)

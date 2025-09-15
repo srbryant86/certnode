@@ -9,8 +9,8 @@ Quick reference for component delivery status and key files.
 | **Core API Routes** | ✅ | `api/src/routes/sign.js`, `api/src/routes/verify.js`, `api/src/routes/jwks.js`, `api/src/routes/health.js`, `api/src/routes/openapi.js` | All endpoints implemented |
 | **Crypto Utilities** | ✅ | `api/src/util/jcs.js`, `api/src/util/derToJose.js`, `api/src/util/joseToDer.js`, `api/src/util/kid.js` | RFC compliance complete |
 | **AWS KMS Integration** | ✅ | `api/src/aws/kms.js`, `api/src/crypto/signer.js` | Enterprise key management |
-| **Environment Config** | ❌ | `api/src/config/env.js` | **MISSING** - needs validation guards |
-| **Security Headers** | ❌ | `api/src/plugins/security.js` | **MISSING** - needs HSTS, CSP headers |
+| **Environment Config** | ✅ | `api/src/config/env.js` | Startup/env validation guards present |
+| **Security Headers** | ✅ | `api/src/plugins/security.js` | HSTS in prod via X-Forwarded-Proto; baseline headers set |
 | **Middleware Plugins** | ✅ | `api/src/plugins/validation.js`, `api/src/plugins/cors.js`, `api/src/plugins/ratelimit.js`, `api/src/plugins/logging.js`, `api/src/plugins/metrics.js`, `api/src/plugins/errors.js` | All middleware complete |
 | **Error Handling** | ✅ | `api/src/middleware/errorHandler.js`, `api/src/plugins/errors.js` | Global + structured errors |
 | **Node SDK** | ✅ | `sdk/node/index.js`, `sdk/node/index.d.ts` | Zero-dependency verification |
@@ -44,12 +44,12 @@ Quick reference for component delivery status and key files.
 
 ## Deployment Readiness
 
-- ✅ **Code Quality**: Infrastructure-grade standards
-- ✅ **Documentation**: Comprehensive inline + project docs  
-- ✅ **Testing**: 20 test files with edge cases
-- ❌ **Environment Validation**: Missing startup guards
-- ❌ **Security Headers**: Missing production security
-- ✅ **Error Handling**: Production-ready responses
-- ✅ **SDK Packaging**: Ready for npm publish
+- ✅ Code Quality: Infrastructure-grade standards
+- ✅ Documentation: Comprehensive inline + project docs
+- ✅ Testing: 20+ test files including edge/fuzz cases
+- ✅ Environment Validation: Startup guards in place
+- ✅ Security Headers: Baseline + HSTS in prod
+- ✅ Error Handling: Production-ready responses
+- ✅ SDK Packaging: Published Node/Web SDKs
 
-**Status**: 90% complete - only a4 and a7 needed for full production readiness.
+**Status**: Production-ready; continue polish and docs sync.

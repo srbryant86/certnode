@@ -6,6 +6,10 @@ on:
       - 'sdk-node-v*'
       - 'sdk-web-v*'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   publish-node:
     if: startsWith(github.ref_name, 'sdk-node-v')

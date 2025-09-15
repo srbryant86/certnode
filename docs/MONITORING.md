@@ -49,6 +49,18 @@ Suggested alerts:
 - Import `docs/monitoring/grafana-dashboard.json` into Grafana.
 - Point the panels to your Prometheus data source.
 
+### TSA Metrics (Prometheus)
+
+- `certnode_tsa_success_total` — total successful TSA requests
+- `certnode_tsa_error_total` — total TSA request errors
+- `certnode_tsa_duration_ms` — histogram for TSA request latency
+
+Example alert (tune thresholds):
+
+```
+increase(certnode_tsa_error_total[5m]) > 5
+```
+
 ## Notes
 - The `/metrics` endpoint emits Prometheus text format; cardinality is kept low by path/method/status only.
 - If you add new endpoints, keep labels consistent and bounded to avoid metric explosions.

@@ -4,7 +4,7 @@ const { attach } = require('../src/plugins/requestId');
 const ts = require('../src/util/timestamp');
 
 function mkReq(body) {
-  const req = { method: 'POST', headers: { host: 'localhost:3000' } };
+  const req = { method: 'POST', headers: { host: 'localhost:3000', 'content-type': 'application/json' } };
   const payload = Buffer.from(JSON.stringify(body), 'utf8');
   req.on = (ev, cb) => {
     if (ev === 'data') cb(payload);
@@ -54,4 +54,3 @@ function mkRes() {
   console.log('sign.require-tsr.test OK');
   process.exit(0);
 })().catch((e) => { console.error(e); process.exit(1); });
-

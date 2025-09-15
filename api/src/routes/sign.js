@@ -74,7 +74,7 @@ async function handle(req, res) {
     require('../plugins/metrics').emit('sign_success');
   } catch (e) {
     // Special-case TSA strict requirement to ensure standardized error body
-    if (e && e.code === 'tsa_unavailable') {
+    if (e && (e.code === 'tsa_unavailable' || (e.statusCode === 503 && String(e.message||'').toLowerCase().includes('timestamp authority')))) {
       const headers = { "Content-Type": "application/json" };
       if (req && req.id) headers['X-Request-Id'] = req.id;
       res.writeHead(503, headers);
@@ -96,5 +96,4 @@ async function handle(req, res) {
 }
 
 module.exports = { signPayload, handle };
-
 

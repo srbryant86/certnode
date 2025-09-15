@@ -14,6 +14,7 @@
     "size:web-sdk": "node tools/size-web-sdk.js",
     "example:sign": "node examples/node-sign.js --payload '{\"hello\":\"world\",\"n\":42}'",
     "example:verify": "node examples/node-verify.js --receipt examples/receipt.example.json --jwks examples/jwks.example.json",
-    "docs:update": "node scripts/audit-roadmap.js && node scripts/audit-tasks.js"
+    "docs:update": "node scripts/audit-roadmap.js && node scripts/audit-tasks.js",
+    "tsa:canary": "node tools/tsa-canary.js"
   }
 }

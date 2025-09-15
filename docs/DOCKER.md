@@ -27,8 +27,17 @@ Environment defaults (override as needed):
 - `API_RATE_LIMIT_MAX=120`
 - `API_RATE_LIMIT_WINDOW_MS=60000`
 
+### Optional TSA (RFC3161)
+
+If you want real timestamp tokens (`tsr`) when clients pass `headers.tsr: true` to `/v1/sign`, set these env vars. If unset, CertNode returns a deterministic stub suitable for tests/offline flows.
+
+- `TSA_URL` — e.g., `https://tsa.example.com/tsp`
+- `TSA_TIMEOUT_MS` — timeout in ms (default `3000`)
+- `TSA_RETRIES` — retry attempts on failure (default `1`)
+- `TSA_CA_PEM` — inline PEM for custom CA (optional)
+- `TSA_CERT_IGNORE` — set `1` to ignore TLS errors (dev only)
+
 ## Notes
 - Image uses Node 20 Alpine and runs as non‑root `node` user
 - The API has no runtime `npm install` step for core app; add dependencies if needed
 - For cloud registries (GHCR), configure CI/CD with credentials before pushing images
-

@@ -12,7 +12,12 @@ services:
       - PAYLOAD_HARD_BYTES=262144
       - API_RATE_LIMIT_MAX=120
       - API_RATE_LIMIT_WINDOW_MS=60000
+      # Optional TSA (RFC3161) for timestamp tokens (leave unset to use stub)
+      # - TSA_URL=https://tsa.example.com/tsp
+      # - TSA_TIMEOUT_MS=3000
+      # - TSA_RETRIES=1
+      # - TSA_CA_PEM=-----BEGIN CERTIFICATE-----...-----END CERTIFICATE-----
+      # - TSA_CERT_IGNORE=0
     ports:
       - "3000:3000"
     restart: unless-stopped
-

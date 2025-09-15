@@ -20,6 +20,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
           scope: '@certnode'
+          always-auth: true
       - name: Run fast tests
         run: node tools/test-fast.js
       - name: Assert NPM_TOKEN present
@@ -46,6 +47,25 @@ jobs:
           else
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
+      - name: NPM debug (pre-publish)
+        if: matrix.node-version == '20.x'
+        shell: bash
+        run: |
+          echo "node: $(node --version)"
+          echo "npm:  $(npm --version)"
+          echo "registry: $(npm config get registry)"
+          echo "pkg-name: $(node -p \"require('./sdk/node/package.json').name\")"
+          echo "pkg-ver:  $(node -p \"require('./sdk/node/package.json').version\")"
+          npm whoami || true
+      - name: Prime npm auth
+        if: matrix.node-version == '20.x'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        shell: bash
+        run: |
+          mkdir -p "$HOME"
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > "$HOME/.npmrc"
+          chmod 600 "$HOME/.npmrc"
       - name: Pack Node SDK
         if: matrix.node-version == '20.x'
         working-directory: sdk/node
@@ -56,6 +76,22 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --provenance --access public
+      - name: Verify npm publish
+        if: matrix.node-version == '20.x'
+        shell: bash
+        run: |
+          PKG='@certnode/sdk'
+          VER=$(node -p "require('./sdk/node/package.json').version")
+          for i in {1..30}; do
+            P=$(npm view "$PKG@$VER" version 2>/dev/null || true)
+            if [ "$P" = "$VER" ]; then
+              echo "Published $PKG@$VER"
+              exit 0
+            fi
+            sleep 6
+          done
+          echo "Publish not visible on npm after timeout" >&2
+          exit 1
 
   publish-web:
     if: startsWith(github.ref_name, 'sdk-web-v')

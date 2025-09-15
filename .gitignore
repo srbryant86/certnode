@@ -9,3 +9,5 @@ coverage/
 .terraform/
 .claude/
 sdk/**/*.tgz
+
+.vercel

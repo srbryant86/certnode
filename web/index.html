@@ -77,12 +77,54 @@
         <li>Web SDK: <code>npm i @certnode/sdk-web</code></li>
         <li>CLI: <code>tools/verify-receipt.js</code></li>
       </ul>
+
+      <div class="row mt-8">
+        <button id="enterprise-demo" class="pill">Request Enterprise Demo</button>
+        <button id="contact-sales" class="pill">Contact Sales</button>
+      </div>
+    </section>
+
+    <section class="panel" id="contact-form" style="display: none;">
+      <h2>Contact Sales</h2>
+      <form id="lead-form">
+        <div class="row">
+          <input type="text" id="company" placeholder="Company Name *" required />
+          <input type="email" id="email" placeholder="Email Address *" required />
+        </div>
+        <div class="row mt-8">
+          <input type="text" id="name" placeholder="Full Name *" required />
+          <input type="text" id="use-case" placeholder="Use Case (e.g., Financial Compliance)" />
+        </div>
+        <div class="row mt-8">
+          <select id="company-size">
+            <option value="">Company Size</option>
+            <option value="startup">Startup (1-50)</option>
+            <option value="smb">Small Business (51-200)</option>
+            <option value="mid-market">Mid-Market (201-1000)</option>
+            <option value="enterprise">Enterprise (1000+)</option>
+          </select>
+          <select id="urgency">
+            <option value="">Timeline</option>
+            <option value="immediate">Immediate (< 30 days)</option>
+            <option value="quarter">This Quarter</option>
+            <option value="next-quarter">Next Quarter</option>
+            <option value="research">Research Phase</option>
+          </select>
+        </div>
+        <div class="row mt-8">
+          <button type="submit" id="submit-lead">Send Request</button>
+          <button type="button" id="cancel-form">Cancel</button>
+        </div>
+        <div id="form-status" class="status hidden" aria-live="polite"></div>
+      </form>
     </section>
   </main>
 
   <footer>
     © CertNode. Verify page uses WebCrypto; API serves OpenAPI at <code>/openapi.json</code>.
   </footer>
+
+  <script src="js/lead-capture.js"></script>
 </body>
 </html>
 

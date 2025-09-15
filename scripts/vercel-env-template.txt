@@ -1,0 +1,46 @@
+# CertNode Environment Variables for Vercel
+# Copy these to your Vercel dashboard: Settings > Environment Variables
+
+# Required: Production environment
+NODE_ENV=production
+
+# Optional: AWS KMS for infrastructure-grade security
+# Get these from AWS Console > IAM > Create User with KMS permissions
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=your-access-key-here
+AWS_SECRET_ACCESS_KEY=your-secret-key-here
+AWS_KMS_KEY_ID=your-kms-key-id-here
+
+# Optional: TSA (Timestamp Authority) for RFC3161 timestamps
+# Examples: https://freetsa.org/tsr, http://timestamp.digicert.com
+TSA_URL=https://freetsa.org/tsr
+TSA_TIMEOUT_MS=5000
+TSA_RETRIES=2
+
+# Optional: Rate limiting configuration
+RATE_LIMIT_MAX=100
+RATE_LIMIT_WINDOW_MS=60000
+
+# Optional: Payload size limits (bytes)
+PAYLOAD_WARN_BYTES=32768
+PAYLOAD_HARD_BYTES=262144
+
+# Optional: Custom port (Vercel handles this automatically)
+PORT=3000
+
+# Security: Content Security Policy (already configured in code)
+# CSP is handled in your web files - no environment variable needed
+
+# Instructions:
+# 1. Go to https://vercel.com/dashboard
+# 2. Click on your certnode project
+# 3. Go to Settings > Environment Variables
+# 4. Add each variable above (skip AWS ones to start with local keys)
+# 5. Redeploy with: vercel --prod
+
+# For AWS KMS setup:
+# 1. Go to AWS Console > KMS
+# 2. Create a new key for ES256 signing
+# 3. Create IAM user with KMS permissions
+# 4. Add the credentials above
+# 5. Your app will automatically use KMS for signing

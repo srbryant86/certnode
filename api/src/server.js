@@ -101,6 +101,12 @@ const server = http.createServer(async (req, res) => {
     return metricsHandler(req, res);
   }
 
+  // Lead tracking endpoint
+  if (req.method === "POST" && url.pathname === "/api/track-lead") {
+    const { handle: leadsHandler } = require("./routes/leads");
+    return leadsHandler(req, res);
+  }
+
   // 404
   {
     const headers = { "Content-Type": "application/json" };

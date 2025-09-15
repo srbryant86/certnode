@@ -1,22 +1,20 @@
-﻿{
-    "name":  "certnode-api",
-    "version":  "0.1.0",
-    "private":  true,
-    "type":  "commonjs",
-    "scripts":  {
-                    "start":  "node src/index.js",
-                    "test":  "node test/run-all.js",
-                    "test:fast": "node ../tools/test-fast.js",
-                    "smoke":  "node src/index.js \u0026 sleep 1 \u0026\u0026 bash scripts/smoke.sh",
-                    "smoke:win": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smoke.ps1",
-                    "smoke:node": "node ../tools/smoke-receipt.js",
-                    "benchmark": "node ../tools/benchmark.js",
-                    "benchmark:quick": "BENCH_REQUESTS=100 BENCH_WARMUP=10 node ../tools/benchmark.js"
-                },
-    "dependencies":  {
-                         "@aws-sdk/client-kms":  "^3.626.0"
-                     },
-    "devDependencies":  {
-
-                        }
+{
+  "name": "certnode-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node test/run-all.js",
+    "test:fast": "node ../tools/test-fast.js",
+    "smoke": "node src/index.js & sleep 1 && bash scripts/smoke.sh",
+    "smoke:win": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smoke.ps1",
+    "smoke:node": "node ../tools/smoke-receipt.js",
+    "benchmark": "node ../tools/benchmark.js",
+    "benchmark:quick": "BENCH_REQUESTS=100 BENCH_WARMUP=10 node ../tools/benchmark.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-kms": "^3.626.0"
+  },
+  "devDependencies": {}
 }

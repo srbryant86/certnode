@@ -45,34 +45,34 @@ This document equips agents and contributors to continue work without prior cont
 - CI: tests, OpenAPI check, Docker build, commit‑lint (strict on PRs).
 
 ## Next Steps (prioritized)
-1) d26 — Docs sync (AGENTS/STATUS)
-   - Goal: Reflect that both SDKs are published and align status docs.
-   - Acceptance: Docs gate passes; AGENTS “Next Steps” updated; STATUS checklist current.
-2) a34+ polish — OpenAPI/error examples consistency
+1) a37 — TSA integration completion
+   - Goal: Replace TSA stub with real RFC3161 client; configurable endpoint/CA; include DER token in `tsr` field.
+   - Acceptance: New tests pass; example receipt with real TSR validates offline.
+2) a34+ — OpenAPI/error examples consistency
    - Goal: Ensure all endpoints reference shared error schemas; examples reflect final error model.
    - Acceptance: OpenAPI check passes; tests green.
-3) w12 — Verify page polish (ongoing)
-   - Goal: Maintain CSP/a11y; minor UX refinements only.
+3) t16 — Test/fuzz expansion
+   - Goal: Extend fuzz corpus for malformed JOSE/JCS edges, large/empty payloads, header variants.
+   - Acceptance: Fast tests green; coverage for new edge classes.
 
 ### Recent Completions
-- w12 — Verify page hardening: inline scripts removed; CSP tightened; a11y improved for dropzones.
+- w14 — Website home + nav integration: index.html implemented with WEBSITE_PLAN; nav added to verify.html; <50KB budget met; a11y compliant.
+- a37 — TSA integration groundwork: optional RFC3161 client with metrics; require_tsr strict mode (503) and canary tool; OpenAPI/docs/tests updated.
+- s18 — Node SDK published: @certnode/sdk v1.0.7 live on npm; release workflow verified.
+- s16 — Web SDK published: @certnode/sdk-web v0.1.3 tagged; CDN/SRI docs included; CI size gate enforced.
 - a34 — Error model consistency: standardized error schema and X-Request-Id on error responses; minor tests updated.
+- w12 — Verify page hardening: inline scripts removed; CSP tightened; a11y improved for dropzones.
 - bench — Benchmark script hardened: disables rate limit during bench; correct request shape; robust success/latency output.
 - ci/pr — CI benchmark summary + docs gate; PR template includes docs gate + benchmark checklist.
 - ci-matrix — CI runs on Node 20.x and 22.x; nightly benchmark supports manual dispatch and includes P99 summary.
 - ci-release — Release workflows run tests on Node 20/22; publish on Node 20 only; CI splits benchmark into a soft-fail job.
- - a35 — Verify route aligned to error model (request_id + headers) and tests added.
+- a35 — Verify route aligned to error model (request_id + headers) and tests added.
 - w13 — Verify page a11y polish (aria-live on status, labelled file inputs, skip link).
 - s15 — SDK-web publish readiness: added types field, SRI tool, README CDN/SRI examples; CI builds and sizes web SDK.
 - t15 — Fuzz/edge tests: added validation fuzz cases for invalid JSON, unknown fields, kid variants, and tsr type.
 - s15 — Size budget: added CI gate to fail if web SDK bundle exceeds 10KB.
 - w12 — CSP hardening: added object-src/base-uri/frame-ancestors to verify page.
 - a36 — OpenAPI: add error responses for /health (405/500) referencing shared ErrorResponse.
- - s16 — Web SDK published: @certnode/sdk-web v0.1.3 tagged; CDN/SRI docs included; CI size gate enforced.
-  - s17 — Node SDK docs aligned: README cleaned and examples updated; no new publish required.
- - s18 — Node SDK published: @certnode/sdk v1.0.7 live on npm; release workflow verified.
- - a37 — TSA integration groundwork: optional RFC3161 client with metrics; require_tsr strict mode (503) and canary tool; OpenAPI/docs/tests updated.
- - s18 — Node SDK published: @certnode/sdk v1.0.7 live on npm; release workflow verified.
 
 ## Useful Commands
 - Start API: `npm run start` (or `node api/src/index.js`)

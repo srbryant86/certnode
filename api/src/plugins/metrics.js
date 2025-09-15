@@ -54,6 +54,11 @@ const emit = (name, value = 1, extra = {}) => {
     // Structured, single-line JSON for log collectors
     console.log(JSON.stringify(out));
 
+    // Revenue tracking for monetization
+    if (name === 'sign_success' || name === 'verify_success') {
+      emitRevenueEvent(name, out);
+    }
+
     // Update in-memory metrics
     if (name === 'request_completed') {
       const { method = 'GET', path = '/', status = 0, ms = 0 } = out;
@@ -81,6 +86,27 @@ const emit = (name, value = 1, extra = {}) => {
     }
   } catch (_) { /* never throw from metrics */ }
 };
+
+function emitRevenueEvent(action, details = {}) {
+  const revenueMetric = {
+    event: 'revenue_tracking',
+    ts: new Date().toISOString(),
+    action: action,
+    user_ip: details.user_ip || 'unknown',
+    user_agent: details.user_agent || 'unknown',
+    request_id: details.request_id || 'unknown',
+    payload_size: details.payload_size || 0,
+    tsr_requested: details.tsr_requested || false,
+    // For pricing intelligence
+    potential_value: action === 'sign_success' ? 0.001 : 0.0001 // $0.001 per sign, $0.0001 per verify
+  };
+
+  try {
+    console.log('REVENUE_EVENT:', JSON.stringify(revenueMetric));
+  } catch (_) {
+    console.log('REVENUE_EVENT: ' + action);
+  }
+}
 
 function escapeLabel(str) {
   return String(str).replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/"/g, '\\"');

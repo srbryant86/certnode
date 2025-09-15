@@ -1,0 +1,29 @@
+# Terraform files and providers
+infra/
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+terraform.tfvars
+
+# Development files
+.git/
+node_modules/
+*.log
+
+# Test files (optional - remove if you want tests deployed)
+api/test/
+test/
+tests/
+
+# Documentation (optional - remove if you want docs deployed)
+docs/
+*.md
+!README.md
+
+# Scripts (optional - remove if needed)
+scripts/
+
+# Other large files
+.DS_Store
+Thumbs.db

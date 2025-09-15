@@ -16,7 +16,7 @@ Quick reference for component delivery status and key files.
 | **Node SDK** | ✅ | `sdk/node/index.js`, `sdk/node/index.d.ts` | Zero-dependency verification |
 | **Web SDK** | ✅ | `sdk/web/index.js`, `sdk/web/index.d.ts` | Browser compatibility |
 | **CLI Tools** | ✅ | `tools/verify-receipt.js`, `tools/verify-lib.js` | Offline verification |
-| **Web Interface** | ✅ | `web/verify.html`, `web/js/verify.js`, `web/openapi.html`, `web/pitch.html` | User interfaces |
+| **Web Interface** | ✅ | `web/index.html`, `web/verify.html`, `web/js/verify.js`, `web/openapi.html`, `web/pitch.html` | User interfaces + home page |
 | **Build Scripts** | ✅ | `api/scripts/jwks-make-manifest.js`, `scripts/audit-tasks.js` | Automation tools |
 | **Timestamp Authority** | ✅ | `api/src/util/timestamp.js` | TSA integration ready |
 
@@ -33,14 +33,15 @@ Quick reference for component delivery status and key files.
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| **Production Config** | ⚠️ | Missing env validation (a4) |
-| **Security Headers** | ⚠️ | Missing security plugin (a7) |
+| **Production Config** | ✅ | Environment validation complete |
+| **Security Headers** | ✅ | Security plugin with CSP/HSTS implemented |
 | **Error Handling** | ✅ | Global + structured complete |
 | **Rate Limiting** | ✅ | Token bucket + tests |
 | **CORS Policy** | ✅ | Hardened allowlist |
 | **Logging** | ✅ | Hash-only, production-safe |
-| **Metrics** | ✅ | Counters + timers |
+| **Metrics** | ✅ | Prometheus + structured JSON |
 | **Health Checks** | ✅ | Dependency validation |
+| **Website** | ✅ | Home page + navigation complete |
 
 ## Deployment Readiness
 
@@ -52,4 +53,4 @@ Quick reference for component delivery status and key files.
 - ✅ Error Handling: Production-ready responses
 - ✅ SDK Packaging: Published Node/Web SDKs
 
-**Status**: Production-ready; continue polish and docs sync.
+**Status**: Production-ready with complete website; ready for TSA integration and testing expansion.

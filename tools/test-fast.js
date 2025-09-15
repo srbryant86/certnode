@@ -23,7 +23,9 @@ const testFiles = [
   , 'api/test/jwks.integrity.test.js'
   , 'api/test/jwks.rotate.test.js'
   , 'api/test/metrics.endpoint.test.js'
+  , 'api/test/metrics.tsa.test.js'
   , 'api/test/error.model.test.js'
+  , 'api/test/timestamp.test.js'
 ];
 
 async function runTest(testFile) {

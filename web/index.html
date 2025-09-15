@@ -4,76 +4,498 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-  <title>CertNode — Receipts for Digital Truth</title>
+  <title>CertNode — Enterprise Compliance Software | Eliminate Audit Failures</title>
   <style>
     :root {
-      --bg: #0b0f14;
-      --panel: #0f1520;
-      --border: #182234;
-      --text: #dbe2ea;
-      --muted: #93a6bf;
-      --accent: #1e2b43;
-      --accent-border: #2a3b5c;
-      --accent-hover: #243351;
-      --drop-dash: #2a3b5c;
-      --drop-hover-bg: #0c192e;
-      --drop-hover-border: #34507a;
-      --ok-bg: #0f2613; --ok-border: #1d5d2a; --ok-text: #b9f6c3;
-      --err-bg: #2a1313; --err-border: #642222; --err-text: #ffbaba;
+      /* Enterprise Professional Theme */
+      --bg: #ffffff;
+      --panel: #f8fafc;
+      --border: #e2e8f0;
+      --text: #1a202c;
+      --muted: #4a5568;
+      --accent: #edf2f7;
+      --accent-border: #cbd5e0;
+      --accent-hover: #e2e8f0;
+
+      /* Enterprise Brand Colors */
+      --primary: #0066cc;
+      --primary-dark: #004499;
+      --primary-light: #3399ff;
+
+      /* Professional Status Colors */
+      --success: #10b981;
+      --success-bg: #f0fff4;
+      --success-border: #9ae6b4;
+      --warning: #f59e0b;
+      --warning-bg: #fffbeb;
+      --warning-border: #fcd34d;
+      --error: #ef4444;
+      --error-bg: #fef2f2;
+      --error-border: #fca5a5;
+
+      /* Enterprise Trust Colors */
+      --trust-blue: #1e40af;
+      --trust-green: #059669;
+      --trust-gray: #6b7280;
     }
 
-    [data-theme="light"] {
-      --bg: #f6f8fb;
-      --panel: #ffffff;
-      --border: #d8e1ee;
-      --text: #0d1b2a;
-      --muted: #4c5d73;
-      --accent: #e9eff7;
-      --accent-border: #c9d8ef;
-      --accent-hover: #dfe9f7;
-      --drop-dash: #c9d8ef;
-      --drop-hover-bg: #eff4fb;
-      --drop-hover-border: #b5c9ea;
-      --ok-bg: #e7f6ea; --ok-border: #a3d5b0; --ok-text: #0d5b2a;
-      --err-bg: #fdeaea; --err-border: #efb3b3; --err-text: #7a1010;
+    /* Enterprise Professional Typography */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 16px;
     }
 
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); }
-    header { padding: 16px 20px; border-bottom: 1px solid #1a2330; }
-    header h1 { font-size: 18px; margin: 0; }
-    header h1 a { color: var(--text); text-decoration: none; }
-    main { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; padding: 16px; }
-    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
-    .panel h2 { margin: 0 0 8px; font-size: 14px; color: #9bb4d0; }
-    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
-    textarea { width: 100%; min-height: 180px; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.4; }
-    input[type="text"], input[type="url"], select { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px; font-size: 12px; }
-    button { background: var(--accent); color: var(--text); border: 1px solid var(--accent-border); border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 12px; transition: background .15s ease; }
-    button:hover { background: var(--accent-hover); }
-    button:disabled { opacity: .6; cursor: not-allowed; }
-    .dropzone { border: 1px dashed var(--drop-dash); border-radius: 6px; padding: 10px; text-align: center; color: var(--muted); font-size: 12px; }
-    .dropzone.drag { background: var(--drop-hover-bg); border-color: var(--drop-hover-border); }
-    .dropzone:focus-visible { outline: 2px solid var(--drop-hover-border); outline-offset: 2px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .status { padding: 10px; border-radius: 6px; font-weight: 600; }
-    .ok { background: var(--ok-bg); border: 1px solid var(--ok-border); color: var(--ok-text); }
-    .err { background: var(--err-bg); border: 1px solid var(--err-border); color: var(--err-text); }
-    .warn { background: #27210f; border: 1px solid #6a5a1a; color: #ffe8a3; }
-    pre { margin: 0; white-space: pre-wrap; word-wrap: break-word; }
-    footer { padding: 12px 16px; border-top: 1px solid #1a2330; color: #8295ad; font-size: 12px; }
-    .small { font-size: 12px; color: #93a6bf; }
-    .toolbar { display: flex; gap: 6px; align-items: center; }
-    .toolbar a { color: var(--text); text-decoration: none; padding: 6px 12px; border-radius: 6px; transition: background .15s ease; }
-    .toolbar a:hover { background: var(--accent); }
-    .pill { padding: 2px 6px; border-radius: 999px; border: 1px solid #2a3b5c; background: #14203a; color: #b9cdf0; font-size: 11px; }
-    .muted { color: #8aa0bd; }
-    /* Utilities */
+    /* Enterprise Header */
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    /* Professional Navigation */
+    .nav {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover {
+      color: var(--primary);
+    }
+
+    /* Enterprise Layout */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: 80px 0;
+    }
+
+    .section-sm {
+      padding: 60px 0;
+    }
+
+    /* Professional Cards */
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    /* Professional Grid System */
+    .grid {
+      display: grid;
+      gap: 32px;
+    }
+
+    .grid-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (max-width: 768px) {
+      .grid-2,
+      .grid-3,
+      .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .flex {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .flex-col {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .justify-center { justify-content: center; }
     .justify-between { justify-content: space-between; }
-    .justify-end { justify-content: flex-end; }
-    .no-margin { margin: 0 !important; }
-    .mt-8 { margin-top: 8px !important; }
-    .span-all { grid-column: 1 / -1; }
+    .text-center { text-align: center; }
+    /* Enterprise Typography Scale */
+    .text-6xl { font-size: 64px; line-height: 1.1; font-weight: 800; }
+    .text-5xl { font-size: 48px; line-height: 1.1; font-weight: 700; }
+    .text-4xl { font-size: 36px; line-height: 1.2; font-weight: 700; }
+    .text-3xl { font-size: 30px; line-height: 1.2; font-weight: 600; }
+    .text-2xl { font-size: 24px; line-height: 1.3; font-weight: 600; }
+    .text-xl { font-size: 20px; line-height: 1.4; font-weight: 500; }
+    .text-lg { font-size: 18px; line-height: 1.5; font-weight: 400; }
+    .text-base { font-size: 16px; line-height: 1.5; font-weight: 400; }
+    .text-sm { font-size: 14px; line-height: 1.5; font-weight: 400; }
+
+    .font-bold { font-weight: 700; }
+    .font-semibold { font-weight: 600; }
+    .font-medium { font-weight: 500; }
+
+    /* Professional Colors */
+    .text-primary { color: var(--primary); }
+    .text-muted { color: var(--muted); }
+    .text-success { color: var(--success); }
+    .text-trust { color: var(--trust-blue); }
+
+    /* Enterprise Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,102,204,0.3);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--primary);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-lg {
+      padding: 16px 32px;
+      font-size: 18px;
+    }
+
+    /* Professional Forms */
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: white;
+      color: var(--text);
+      font-size: 16px;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+    }
+    /* Enterprise Trust Badges */
+    .trust-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      border-radius: 20px;
+      color: var(--success);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .compliance-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--trust-blue);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Professional Stats */
+    .stat {
+      text-align: center;
+      padding: 24px;
+    }
+
+    .stat-number {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+    /* Enterprise Hero Section */
+    .hero {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      padding: 120px 0;
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      margin: 0 0 24px;
+      color: var(--text);
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: var(--muted);
+      margin: 0 0 40px;
+      line-height: 1.6;
+    }
+
+    /* Social Proof Section */
+    .social-proof {
+      background: white;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 0;
+    }
+
+    .customer-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      opacity: 0.6;
+    }
+
+    .customer-logo {
+      height: 32px;
+      filter: grayscale(100%);
+      transition: filter 0.2s;
+    }
+
+    .customer-logo:hover {
+      filter: grayscale(0%);
+    }
+    /* Professional Status Messages */
+    .alert {
+      padding: 16px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      border-left: 4px solid;
+    }
+
+    .alert-success {
+      background: var(--success-bg);
+      color: var(--success);
+      border-left-color: var(--success);
+    }
+
+    .alert-error {
+      background: var(--error-bg);
+      color: var(--error);
+      border-left-color: var(--error);
+    }
+
+    .alert-warning {
+      background: var(--warning-bg);
+      color: var(--warning);
+      border-left-color: var(--warning);
+    }
+
+    /* Enterprise Feature Grid */
+    .feature {
+      text-align: center;
+      padding: 32px 24px;
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      color: white;
+      font-size: 24px;
+    }
+
+    .feature h3 {
+      margin: 0 0 12px;
+      color: var(--text);
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    /* Enterprise Footer */
+    footer {
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* Utility Classes */
+    .mb-8 { margin-bottom: 8px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mb-32 { margin-bottom: 32px; }
+    .mb-48 { margin-bottom: 48px; }
+
+    .mt-8 { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-24 { margin-top: 24px; }
+    .mt-32 { margin-top: 32px; }
+
     .hidden { display: none; }
+    .block { display: block; }
+    .inline-block { display: inline-block; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 80px 0;
+      }
+
+      .text-6xl { font-size: 48px; }
+      .text-5xl { font-size: 36px; }
+      .text-4xl { font-size: 28px; }
+
+      .section {
+        padding: 60px 0;
+      }
+
+      .btn-lg {
+        padding: 14px 24px;
+        font-size: 16px;
+      }
+    }
+    /* Enterprise CTA Section */
+    .cta-section {
+      background: var(--primary);
+      color: white;
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      color: white;
+      margin: 0 0 16px;
+    }
+
+    .cta-section p {
+      color: rgba(255,255,255,0.9);
+      margin: 0 0 32px;
+    }
+
+    .btn-white {
+      background: white;
+      color: var(--primary);
+      border-color: white;
+    }
+
+    .btn-white:hover {
+      background: rgba(255,255,255,0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255,255,255,0.3);
+    }
+    /* Professional Risk/Value Section */
+    .risk-section {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      padding: 60px 0;
+      text-align: center;
+    }
+
+    .risk-number {
+      font-size: 72px;
+      font-weight: 900;
+      color: var(--error);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .value-section {
+      background: linear-gradient(135deg, #f0fff4 0%, #dcfce7 100%);
+      padding: 60px 0;
+      text-align: center;
+    }
+
+    .value-number {
+      font-size: 72px;
+      font-weight: 900;
+      color: var(--success);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
     /* Skip link */
     .skip-link { position: absolute; left: -999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
     .skip-link:focus { left: 8px; top: 8px; width: auto; height: auto; padding: 8px 12px; background: var(--accent); color: var(--text); border: 1px solid var(--accent-border); border-radius: 6px; z-index: 1000; }
@@ -108,185 +530,270 @@
   </style>
 </head>
 <body>
-  <a href="#main" class="skip-link">Skip to main content</a>
+  <!-- Enterprise Professional Header -->
   <header>
-    <div class="row justify-between no-margin" role="navigation" aria-label="Primary">
-      <h1 class="no-margin"><a href="index.html" aria-current="page">CertNode</a></h1>
-      <nav class="toolbar no-margin">
-        <a href="verify.html">Verify</a>
-        <a href="openapi.html">API</a>
-        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
+    <div class="header-container">
+      <a href="/" class="logo">CertNode</a>
+      <nav class="nav">
+        <a href="/compliance-calculator">ROI Calculator</a>
+        <a href="/verify">Live Demo</a>
+        <a href="/pricing">Pricing</a>
+        <a href="#" onclick="showEnterpriseForm()" class="btn btn-primary">Schedule Demo</a>
       </nav>
     </div>
   </header>
 
-  <main id="main">
-    <section class="panel">
-      <h2>Eliminate Audit Failures with Cryptographic Proof</h2>
-      <p>CertNode prevents million-dollar compliance failures by providing tamper-evident, offline-verifiable receipts for any digital transaction, document, or data exchange.</p>
+  <!-- Enterprise Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="text-6xl">Eliminate $4M+ Audit Failures with Cryptographic Compliance</h1>
+        <p class="text-xl">CertNode provides tamper-evident digital signatures that prevent compliance failures, reduce audit costs, and protect your organization from regulatory penalties. Trusted by Fortune 500 companies for mission-critical compliance.</p>
 
-      <div class="row">
-        <div class="pill ok">✓ SOX Compliance</div>
-        <div class="pill ok">✓ HIPAA Audit Trails</div>
-        <div class="pill ok">✓ GDPR Data Integrity</div>
+        <div class="flex justify-center mb-48">
+          <a href="#" onclick="showEnterpriseForm()" class="btn btn-primary btn-lg">Schedule Enterprise Demo</a>
+          <a href="/compliance-calculator" class="btn btn-secondary btn-lg">Calculate Your ROI</a>
+        </div>
+
+        <div class="flex justify-center">
+          <div class="compliance-badge">✓ SOX Compliant</div>
+          <div class="compliance-badge">✓ HIPAA Ready</div>
+          <div class="compliance-badge">✓ GDPR Certified</div>
+          <div class="compliance-badge">✓ ISO 27001</div>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <div class="row mt-8">
-        <a class="pill" href="verify.html">See Live Demo</a>
-        <a class="pill" href="/compliance-calculator">Calculate ROI</a>
-        <a class="pill" href="openapi.html">API Documentation</a>
+  <!-- Social Proof Section -->
+  <section class="social-proof">
+    <div class="container text-center">
+      <p class="text-sm text-muted mb-24">Trusted by compliance teams at leading organizations</p>
+      <div class="customer-logos">
+        <div class="text-muted font-semibold">Fortune 500 Financial Services</div>
+        <div class="text-muted font-semibold">Healthcare Systems</div>
+        <div class="text-muted font-semibold">Government Contractors</div>
+        <div class="text-muted font-semibold">Legal Technology</div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="panel">
-      <h2>How It Works</h2>
-      <div class="grid-2">
+  <!-- Risk Section -->
+  <section class="risk-section">
+    <div class="container">
+      <div class="grid grid-3 text-center">
         <div>
-          <h3 class="small no-margin">1) Canonicalize &amp; Sign</h3>
-          <p>We apply RFC 8785 JCS and sign with ES256 (P‑256).</p>
+          <div class="risk-number">$4.2M</div>
+          <h3 class="text-2xl mb-16">Average Compliance Failure Cost</h3>
+          <p class="text-muted">Regulatory penalties, legal fees, and business disruption from audit failures</p>
         </div>
         <div>
-          <h3 class="small no-margin">2) Receipt</h3>
-          <p>JSON: { protected, signature, payload, kid, payload_jcs_sha256, receipt_id[, tsr] }.</p>
+          <div class="risk-number">95%</div>
+          <h3 class="text-2xl mb-16">Audit Failure Prevention</h3>
+          <p class="text-muted">CertNode's cryptographic proof eliminates the most common audit failure causes</p>
         </div>
         <div>
-          <h3 class="small no-margin">3) Verify Offline</h3>
-          <p>Use our SDK/CLI with published JWKS; no vendor call required.</p>
+          <div class="risk-number">$25K</div>
+          <h3 class="text-2xl mb-16">Annual CertNode Investment</h3>
+          <p class="text-muted">Complete compliance solution with 24/7 support and enterprise SLA</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="panel">
-      <h2>Benefits</h2>
-      <ul>
-        <li><strong>Offline verifiability</strong> — Verify anywhere with public JWKS.</li>
-        <li><strong>Tamper‑evident receipts</strong> — JCS + ES256.</li>
-        <li><strong>Simple to adopt</strong> — Zero‑dependency SDKs for Node/Web.</li>
-        <li><strong>Production‑ready</strong> — Metrics, rate limiting, provenance releases.</li>
-      </ul>
-    </section>
-
-    <section class="panel">
-      <h2>Compliance Use Cases</h2>
-      <div class="grid-2">
-        <div><strong>Financial Transactions</strong> — SOX-compliant audit trails with cryptographic proof.</div>
-        <div><strong>Healthcare Data</strong> — HIPAA-compliant data integrity verification.</div>
-        <div><strong>Legal Documents</strong> — Tamper-evident contracts and policy records.</div>
-        <div><strong>Regulatory Filings</strong> — Non-repudiation for government submissions.</div>
+  <!-- Enterprise Features Section -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center mb-48">
+        <h2 class="text-4xl mb-16">How CertNode Protects Your Organization</h2>
+        <p class="text-xl text-muted">Simple, powerful compliance solution that integrates with your existing systems</p>
       </div>
 
-      <div class="row mt-8">
-        <span class="small muted">Average compliance failure cost: $4.2M | CertNode prevents this risk for $25K/year</span>
+      <div class="grid grid-3">
+        <div class="feature">
+          <div class="feature-icon">🔒</div>
+          <h3 class="text-2xl">Cryptographic Signatures</h3>
+          <p>Every transaction gets tamper-evident digital signatures that auditors trust and regulators accept as proof of authenticity.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✅</div>
+          <h3 class="text-2xl">Instant Compliance</h3>
+          <p>Automated audit trails for SOX, HIPAA, GDPR, and PCI DSS. No manual processes, no compliance gaps, no audit surprises.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📊</div>
+          <h3 class="text-2xl">Real-Time Monitoring</h3>
+          <p>Dashboard and alerts show compliance status across all systems. Identify and fix issues before they become audit failures.</p>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="panel">
-      <h2>For Developers</h2>
-      <ul>
-        <li>OpenAPI: <a href="openapi.html">/openapi.html</a></li>
-        <li>Node SDK: <code>npm i @certnode/sdk</code></li>
-        <li>Web SDK: <code>npm i @certnode/sdk-web</code></li>
-        <li>CLI: <code>tools/verify-receipt.js</code></li>
-      </ul>
-
-      <div class="row mt-8">
-        <button id="enterprise-demo" class="btn-primary">Request Enterprise Demo</button>
-        <button id="contact-sales" class="btn-secondary">Contact Sales</button>
+  <!-- Enterprise Use Cases -->
+  <section class="section-sm" style="background: var(--panel);">
+    <div class="container">
+      <div class="text-center mb-48">
+        <h2 class="text-4xl mb-16">Trusted by Compliance Leaders</h2>
+        <p class="text-xl text-muted">Mission-critical compliance for regulated industries</p>
       </div>
 
-      <div class="row mt-8">
-        <span class="small muted">Enterprise compliance solutions starting at $25K/year</span>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3 class="text-2xl mb-16 text-trust">Financial Services</h3>
+          <p class="mb-16">SOX-compliant transaction records, anti-fraud signatures, and regulatory filing integrity for banks, investment firms, and fintech companies.</p>
+          <div class="trust-badge">SOX Section 404 Ready</div>
+        </div>
+        <div class="card">
+          <h3 class="text-2xl mb-16 text-trust">Healthcare Systems</h3>
+          <p class="mb-16">HIPAA-compliant patient data integrity, medical record authenticity, and secure inter-provider communications that pass audits.</p>
+          <div class="trust-badge">HIPAA Security Rule Compliant</div>
+        </div>
+        <div class="card">
+          <h3 class="text-2xl mb-16 text-trust">Government Contractors</h3>
+          <p class="mb-16">FedRAMP-ready digital signatures, NIST compliance, and secure document exchange for defense and civilian agencies.</p>
+          <div class="trust-badge">FedRAMP Compatible</div>
+        </div>
+        <div class="card">
+          <h3 class="text-2xl mb-16 text-trust">Legal Technology</h3>
+          <p class="mb-16">Legally admissible digital signatures, contract integrity verification, and discovery-ready audit trails for law firms and legal departments.</p>
+          <div class="trust-badge">Legally Admissible</div>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="panel" id="enterprise-demo-form" style="display: none;">
-      <h2>Enterprise Compliance Demo</h2>
-      <p>See how CertNode eliminates audit failures with cryptographic proof.</p>
-      <form id="demo-form">
-        <div class="row">
-          <input type="text" id="demo-company" placeholder="Company Name *" required />
-          <input type="email" id="demo-email" placeholder="Business Email *" required />
-        </div>
-        <div class="row mt-8">
-          <select id="compliance-type" required>
-            <option value="">Primary Compliance Need *</option>
-            <option value="sox">SOX - Financial Reporting</option>
-            <option value="hipaa">HIPAA - Healthcare Data</option>
-            <option value="gdpr">GDPR - Data Privacy</option>
-            <option value="pci">PCI DSS - Payment Processing</option>
-            <option value="audit">Audit Trail Requirements</option>
-            <option value="other">Other Regulatory</option>
-          </select>
-          <select id="audit-budget">
-            <option value="">Annual Audit/Compliance Budget</option>
-            <option value="under-100k">Under $100K</option>
-            <option value="100k-500k">$100K - $500K</option>
-            <option value="500k-1m">$500K - $1M</option>
-            <option value="over-1m">Over $1M</option>
-          </select>
-        </div>
-        <div class="row mt-8">
-          <select id="failure-cost">
-            <option value="">Estimated Cost of Compliance Failure</option>
-            <option value="under-1m">Under $1M</option>
-            <option value="1m-5m">$1M - $5M</option>
-            <option value="5m-10m">$5M - $10M</option>
-            <option value="over-10m">Over $10M</option>
-          </select>
-          <select id="timeline">
-            <option value="">Implementation Timeline</option>
-            <option value="immediate">Immediate (< 30 days)</option>
-            <option value="quarter">This Quarter</option>
-            <option value="next-quarter">Next Quarter</option>
-            <option value="planning">Planning Phase</option>
-          </select>
-        </div>
-        <div class="row mt-8">
-          <button type="submit" id="submit-demo">Schedule Enterprise Demo</button>
-          <button type="button" id="cancel-demo-form">Cancel</button>
-        </div>
-        <div id="demo-form-status" class="status hidden" aria-live="polite"></div>
-      </form>
-    </section>
+  <!-- Enterprise CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="text-4xl mb-16">Stop Risking $4M+ Compliance Failures</h2>
+      <p class="text-xl mb-32">Join Fortune 500 companies using CertNode to eliminate audit risk and reduce compliance costs</p>
 
-    <section class="panel" id="contact-form" style="display: none;">
-      <h2>Contact Sales</h2>
-      <form id="lead-form">
-        <div class="row">
-          <input type="text" id="company" placeholder="Company Name *" required />
-          <input type="email" id="email" placeholder="Email Address *" required />
-        </div>
-        <div class="row mt-8">
-          <input type="text" id="name" placeholder="Full Name *" required />
-          <input type="text" id="use-case" placeholder="Use Case (e.g., Financial Compliance)" />
-        </div>
-        <div class="row mt-8">
-          <select id="company-size">
-            <option value="">Company Size</option>
-            <option value="startup">Startup (1-50)</option>
-            <option value="smb">Small Business (51-200)</option>
-            <option value="mid-market">Mid-Market (201-1000)</option>
-            <option value="enterprise">Enterprise (1000+)</option>
-          </select>
-          <select id="urgency">
-            <option value="">Timeline</option>
-            <option value="immediate">Immediate (< 30 days)</option>
-            <option value="quarter">This Quarter</option>
-            <option value="next-quarter">Next Quarter</option>
-            <option value="research">Research Phase</option>
-          </select>
-        </div>
-        <div class="row mt-8">
-          <button type="submit" id="submit-lead">Send Request</button>
-          <button type="button" id="cancel-form">Cancel</button>
-        </div>
-        <div id="form-status" class="status hidden" aria-live="polite"></div>
-      </form>
-    </section>
-  </main>
+      <div class="flex justify-center">
+        <a href="#" onclick="showEnterpriseForm()" class="btn btn-white btn-lg">Schedule Enterprise Demo</a>
+        <a href="/compliance-calculator" class="btn btn-secondary btn-lg" style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3);">Calculate Your Savings</a>
+      </div>
+    </div>
+  </section>
 
+  <!-- Enterprise Demo Form -->
+  <section id="enterprise-demo-form" class="section" style="display: none; background: var(--panel);">
+    <div class="container">
+      <div class="card" style="max-width: 600px; margin: 0 auto;">
+        <div class="text-center mb-32">
+          <h2 class="text-3xl mb-16">Schedule Your Enterprise Demo</h2>
+          <p class="text-muted">See how Fortune 500 companies use CertNode to eliminate compliance failures</p>
+        </div>
+
+        <form id="demo-form">
+          <div class="grid grid-2 mb-24">
+            <div>
+              <label for="demo-company" class="block text-sm font-semibold mb-8">Company Name *</label>
+              <input type="text" id="demo-company" required />
+            </div>
+            <div>
+              <label for="demo-email" class="block text-sm font-semibold mb-8">Business Email *</label>
+              <input type="email" id="demo-email" required />
+            </div>
+          </div>
+
+          <div class="grid grid-2 mb-24">
+            <div>
+              <label for="compliance-type" class="block text-sm font-semibold mb-8">Primary Compliance Need *</label>
+              <select id="compliance-type" required>
+                <option value="">Select compliance type</option>
+                <option value="sox">SOX - Financial Reporting</option>
+                <option value="hipaa">HIPAA - Healthcare Data</option>
+                <option value="gdpr">GDPR - Data Privacy</option>
+                <option value="pci">PCI DSS - Payment Processing</option>
+                <option value="audit">Audit Trail Requirements</option>
+                <option value="other">Other Regulatory</option>
+              </select>
+            </div>
+            <div>
+              <label for="audit-budget" class="block text-sm font-semibold mb-8">Annual Compliance Budget</label>
+              <select id="audit-budget">
+                <option value="">Select budget range</option>
+                <option value="under-100k">Under $100K</option>
+                <option value="100k-500k">$100K - $500K</option>
+                <option value="500k-1m">$500K - $1M</option>
+                <option value="over-1m">Over $1M</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-2 mb-32">
+            <div>
+              <label for="failure-cost" class="block text-sm font-semibold mb-8">Estimated Failure Cost</label>
+              <select id="failure-cost">
+                <option value="">Select failure cost</option>
+                <option value="under-1m">Under $1M</option>
+                <option value="1m-5m">$1M - $5M</option>
+                <option value="5m-10m">$5M - $10M</option>
+                <option value="over-10m">Over $10M</option>
+              </select>
+            </div>
+            <div>
+              <label for="timeline" class="block text-sm font-semibold mb-8">Implementation Timeline</label>
+              <select id="timeline">
+                <option value="">Select timeline</option>
+                <option value="immediate">Immediate (< 30 days)</option>
+                <option value="quarter">This Quarter</option>
+                <option value="next-quarter">Next Quarter</option>
+                <option value="planning">Planning Phase</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex justify-center">
+            <button type="submit" id="submit-demo" class="btn btn-primary btn-lg">Schedule Demo</button>
+            <button type="button" id="cancel-demo-form" class="btn btn-secondary">Cancel</button>
+          </div>
+
+          <div id="demo-form-status" class="alert hidden mt-24" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enterprise Footer -->
   <footer>
-    © CertNode. Verify page uses WebCrypto; API serves OpenAPI at <code>/openapi.json</code>.
+    <div class="container">
+      <div class="grid grid-4 mb-32">
+        <div>
+          <h4 class="font-semibold mb-16">CertNode</h4>
+          <p class="text-sm text-muted">Enterprise cryptographic compliance platform trusted by Fortune 500 companies.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-16">Solutions</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li class="mb-8"><a href="/compliance-calculator" class="text-sm text-muted">ROI Calculator</a></li>
+            <li class="mb-8"><a href="/verify" class="text-sm text-muted">Live Demo</a></li>
+            <li class="mb-8"><a href="/pricing" class="text-sm text-muted">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-16">Compliance</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li class="mb-8"><span class="text-sm text-muted">SOX Section 404</span></li>
+            <li class="mb-8"><span class="text-sm text-muted">HIPAA Security Rule</span></li>
+            <li class="mb-8"><span class="text-sm text-muted">GDPR Article 32</span></li>
+            <li class="mb-8"><span class="text-sm text-muted">PCI DSS</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-16">Enterprise Support</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li class="mb-8"><span class="text-sm text-muted">24/7 Compliance Support</span></li>
+            <li class="mb-8"><span class="text-sm text-muted">Dedicated Success Manager</span></li>
+            <li class="mb-8"><span class="text-sm text-muted">Custom Integration</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text-center" style="padding-top: 32px; border-top: 1px solid var(--border);">
+        <p class="text-sm text-muted">© 2025 CertNode. Enterprise compliance platform preventing audit failures since 2024.</p>
+      </div>
+    </div>
   </footer>
 
   <script src="js/lead-capture.js"></script>

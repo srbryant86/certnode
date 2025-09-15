@@ -3,10 +3,16 @@ const registry = {
   requests: Object.create(null), // key: `${method}|${path}|${status}` -> count
   errors: Object.create(null),   // key: `${method}|${path}|${status}` (status >=400) -> count
   duration: Object.create(null), // key: `${method}|${path}` -> histogram
-  rateLimited: 0
+  rateLimited: 0,
+  tsa: {
+    success: 0,
+    error: 0,
+    duration: { buckets: null, sum: 0, count: 0 }
+  }
 };
 
 const buckets = [5, 10, 25, 50, 100, 250, 500, 1000, 2000]; // ms
+const tsaBuckets = [10, 25, 50, 100, 250, 500, 1000, 2000, 5000]; // ms
 
 function ensureHist(key) {
   if (!registry.duration[key]) {
@@ -56,6 +62,22 @@ const emit = (name, value = 1, extra = {}) => {
       if (typeof ms === 'number') observeDuration(method, path, ms);
     } else if (name === 'rate_limit_triggered') {
       incRateLimited();
+    } else if (name === 'tsa_request_success') {
+      // increment success and observe duration
+      try {
+        registry.tsa.success++;
+        const ms = Number(out.ms || 0);
+        if (!registry.tsa.duration.buckets) {
+          registry.tsa.duration.buckets = tsaBuckets.map(() => 0);
+        }
+        registry.tsa.duration.count += 1;
+        registry.tsa.duration.sum += isFinite(ms) ? ms : 0;
+        for (let i = 0; i < tsaBuckets.length; i++) {
+          if (ms <= tsaBuckets[i]) registry.tsa.duration.buckets[i]++;
+        }
+      } catch (_) {}
+    } else if (name === 'tsa_request_error') {
+      try { registry.tsa.error++; } catch (_) {}
     }
   } catch (_) { /* never throw from metrics */ }
 };
@@ -99,6 +121,32 @@ function getPrometheusMetrics() {
     const [method, path, status] = key.split('|');
     const val = registry.errors[key];
     out += `certnode_errors_total{method="${escapeLabel(method)}",path="${escapeLabel(path)}",status="${escapeLabel(status)}"} ${val}\n`;
+  }
+
+  // TSA metrics (low-cardinality, global counters)
+  out += '\n# HELP certnode_tsa_success_total Total number of successful TSA requests\n';
+  out += '# TYPE certnode_tsa_success_total counter\n';
+  out += `certnode_tsa_success_total ${registry.tsa.success}\n`;
+
+  out += '\n# HELP certnode_tsa_error_total Total number of TSA request errors\n';
+  out += '# TYPE certnode_tsa_error_total counter\n';
+  out += `certnode_tsa_error_total ${registry.tsa.error}\n`;
+
+  out += '\n# HELP certnode_tsa_duration_ms TSA request duration in milliseconds\n';
+  out += '# TYPE certnode_tsa_duration_ms histogram\n';
+  if (registry.tsa.duration && registry.tsa.duration.buckets) {
+    let cum = 0;
+    for (let i = 0; i < tsaBuckets.length; i++) {
+      cum += registry.tsa.duration.buckets[i];
+      out += `certnode_tsa_duration_ms_bucket{le="${tsaBuckets[i]}"} ${cum}\n`;
+    }
+    out += `certnode_tsa_duration_ms_bucket{le="+Inf"} ${registry.tsa.duration.count}\n`;
+    out += `certnode_tsa_duration_ms_sum ${registry.tsa.duration.sum}\n`;
+    out += `certnode_tsa_duration_ms_count ${registry.tsa.duration.count}\n`;
+  } else {
+    out += `certnode_tsa_duration_ms_bucket{le="+Inf"} 0\n`;
+    out += `certnode_tsa_duration_ms_sum 0\n`;
+    out += `certnode_tsa_duration_ms_count 0\n`;
   }
 
   return out;

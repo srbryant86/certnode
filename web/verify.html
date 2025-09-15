@@ -4,83 +4,121 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-  <title>CertNode — Verify Receipt</title>
+  <title>CertNode — Receipt Verification</title>
   <link rel="stylesheet" href="assets/certnode.css" />
+  <style>
+    body { background: #ffffff; color: #1a1a1a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .verify-hero { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); color: white; padding: 3rem 0; text-align: center; }
+    .verify-hero h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .verify-hero p { font-size: 1.25rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+    .nav-brand { font-size: 1.5rem; font-weight: 700; color: #2563eb; text-decoration: none; }
+    .nav-link { color: #64748b; text-decoration: none; padding: 0.5rem 1rem; border-radius: 0.375rem; transition: all 0.2s; }
+    .nav-link:hover { background: #f1f5f9; color: #2563eb; }
+    .enterprise-panel { background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .enterprise-panel h2 { color: #1e293b; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; }
+    .status-success { background: #dcfce7; border-color: #16a34a; color: #15803d; }
+    .status-error { background: #fef2f2; border-color: #dc2626; color: #dc2626; }
+    .btn-primary { background: #2563eb; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary:hover { background: #f1f5f9; }
+  </style>
 </head>
 <body>
-  <header>
-    <div class="row justify-between no-margin" role="navigation" aria-label="Primary">
-      <h1 class="no-margin"><a href="index.html">CertNode</a> — Verify Receipt</h1>
+  <header style="background: white; border-bottom: 1px solid #e2e8f0; padding: 1rem 0;">
+    <div class="row justify-between no-margin" role="navigation" aria-label="Primary" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <h1 class="no-margin"><a href="index.html" class="nav-brand">CertNode</a></h1>
       <nav class="toolbar no-margin">
-        <a href="index.html">Home</a>
-        <a href="openapi.html">API</a>
-        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
-        <button id="theme-toggle" title="Toggle theme">Theme</button>
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="pricing.html" class="nav-link">Pricing</a>
+        <a href="openapi.html" class="nav-link">API</a>
+        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank" class="nav-link">GitHub</a>
       </nav>
     </div>
   </header>
+
+  <div class="verify-hero">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <h1>Receipt Verification</h1>
+      <p>Instantly validate cryptographic receipts with enterprise-grade security and compliance reporting</p>
+    </div>
+  </div>
   <a href="#main" class="skip-link">Skip to main content</a>
-  <main id="main">
-    <section class="panel">
-      <h2>Receipt JSON</h2>
+  <main id="main" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+    <section class="enterprise-panel">
+      <h2>📄 Receipt Upload</h2>
+      <p style="color: #64748b; margin-bottom: 1.5rem;">Upload your cryptographic receipt for instant verification and compliance validation</p>
       <div class="row grid-2">
-        <div class="dropzone" id="receipt-drop" role="button" tabindex="0" aria-label="Drop receipt.json here or press Enter to choose a file">Drop receipt.json here</div>
+        <div class="dropzone" id="receipt-drop" role="button" tabindex="0" aria-label="Drop receipt.json here or press Enter to choose a file" style="border: 2px dashed #cbd5e1; padding: 2rem; text-align: center; border-radius: 0.5rem; background: #f8fafc; color: #64748b; cursor: pointer; transition: all 0.2s;">
+          📁 Drop receipt.json here or click to browse
+        </div>
         <div class="toolbar justify-end">
-          <input type="file" id="receipt-file" accept="application/json" aria-label="Choose receipt JSON file" />
-          <button id="receipt-sample">Load sample</button>
-          <button id="receipt-format">Format</button>
-          <button id="receipt-minify">Minify</button>
+          <input type="file" id="receipt-file" accept="application/json" aria-label="Choose receipt JSON file" style="display: none;" />
+          <button id="receipt-sample" class="btn-secondary">Load Sample</button>
+          <button id="receipt-format" class="btn-secondary">Format</button>
+          <button id="receipt-minify" class="btn-secondary">Minify</button>
         </div>
       </div>
-      <textarea id="receipt" placeholder='{"protected":"...","payload":{...},"signature":"...","kid":"..."}'></textarea>
+      <textarea id="receipt" placeholder='{"protected":"...","payload":{...},"signature":"...","kid":"..."}' style="width: 100%; min-height: 120px; margin-top: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.875rem;"></textarea>
     </section>
 
-    <section class="panel">
-      <h2>JWKS</h2>
+    <section class="enterprise-panel">
+      <h2>🔐 Public Key Configuration</h2>
+      <p style="color: #64748b; margin-bottom: 1.5rem;">Provide the JWKS (JSON Web Key Set) containing the public keys for signature verification</p>
       <div class="row grid-2">
-        <div class="dropzone" id="jwks-drop" role="button" tabindex="0" aria-label="Drop jwks.json here or press Enter to choose a file">Drop jwks.json here</div>
+        <div class="dropzone" id="jwks-drop" role="button" tabindex="0" aria-label="Drop jwks.json here or press Enter to choose a file" style="border: 2px dashed #cbd5e1; padding: 2rem; text-align: center; border-radius: 0.5rem; background: #f8fafc; color: #64748b; cursor: pointer; transition: all 0.2s;">
+          🔑 Drop jwks.json here or click to browse
+        </div>
         <div class="toolbar justify-end">
-          <input type="file" id="jwks-file" accept="application/json" aria-label="Choose JWKS JSON file" />
-          <button id="jwks-format">Format</button>
-          <button id="jwks-minify">Minify</button>
+          <input type="file" id="jwks-file" accept="application/json" aria-label="Choose JWKS JSON file" style="display: none;" />
+          <button id="jwks-format" class="btn-secondary">Format</button>
+          <button id="jwks-minify" class="btn-secondary">Minify</button>
         </div>
       </div>
-      <div class="row mt-8">
-        <input type="url" id="jwks-url" placeholder="Optional: https://.../.well-known/jwks.json" aria-label="JWKS URL" />
-        <button id="fetch-jwks">Fetch</button>
+      <div class="row mt-8" style="margin-top: 1rem;">
+        <input type="url" id="jwks-url" placeholder="Or fetch from URL: https://.../.well-known/jwks.json" aria-label="JWKS URL" style="flex: 1; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; margin-right: 0.5rem;" />
+        <button id="fetch-jwks" class="btn-primary">Fetch JWKS</button>
       </div>
-      <textarea id="jwks" placeholder='{"keys":[{"kty":"EC","crv":"P-256","x":"...","y":"...","kid":"..."}]}'></textarea>
-      <div class="small muted">JWKS is cached locally in your browser for convenience.</div>
+      <textarea id="jwks" placeholder='{"keys":[{"kty":"EC","crv":"P-256","x":"...","y":"...","kid":"..."}]}' style="width: 100%; min-height: 120px; margin-top: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.875rem;"></textarea>
+      <div style="color: #64748b; font-size: 0.875rem; margin-top: 0.5rem;">💡 JWKS is cached locally in your browser for convenience and security</div>
     </section>
 
-    <section class="panel span-all">
-      <h2>Verify</h2>
-      <div class="row">
-        <button id="verify">Verify</button>
-        <button id="clear">Clear</button>
-        <span class="small">Verification uses WebCrypto (ES256) via web/js/verify.js</span>
+    <section class="enterprise-panel">
+      <h2>✅ Verification & Compliance Report</h2>
+      <p style="color: #64748b; margin-bottom: 1.5rem;">Generate instant cryptographic verification with detailed compliance reporting</p>
+      <div class="row" style="margin-bottom: 1.5rem;">
+        <button id="verify" class="btn-primary" style="margin-right: 1rem;">🔍 Verify Receipt</button>
+        <button id="clear" class="btn-secondary">🗑️ Clear All</button>
+        <span style="color: #64748b; font-size: 0.875rem; margin-left: auto; align-self: center;">🔒 Verification uses WebCrypto (ES256) - fully client-side</span>
       </div>
-      <div id="status" class="status hidden" aria-live="polite" role="status"></div>
-      <div class="grid-2 mt-8">
+      <div id="status" class="status hidden" aria-live="polite" role="status" style="padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; font-weight: 500;"></div>
+      <div class="grid-2 mt-8" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
         <div>
-          <div class="row justify-between">
-            <h3 class="small no-margin">Protected Header</h3>
-            <button id="copy-hdr" class="pill">Copy</button>
+          <div class="row justify-between" style="margin-bottom: 0.5rem;">
+            <h3 style="margin: 0; color: #1e293b; font-size: 1rem; font-weight: 600;">📋 Protected Header</h3>
+            <button id="copy-hdr" class="btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Copy</button>
           </div>
-          <pre id="hdr"></pre>
+          <pre id="hdr" style="background: #f8fafc; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.875rem; overflow-x: auto;"></pre>
         </div>
         <div>
-          <div class="row justify-between">
-            <h3 class="small no-margin">Result</h3>
-            <button id="copy-result" class="pill">Copy</button>
+          <div class="row justify-between" style="margin-bottom: 0.5rem;">
+            <h3 style="margin: 0; color: #1e293b; font-size: 1rem; font-weight: 600;">📊 Verification Result</h3>
+            <button id="copy-result" class="btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Copy</button>
           </div>
-          <pre id="result"></pre>
+          <pre id="result" style="background: #f8fafc; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-size: 0.875rem; overflow-x: auto;"></pre>
         </div>
       </div>
     </section>
   </main>
-  <footer>
-    Paste or drop files above. For full offline verification, use the Node SDK or CLI in <code>tools/verify-receipt.js</code>.
+  <footer style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 2rem 0; text-align: center; margin-top: 3rem;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <p style="color: #64748b; margin: 0;">
+        🔒 All verification is performed client-side for maximum security.
+        For enterprise integrations and offline verification, explore our
+        <a href="openapi.html" style="color: #2563eb; text-decoration: none;">REST API</a>
+        and Node.js SDK.
+      </p>
+    </div>
   </footer>
 
   <script src="js/verify.js"></script>

@@ -4,267 +4,438 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-  <title>Pricing — CertNode</title>
+  <title>Enterprise Pricing — CertNode</title>
   <style>
-    :root {
-      --bg: #0b0f14;
-      --panel: #0f1520;
-      --border: #182234;
-      --text: #dbe2ea;
-      --muted: #93a6bf;
-      --accent: #1e2b43;
-      --accent-border: #2a3b5c;
-      --accent-hover: #243351;
-      --ok-bg: #0f2613; --ok-border: #1d5d2a; --ok-text: #b9f6c3;
-      --primary-bg: #2563eb; --primary-border: #1d4ed8; --primary-text: white;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: #1a1a1a;
+      line-height: 1.6;
     }
 
-    [data-theme="light"] {
-      --bg: #f6f8fb;
-      --panel: #ffffff;
-      --border: #d8e1ee;
-      --text: #0d1b2a;
-      --muted: #4c5d73;
-      --accent: #e9eff7;
-      --accent-border: #c9d8ef;
-      --accent-hover: #dfe9f7;
-      --ok-bg: #e7f6ea; --ok-border: #a3d5b0; --ok-text: #0d5b2a;
-      --primary-bg: #2563eb; --primary-border: #1d4ed8; --primary-text: white;
+    header {
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 0;
     }
 
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); }
-    header { padding: 16px 20px; border-bottom: 1px solid #1a2330; }
-    header h1 { font-size: 18px; margin: 0; }
-    header h1 a { color: var(--text); text-decoration: none; }
-    .toolbar { display: flex; gap: 6px; align-items: center; }
-    .toolbar a { color: var(--text); text-decoration: none; padding: 6px 12px; border-radius: 6px; transition: background .15s ease; }
-    .toolbar a:hover { background: var(--accent); }
-    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
-    .justify-between { justify-content: space-between; }
-    .no-margin { margin: 0 !important; }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-    /* Pricing Page Styles */
-    .hero { text-align: center; padding: 60px 20px; }
-    .hero h1 { font-size: 48px; margin: 0 0 16px; font-weight: 700; }
-    .hero p { font-size: 20px; color: var(--muted); margin: 0 0 32px; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .nav-brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2563eb;
+      text-decoration: none;
+    }
 
-    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: #64748b;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .nav-link:hover, .nav-link[aria-current="page"] {
+      background: #f1f5f9;
+      color: #2563eb;
+    }
+
+    .pricing-hero {
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .pricing-hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .pricing-hero p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .pricing-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
 
     .pricing-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 32px 24px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      padding: 2rem;
       position: relative;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     .pricing-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
 
-    .pricing-card.popular {
-      border-color: var(--primary-border);
-      background: linear-gradient(135deg, var(--panel) 0%, #1a2332 100%);
+    .pricing-card.featured {
+      border-color: #2563eb;
+      position: relative;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
     }
 
-    .pricing-card.popular::before {
-      content: "Most Popular";
+    .pricing-card.featured::before {
+      content: "🏆 Most Popular";
       position: absolute;
-      top: -1px;
+      top: -12px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--primary-bg);
-      color: var(--primary-text);
-      padding: 8px 16px;
-      font-size: 12px;
+      background: #2563eb;
+      color: white;
+      padding: 0.5rem 1.5rem;
+      font-size: 0.875rem;
       font-weight: 600;
-      border-radius: 0 0 8px 8px;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
     }
 
-    .plan-name { font-size: 24px; font-weight: 700; margin: 0 0 8px; }
-    .plan-price { font-size: 48px; font-weight: 700; margin: 0; color: var(--text); }
-    .plan-price .currency { font-size: 24px; color: var(--muted); }
-    .plan-price .period { font-size: 16px; color: var(--muted); font-weight: 400; }
-    .plan-description { color: var(--muted); margin: 16px 0 32px; }
+    .plan-tier {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
 
-    .plan-features { list-style: none; padding: 0; margin: 0 0 32px; }
+    .plan-price {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+
+    .plan-price .currency {
+      font-size: 1.5rem;
+      color: #64748b;
+    }
+
+    .plan-price .period {
+      font-size: 1rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .plan-subtitle {
+      color: #64748b;
+      margin-bottom: 2rem;
+      font-size: 1.125rem;
+    }
+
+    .plan-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2rem;
+    }
+
     .plan-features li {
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #f1f5f9;
       display: flex;
       align-items: center;
-      font-size: 14px;
+      color: #374151;
     }
-    .plan-features li:last-child { border-bottom: none; }
-    .plan-features .icon { margin-right: 12px; color: var(--ok-text); font-weight: bold; }
+
+    .plan-features li:last-child {
+      border-bottom: none;
+    }
+
+    .plan-features .check {
+      margin-right: 0.75rem;
+      color: #16a34a;
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
 
     .plan-button {
       width: 100%;
-      padding: 12px 24px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--accent);
-      color: var(--text);
+      padding: 1rem 1.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      background: #f8fafc;
+      color: #374151;
       font-weight: 600;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background 0.2s ease;
+      transition: all 0.2s ease;
       text-decoration: none;
       display: block;
       text-align: center;
     }
 
     .plan-button.primary {
-      background: var(--primary-bg);
-      border-color: var(--primary-border);
-      color: var(--primary-text);
+      background: #2563eb;
+      border-color: #2563eb;
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
     }
 
     .plan-button:hover {
-      background: var(--accent-hover);
+      background: #f1f5f9;
+      border-color: #cbd5e1;
     }
 
     .plan-button.primary:hover {
-      background: var(--primary-border);
+      background: #1d4ed8;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
     }
 
-    .faq { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
-    .faq h2 { text-align: center; font-size: 36px; margin: 0 0 40px; }
-    .faq-item { margin-bottom: 24px; }
-    .faq-question { font-weight: 600; font-size: 18px; margin: 0 0 8px; }
-    .faq-answer { color: var(--muted); line-height: 1.6; }
+    .enterprise-section {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      padding: 3rem;
+      text-align: center;
+      margin: 3rem 0;
+    }
 
-    footer { padding: 12px 16px; border-top: 1px solid #1a2330; color: #8295ad; font-size: 12px; text-align: center; }
+    .enterprise-section h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 1rem;
+    }
+
+    .enterprise-section p {
+      color: #64748b;
+      font-size: 1.125rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .faq-section {
+      margin: 4rem 0;
+    }
+
+    .faq-section h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 3rem;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+    }
+
+    .faq-item {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+    }
+
+    .faq-question {
+      font-weight: 600;
+      font-size: 1.125rem;
+      color: #1e293b;
+      margin-bottom: 0.75rem;
+    }
+
+    .faq-answer {
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    footer {
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      padding: 2rem 0;
+      text-align: center;
+      margin-top: 4rem;
+    }
 
     @media (max-width: 768px) {
-      .hero h1 { font-size: 36px; }
-      .pricing-grid { grid-template-columns: 1fr; }
+      .pricing-hero h1 {
+        font-size: 2rem;
+      }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="row justify-between no-margin" role="navigation" aria-label="Primary">
-      <h1 class="no-margin"><a href="/">CertNode</a></h1>
-      <nav class="toolbar no-margin">
-        <a href="/verify">Verify</a>
-        <a href="/openapi">API</a>
-        <a href="/pricing" aria-current="page">Pricing</a>
-        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">CertNode</a>
+      <nav class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="verify.html" class="nav-link">Verify</a>
+        <a href="pricing.html" class="nav-link" aria-current="page">Pricing</a>
+        <a href="openapi.html" class="nav-link">API</a>
+        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank" class="nav-link">GitHub</a>
       </nav>
     </div>
   </header>
 
-  <div class="hero">
-    <h1>Simple, Usage-Based Pricing</h1>
-    <p>Pay only for what you use. Start free, scale as you grow. All plans include tamper-evident receipts, offline verification, and our production-grade API.</p>
-  </div>
-
-  <div class="pricing-grid">
-    <div class="pricing-card">
-      <h3 class="plan-name">Free</h3>
-      <div class="plan-price">
-        <span class="currency">$</span>0
-        <span class="period">/month</span>
-      </div>
-      <p class="plan-description">Perfect for development and small projects</p>
-
-      <ul class="plan-features">
-        <li><span class="icon">✓</span> 1,000 receipts/month</li>
-        <li><span class="icon">✓</span> Offline verification</li>
-        <li><span class="icon">✓</span> ES256 signatures</li>
-        <li><span class="icon">✓</span> OpenAPI documentation</li>
-        <li><span class="icon">✓</span> Community support</li>
-      </ul>
-
-      <a href="/" class="plan-button">Get Started Free</a>
-    </div>
-
-    <div class="pricing-card popular">
-      <h3 class="plan-name">Pro</h3>
-      <div class="plan-price">
-        <span class="currency">$</span>29
-        <span class="period">/month</span>
-      </div>
-      <p class="plan-description">For growing businesses and production workloads</p>
-
-      <ul class="plan-features">
-        <li><span class="icon">✓</span> 10,000 receipts/month</li>
-        <li><span class="icon">✓</span> All Free features</li>
-        <li><span class="icon">✓</span> API key authentication</li>
-        <li><span class="icon">✓</span> Usage analytics</li>
-        <li><span class="icon">✓</span> Email support</li>
-        <li><span class="icon">✓</span> 99.9% SLA</li>
-      </ul>
-
-      <button class="plan-button primary" onclick="upgradeToTier('pro')">Start Pro Trial</button>
-    </div>
-
-    <div class="pricing-card">
-      <h3 class="plan-name">Business</h3>
-      <div class="plan-price">
-        <span class="currency">$</span>99
-        <span class="period">/month</span>
-      </div>
-      <p class="plan-description">For high-volume applications and enterprises</p>
-
-      <ul class="plan-features">
-        <li><span class="icon">✓</span> 50,000 receipts/month</li>
-        <li><span class="icon">✓</span> All Pro features</li>
-        <li><span class="icon">✓</span> Priority support</li>
-        <li><span class="icon">✓</span> Custom integrations</li>
-        <li><span class="icon">✓</span> Advanced analytics</li>
-        <li><span class="icon">✓</span> 99.99% SLA</li>
-      </ul>
-
-      <button class="plan-button" onclick="upgradeToTier('business')">Start Business Trial</button>
-    </div>
-
-    <div class="pricing-card">
-      <h3 class="plan-name">Enterprise</h3>
-      <div class="plan-price">Custom</div>
-      <p class="plan-description">Unlimited scale with white-glove support</p>
-
-      <ul class="plan-features">
-        <li><span class="icon">✓</span> Unlimited receipts</li>
-        <li><span class="icon">✓</span> All Business features</li>
-        <li><span class="icon">✓</span> On-premise deployment</li>
-        <li><span class="icon">✓</span> Custom SLAs</li>
-        <li><span class="icon">✓</span> Dedicated support</li>
-        <li><span class="icon">✓</span> Security review</li>
-      </ul>
-
-      <button class="plan-button" onclick="contactSales()">Contact Sales</button>
+  <div class="pricing-hero">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <h1>Enterprise-Grade Compliance</h1>
+      <p>Choose the right plan to eliminate audit failures and ensure regulatory compliance. Start with our free tier and scale as your compliance needs grow.</p>
     </div>
   </div>
 
-  <div class="faq">
-    <h2>Frequently Asked Questions</h2>
+  <div class="pricing-container">
 
-    <div class="faq-item">
-      <h3 class="faq-question">How does billing work?</h3>
-      <p class="faq-answer">You're billed monthly based on your plan. Usage resets at the beginning of each billing cycle. If you exceed your plan's limits, you'll be prompted to upgrade.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3 class="plan-tier">Development</h3>
+        <div class="plan-price">
+          <span class="currency">$</span>0
+          <span class="period">/month</span>
+        </div>
+        <p class="plan-subtitle">Perfect for evaluation and testing compliance workflows</p>
+
+        <ul class="plan-features">
+          <li><span class="check">✓</span> 1,000 compliance receipts/month</li>
+          <li><span class="check">✓</span> Cryptographic verification</li>
+          <li><span class="check">✓</span> ES256 digital signatures</li>
+          <li><span class="check">✓</span> REST API access</li>
+          <li><span class="check">✓</span> Basic audit trail</li>
+          <li><span class="check">✓</span> Community support</li>
+        </ul>
+
+        <a href="index.html" class="plan-button">🚀 Start Free</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <h3 class="plan-tier">Professional</h3>
+        <div class="plan-price">
+          <span class="currency">$</span>99
+          <span class="period">/month</span>
+        </div>
+        <p class="plan-subtitle">For compliance teams and growing organizations</p>
+
+        <ul class="plan-features">
+          <li><span class="check">✓</span> 25,000 compliance receipts/month</li>
+          <li><span class="check">✓</span> Advanced audit reporting</li>
+          <li><span class="check">✓</span> API key authentication</li>
+          <li><span class="check">✓</span> Compliance dashboards</li>
+          <li><span class="check">✓</span> Priority email support</li>
+          <li><span class="check">✓</span> 99.9% uptime SLA</li>
+          <li><span class="check">✓</span> SOC 2 Type II compliant</li>
+        </ul>
+
+        <button class="plan-button primary" onclick="upgradeToTier('pro')">💼 Start Professional</button>
+      </div>
+
+      <div class="pricing-card">
+        <h3 class="plan-tier">Enterprise</h3>
+        <div class="plan-price">
+          <span class="currency">$</span>299
+          <span class="period">/month</span>
+        </div>
+        <p class="plan-subtitle">For large organizations with complex compliance needs</p>
+
+        <ul class="plan-features">
+          <li><span class="check">✓</span> 100,000 compliance receipts/month</li>
+          <li><span class="check">✓</span> White-label audit reports</li>
+          <li><span class="check">✓</span> Custom integrations</li>
+          <li><span class="check">✓</span> Dedicated compliance consultant</li>
+          <li><span class="check">✓</span> Phone & chat support</li>
+          <li><span class="check">✓</span> 99.99% uptime SLA</li>
+          <li><span class="check">✓</span> On-premise deployment option</li>
+        </ul>
+
+        <button class="plan-button" onclick="upgradeToTier('enterprise')">🏢 Start Enterprise</button>
+      </div>
     </div>
 
-    <div class="faq-item">
-      <h3 class="faq-question">Can I change plans anytime?</h3>
-      <p class="faq-answer">Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and billing is prorated.</p>
+    <div class="enterprise-section">
+      <h3>🎯 Custom Enterprise Solutions</h3>
+      <p>Need unlimited scale, custom compliance frameworks, or specialized audit requirements? Our enterprise team will design a solution that meets your organization's specific regulatory needs.</p>
+      <button class="plan-button primary" onclick="contactSales()">📞 Schedule Consultation</button>
     </div>
 
-    <div class="faq-item">
-      <h3 class="faq-question">What happens if I exceed my limit?</h3>
-      <p class="faq-answer">Your API requests will be temporarily limited until you upgrade your plan or your usage resets at the next billing cycle.</p>
-    </div>
+    <div class="faq-section">
+      <h2>❓ Compliance Questions</h2>
 
-    <div class="faq-item">
-      <h3 class="faq-question">Do you offer refunds?</h3>
-      <p class="faq-answer">We offer a 30-day money-back guarantee on all paid plans. If you're not satisfied, contact support for a full refund.</p>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h3 class="faq-question">What compliance frameworks do you support?</h3>
+          <p class="faq-answer">CertNode supports SOC 2, HIPAA, PCI DSS, GDPR, and custom compliance frameworks. Our cryptographic receipts provide tamper-evident audit trails that satisfy most regulatory requirements.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-question">How quickly can I implement compliance?</h3>
+          <p class="faq-answer">Most organizations achieve compliance within 2-4 weeks. Our REST API integrates with existing systems, and our team provides implementation support to accelerate your rollout.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-question">What if I exceed my monthly limit?</h3>
+          <p class="faq-answer">We'll alert you at 80% usage and provide options to upgrade. Critical compliance operations continue uninterrupted while we work with you to adjust your plan.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-question">Is there a contract commitment?</h3>
+          <p class="faq-answer">No long-term contracts required. Pay monthly and cancel anytime. Enterprise customers can choose annual billing for additional savings and dedicated support.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-question">How secure is my compliance data?</h3>
+          <p class="faq-answer">All data is encrypted at rest and in transit. We maintain SOC 2 Type II certification and never store your sensitive business data - only cryptographic signatures and metadata.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-question">Do you provide audit support?</h3>
+          <p class="faq-answer">Yes! Professional and Enterprise plans include audit report generation, compliance consulting, and direct auditor support during your compliance reviews.</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <footer>
-    © CertNode. Secure receipts for digital truth.
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <p style="color: #64748b; margin: 0;">© 2024 CertNode — Enterprise compliance solutions that eliminate audit failures and ensure regulatory certainty.</p>
+    </div>
   </footer>
 
   <script>
@@ -296,8 +467,8 @@
     }
 
     function contactSales() {
-      // Scroll to contact form on main page
-      window.location.href = '/#contact-sales';
+      // Redirect to home page with contact section
+      window.location.href = 'index.html#enterprise-contact';
     }
   </script>
 </body>

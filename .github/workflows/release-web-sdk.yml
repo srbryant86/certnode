@@ -16,6 +16,8 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
           scope: '@certnode'
+          always-auth: true
+          scope: '@certnode'
 
       - name: Check if version already on npm
         id: precheck
@@ -93,3 +95,10 @@ jobs:
             See workflow summary for the SRI <script> snippet.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: NPM debug (web)
+        shell: bash
+        run: |
+          node --version | sed 's/^/node: /'
+          npm --version | sed 's/^/npm:  /'
+          printf "registry: "; npm config get registry
+          npm whoami || true

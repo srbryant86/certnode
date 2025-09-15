@@ -1,2 +1,88 @@
-﻿<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>web/index.html</title></head><body><h1>web/index.html</h1><p>Initialized placeholder.</p><p><a href="pitch.html">Pitch</a></p></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
+  <title>CertNode — Receipts for Digital Truth</title>
+  <link rel="stylesheet" href="assets/certnode.css" />
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <header>
+    <div class="row justify-between no-margin" role="navigation" aria-label="Primary">
+      <h1 class="no-margin"><a href="index.html" aria-current="page">CertNode</a></h1>
+      <nav class="toolbar no-margin">
+        <a href="verify.html">Verify</a>
+        <a href="openapi.html">API</a>
+        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="panel">
+      <h2>Receipts for Digital Truth</h2>
+      <p>CertNode gives any JSON or document a tamper‑evident receipt you can verify offline.</p>
+      <div class="row">
+        <a class="pill" href="verify.html">Try the demo</a>
+        <a class="pill" href="openapi.html">View the API</a>
+        <a class="pill" href="https://www.npmjs.com/package/@certnode/sdk" rel="noopener" target="_blank">Install SDKs</a>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>How It Works</h2>
+      <div class="grid-2">
+        <div>
+          <h3 class="small no-margin">1) Canonicalize &amp; Sign</h3>
+          <p>We apply RFC 8785 JCS and sign with ES256 (P‑256).</p>
+        </div>
+        <div>
+          <h3 class="small no-margin">2) Receipt</h3>
+          <p>JSON: { protected, signature, payload, kid, payload_jcs_sha256, receipt_id[, tsr] }.</p>
+        </div>
+        <div>
+          <h3 class="small no-margin">3) Verify Offline</h3>
+          <p>Use our SDK/CLI with published JWKS; no vendor call required.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Benefits</h2>
+      <ul>
+        <li><strong>Offline verifiability</strong> — Verify anywhere with public JWKS.</li>
+        <li><strong>Tamper‑evident receipts</strong> — JCS + ES256.</li>
+        <li><strong>Simple to adopt</strong> — Zero‑dependency SDKs for Node/Web.</li>
+        <li><strong>Production‑ready</strong> — Metrics, rate limiting, provenance releases.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>Use Cases</h2>
+      <div class="grid-2">
+        <div><strong>Invoices &amp; payouts</strong> — Prove exact numbers sent.</div>
+        <div><strong>Webhooks &amp; APIs</strong> — Detect tampering in transit.</div>
+        <div><strong>Policies &amp; PDFs</strong> — Match the published version.</div>
+        <div><strong>AI outputs</strong> — Sign the approved result.</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>For Developers</h2>
+      <ul>
+        <li>OpenAPI: <a href="openapi.html">/openapi.html</a></li>
+        <li>Node SDK: <code>npm i @certnode/sdk</code></li>
+        <li>Web SDK: <code>npm i @certnode/sdk-web</code></li>
+        <li>CLI: <code>tools/verify-receipt.js</code></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    © CertNode. Verify page uses WebCrypto; API serves OpenAPI at <code>/openapi.json</code>.
+  </footer>
+</body>
+</html>
 

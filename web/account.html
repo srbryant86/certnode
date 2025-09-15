@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
+  <title>Account Dashboard — CertNode</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #0f1520;
+      --border: #182234;
+      --text: #dbe2ea;
+      --muted: #93a6bf;
+      --accent: #1e2b43;
+      --accent-border: #2a3b5c;
+      --accent-hover: #243351;
+      --ok-bg: #0f2613; --ok-border: #1d5d2a; --ok-text: #b9f6c3;
+      --primary-bg: #2563eb; --primary-border: #1d4ed8; --primary-text: white;
+    }
+
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+    header { padding: 16px 20px; border-bottom: 1px solid #1a2330; }
+    header h1 { font-size: 18px; margin: 0; }
+    header h1 a { color: var(--text); text-decoration: none; }
+    .toolbar { display: flex; gap: 6px; align-items: center; }
+    .toolbar a { color: var(--text); text-decoration: none; padding: 6px 12px; border-radius: 6px; transition: background .15s ease; }
+    .toolbar a:hover { background: var(--accent); }
+    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+    .justify-between { justify-content: space-between; }
+    .no-margin { margin: 0 !important; }
+
+    .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+    .page-title { font-size: 32px; margin: 0 0 32px; }
+
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
+    @media (max-width: 768px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .panel h2 {
+      margin: 0 0 16px;
+      font-size: 18px;
+      color: var(--text);
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .stat:last-child { border-bottom: none; }
+    .stat-label { color: var(--muted); }
+    .stat-value { font-weight: 600; }
+
+    .usage-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+
+    .usage-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--ok-bg) 0%, var(--primary-bg) 70%, #ef4444 100%);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .api-key-section {
+      background: var(--accent);
+      border: 1px solid var(--accent-border);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .api-key {
+      font-family: monospace;
+      background: var(--bg);
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin: 8px 0;
+      font-size: 12px;
+      word-break: break-all;
+    }
+
+    .button {
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      color: var(--primary-text);
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s ease;
+    }
+
+    .button:hover {
+      background: var(--primary-border);
+    }
+
+    .button-secondary {
+      background: var(--accent);
+      border-color: var(--accent-border);
+      color: var(--text);
+    }
+
+    .button-secondary:hover {
+      background: var(--accent-hover);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+    }
+
+    .error {
+      background: var(--err-bg);
+      border: 1px solid var(--err-border);
+      color: var(--err-text);
+      padding: 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+
+    footer { padding: 12px 16px; border-top: 1px solid #1a2330; color: #8295ad; font-size: 12px; text-align: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="row justify-between no-margin">
+      <h1 class="no-margin"><a href="/">CertNode</a></h1>
+      <nav class="toolbar no-margin">
+        <a href="/verify">Verify</a>
+        <a href="/openapi">API</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/account" aria-current="page">Account</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1 class="page-title">Account Dashboard</h1>
+
+    <div id="loading" class="loading">
+      Loading account information...
+    </div>
+
+    <div id="login-prompt" style="display: none;">
+      <div class="panel">
+        <h2>API Key Required</h2>
+        <p>Please enter your API key to view your account dashboard:</p>
+        <input type="password" id="api-key-input" placeholder="Enter your API key..." style="width: 100%; margin: 16px 0; padding: 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text);">
+        <button onclick="loadAccount()" class="button">Load Account</button>
+      </div>
+    </div>
+
+    <div id="dashboard" style="display: none;">
+      <div class="dashboard-grid">
+        <div class="panel">
+          <h2>Usage This Month</h2>
+          <div id="usage-stats">
+            <div class="stat">
+              <span class="stat-label">Receipts Used</span>
+              <span class="stat-value" id="usage-used">-</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Plan Limit</span>
+              <span class="stat-value" id="usage-limit">-</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Remaining</span>
+              <span class="stat-value" id="usage-remaining">-</span>
+            </div>
+          </div>
+          <div class="usage-bar">
+            <div class="usage-fill" id="usage-bar" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Account Details</h2>
+          <div class="stat">
+            <span class="stat-label">Current Plan</span>
+            <span class="stat-value" id="current-tier">-</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Status</span>
+            <span class="stat-value" id="subscription-status">-</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Email</span>
+            <span class="stat-value" id="customer-email">-</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>API Authentication</h2>
+        <p>Use this API key to authenticate your requests and track usage:</p>
+        <div class="api-key-section">
+          <div class="api-key" id="api-key-display">Loading...</div>
+          <button onclick="copyApiKey()" class="button-secondary">Copy API Key</button>
+        </div>
+        <p><strong>Usage:</strong> Add <code>Authorization: Bearer YOUR_API_KEY</code> to your request headers.</p>
+      </div>
+
+      <div class="panel">
+        <h2>Billing Management</h2>
+        <p>Manage your subscription, view invoices, and update payment methods:</p>
+        <button onclick="openCustomerPortal()" class="button">Open Billing Portal</button>
+        <a href="/pricing" class="button button-secondary">View All Plans</a>
+      </div>
+    </div>
+
+    <div id="error-message" class="error" style="display: none;"></div>
+  </div>
+
+  <footer>
+    © CertNode. Secure receipts for digital truth.
+  </footer>
+
+  <script>
+    let currentApiKey = null;
+
+    // Check URL for session_id (from successful checkout)
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+
+    if (sessionId) {
+      // Success message for new signups
+      showSuccess('Welcome to CertNode! Your subscription is now active.');
+    }
+
+    // Try to load API key from localStorage
+    const savedApiKey = localStorage.getItem('certnode_api_key');
+    if (savedApiKey) {
+      currentApiKey = savedApiKey;
+      loadAccountData();
+    } else {
+      showLogin();
+    }
+
+    function showLoading() {
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('login-prompt').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('error-message').style.display = 'none';
+    }
+
+    function showLogin() {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('login-prompt').style.display = 'block';
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('error-message').style.display = 'none';
+    }
+
+    function showDashboard() {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('login-prompt').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('error-message').style.display = 'none';
+    }
+
+    function showError(message) {
+      document.getElementById('error-message').textContent = message;
+      document.getElementById('error-message').style.display = 'block';
+      document.getElementById('loading').style.display = 'none';
+    }
+
+    function showSuccess(message) {
+      // Could add a success message display
+      console.log('Success:', message);
+    }
+
+    function loadAccount() {
+      const apiKey = document.getElementById('api-key-input').value.trim();
+      if (!apiKey) {
+        showError('Please enter a valid API key');
+        return;
+      }
+
+      currentApiKey = apiKey;
+      localStorage.setItem('certnode_api_key', apiKey);
+      loadAccountData();
+    }
+
+    async function loadAccountData() {
+      if (!currentApiKey) {
+        showLogin();
+        return;
+      }
+
+      showLoading();
+
+      try {
+        const response = await fetch('/api/account', {
+          headers: {
+            'Authorization': `Bearer ${currentApiKey}`
+          }
+        });
+
+        if (response.status === 401) {
+          localStorage.removeItem('certnode_api_key');
+          showError('Invalid API key. Please check and try again.');
+          showLogin();
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        displayAccountData(data.customer);
+        showDashboard();
+
+      } catch (error) {
+        console.error('Account loading error:', error);
+        showError('Unable to load account data. Please try again later.');
+      }
+    }
+
+    function displayAccountData(customer) {
+      // Update usage stats (mock data for now - would come from API)
+      const usageUsed = Math.floor(Math.random() * customer.monthly_limit);
+      const usagePercent = (usageUsed / customer.monthly_limit) * 100;
+
+      document.getElementById('usage-used').textContent = usageUsed.toLocaleString();
+      document.getElementById('usage-limit').textContent = customer.monthly_limit?.toLocaleString() || 'Unlimited';
+      document.getElementById('usage-remaining').textContent = customer.monthly_limit ? (customer.monthly_limit - usageUsed).toLocaleString() : 'Unlimited';
+      document.getElementById('usage-bar').style.width = `${Math.min(100, usagePercent)}%`;
+
+      // Account details
+      document.getElementById('current-tier').textContent = customer.tier;
+      document.getElementById('subscription-status').textContent = customer.subscription_status === 'active' ? 'Active' : 'Inactive';
+      document.getElementById('customer-email').textContent = customer.email;
+
+      // API key
+      document.getElementById('api-key-display').textContent = customer.api_key;
+    }
+
+    function copyApiKey() {
+      const apiKey = document.getElementById('api-key-display').textContent;
+      navigator.clipboard.writeText(apiKey).then(() => {
+        // Could show a toast notification
+        alert('API key copied to clipboard!');
+      }).catch(() => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = apiKey;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('API key copied to clipboard!');
+      });
+    }
+
+    async function openCustomerPortal() {
+      if (!currentApiKey) {
+        showError('API key required');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/create-portal', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${currentApiKey}`
+          }
+        });
+
+        const data = await response.json();
+
+        if (data.portal_url) {
+          window.location.href = data.portal_url;
+        } else {
+          showError('Unable to open billing portal. Please try again.');
+        }
+      } catch (error) {
+        console.error('Portal error:', error);
+        showError('Unable to open billing portal. Please try again.');
+      }
+    }
+  </script>
+</body>
+</html>

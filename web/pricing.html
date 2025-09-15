@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
+  <title>Pricing — CertNode</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #0f1520;
+      --border: #182234;
+      --text: #dbe2ea;
+      --muted: #93a6bf;
+      --accent: #1e2b43;
+      --accent-border: #2a3b5c;
+      --accent-hover: #243351;
+      --ok-bg: #0f2613; --ok-border: #1d5d2a; --ok-text: #b9f6c3;
+      --primary-bg: #2563eb; --primary-border: #1d4ed8; --primary-text: white;
+    }
+
+    [data-theme="light"] {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --border: #d8e1ee;
+      --text: #0d1b2a;
+      --muted: #4c5d73;
+      --accent: #e9eff7;
+      --accent-border: #c9d8ef;
+      --accent-hover: #dfe9f7;
+      --ok-bg: #e7f6ea; --ok-border: #a3d5b0; --ok-text: #0d5b2a;
+      --primary-bg: #2563eb; --primary-border: #1d4ed8; --primary-text: white;
+    }
+
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+    header { padding: 16px 20px; border-bottom: 1px solid #1a2330; }
+    header h1 { font-size: 18px; margin: 0; }
+    header h1 a { color: var(--text); text-decoration: none; }
+    .toolbar { display: flex; gap: 6px; align-items: center; }
+    .toolbar a { color: var(--text); text-decoration: none; padding: 6px 12px; border-radius: 6px; transition: background .15s ease; }
+    .toolbar a:hover { background: var(--accent); }
+    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+    .justify-between { justify-content: space-between; }
+    .no-margin { margin: 0 !important; }
+
+    /* Pricing Page Styles */
+    .hero { text-align: center; padding: 60px 20px; }
+    .hero h1 { font-size: 48px; margin: 0 0 16px; font-weight: 700; }
+    .hero p { font-size: 20px; color: var(--muted); margin: 0 0 32px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
+
+    .pricing-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 24px;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .pricing-card.popular {
+      border-color: var(--primary-border);
+      background: linear-gradient(135deg, var(--panel) 0%, #1a2332 100%);
+    }
+
+    .pricing-card.popular::before {
+      content: "Most Popular";
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary-bg);
+      color: var(--primary-text);
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .plan-name { font-size: 24px; font-weight: 700; margin: 0 0 8px; }
+    .plan-price { font-size: 48px; font-weight: 700; margin: 0; color: var(--text); }
+    .plan-price .currency { font-size: 24px; color: var(--muted); }
+    .plan-price .period { font-size: 16px; color: var(--muted); font-weight: 400; }
+    .plan-description { color: var(--muted); margin: 16px 0 32px; }
+
+    .plan-features { list-style: none; padding: 0; margin: 0 0 32px; }
+    .plan-features li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+    .plan-features li:last-child { border-bottom: none; }
+    .plan-features .icon { margin-right: 12px; color: var(--ok-text); font-weight: bold; }
+
+    .plan-button {
+      width: 100%;
+      padding: 12px 24px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--accent);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+
+    .plan-button.primary {
+      background: var(--primary-bg);
+      border-color: var(--primary-border);
+      color: var(--primary-text);
+    }
+
+    .plan-button:hover {
+      background: var(--accent-hover);
+    }
+
+    .plan-button.primary:hover {
+      background: var(--primary-border);
+    }
+
+    .faq { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
+    .faq h2 { text-align: center; font-size: 36px; margin: 0 0 40px; }
+    .faq-item { margin-bottom: 24px; }
+    .faq-question { font-weight: 600; font-size: 18px; margin: 0 0 8px; }
+    .faq-answer { color: var(--muted); line-height: 1.6; }
+
+    footer { padding: 12px 16px; border-top: 1px solid #1a2330; color: #8295ad; font-size: 12px; text-align: center; }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 36px; }
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="row justify-between no-margin" role="navigation" aria-label="Primary">
+      <h1 class="no-margin"><a href="/">CertNode</a></h1>
+      <nav class="toolbar no-margin">
+        <a href="/verify">Verify</a>
+        <a href="/openapi">API</a>
+        <a href="/pricing" aria-current="page">Pricing</a>
+        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <h1>Simple, Usage-Based Pricing</h1>
+    <p>Pay only for what you use. Start free, scale as you grow. All plans include tamper-evident receipts, offline verification, and our production-grade API.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <h3 class="plan-name">Free</h3>
+      <div class="plan-price">
+        <span class="currency">$</span>0
+        <span class="period">/month</span>
+      </div>
+      <p class="plan-description">Perfect for development and small projects</p>
+
+      <ul class="plan-features">
+        <li><span class="icon">✓</span> 1,000 receipts/month</li>
+        <li><span class="icon">✓</span> Offline verification</li>
+        <li><span class="icon">✓</span> ES256 signatures</li>
+        <li><span class="icon">✓</span> OpenAPI documentation</li>
+        <li><span class="icon">✓</span> Community support</li>
+      </ul>
+
+      <a href="/" class="plan-button">Get Started Free</a>
+    </div>
+
+    <div class="pricing-card popular">
+      <h3 class="plan-name">Pro</h3>
+      <div class="plan-price">
+        <span class="currency">$</span>29
+        <span class="period">/month</span>
+      </div>
+      <p class="plan-description">For growing businesses and production workloads</p>
+
+      <ul class="plan-features">
+        <li><span class="icon">✓</span> 10,000 receipts/month</li>
+        <li><span class="icon">✓</span> All Free features</li>
+        <li><span class="icon">✓</span> API key authentication</li>
+        <li><span class="icon">✓</span> Usage analytics</li>
+        <li><span class="icon">✓</span> Email support</li>
+        <li><span class="icon">✓</span> 99.9% SLA</li>
+      </ul>
+
+      <button class="plan-button primary" onclick="upgradeToTier('pro')">Start Pro Trial</button>
+    </div>
+
+    <div class="pricing-card">
+      <h3 class="plan-name">Business</h3>
+      <div class="plan-price">
+        <span class="currency">$</span>99
+        <span class="period">/month</span>
+      </div>
+      <p class="plan-description">For high-volume applications and enterprises</p>
+
+      <ul class="plan-features">
+        <li><span class="icon">✓</span> 50,000 receipts/month</li>
+        <li><span class="icon">✓</span> All Pro features</li>
+        <li><span class="icon">✓</span> Priority support</li>
+        <li><span class="icon">✓</span> Custom integrations</li>
+        <li><span class="icon">✓</span> Advanced analytics</li>
+        <li><span class="icon">✓</span> 99.99% SLA</li>
+      </ul>
+
+      <button class="plan-button" onclick="upgradeToTier('business')">Start Business Trial</button>
+    </div>
+
+    <div class="pricing-card">
+      <h3 class="plan-name">Enterprise</h3>
+      <div class="plan-price">Custom</div>
+      <p class="plan-description">Unlimited scale with white-glove support</p>
+
+      <ul class="plan-features">
+        <li><span class="icon">✓</span> Unlimited receipts</li>
+        <li><span class="icon">✓</span> All Business features</li>
+        <li><span class="icon">✓</span> On-premise deployment</li>
+        <li><span class="icon">✓</span> Custom SLAs</li>
+        <li><span class="icon">✓</span> Dedicated support</li>
+        <li><span class="icon">✓</span> Security review</li>
+      </ul>
+
+      <button class="plan-button" onclick="contactSales()">Contact Sales</button>
+    </div>
+  </div>
+
+  <div class="faq">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <h3 class="faq-question">How does billing work?</h3>
+      <p class="faq-answer">You're billed monthly based on your plan. Usage resets at the beginning of each billing cycle. If you exceed your plan's limits, you'll be prompted to upgrade.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3 class="faq-question">Can I change plans anytime?</h3>
+      <p class="faq-answer">Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and billing is prorated.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3 class="faq-question">What happens if I exceed my limit?</h3>
+      <p class="faq-answer">Your API requests will be temporarily limited until you upgrade your plan or your usage resets at the next billing cycle.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3 class="faq-question">Do you offer refunds?</h3>
+      <p class="faq-answer">We offer a 30-day money-back guarantee on all paid plans. If you're not satisfied, contact support for a full refund.</p>
+    </div>
+  </div>
+
+  <footer>
+    © CertNode. Secure receipts for digital truth.
+  </footer>
+
+  <script>
+    async function upgradeToTier(tier) {
+      const email = prompt('Enter your email address to get started:');
+      if (!email) return;
+
+      try {
+        const response = await fetch('/api/create-checkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, tier })
+        });
+
+        const data = await response.json();
+
+        if (data.checkout_url) {
+          // Redirect to Stripe checkout
+          window.location.href = data.checkout_url;
+        } else {
+          alert('Error creating checkout session. Please try again or contact support.');
+        }
+      } catch (error) {
+        console.error('Checkout error:', error);
+        alert('Error creating checkout session. Please try again or contact support.');
+      }
+    }
+
+    function contactSales() {
+      // Scroll to contact form on main page
+      window.location.href = '/#contact-sales';
+    }
+  </script>
+</body>
+</html>

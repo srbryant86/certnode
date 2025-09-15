@@ -107,6 +107,23 @@ const server = http.createServer(async (req, res) => {
     return leadsHandler(req, res);
   }
 
+  // Billing endpoints
+  if (url.pathname.startsWith("/api/") && (
+    url.pathname === "/api/create-checkout" ||
+    url.pathname === "/api/create-portal" ||
+    url.pathname === "/api/pricing" ||
+    url.pathname === "/api/account"
+  )) {
+    const { handle: billingHandler } = require("./routes/billing");
+    return billingHandler(req, res);
+  }
+
+  // Stripe webhook (no CORS, raw body)
+  if (req.method === "POST" && url.pathname === "/stripe-webhook") {
+    const { handle: billingHandler } = require("./routes/billing");
+    return billingHandler(req, res);
+  }
+
   // Static file serving
   if (req.method === "GET") {
     const fs = require('fs');
@@ -119,6 +136,10 @@ const server = http.createServer(async (req, res) => {
       filePath = path.join(process.cwd(), "web", "verify.html");
     } else if (url.pathname === "/openapi") {
       filePath = path.join(process.cwd(), "web", "openapi.html");
+    } else if (url.pathname === "/pricing") {
+      filePath = path.join(process.cwd(), "web", "pricing.html");
+    } else if (url.pathname === "/account") {
+      filePath = path.join(process.cwd(), "web", "account.html");
     } else if (url.pathname === "/pitch") {
       filePath = path.join(process.cwd(), "web", "pitch.html");
     } else if (url.pathname.startsWith("/web/")) {

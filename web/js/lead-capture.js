@@ -3,9 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const enterpriseBtn = document.getElementById('enterprise-demo');
   const contactBtn = document.getElementById('contact-sales');
   const contactForm = document.getElementById('contact-form');
+  const enterpriseForm = document.getElementById('enterprise-demo-form');
   const leadForm = document.getElementById('lead-form');
+  const demoForm = document.getElementById('demo-form');
   const cancelBtn = document.getElementById('cancel-form');
+  const cancelDemoBtn = document.getElementById('cancel-demo-form');
   const statusDiv = document.getElementById('form-status');
+  const demoStatusDiv = document.getElementById('demo-form-status');
 
   // Track button clicks for monetization intel
   function trackEvent(action, data = {}) {
@@ -30,8 +34,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show contact form
   function showContactForm(source) {
     contactForm.style.display = 'block';
+    enterpriseForm.style.display = 'none';
     contactForm.scrollIntoView({ behavior: 'smooth' });
     trackEvent('contact_form_opened', { source: source });
+  }
+
+  // Show enterprise demo form
+  function showEnterpriseForm() {
+    enterpriseForm.style.display = 'block';
+    contactForm.style.display = 'none';
+    enterpriseForm.scrollIntoView({ behavior: 'smooth' });
+    trackEvent('enterprise_demo_opened', {
+      source: 'homepage',
+      lead_quality: 'high_value'
+    });
   }
 
   // Hide contact form
@@ -41,9 +57,16 @@ document.addEventListener('DOMContentLoaded', () => {
     leadForm.reset();
   }
 
+  // Hide demo form
+  function hideDemoForm() {
+    enterpriseForm.style.display = 'none';
+    demoStatusDiv.className = 'status hidden';
+    demoForm.reset();
+  }
+
   // Event listeners
   enterpriseBtn?.addEventListener('click', () => {
-    showContactForm('enterprise_demo');
+    showEnterpriseForm();
   });
 
   contactBtn?.addEventListener('click', () => {
@@ -51,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   cancelBtn?.addEventListener('click', hideContactForm);
+  cancelDemoBtn?.addEventListener('click', hideDemoForm);
 
   // Handle form submission
   leadForm?.addEventListener('submit', async (e) => {
@@ -114,6 +138,102 @@ document.addEventListener('DOMContentLoaded', () => {
       trackEvent('lead_submission_failed', { error: error.message });
     }
   });
+
+  // Handle enterprise demo form submission
+  demoForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const demoData = {
+      type: 'enterprise-demo',
+      company: document.getElementById('demo-company').value,
+      email: document.getElementById('demo-email').value,
+      compliance_type: document.getElementById('compliance-type').value,
+      audit_budget: document.getElementById('audit-budget').value,
+      failure_cost: document.getElementById('failure-cost').value,
+      timeline: document.getElementById('timeline').value,
+      timestamp: new Date().toISOString(),
+      source: 'enterprise_demo_form'
+    };
+
+    // Show loading state
+    demoStatusDiv.className = 'status';
+    demoStatusDiv.textContent = 'Submitting enterprise demo request...';
+    document.getElementById('submit-demo').disabled = true;
+
+    try {
+      // Track the enterprise demo request
+      trackEvent('enterprise_demo_requested', demoData);
+
+      // Submit to backend
+      const response = await fetch('/api/track-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(demoData)
+      });
+
+      if (response.ok) {
+        demoStatusDiv.className = 'status ok';
+        demoStatusDiv.textContent = 'Demo scheduled! Our enterprise team will contact you within 4 hours.';
+
+        // Calculate potential enterprise deal value
+        let dealValue = 50000; // Base enterprise deal
+        switch(demoData.audit_budget) {
+          case 'under-100k': dealValue = 25000; break;
+          case '100k-500k': dealValue = 100000; break;
+          case '500k-1m': dealValue = 250000; break;
+          case 'over-1m': dealValue = 500000; break;
+        }
+
+        // Track high-value enterprise lead
+        trackEvent('enterprise_qualified_lead', {
+          ...demoData,
+          estimatedValue: dealValue,
+          priority: demoData.timeline === 'immediate' ? 'urgent' : 'high',
+          leadScore: calculateEnterpriseLeadScore(demoData)
+        });
+
+        // Reset form after delay
+        setTimeout(() => {
+          hideDemoForm();
+          document.getElementById('submit-demo').disabled = false;
+        }, 4000);
+
+      } else {
+        throw new Error('Demo request failed');
+      }
+
+    } catch (error) {
+      demoStatusDiv.className = 'status err';
+      demoStatusDiv.textContent = 'Error scheduling demo. Please try again or email sales@certnode.io';
+      document.getElementById('submit-demo').disabled = false;
+
+      trackEvent('enterprise_demo_failed', { error: error.message });
+    }
+  });
+
+  // Calculate enterprise lead score
+  function calculateEnterpriseLeadScore(data) {
+    let score = 0;
+
+    // Budget scoring
+    if (data.audit_budget === 'over-1m') score += 50;
+    else if (data.audit_budget === '500k-1m') score += 40;
+    else if (data.audit_budget === '100k-500k') score += 30;
+
+    // Failure cost scoring
+    if (data.failure_cost === 'over-10m') score += 40;
+    else if (data.failure_cost === '5m-10m') score += 30;
+    else if (data.failure_cost === '1m-5m') score += 20;
+
+    // Timeline urgency
+    if (data.timeline === 'immediate') score += 30;
+    else if (data.timeline === 'quarter') score += 20;
+
+    // Compliance type (SOX/HIPAA are highest value)
+    if (data.compliance_type === 'sox' || data.compliance_type === 'hipaa') score += 20;
+
+    return score;
+  }
 
   // Track page views for conversion funnel
   trackEvent('page_view', {

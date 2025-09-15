@@ -129,6 +129,9 @@ function enforceUsageLimits(req, res) {
 
   // If limit exceeded, return 429 with upgrade messaging
   if (!canRequest.allowed) {
+    // Track usage limit hit for conversion analytics
+    require('./customer-analytics').trackUsageLimitHit(req, canRequest.usage, canRequest.limit);
+
     // Emit limit exceeded event
     emit('usage_limit_exceeded', 1, {
       ip: ipAddress,

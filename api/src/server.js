@@ -101,6 +101,17 @@ const server = http.createServer(async (req, res) => {
     return metricsHandler(req, res);
   }
 
+  // Analytics dashboard (internal use)
+  if (req.method === "GET" && url.pathname === "/api/analytics") {
+    const { getAnalyticsDashboard } = require("./plugins/customer-analytics");
+    const headers = {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    };
+    res.writeHead(200, headers);
+    return res.end(JSON.stringify(getAnalyticsDashboard(), null, 2));
+  }
+
   // Lead tracking endpoint
   if (req.method === "POST" && url.pathname === "/api/track-lead") {
     const { handle: leadsHandler } = require("./routes/leads");
@@ -140,6 +151,8 @@ const server = http.createServer(async (req, res) => {
       filePath = path.join(process.cwd(), "web", "pricing.html");
     } else if (url.pathname === "/account") {
       filePath = path.join(process.cwd(), "web", "account.html");
+    } else if (url.pathname === "/compliance-calculator") {
+      filePath = path.join(process.cwd(), "web", "compliance-calculator.html");
     } else if (url.pathname === "/pitch") {
       filePath = path.join(process.cwd(), "web", "pitch.html");
     } else if (url.pathname.startsWith("/web/")) {

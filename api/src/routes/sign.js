@@ -83,6 +83,9 @@ async function handle(req, res) {
     res.end(JSON.stringify(out));
     require('../plugins/metrics').emit('sign_success');
 
+    // Track customer analytics for monetization insights
+    require('../plugins/customer-analytics').trackApiRequest(req, res, 'sign', raw);
+
     // Emit revenue tracking event for successful sign
     require('../plugins/metrics').emit('revenue_event', 1, {
       type: 'sign',

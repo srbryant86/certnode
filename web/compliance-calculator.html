@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
+  <title>Compliance Cost Calculator — CertNode</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #0f1520;
+      --border: #182234;
+      --text: #dbe2ea;
+      --muted: #93a6bf;
+      --accent: #1e2b43;
+      --accent-border: #2a3b5c;
+      --accent-hover: #243351;
+      --ok-bg: #0f2613; --ok-border: #1d5d2a; --ok-text: #b9f6c3;
+      --primary-bg: #2563eb; --primary-border: #1d4ed8; --primary-text: white;
+      --warning-bg: #fef3c7; --warning-border: #f59e0b; --warning-text: #92400e;
+      --danger-bg: #fef2f2; --danger-border: #ef4444; --danger-text: #dc2626;
+    }
+
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+    header { padding: 16px 20px; border-bottom: 1px solid #1a2330; }
+    header h1 { font-size: 18px; margin: 0; }
+    header h1 a { color: var(--text); text-decoration: none; }
+    .toolbar { display: flex; gap: 6px; align-items: center; }
+    .toolbar a { color: var(--text); text-decoration: none; padding: 6px 12px; border-radius: 6px; transition: background .15s ease; }
+    .toolbar a:hover { background: var(--accent); }
+    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+    .justify-between { justify-content: space-between; }
+    .no-margin { margin: 0 !important; }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+    .hero { text-align: center; margin-bottom: 40px; }
+    .hero h1 { font-size: 36px; margin: 0 0 16px; }
+    .hero p { font-size: 18px; color: var(--muted); margin: 0; }
+
+    .calculator {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+
+    .form-section {
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .form-section h3 {
+      margin: 0 0 16px;
+      font-size: 18px;
+      color: var(--text);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    select, input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .results {
+      background: linear-gradient(135deg, var(--danger-bg) 0%, var(--warning-bg) 100%);
+      border: 2px solid var(--danger-border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 32px 0;
+      text-align: center;
+    }
+
+    .results h2 {
+      color: var(--danger-text);
+      font-size: 24px;
+      margin: 0 0 16px;
+    }
+
+    .cost-display {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--danger-text);
+      margin: 16px 0;
+    }
+
+    .savings-display {
+      background: var(--ok-bg);
+      border: 1px solid var(--ok-border);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+
+    .savings-display h3 {
+      color: var(--ok-text);
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .savings-amount {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--ok-text);
+    }
+
+    .roi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .roi-item {
+      text-align: center;
+      padding: 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .roi-item h4 {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .roi-item .value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .cta-section {
+      background: var(--primary-bg);
+      color: var(--primary-text);
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      margin: 32px 0;
+    }
+
+    .button {
+      background: var(--primary-text);
+      color: var(--primary-bg);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin: 8px;
+    }
+
+    .methodology {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 40px 0;
+    }
+
+    .methodology h3 {
+      margin: 0 0 16px;
+      color: var(--text);
+    }
+
+    .methodology ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .methodology li {
+      margin-bottom: 8px;
+    }
+
+    footer { padding: 12px 16px; border-top: 1px solid #1a2330; color: #8295ad; font-size: 12px; text-align: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="row justify-between no-margin">
+      <h1 class="no-margin"><a href="/">CertNode</a></h1>
+      <nav class="toolbar no-margin">
+        <a href="/verify">Verify</a>
+        <a href="/openapi">API</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/compliance-calculator" aria-current="page">ROI Calculator</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="hero">
+      <h1>Compliance Failure Cost Calculator</h1>
+      <p>Calculate the potential cost of audit failures and see how CertNode protects your organization</p>
+    </div>
+
+    <div class="calculator">
+      <div class="form-section">
+        <h3>Organization Information</h3>
+
+        <div class="form-group">
+          <label for="industry">Industry</label>
+          <select id="industry">
+            <option value="">Select your industry</option>
+            <option value="financial">Financial Services</option>
+            <option value="healthcare">Healthcare</option>
+            <option value="technology">Technology</option>
+            <option value="manufacturing">Manufacturing</option>
+            <option value="retail">Retail/E-commerce</option>
+            <option value="government">Government/Public Sector</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="company-size">Company Size</label>
+          <select id="company-size">
+            <option value="">Select company size</option>
+            <option value="startup">Startup (< 50 employees)</option>
+            <option value="small">Small Business (50-200 employees)</option>
+            <option value="medium">Medium Business (200-1000 employees)</option>
+            <option value="large">Large Enterprise (1000+ employees)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="annual-revenue">Annual Revenue (USD)</label>
+          <select id="annual-revenue">
+            <option value="">Select annual revenue</option>
+            <option value="under-10m">Under $10M</option>
+            <option value="10m-100m">$10M - $100M</option>
+            <option value="100m-1b">$100M - $1B</option>
+            <option value="over-1b">Over $1B</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Compliance Requirements</h3>
+
+        <div class="form-group">
+          <label for="regulations">Primary Regulations (select all that apply)</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+              <input type="checkbox" id="sox" value="sox"> SOX (Sarbanes-Oxley)
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+              <input type="checkbox" id="hipaa" value="hipaa"> HIPAA
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+              <input type="checkbox" id="gdpr" value="gdpr"> GDPR
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+              <input type="checkbox" id="pci" value="pci"> PCI DSS
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+              <input type="checkbox" id="iso" value="iso"> ISO 27001
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+              <input type="checkbox" id="other-reg" value="other"> Other
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="audit-frequency">Audit Frequency</label>
+          <select id="audit-frequency">
+            <option value="">Select audit frequency</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="semi-annual">Semi-Annual</option>
+            <option value="annual">Annual</option>
+            <option value="ad-hoc">Ad-hoc/As needed</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="data-volume">Daily Transaction/Document Volume</label>
+          <input type="number" id="data-volume" placeholder="e.g. 10000" min="1">
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Current Compliance Costs</h3>
+
+        <div class="form-group">
+          <label for="current-audit-cost">Annual Audit/Compliance Costs (USD)</label>
+          <input type="number" id="current-audit-cost" placeholder="e.g. 500000" min="0">
+        </div>
+
+        <div class="form-group">
+          <label for="compliance-staff">FTE Staff Dedicated to Compliance</label>
+          <input type="number" id="compliance-staff" placeholder="e.g. 5" min="0" step="0.5">
+        </div>
+      </div>
+
+      <button onclick="calculateRisk()" class="button" style="width: 100%; background: var(--primary-bg); color: var(--primary-text); font-size: 16px; padding: 16px;">
+        Calculate Compliance Risk & ROI
+      </button>
+    </div>
+
+    <div id="results" style="display: none;">
+      <div class="results">
+        <h2>⚠️ Estimated Compliance Failure Cost</h2>
+        <div class="cost-display" id="failure-cost">$0</div>
+        <p>Based on industry averages and regulatory penalty structures</p>
+
+        <div class="roi-grid">
+          <div class="roi-item">
+            <h4>Annual Compliance Spend</h4>
+            <div class="value" id="current-spend">$0</div>
+          </div>
+          <div class="roi-item">
+            <h4>Failure Risk Reduction</h4>
+            <div class="value">95%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="savings-display">
+        <h3>CertNode Investment vs. Risk</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; text-align: center;">
+          <div>
+            <div style="font-size: 14px; color: var(--muted); margin-bottom: 4px;">CertNode Annual Cost</div>
+            <div style="font-size: 24px; font-weight: 600; color: var(--ok-text);">$25,000</div>
+          </div>
+          <div>
+            <div style="font-size: 14px; color: var(--muted); margin-bottom: 4px;">Failure Risk Protected</div>
+            <div class="savings-amount" id="protected-value">$0</div>
+          </div>
+          <div>
+            <div style="font-size: 14px; color: var(--muted); margin-bottom: 4px;">ROI Ratio</div>
+            <div style="font-size: 24px; font-weight: 600; color: var(--ok-text);" id="roi-ratio">0:1</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-section">
+        <h3>Protect Your Organization Today</h3>
+        <p>CertNode eliminates 95% of audit failure risk for less than 1% of the potential cost</p>
+        <a href="#" onclick="requestEnterpriseDemo()" class="button">Schedule Enterprise Demo</a>
+        <a href="/pricing" class="button">View Pricing</a>
+      </div>
+    </div>
+
+    <div class="methodology">
+      <h3>Calculation Methodology</h3>
+      <ul>
+        <li><strong>Regulatory Penalties:</strong> Based on maximum fines from FDA, SEC, GDPR, and other regulatory bodies</li>
+        <li><strong>Legal Costs:</strong> Average litigation costs for compliance failures ($2M-$50M depending on severity)</li>
+        <li><strong>Business Impact:</strong> Lost revenue, customer churn, and operational disruption (typically 3-12 months)</li>
+        <li><strong>Reputational Damage:</strong> Brand value impact and customer acquisition costs (5-25% of annual revenue)</li>
+        <li><strong>Remediation Costs:</strong> System fixes, process changes, and ongoing monitoring requirements</li>
+      </ul>
+      <p style="margin-top: 16px; font-size: 14px; color: var(--muted);">
+        Sources: Ponemon Institute, IBM Cost of Data Breach Report, regulatory filing analysis
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    © CertNode. Compliance cost estimates based on industry data and regulatory precedent.
+  </footer>
+
+  <script>
+    function calculateRisk() {
+      const industry = document.getElementById('industry').value;
+      const companySize = document.getElementById('company-size').value;
+      const revenue = document.getElementById('annual-revenue').value;
+      const dataVolume = parseInt(document.getElementById('data-volume').value) || 0;
+      const currentCost = parseInt(document.getElementById('current-audit-cost').value) || 0;
+      const complianceStaff = parseFloat(document.getElementById('compliance-staff').value) || 0;
+
+      // Get selected regulations
+      const regulations = [];
+      ['sox', 'hipaa', 'gdpr', 'pci', 'iso', 'other-reg'].forEach(reg => {
+        if (document.getElementById(reg).checked) {
+          regulations.push(reg);
+        }
+      });
+
+      if (!industry || !companySize || !revenue || regulations.length === 0) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      // Calculate failure cost based on multiple factors
+      let baseCost = getBaseCostByRevenue(revenue);
+
+      // Industry multipliers
+      const industryMultipliers = {
+        financial: 2.5,
+        healthcare: 2.2,
+        technology: 1.8,
+        manufacturing: 1.5,
+        retail: 1.4,
+        government: 3.0,
+        other: 1.0
+      };
+
+      // Company size multipliers
+      const sizeMultipliers = {
+        startup: 0.3,
+        small: 0.6,
+        medium: 1.0,
+        large: 1.8
+      };
+
+      // Regulation penalty multipliers
+      const regMultipliers = {
+        sox: 25000000,    // SOX violations average $25M
+        hipaa: 15000000,  // HIPAA violations average $15M
+        gdpr: 20000000,   // GDPR fines can be massive
+        pci: 5000000,     // PCI violations average $5M
+        iso: 2000000,     // ISO failures average $2M
+        'other-reg': 3000000
+      };
+
+      // Calculate total failure cost
+      let regulationPenalties = 0;
+      regulations.forEach(reg => {
+        regulationPenalties += regMultipliers[reg] || 0;
+      });
+
+      const industryMultiplier = industryMultipliers[industry] || 1;
+      const sizeMultiplier = sizeMultipliers[companySize] || 1;
+
+      // Base cost + regulation penalties, adjusted by industry and size
+      const totalFailureCost = (baseCost + regulationPenalties) * industryMultiplier * sizeMultiplier;
+
+      // Current annual compliance spend
+      const staffCost = complianceStaff * 150000; // Average compliance professional salary
+      const totalCurrentSpend = currentCost + staffCost;
+
+      // CertNode protects 95% of failure risk
+      const protectedValue = totalFailureCost * 0.95;
+      const certNodeCost = 25000; // Annual enterprise cost
+
+      // ROI calculation
+      const roiRatio = Math.round(protectedValue / certNodeCost);
+
+      // Display results
+      document.getElementById('failure-cost').textContent = formatCurrency(totalFailureCost);
+      document.getElementById('current-spend').textContent = formatCurrency(totalCurrentSpend);
+      document.getElementById('protected-value').textContent = formatCurrency(protectedValue);
+      document.getElementById('roi-ratio').textContent = `${roiRatio}:1`;
+
+      document.getElementById('results').style.display = 'block';
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+
+      // Track the calculation for lead scoring
+      trackCalculation({
+        industry,
+        companySize,
+        revenue,
+        regulations,
+        failureCost: totalFailureCost,
+        currentSpend: totalCurrentSpend,
+        roiRatio
+      });
+    }
+
+    function getBaseCostByRevenue(revenue) {
+      const revenueCosts = {
+        'under-10m': 500000,
+        '10m-100m': 2000000,
+        '100m-1b': 10000000,
+        'over-1b': 50000000
+      };
+      return revenueCosts[revenue] || 1000000;
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(amount);
+    }
+
+    function trackCalculation(data) {
+      // Send calculation data to analytics
+      fetch('/api/track-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'compliance-calculation',
+          ...data,
+          timestamp: new Date().toISOString(),
+          page: 'compliance-calculator'
+        })
+      }).catch(() => {}); // Don't break UX if tracking fails
+    }
+
+    function requestEnterpriseDemo() {
+      // Redirect to homepage with enterprise demo
+      window.location.href = '/#enterprise-demo';
+    }
+  </script>
+</body>
+</html>

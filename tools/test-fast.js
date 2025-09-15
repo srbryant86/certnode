@@ -24,6 +24,7 @@ const testFiles = [
   , 'api/test/jwks.rotate.test.js'
   , 'api/test/metrics.endpoint.test.js'
   , 'api/test/metrics.tsa.test.js'
+  , 'api/test/openapi.healthz.examples.test.js'
   , 'api/test/error.model.test.js'
   , 'api/test/timestamp.test.js'
 ];

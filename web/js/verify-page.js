@@ -27,6 +27,15 @@ function setStatus(ok, msg) {
   el.className = 'status ' + (ok ? 'ok' : 'err');
   el.textContent = msg;
 }
+function setBusy(isBusy) {
+  const el = $('#status');
+  if (!el) return;
+  if (isBusy) {
+    el.setAttribute('aria-busy', 'true');
+  } else {
+    el.removeAttribute('aria-busy');
+  }
+}
 function clearAll() {
   $('#receipt').value = '';
   $('#jwks').value = '';
@@ -189,6 +198,7 @@ $('#verify').addEventListener('click', async () => {
   if (header) $('#hdr').textContent = JSON.stringify(header, null, 2);
 
   try {
+    setBusy(true);
     // Quick check first
     if (window.CertNode && window.CertNode.quickCheck) {
       const qc = await window.CertNode.quickCheck(receipt);
@@ -211,6 +221,7 @@ $('#verify').addEventListener('click', async () => {
     setStatus(false, 'Verification error: ' + friendly);
     $('#result').textContent = JSON.stringify({ ok: false, error: String(reason), message: friendly }, null, 2);
   }
+  setBusy(false);
   btn.disabled = false; btn.textContent = 'Verify';
 });
 
@@ -230,4 +241,3 @@ $('#verify').addEventListener('click', async () => {
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
 })();
-

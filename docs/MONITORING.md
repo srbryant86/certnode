@@ -13,6 +13,8 @@ Emit events via `api/src/plugins/metrics.js` (console JSON, one line per event):
 - `kms_sign_error` — { code, message }
 - `breaker_state` — { state } (closed|open|half_open)
 - `payload_size_warning` — { bytes, warn, hard }
+- `tsa_request_success` — { ms }
+- `tsa_request_error` — { code, status }
 
 ## SLOs and Alerts
 
@@ -24,6 +26,7 @@ Suggested alerts:
 - p99 latency > 100ms for 10m
 - KMS breaker open for > 1m
 - healthz non‑200 for > 1m
+- TSA errors spike: increase in `tsa_request_error` over 5m (threshold set per environment)
 
 ## Dashboards
 

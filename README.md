@@ -44,6 +44,19 @@ node tools/verify-receipt.js --receipt path/to/receipt.json --jwks path/to/jwks.
 - Web:  `npm install @certnode/sdk-web`
  - CDN/SRI: see `sdk/web/README.md` for jsDelivr usage and SRI snippet; example in `examples/web-embed.html`
 
+### Node SDK quick usage
+```js
+const { verifyReceipt, JWKSManager } = require('@certnode/sdk');
+
+async function main() {
+  const receipt = {/* protected, payload, signature, kid, ... */};
+  const jwks = { keys: [/* your EC P-256 public keys */] };
+  const res = await verifyReceipt({ receipt, jwks });
+  console.log(res.ok ? 'valid' : `invalid: ${res.reason}`);
+}
+main().catch(console.error);
+```
+
 ## TSA (RFC3161) Configuration
 - By default, timestamping uses a deterministic stub token to keep tests and offline verification stable.
 - To use a real TSA, set environment variables for the API:

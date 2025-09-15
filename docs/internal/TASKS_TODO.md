@@ -37,6 +37,9 @@ You are operating **only** on the application layer. Do not change infra/secrets
 - d26 — Docs sync (AGENTS/STATUS)
   - Scope: Update AGENTS “Next Steps” to reflect SDK releases; refresh STATUS checklist to current state.
   - Acceptance: `node tools/check-docs-updated.js` passes; CI green.
+ - w14 — Website home + nav integration
+  - Scope: Build `web/index.html` (home) using WEBSITE_PLAN; add header/nav to `verify.html`; link to OpenAPI and GitHub.
+  - Acceptance: Home passes axe (no critical issues), <50KB gzipped, nav present on verify; links functional.
 
 ## Backlog (candidates; pick and spec one at a time)
 - aXX — SDK packaging & npm publish (node+browser, types, README, size checks, CI dry-run)

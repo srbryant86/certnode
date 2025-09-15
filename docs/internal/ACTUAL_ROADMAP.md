@@ -51,6 +51,7 @@ This document tracks active priorities without fixed dates. Delivery is mileston
 - a34 — Error model standardized across routes; OpenAPI aligned
 - w12 — Verify page CSP tightened; a11y improved; no inline scripts
 - m05 — Prometheus metrics incl. `certnode_errors_total`; CI bench summary on PRs
+ - a37 — TSA integration scaffolding (stub by default, live via TSA_URL), `require_tsr` strict mode (503), TSA metrics and canary, docs/tests/OpenAPI updated
 
 ## Quality Gates (unchanged)
 
@@ -64,4 +65,3 @@ This document tracks active priorities without fixed dates. Delivery is mileston
 - Use milestone tagging for SDK releases: `sdk-node-vX.Y.Z`, `sdk-web-vA.B.C`
 - Keep metrics label cardinality bounded to method, path, status only
 - Avoid logging payload contents; logs should be hash‑only and correlation‑safe
-

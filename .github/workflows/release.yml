@@ -122,6 +122,8 @@ jobs:
             ```bash
             npm install @certnode/sdk@${{ steps.precheck-node.outputs.ver || '' }}
             ```
+            
+            Build provenance: This release was published with npm `--provenance` using GitHub OIDC (`id-token: write`), attaching an attestation for supply-chain integrity.
 
   publish-web:
     if: startsWith(github.ref_name, 'sdk-web-v')

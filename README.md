@@ -66,6 +66,7 @@ main().catch(console.error);
   - `TSA_CA_PEM` — optional custom CA PEM (inline)
   - `TSA_CERT_IGNORE` — set to `1` to ignore TLS errors (dev only)
   The `/v1/sign` route adds a `tsr` field to receipts when `headers.tsr === true` and a token is obtained.
+  - Strict mode: set `headers.require_tsr: true` in the `/v1/sign` request to fail with `503 tsa_unavailable` when TSA cannot be reached.
 
 ## Monitoring
 - Emit structured JSON metrics via `api/src/plugins/metrics.js`

@@ -10,12 +10,12 @@ const LS_THEME = 'certnode:theme';
 
 const reasonMap = {
   missing_fields: 'Receipt missing required fields (protected, payload, signature, kid).',
-  bad_protected: 'Protected header is not valid base64url‑encoded JSON.',
-  unsupported_alg: 'Unsupported algorithm in header. Only ES256 (P‑256) is supported.',
+  bad_protected: 'Protected header is not valid base64url-encoded JSON.',
+  unsupported_alg: 'Unsupported algorithm in header. Only ES256 (P-256) is supported.',
   kid_mismatch: 'Key ID mismatch between protected header and receipt.',
   kid_not_found: 'Key not found in the provided JWKS (check kid/thumbprint).',
-  payload_hash_mismatch: 'Payload hash mismatch (JCS) — receipt payload was modified or JCS mismatch.',
-  signature_invalid: 'Signature verification failed — receipt may be invalid or JWKS incorrect.',
+  payload_hash_mismatch: 'Payload hash mismatch (JCS) - receipt payload was modified or JCS mismatch.',
+  signature_invalid: 'Signature verification failed - receipt may be invalid or JWKS incorrect.',
   receipt_id_mismatch: 'Receipt ID does not match computed value.',
   bad_receipt: 'Receipt must be a JSON object.',
   invalid_json: 'Invalid JSON provided.'
@@ -174,7 +174,7 @@ $('#copy-result').addEventListener('click', () => copyText($('#result').textCont
 // Verify
 $('#verify').addEventListener('click', async () => {
   const btn = $('#verify');
-  btn.disabled = true; btn.textContent = 'Verifying…';
+  btn.disabled = true; btn.textContent = 'Verifying...';
   $('#result').textContent = '';
   $('#hdr').textContent = '';
   const receiptTxt = $('#receipt').value.trim();

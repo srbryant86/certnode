@@ -4,94 +4,112 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-  <title>CertNode — Enterprise Compliance Software | Eliminate Audit Failures</title>
+  <title>CertNode — Cryptographic Compliance Infrastructure</title>
   <style>
     :root {
-      /* Enterprise Professional Theme */
-      --bg: #ffffff;
-      --panel: #f8fafc;
-      --border: #e2e8f0;
-      --text: #1a202c;
-      --muted: #4a5568;
-      --accent: #edf2f7;
-      --accent-border: #cbd5e0;
-      --accent-hover: #e2e8f0;
+      /* Academic Professional Theme */
+      --bg: #fafbfc;
+      --bg-primary: #475569;
+      --panel: #ffffff;
+      --border: #e1e5e9;
+      --border-light: #f1f5f9;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
 
-      /* Enterprise Brand Colors */
-      --primary: #0066cc;
-      --primary-dark: #004499;
-      --primary-light: #3399ff;
+      /* Sophisticated Slate Blue Palette */
+      --primary: #475569;
+      --primary-dark: #334155;
+      --primary-light: #64748b;
+      --accent: #6366f1;
+      --accent-light: #8b5cf6;
 
-      /* Professional Status Colors */
-      --success: #10b981;
-      --success-bg: #f0fff4;
-      --success-border: #9ae6b4;
-      --warning: #f59e0b;
+      /* Academic Status Colors */
+      --success: #059669;
+      --success-bg: #ecfdf5;
+      --success-border: #a7f3d0;
+      --warning: #d97706;
       --warning-bg: #fffbeb;
-      --warning-border: #fcd34d;
-      --error: #ef4444;
+      --warning-border: #fed7aa;
+      --error: #dc2626;
       --error-bg: #fef2f2;
-      --error-border: #fca5a5;
+      --error-border: #fecaca;
 
-      /* Enterprise Trust Colors */
-      --trust-blue: #1e40af;
-      --trust-green: #059669;
-      --trust-gray: #6b7280;
+      /* Academic Trust Elements */
+      --trust-navy: #1e293b;
+      --trust-blue: #3730a3;
+      --trust-indigo: #4338ca;
     }
 
-    /* Enterprise Professional Typography */
+    /* Academic Professional Typography */
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Georgia', 'Times New Roman', serif;
       margin: 0;
       padding: 0;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.7;
       font-size: 16px;
+      letter-spacing: -0.01em;
     }
 
-    /* Enterprise Header */
+    /* Sophisticated Header */
     header {
-      background: white;
+      background: var(--panel);
       border-bottom: 1px solid var(--border);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
     .header-container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 16px 24px;
+      padding: 20px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .logo {
-      font-size: 24px;
-      font-weight: 700;
+      font-size: 28px;
+      font-weight: 600;
       color: var(--primary);
       text-decoration: none;
+      letter-spacing: -0.02em;
     }
 
-    /* Professional Navigation */
+    /* Academic Navigation */
     .nav {
       display: flex;
-      gap: 32px;
+      gap: 40px;
       align-items: center;
     }
 
     .nav a {
-      color: var(--text);
+      color: var(--text-muted);
       text-decoration: none;
-      font-weight: 500;
-      transition: color 0.2s;
+      font-weight: 400;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      position: relative;
     }
 
     .nav a:hover {
       color: var(--primary);
+    }
+
+    .nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .nav a:hover::after {
+      width: 100%;
     }
 
     /* Enterprise Layout */
@@ -290,28 +308,48 @@
       font-weight: 500;
       margin-top: 8px;
     }
-    /* Enterprise Hero Section */
+    /* Academic Hero Section */
     .hero {
-      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      padding: 120px 0;
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 100px 0;
       text-align: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(30, 41, 59, 0.2);
+      pointer-events: none;
     }
 
     .hero-content {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .hero h1 {
-      margin: 0 0 24px;
-      color: var(--text);
+      margin: 0 0 32px;
+      color: white;
+      font-size: 48px;
+      font-weight: 400;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
     }
 
     .hero p {
-      font-size: 20px;
-      color: var(--muted);
-      margin: 0 0 40px;
+      font-size: 22px;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0 0 48px;
       line-height: 1.6;
+      font-weight: 300;
     }
 
     /* Social Proof Section */
@@ -500,15 +538,24 @@
     .skip-link { position: absolute; left: -999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
     .skip-link:focus { left: 8px; top: 8px; width: auto; height: auto; padding: 8px 12px; background: var(--accent); color: var(--text); border: 1px solid var(--accent-border); border-radius: 6px; z-index: 1000; }
 
-    /* Modern Homepage Styling */
-    .hero { text-align: center; padding: 60px 20px; }
-    .hero h1 { font-size: 48px; margin: 0 0 16px; font-weight: 700; }
-    .hero p { font-size: 20px; color: var(--muted); margin: 0 0 32px; }
-    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary { background: #2563eb; border-color: #1d4ed8; color: white; }
-    .btn-primary:hover { background: #1d4ed8; }
-    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
-    .btn-secondary:hover { background: var(--accent); }
+    /* Academic Button Styling */
+    .cta-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--primary);
+      border: 1px solid var(--primary);
+      color: white;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+    .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.9);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
     .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; padding: 40px 20px; }
     .feature { text-align: center; }
     .feature h3 { color: var(--text); margin: 0 0 8px; }
@@ -547,19 +594,19 @@
   <section class="hero">
     <div class="container">
       <div class="hero-content">
-        <h1 class="text-6xl">Eliminate $4M+ Audit Failures with Cryptographic Compliance</h1>
-        <p class="text-xl">CertNode provides tamper-evident digital signatures that prevent compliance failures, reduce audit costs, and protect your organization from regulatory penalties. Trusted by Fortune 500 companies for mission-critical compliance.</p>
+        <h1>Cryptographic Compliance Infrastructure</h1>
+        <p>CertNode provides tamper-evident cryptographic receipts for enterprise compliance workflows. Our infrastructure enables organizations to generate verifiable proof of regulatory adherence through digital signatures and immutable audit trails.</p>
 
         <div class="flex justify-center mb-48">
-          <a href="#" onclick="showEnterpriseForm()" class="btn btn-primary btn-lg">Schedule Enterprise Demo</a>
-          <a href="/compliance-calculator" class="btn btn-secondary btn-lg">Calculate Your ROI</a>
+          <a href="#" onclick="showEnterpriseForm()" class="btn btn-primary btn-lg">Request Access</a>
+          <a href="/compliance-calculator" class="btn btn-secondary btn-lg">Technical Specifications</a>
         </div>
 
         <div class="flex justify-center">
-          <div class="compliance-badge">✓ SOX Compliant</div>
-          <div class="compliance-badge">✓ HIPAA Ready</div>
-          <div class="compliance-badge">✓ GDPR Certified</div>
-          <div class="compliance-badge">✓ ISO 27001</div>
+          <div class="compliance-badge">SOC 2 Type II</div>
+          <div class="compliance-badge">ES256 Signatures</div>
+          <div class="compliance-badge">GDPR Compliant</div>
+          <div class="compliance-badge">ISO 27001</div>
         </div>
       </div>
     </div>
@@ -605,8 +652,8 @@
   <section class="section">
     <div class="container">
       <div class="text-center mb-48">
-        <h2 class="text-4xl mb-16">How CertNode Protects Your Organization</h2>
-        <p class="text-xl text-muted">Simple, powerful compliance solution that integrates with your existing systems</p>
+        <h2 class="text-4xl mb-16">Architecture & Implementation</h2>
+        <p class="text-xl text-muted">Cryptographic infrastructure designed for seamless integration with existing enterprise systems</p>
       </div>
 
       <div class="grid grid-3">
@@ -633,8 +680,8 @@
   <section class="section-sm" style="background: var(--panel);">
     <div class="container">
       <div class="text-center mb-48">
-        <h2 class="text-4xl mb-16">Trusted by Compliance Leaders</h2>
-        <p class="text-xl text-muted">Mission-critical compliance for regulated industries</p>
+        <h2 class="text-4xl mb-16">Research & Validation</h2>
+        <p class="text-xl text-muted">Peer-reviewed cryptographic methods validated in production environments</p>
       </div>
 
       <div class="grid grid-2">
@@ -665,12 +712,12 @@
   <!-- Enterprise CTA Section -->
   <section class="cta-section">
     <div class="container">
-      <h2 class="text-4xl mb-16">Stop Risking $4M+ Compliance Failures</h2>
-      <p class="text-xl mb-32">Join Fortune 500 companies using CertNode to eliminate audit risk and reduce compliance costs</p>
+      <h2 class="text-4xl mb-16">Implementation & Access</h2>
+      <p class="text-xl mb-32">Enterprise-grade cryptographic compliance infrastructure for regulated environments</p>
 
       <div class="flex justify-center">
-        <a href="#" onclick="showEnterpriseForm()" class="btn btn-white btn-lg">Schedule Enterprise Demo</a>
-        <a href="/compliance-calculator" class="btn btn-secondary btn-lg" style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3);">Calculate Your Savings</a>
+        <a href="#" onclick="showEnterpriseForm()" class="btn btn-white btn-lg">Request Implementation Guide</a>
+        <a href="/compliance-calculator" class="btn btn-secondary btn-lg" style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3);">Technical Assessment</a>
       </div>
     </div>
   </section>
@@ -680,8 +727,8 @@
     <div class="container">
       <div class="card" style="max-width: 600px; margin: 0 auto;">
         <div class="text-center mb-32">
-          <h2 class="text-3xl mb-16">Schedule Your Enterprise Demo</h2>
-          <p class="text-muted">See how Fortune 500 companies use CertNode to eliminate compliance failures</p>
+          <h2 class="text-3xl mb-16">Implementation Consultation</h2>
+          <p class="text-muted">Technical consultation for cryptographic compliance infrastructure deployment</p>
         </div>
 
         <form id="demo-form">

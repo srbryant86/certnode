@@ -51,11 +51,11 @@ jobs:
         if: matrix.node-version == '20.x'
         shell: bash
         run: |
-          echo "node: $(node --version)"
-          echo "npm:  $(npm --version)"
-          echo "registry: $(npm config get registry)"
-          echo "pkg-name: $(node -p \"require('./sdk/node/package.json').name\")"
-          echo "pkg-ver:  $(node -p \"require('./sdk/node/package.json').version\")"
+          node --version | sed 's/^/node: /'
+          npm --version | sed 's/^/npm:  /'
+          printf "registry: "; npm config get registry
+          printf "pkg-name: "; node -p "require('./sdk/node/package.json').name"
+          printf "pkg-ver:  "; node -p "require('./sdk/node/package.json').version"
           npm whoami || true
       - name: Prime npm auth
         if: matrix.node-version == '20.x'

@@ -27,6 +27,19 @@
         "operationId": "getHealth",
         "tags": ["Health"],
         "responses": {
+          "405": {
+            "description": "Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "methodNotAllowed": {
+                    "value": { "error": "method_not_allowed", "request_id": "req_abc" }
+                  }
+                }
+              }
+            }
+          },
           "200": {
             "description": "Server is healthy",
             "content": {
@@ -304,6 +317,20 @@
                   "internalError": {
                     "summary": "Generic failure",
                     "value": { "error": "internal_error", "message": "unexpected failure", "request_id": "req_abc" }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Timestamp authority unavailable (when headers.require_tsr is true)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "tsaUnavailable": {
+                    "summary": "TSA unavailable",
+                    "value": { "error": "tsa_unavailable", "message": "timestamp authority unavailable", "request_id": "req_123" }
                   }
                 }
               }

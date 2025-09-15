@@ -26,6 +26,7 @@ const testFiles = [
   , 'api/test/metrics.tsa.test.js'
   , 'api/test/openapi.healthz.examples.test.js'
   , 'api/test/openapi.sign.examples.test.js'
+  , 'api/test/sign.require-tsr.test.js'
   , 'api/test/error.model.test.js'
   , 'api/test/timestamp.test.js'
 ];

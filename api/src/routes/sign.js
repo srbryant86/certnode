@@ -26,11 +26,22 @@ async function signPayload(payload, headers = {}) {
   const receipt_id = b64u(sha256(Buffer.from(protectedB64 + '.' + payloadB64 + '.' + signature, 'utf8')));
 
   let tsr;
-  if (headers.tsr === true) {
+  if (headers.tsr === true || headers.require_tsr === true) {
     try {
       const token = await timestamp.getTimestampToken(payload_jcs_sha256);
       if (token) tsr = token;
-    } catch (_) {}
+      if (!token && headers.require_tsr === true) {
+        const err = new Error('timestamp authority unavailable');
+        err.statusCode = 503; err.code = 'tsa_unavailable';
+        throw err;
+      }
+    } catch (e) {
+      if (headers.require_tsr === true) {
+        const err = new Error('timestamp authority unavailable');
+        err.statusCode = 503; err.code = 'tsa_unavailable';
+        throw err;
+      }
+    }
   }
 
   return { protected: protectedB64, signature, payload, kid, payload_jcs_sha256, receipt_id, ...(tsr ? { tsr } : {}) };
@@ -62,6 +73,15 @@ async function handle(req, res) {
     res.end(JSON.stringify(out));
     require('../plugins/metrics').emit('sign_success');
   } catch (e) {
+    // Special-case TSA strict requirement to ensure standardized error body
+    if (e && e.code === 'tsa_unavailable') {
+      const headers = { "Content-Type": "application/json" };
+      if (req && req.id) headers['X-Request-Id'] = req.id;
+      res.writeHead(503, headers);
+      const body = { error: 'tsa_unavailable', message: e.message || 'timestamp authority unavailable' };
+      if (req && req.id) body.request_id = req.id;
+      return res.end(JSON.stringify(body));
+    }
     if (typeof res.handleError === 'function') {
       return res.handleError(e);
     }
@@ -76,6 +96,5 @@ async function handle(req, res) {
 }
 
 module.exports = { signPayload, handle };
-
 
 

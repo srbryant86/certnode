@@ -40,7 +40,7 @@ jobs:
         if: steps.precheck.outputs.exists == 'false'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --provenance --access public
+        run: npm publish --access public
         working-directory: sdk/web
 
       - id: verify

@@ -31,12 +31,12 @@ You are operating **only** on the application layer. Do not change infra/secrets
 - a31 — completed (see git history)
 - a32 — completed (see git history)
 - a34 — completed (see git history)
+ - s18 — Node SDK publish finalized (v1.0.7 live on npm)
 
 ## Next (define scope + acceptance clearly, then implement only that task)
-- s18 — Node SDK publish finalize
-  - Scope: Publish `@certnode/sdk` to npm and align docs.
-  - Steps: Bump version; tag `sdk-node-vX.Y.Z`; ensure `NPM_TOKEN` secret; run publish workflow; verify `npm view @certnode/sdk` shows new version.
-  - Acceptance: Published version visible on npm; README/RELEASE reflect install command; CI release job green.
+- d26 — Docs sync (AGENTS/STATUS)
+  - Scope: Update AGENTS “Next Steps” to reflect SDK releases; refresh STATUS checklist to current state.
+  - Acceptance: `node tools/check-docs-updated.js` passes; CI green.
 
 ## Backlog (candidates; pick and spec one at a time)
 - aXX — SDK packaging & npm publish (node+browser, types, README, size checks, CI dry-run)

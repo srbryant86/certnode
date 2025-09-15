@@ -96,6 +96,32 @@ jobs:
           done
           echo "Publish not visible on npm after timeout" >&2
           exit 1
+      - name: Node release summary
+        if: matrix.node-version == '20.x'
+        shell: bash
+        run: |
+          VER=$(node -p "require('./sdk/node/package.json').version")
+          echo "## Node SDK Publish" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Published package version:" >> $GITHUB_STEP_SUMMARY
+          npm view @certnode/sdk version | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY || echo "- $VER (pending view)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Install:" >> $GITHUB_STEP_SUMMARY
+          echo '\`\`\`bash' >> $GITHUB_STEP_SUMMARY
+          echo "npm install @certnode/sdk@$VER" >> $GITHUB_STEP_SUMMARY
+          echo '\`\`\`' >> $GITHUB_STEP_SUMMARY
+      - name: Create GitHub release (Node)
+        if: matrix.node-version == '20.x'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Node SDK ${{ steps.precheck-node.outputs.ver || '' }}
+          body: |
+            Node SDK published. Install:
+
+            ```bash
+            npm install @certnode/sdk@${{ steps.precheck-node.outputs.ver || '' }}
+            ```
 
   publish-web:
     if: startsWith(github.ref_name, 'sdk-web-v')

@@ -6,7 +6,7 @@ Steps to release SDKs and tag the repo.
 - Ensure main is green: `node tools/test-fast.js` → ALL PASSED
 - Update versions:
   - Node: `sdk/node/package.json` (bump semver)
-  - Web: `sdk/web/package.json` (bump semver)
+  - Web:  `sdk/web/package.json` (bump semver)
 - Update CHANGELOGs with date and summary
 
 ## Node SDK (@certnode/sdk)
@@ -48,22 +48,22 @@ npm publish --access public
 
 4) CDN + SRI (jsDelivr)
 - After publish, you can load the minified ESM bundle via jsDelivr:
-  ```html
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@certnode/sdk-web@A.B.C/dist/index.esm.min.js"></script>
-  ```
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@certnode/sdk-web@A.B.C/dist/index.esm.min.js"></script>
+```
 - To generate Subresource Integrity (SRI):
-  ```
-  npm run build:web-sdk
-  node tools/generate-sri.js
-  ```
-  Then include:
-  ```html
-  <script
-    type="module"
-    integrity="sha384-..."
-    crossorigin="anonymous"
-    src="https://cdn.jsdelivr.net/npm/@certnode/sdk-web@A.B.C/dist/index.esm.min.js"></script>
-  ```
+```
+npm run build:web-sdk
+node tools/generate-sri.js
+```
+Then include:
+```html
+<script
+  type="module"
+  integrity="sha384-..."
+  crossorigin="anonymous"
+  src="https://cdn.jsdelivr.net/npm/@certnode/sdk-web@A.B.C/dist/index.esm.min.js"></script>
+```
 
 ## Tagging
 After publishing, tag the repo and push tags:
@@ -86,7 +86,8 @@ This repo includes `.github/workflows/release.yml` to publish SDKs on tags:
 
 Prerequisite:
 - Add `NPM_TOKEN` (repo Settings → Secrets and variables → Actions → New repository secret)
-- The workflow runs fast tests, packs the SDK, and publishes with `NODE_AUTH_TOKEN`
+- The workflow runs fast tests, packs the SDK, and publishes with `NODE_AUTH_TOKEN`.
+- Provenance: CI uses `--provenance` to attach SLSA attestations. Workflows grant `id-token: write` permissions. If you need to disable this, remove `--provenance` from the publish step.
 
 Note: You can still publish locally if you prefer.
 
@@ -115,3 +116,4 @@ To automate publish via GitHub Actions with normalized package metadata and tagg
 - Node SDK:
   - PowerShell: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish-node-sdk.ps1`
   - Requires `NPM_TOKEN` repo secret; script bumps version, tags `sdk-node-vX.Y.Z`, and prints the published version from npm.
+

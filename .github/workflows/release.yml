@@ -79,7 +79,7 @@ jobs:
         working-directory: sdk/node
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
+        run: npm publish --provenance --access public
       - name: Verify npm publish
         if: matrix.node-version == '20.x'
         shell: bash

@@ -1,6 +1,6 @@
 # @certnode/sdk (Node)
 
-Minimal, dependency-free Node.js SDK for verifying CertNode receipts (ES256 / P-256).
+Open source Node.js implementation of the CertNode standard for cryptographic digital evidence verification (RFC 7515 JWS with ECDSA P-256).
 
 ## Install
 
@@ -21,7 +21,7 @@ const { verifyReceipt, JWKSManager } = require('@certnode/sdk');
     ]
   });
 
-  // Example receipt from CertNode /v1/sign
+  // Example CertNode-compliant receipt
   const receipt = {
     protected: 'eyJhbGciOiJFUzI1NiIsImtpZCI6Ii...',
     payload: { hello: 'world', n: 42 },
@@ -37,8 +37,8 @@ const { verifyReceipt, JWKSManager } = require('@certnode/sdk');
 ## API
 
 - `verifyReceipt({ receipt, jwks })` -> `{ ok: boolean, reason?: string }`
-  - `receipt`: object or JSON string of the receipt returned by CertNode `/v1/sign`.
-  - `jwks`: JSON Web Key Set with EC P-256 keys. The SDK matches by RFC7638 thumbprint or `kid` field.
+  - `receipt`: CertNode-compliant receipt object or JSON string with JWS signature.
+  - `jwks`: JSON Web Key Set with EC P-256 keys. Matches by RFC 7638 thumbprint or `kid` field.
 
 ## Notes
 
@@ -49,8 +49,9 @@ const { verifyReceipt, JWKSManager } = require('@certnode/sdk');
 
 ## Obtaining JWKS
 
-- Development: fetch from your running CertNode at `/jwks` or `/.well-known/jwks.json`.
-- Production: use your managed JWKS location and rotate keys per your policy.
+- **Reference Implementation**: `https://api.certnode.io/.well-known/jwks.json`
+- **Your Implementation**: Host JWKS at your own endpoint following the standard
+- **Multiple Implementations**: Support any CertNode-compliant signing service
 
 ## Local Packaging
 

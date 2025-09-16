@@ -347,9 +347,9 @@
       <p style="margin-bottom: 1.5rem;">This is the exact same verification process your auditors will use to validate your compliance documentation. Watch how cryptographic signatures prove document authenticity instantly.</p>
 
       <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-        <button id="load-sample-financial" class="btn-primary" style="margin: 0;">Try Sample Financial Record</button>
-        <button id="load-sample-healthcare" class="btn-secondary" style="margin: 0;">Try Sample Healthcare Data</button>
-        <button id="load-sample-tampered" style="background: var(--warning-amber); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; margin: 0;">See Tamper Detection</button>
+        <button id="load-sample-financial" class="btn-primary" style="margin: 0;" onclick="loadFinancialSample()">Try Sample Financial Record</button>
+        <button id="load-sample-healthcare" class="btn-secondary" style="margin: 0;" onclick="loadHealthcareSample()">Try Sample Healthcare Data</button>
+        <button id="load-sample-tampered" style="background: var(--warning-amber); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; margin: 0;" onclick="loadTamperedSample()">See Tamper Detection</button>
       </div>
     </div>
 
@@ -435,9 +435,8 @@
 
   <!-- Business Demo Enhancement Script -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Sample data for different scenarios
-      const sampleData = {
+    // Global sample data
+    const sampleData = {
         financial: {
           receipt: `{
   "protected": "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXUyIsImtpZCI6ImZpbmFuY2lhbC1rZXktMDEifQ",
@@ -521,53 +520,70 @@
         }
       };
 
-      // Add event listeners for sample buttons
-      document.getElementById('load-sample-financial').addEventListener('click', function() {
-        loadSample('financial', 'financial transaction record');
-      });
+    // Global functions that can be called from onclick
+    function loadSample(type, description) {
+      console.log('Loading sample:', type);
+      const data = sampleData[type];
 
-      document.getElementById('load-sample-healthcare').addEventListener('click', function() {
-        loadSample('healthcare', 'healthcare encounter record');
-      });
+      // Load the receipt and JWKS
+      const receiptField = document.getElementById('receipt');
+      const jwksField = document.getElementById('jwks');
 
-      document.getElementById('load-sample-tampered').addEventListener('click', function() {
-        loadSample('tampered', 'tampered document (will fail verification)');
-      });
-
-      function loadSample(type, description) {
-        const data = sampleData[type];
-
-        // Load the receipt and JWKS
-        document.getElementById('receipt').value = data.receipt;
-        document.getElementById('jwks').value = data.jwks;
+      if (receiptField && jwksField) {
+        receiptField.value = data.receipt;
+        jwksField.value = data.jwks;
 
         // Show a status message
         const status = document.getElementById('status');
-        status.className = 'status';
-        status.style.background = 'var(--accent-light)';
-        status.style.color = 'white';
-        status.innerHTML = \`📋 Loaded sample \${description}. Click "Verify Document" to see the result.\`;
-        status.classList.remove('hidden');
+        if (status) {
+          status.className = 'status';
+          status.style.background = 'var(--accent-light)';
+          status.style.color = 'white';
+          status.innerHTML = `📋 Loaded sample ${description}. Click "Verify Document" to see the result.`;
+          status.classList.remove('hidden');
+        }
 
         // Scroll to verification section
-        document.getElementById('verify').scrollIntoView({ behavior: 'smooth' });
+        const verifyBtn = document.getElementById('verify');
+        if (verifyBtn) {
+          verifyBtn.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        console.error('Could not find receipt or JWKS fields');
       }
+    }
 
-      // Enhanced verify button feedback
-      const originalVerifyHandler = document.getElementById('verify').onclick;
-      document.getElementById('verify').addEventListener('click', function() {
-        // Show processing state
-        const button = this;
-        const originalText = button.textContent;
-        button.textContent = 'Verifying...';
-        button.disabled = true;
+    function loadFinancialSample() {
+      loadSample('financial', 'financial transaction record');
+    }
 
-        // Re-enable after verification completes
-        setTimeout(() => {
-          button.textContent = originalText;
-          button.disabled = false;
-        }, 2000);
-      });
+    function loadHealthcareSample() {
+      loadSample('healthcare', 'healthcare encounter record');
+    }
+
+    function loadTamperedSample() {
+      loadSample('tampered', 'tampered document (will fail verification)');
+    }
+
+    // Enhanced verify button feedback
+    document.addEventListener('DOMContentLoaded', function() {
+      const verifyBtn = document.getElementById('verify');
+      if (verifyBtn) {
+        verifyBtn.addEventListener('click', function() {
+          console.log('Verify button clicked');
+          // Show processing state
+          const button = this;
+          const originalText = button.textContent;
+          button.textContent = 'Verifying...';
+          button.disabled = true;
+
+          // Re-enable after verification completes
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+          }, 2000);
+        });
+      }
     });
   </script>
 </body>

@@ -412,109 +412,106 @@
 
   <div class="pricing-container">
 
-    <!-- Trust Signals Section -->
+    <!-- Quick Start Section -->
     <div style="text-align: center; margin-bottom: 4rem; padding: 2rem 0; background: var(--panel); border-radius: 12px; border: 1px solid var(--border);">
-      <p style="color: var(--text-muted); margin-bottom: 2rem;">Trusted by compliance teams across regulated industries</p>
+      <p style="color: var(--text-muted); margin-bottom: 2rem;">Get started with CertNode in your preferred environment</p>
 
-      <!-- Security Badges -->
+      <!-- Implementation Options -->
       <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
-        <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: white; border: 2px solid var(--sox-blue); border-radius: 8px;">
-          <div style="width: 24px; height: 24px; background: var(--sox-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">S2</div>
-          <span style="font-weight: 600; color: var(--sox-blue); font-size: 14px;">SOC 2 Type II</span>
+        <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: white; border: 2px solid var(--primary); border-radius: 8px;">
+          <div style="width: 24px; height: 24px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">JS</div>
+          <span style="font-weight: 600; color: var(--primary); font-size: 14px;">Node.js SDK</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: white; border: 2px solid var(--verified-green); border-radius: 8px;">
-          <div style="width: 24px; height: 24px; background: var(--verified-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">✓</div>
-          <span style="font-weight: 600; color: var(--verified-green); font-size: 14px;">ISO 27001</span>
+          <div style="width: 24px; height: 24px; background: var(--verified-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">🌐</div>
+          <span style="font-weight: 600; color: var(--verified-green); font-size: 14px;">Browser WebCrypto</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: white; border: 2px solid var(--crypto-gold); border-radius: 8px;">
-          <div style="width: 24px; height: 24px; background: var(--crypto-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">🔒</div>
-          <span style="font-weight: 600; color: var(--crypto-gold); font-size: 14px;">256-bit Encryption</span>
+          <div style="width: 24px; height: 24px; background: var(--crypto-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">🔗</div>
+          <span style="font-weight: 600; color: var(--crypto-gold); font-size: 14px;">REST API</span>
         </div>
       </div>
 
-      <!-- Risk Reversal -->
+      <!-- Implementation Benefits -->
       <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; font-size: 14px; color: var(--text-muted);">
         <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="color: var(--verified-green);">✓</span> 30-day money-back guarantee
+          <span style="color: var(--verified-green);">✓</span> Open source MIT license
         </div>
         <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="color: var(--verified-green);">✓</span> No setup fees
+          <span style="color: var(--verified-green);">✓</span> RFC-compliant standards
         </div>
         <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="color: var(--verified-green);">✓</span> Cancel anytime
+          <span style="color: var(--verified-green);">✓</span> Zero vendor lock-in
         </div>
       </div>
     </div>
 
     <div class="pricing-grid">
+      <div class="pricing-card" style="border-top: 4px solid var(--primary);">
+        <h3 class="plan-tier">🔧 Quick Start</h3>
+        <div class="plan-price" style="font-size: 2rem; color: var(--primary);">
+          <span style="font-size: 1rem;">npm install</span>
+        </div>
+        <p class="plan-subtitle">Get started with the Node.js SDK in minutes</p>
+
+        <ul class="plan-features">
+          <li><span class="check">•</span> <code>npm install @certnode/sdk</code></li>
+          <li><span class="check">•</span> Zero dependencies - uses Node crypto</li>
+          <li><span class="check">•</span> TypeScript definitions included</li>
+          <li><span class="check">•</span> Complete examples and docs</li>
+          <li><span class="check">•</span> MIT licensed - use anywhere</li>
+          <li><span class="check">•</span> Works offline after installation</li>
+          <li><span class="check">•</span> Compatible with any Node.js app</li>
+        </ul>
+
+        <a href="https://github.com/srbryant86/certnode/tree/main/sdk/node" class="plan-button">View Node.js Docs</a>
+      </div>
+
+      <div class="pricing-card featured" style="border-top: 4px solid var(--verified-green);">
+        <h3 class="plan-tier">🌐 Browser Integration</h3>
+        <div class="plan-price" style="font-size: 2rem; color: var(--verified-green);">
+          <span style="font-size: 1rem;">WebCrypto</span>
+        </div>
+        <p class="plan-subtitle">Client-side verification without external dependencies</p>
+
+        <ul class="plan-features">
+          <li><span class="check">•</span> Built-in browser WebCrypto API</li>
+          <li><span class="check">•</span> No server required for verification</li>
+          <li><span class="check">•</span> ECDSA P-256 signature validation</li>
+          <li><span class="check">•</span> JSON canonicalization support</li>
+          <li><span class="check">•</span> Works in all modern browsers</li>
+          <li><span class="check">•</span> Privacy-preserving offline validation</li>
+          <li><span class="check">•</span> Perfect for client-side apps</li>
+        </ul>
+
+        <a href="/validator" class="plan-button primary">Try Live Demo</a>
+      </div>
+
       <div class="pricing-card" style="border-top: 4px solid var(--crypto-gold);">
-        <h3 class="plan-tier">Try Before You Buy</h3>
-        <div class="plan-price">
-          <span class="currency">$</span>0
-          <span class="period">/month</span>
+        <h3 class="plan-tier">🔗 REST API</h3>
+        <div class="plan-price" style="font-size: 2rem; color: var(--crypto-gold);">
+          <span style="font-size: 1rem;">HTTPS</span>
         </div>
-        <p class="plan-subtitle">Test our cryptographic proofs with your real audit data</p>
+        <p class="plan-subtitle">Reference implementation for any programming language</p>
 
         <ul class="plan-features">
-          <li><span class="check">•</span> 1,000 cryptographic receipts/month</li>
-          <li><span class="check">•</span> ES256 (ECDSA P-256) signatures</li>
-          <li><span class="check">•</span> RFC 7515 JWS implementation</li>
-          <li><span class="check">•</span> REST API documentation</li>
-          <li><span class="check">•</span> Technical specification access</li>
-          <li><span class="check">•</span> Community forum support</li>
-          <li><span class="check">•</span> Browser-based verification tools</li>
+          <li><span class="check">•</span> Language-agnostic HTTP interface</li>
+          <li><span class="check">•</span> OpenAPI 3.1 specification</li>
+          <li><span class="check">•</span> Managed cryptographic signing</li>
+          <li><span class="check">•</span> Production-ready infrastructure</li>
+          <li><span class="check">•</span> JWKS key distribution</li>
+          <li><span class="check">•</span> Example in Python, Go, Java</li>
+          <li><span class="check">•</span> Perfect for legacy systems</li>
         </ul>
 
-        <a href="/" class="plan-button">Start Free Trial</a>
-      </div>
-
-      <div class="pricing-card featured" style="border-top: 4px solid var(--primary);">
-        <h3 class="plan-tier">Audit-Proof Standard</h3>
-        <div class="plan-price">
-          <span class="currency">$</span>99
-          <span class="period">/month</span>
-        </div>
-        <p class="plan-subtitle">Stop failing audits—generate evidence they can't question</p>
-
-        <ul class="plan-features">
-          <li><span class="check">•</span> 25,000 cryptographic receipts/month</li>
-          <li><span class="check">•</span> Structured audit trail generation</li>
-          <li><span class="check">•</span> Authenticated API access</li>
-          <li><span class="check">•</span> Real-time integrity monitoring</li>
-          <li><span class="check">•</span> Technical support queue</li>
-          <li><span class="check">•</span> 99.9% infrastructure availability</li>
-          <li><span class="check">•</span> SOC 2 Type II infrastructure</li>
-        </ul>
-
-        <button class="plan-button primary" onclick="upgradeToTier('pro')">Protect Your Audits</button>
-      </div>
-
-      <div class="pricing-card" style="border-top: 4px solid var(--fedramp-orange);">
-        <h3 class="plan-tier">Zero-Risk Enterprise</h3>
-        <div class="plan-price">
-          <span class="currency">$</span>299
-          <span class="period">/month</span>
-        </div>
-        <p class="plan-subtitle">Custom compliance workflows for high-stakes audits</p>
-
-        <ul class="plan-features">
-          <li><span class="check">•</span> 100,000 cryptographic receipts/month</li>
-          <li><span class="check">•</span> Custom audit report formatting</li>
-          <li><span class="check">•</span> Dedicated integration support</li>
-          <li><span class="check">•</span> Technical architecture consultation</li>
-          <li><span class="check">•</span> Priority technical support</li>
-          <li><span class="check">•</span> 99.99% infrastructure SLA</li>
-          <li><span class="check">•</span> On-premise deployment options</li>
-        </ul>
-
-        <button class="plan-button" onclick="upgradeToTier('enterprise')">Get Custom Solution</button>
+        <a href="/specification" class="plan-button">View API Docs</a>
       </div>
     </div>
 
     <div class="enterprise-section">
-      <h3>Custom Infrastructure Requirements</h3>
-      <p>For specialized deployment requirements, custom regulatory frameworks, or unlimited scale implementations, our technical team provides architecture consultation and bespoke infrastructure design.</p>
-      <button class="plan-button primary" onclick="contactSales()">Request Technical Consultation</button>
+      <h3>📚 Additional Resources</h3>
+      <p>Complete implementation guides, examples, and community resources to help you integrate CertNode into your systems.</p>
+      <a href="https://github.com/srbryant86/certnode" class="plan-button primary">View on GitHub</a>
     </div>
 
     <div class="faq-section">
@@ -522,33 +519,33 @@
 
       <div class="faq-grid">
         <div class="faq-item">
-          <h3 class="faq-question">What compliance frameworks do you support?</h3>
-          <p class="faq-answer">CertNode supports SOC 2, HIPAA, PCI DSS, GDPR, and custom compliance frameworks. Our cryptographic receipts provide tamper-evident audit trails that satisfy most regulatory requirements.</p>
+          <h3 class="faq-question">What cryptographic standards does CertNode use?</h3>
+          <p class="faq-answer">CertNode implements RFC 7515 (JSON Web Signature) with ECDSA P-256 digital signatures, RFC 8785 (JSON Canonicalization Scheme) for consistent hashing, and RFC 7517 (JSON Web Key) for public key distribution.</p>
         </div>
 
         <div class="faq-item">
-          <h3 class="faq-question">How quickly can I implement compliance?</h3>
-          <p class="faq-answer">Most organizations achieve compliance within 2-4 weeks. Our REST API integrates with existing systems, and our team provides implementation support to accelerate your rollout.</p>
+          <h3 class="faq-question">How do I verify a CertNode receipt?</h3>
+          <p class="faq-answer">Use any of our SDKs or the WebCrypto API to verify receipts. The process involves validating the JWS signature against the published JWKS using standard ECDSA P-256 verification.</p>
         </div>
 
         <div class="faq-item">
-          <h3 class="faq-question">What if I exceed my monthly limit?</h3>
-          <p class="faq-answer">We'll alert you at 80% usage and provide options to upgrade. Critical compliance operations continue uninterrupted while we work with you to adjust your plan.</p>
+          <h3 class="faq-question">Can I implement CertNode without external dependencies?</h3>
+          <p class="faq-answer">Yes! CertNode is an open standard. You can implement it using any cryptographic library that supports ECDSA P-256 and JSON canonicalization. Our SDKs are reference implementations.</p>
         </div>
 
         <div class="faq-item">
-          <h3 class="faq-question">Is there a contract commitment?</h3>
-          <p class="faq-answer">No long-term contracts required. Pay monthly and cancel anytime. Enterprise customers can choose annual billing for additional savings and dedicated support.</p>
+          <h3 class="faq-question">Is CertNode compatible with existing systems?</h3>
+          <p class="faq-answer">Absolutely. CertNode is designed for integration - use our REST API, SDKs, or implement the standard directly. Works with any programming language and existing infrastructure.</p>
         </div>
 
         <div class="faq-item">
-          <h3 class="faq-question">How secure is my compliance data?</h3>
-          <p class="faq-answer">All data is encrypted at rest and in transit. We maintain SOC 2 Type II certification and never store your sensitive business data - only cryptographic signatures and metadata.</p>
+          <h3 class="faq-question">What programming languages are supported?</h3>
+          <p class="faq-answer">CertNode SDKs are available for Node.js and browsers. The standard can be implemented in any language with ECDSA P-256 support including Python, Go, Java, C#, and more.</p>
         </div>
 
         <div class="faq-item">
-          <h3 class="faq-question">Do you provide audit support?</h3>
-          <p class="faq-answer">Yes! Professional and Enterprise plans include audit report generation, compliance consulting, and direct auditor support during your compliance reviews.</p>
+          <h3 class="faq-question">How do I get started with implementation?</h3>
+          <p class="faq-answer">Start with our Node.js SDK for quick prototyping, try the browser demo to understand verification, then review the full technical specification for production implementation.</p>
         </div>
       </div>
     </div>
@@ -556,42 +553,8 @@
 
   <footer>
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-      <p style="color: #64748b; margin: 0;">© 2025 CertNode — Cryptographic infrastructure for audit documentation and regulatory workflows.</p>
+      <p style="color: #64748b; margin: 0;">© 2025 CertNode — Open standard for cryptographic digital evidence</p>
     </div>
   </footer>
-
-  <script>
-    async function upgradeToTier(tier) {
-      const email = prompt('Enter your email address to get started:');
-      if (!email) return;
-
-      try {
-        const response = await fetch('/api/create-checkout', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, tier })
-        });
-
-        const data = await response.json();
-
-        if (data.checkout_url) {
-          // Redirect to Stripe checkout
-          window.location.href = data.checkout_url;
-        } else {
-          alert('Error creating checkout session. Please try again or contact support.');
-        }
-      } catch (error) {
-        console.error('Checkout error:', error);
-        alert('Error creating checkout session. Please try again or contact support.');
-      }
-    }
-
-    function contactSales() {
-      // Redirect to home page with enterprise demo form
-      window.location.href = '/#enterprise-demo-form';
-    }
-  </script>
 </body>
 </html>

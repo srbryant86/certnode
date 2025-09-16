@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
   <title>Research Platform Dashboard — CertNode</title>
   <style>
     :root {
@@ -203,7 +203,7 @@
 
     .usage-fill {
       height: 100%;
-      background: linear-gradient(90deg, #16a34a 0%, #2563eb 70%, #ef4444 100%);
+      background: linear-gradient(90deg, #16a34a 0%, var(--primary) 70%, #ef4444 100%);
       border-radius: 6px;
       transition: width 0.3s ease;
       position: relative;
@@ -255,7 +255,7 @@
     }
 
     .button {
-      background: #2563eb;
+      background: var(--primary);
       color: white;
       border: none;
       padding: 0.75rem 1.5rem;

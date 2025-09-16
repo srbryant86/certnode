@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
   <title>Technical Risk Assessment — CertNode</title>
   <style>
     :root {
@@ -187,7 +187,7 @@
 
     select:focus, input[type="number"]:focus {
       outline: none;
-      border-color: #2563eb;
+      border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
 
@@ -271,7 +271,7 @@
     }
 
     .cta-section {
-      background: #2563eb;
+      background: var(--primary);
       color: white;
       border-radius: 1rem;
       padding: 3rem;
@@ -294,7 +294,7 @@
 
     .button {
       background: white;
-      color: #2563eb;
+      color: var(--primary);
       border: none;
       padding: 1rem 2rem;
       border-radius: 0.75rem;
@@ -474,7 +474,7 @@
         </div>
       </div>
 
-      <button onclick="calculateRisk()" class="button" style="width: 100%; background: #2563eb; color: white; font-size: 1.125rem; padding: 1.25rem; border-radius: 0.75rem; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);">
+      <button onclick="calculateRisk()" class="button" style="width: 100%; background: var(--primary); color: white; font-size: 1.125rem; padding: 1.25rem; border-radius: 0.75rem; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s; box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3);">
 Calculate Risk Assessment
       </button>
     </div>

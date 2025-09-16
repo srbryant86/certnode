@@ -33,7 +33,7 @@ const reasonMap = {
 function setStatus(ok, msg) {
   const el = $('#status');
   el.style.display = 'block';
-  el.className = 'status ' + (ok ? 'ok' : 'err');
+  el.className = 'status ' + (ok ? 'status-success' : 'status-error');
   el.textContent = msg;
 }
 function setBusy(isBusy) {
@@ -110,7 +110,11 @@ function setupDrop(zoneId, targetTextarea, fileInputId) {
       if (targetTextarea === 'receipt') localStorage.setItem(LS_RECEIPT, txt.trim());
     } catch (err) { setStatus(false, 'Failed to read file: ' + err.message); }
   });
-  // Keyboard: Enter/Space opens file picker
+  // Click and keyboard: Enter/Space opens file picker
+  dz.addEventListener('click', () => {
+    const inp = document.getElementById(fileInputId);
+    if (inp) inp.click();
+  });
   dz.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       const inp = document.getElementById(fileInputId);
@@ -120,16 +124,11 @@ function setupDrop(zoneId, targetTextarea, fileInputId) {
   });
 }
 
-// Theme toggle
+// Theme toggle (removed - no theme toggle element in this page)
 (function initTheme(){
   const t = localStorage.getItem(LS_THEME) || 'dark';
   document.documentElement.setAttribute('data-theme', t);
-  $('#theme-toggle').addEventListener('click', () => {
-    const cur = document.documentElement.getAttribute('data-theme') || 'dark';
-    const next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem(LS_THEME, next);
-  });
+  // Theme toggle element not present on verify page
 })();
 
 // Wait for DOM to be ready before setting up event listeners (fixed deployment)
@@ -249,7 +248,7 @@ $('#verify').addEventListener('click', async () => {
   const btn = document.createElement('button');
   btn.textContent = 'Download Result';
   btn.id = 'download-result';
-  document.querySelector('section.panel:last-of-type .row').appendChild(btn);
+  document.querySelector('section.technical-panel:last-of-type .row').appendChild(btn);
   btn.addEventListener('click', () => {
     const txt = $('#result').textContent.trim() || '{}';
     const blob = new Blob([txt], { type: 'application/json' });

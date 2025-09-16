@@ -1,0 +1,252 @@
+{
+  "info": {
+    "name": "CertNode API",
+    "description": "Cryptographic compliance infrastructure API for tamper-evident receipts using JWS detached signatures with ECDSA P-256",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.certnode.io",
+      "type": "string"
+    },
+    {
+      "key": "devUrl",
+      "value": "http://localhost:8785",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Check API server health status"
+      },
+      "response": [
+        {
+          "name": "Healthy",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"ok\": true\n}"
+        }
+      ]
+    },
+    {
+      "name": "Sign Data",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"payload\": {\n    \"docId\": \"demo-123\",\n    \"hash\": \"sha256-XUFAKrxLKna5cZ2REBfFkg==\",\n    \"issuer\": \"certnode.sample\",\n    \"issued_at\": \"2025-01-15T10:30:00Z\"\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/v1/sign",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "sign"]
+        },
+        "description": "Create a cryptographic receipt for a JSON payload using detached JWS with ES256 and RFC 8785 canonicalization"
+      },
+      "response": [
+        {
+          "name": "Success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payload\": {\n    \"docId\": \"demo-123\",\n    \"hash\": \"sha256-XUFAKrxLKna5cZ2REBfFkg==\",\n    \"issuer\": \"certnode.sample\",\n    \"issued_at\": \"2025-01-15T10:30:00Z\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/sign",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "sign"]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"receipt\": {\n    \"protected\": \"eyJhbGciOiJFUzI1NiIsImtpZCI6ImRlbW8tMjAyNS0wMS0xNSJ9\",\n    \"payload\": \"eyJkb2NJZCI6ImRlbW8tMTIzIiwiaGFzaCI6InNoYTI1Ni1YVUZBBridge...\",\n    \"signature\": \"MEUCIQDxyz...\",\n    \"kid\": \"demo-2025-01-15\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Verify Receipt",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"receipt\": {\n    \"protected\": \"eyJhbGciOiJFUzI1NiIsImtpZCI6ImRlbW8tMjAyNS0wMS0xNSJ9\",\n    \"payload\": \"eyJkb2NJZCI6ImRlbW8tMTIzIiwiaGFzaCI6InNoYTI1Ni1YVUZBBridge...\",\n    \"signature\": \"MEUCIQDxyz...\",\n    \"kid\": \"demo-2025-01-15\"\n  },\n  \"jwks\": {\n    \"keys\": [\n      {\n        \"kty\": \"EC\",\n        \"crv\": \"P-256\",\n        \"x\": \"...\",\n        \"y\": \"...\",\n        \"kid\": \"demo-2025-01-15\",\n        \"alg\": \"ES256\",\n        \"use\": \"sig\"\n      }\n    ]\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/v1/verify",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "verify"]
+        },
+        "description": "Verify a cryptographic receipt against a JWKS (JSON Web Key Set)"
+      },
+      "response": [
+        {
+          "name": "Valid Signature",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"receipt\": {\n    \"protected\": \"eyJhbGciOiJFUzI1NiIsImtpZCI6ImRlbW8tMjAyNS0wMS0xNSJ9\",\n    \"payload\": \"eyJkb2NJZCI6ImRlbW8tMTIzIiwiaGFzaCI6InNoYTI1Ni1YVUZBBridge...\",\n    \"signature\": \"MEUCIQDxyz...\",\n    \"kid\": \"demo-2025-01-15\"\n  },\n  \"jwks\": {\n    \"keys\": [\n      {\n        \"kty\": \"EC\",\n        \"crv\": \"P-256\",\n        \"x\": \"...\",\n        \"y\": \"...\",\n        \"kid\": \"demo-2025-01-15\",\n        \"alg\": \"ES256\",\n        \"use\": \"sig\"\n      }\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/verify",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "verify"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"valid\": true,\n  \"payload\": {\n    \"docId\": \"demo-123\",\n    \"hash\": \"sha256-XUFAKrxLKna5cZ2REBfFkg==\",\n    \"issuer\": \"certnode.sample\",\n    \"issued_at\": \"2025-01-15T10:30:00Z\"\n  },\n  \"kid\": \"demo-2025-01-15\",\n  \"verified_at\": \"2025-01-15T10:35:00Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get JWKS",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/.well-known/jwks.json",
+          "host": ["{{baseUrl}}"],
+          "path": [".well-known", "jwks.json"]
+        },
+        "description": "Retrieve the JSON Web Key Set containing public keys for signature verification"
+      },
+      "response": [
+        {
+          "name": "Success",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/.well-known/jwks.json",
+              "host": ["{{baseUrl}}"],
+              "path": [".well-known", "jwks.json"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=300"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"keys\": [\n    {\n      \"kty\": \"EC\",\n      \"crv\": \"P-256\",\n      \"x\": \"WKn-ZIGevcwGIyyrzFoZNBdaq9_TsqzGHwHitJBcBmXdHqVhNnp7ZGWs7pxZ_YBB\",\n      \"y\": \"Hc7ZUQGlM-crzCUchDG-wGPL7FBrBLi-PG3DWGWS4KnmQE7gV2nzJZT8O_Kv5ePG\",\n      \"kid\": \"demo-2025-01-15\",\n      \"alg\": \"ES256\",\n      \"use\": \"sig\"\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Verify with Receipt References",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"receipt_ref\": \"https://certnode.vercel.app/samples/receipt.json\",\n  \"jwks_ref\": \"https://certnode.vercel.app/.well-known/jwks.json\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/v1/verify",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "verify"]
+        },
+        "description": "Verify using URLs to receipt and JWKS files (convenient for testing with hosted samples)"
+      }
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set base URL based on environment",
+          "if (pm.environment.get('env') === 'dev') {",
+          "    pm.variables.set('baseUrl', pm.variables.get('devUrl'));",
+          "} else {",
+          "    pm.variables.set('baseUrl', 'https://api.certnode.io');",
+          "}"
+        ]
+      }
+    }
+  ]
+}

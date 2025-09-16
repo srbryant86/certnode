@@ -151,31 +151,88 @@
         <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
             <h1>API Documentation</h1>
             <p>Technical specification for cryptographic receipt generation using JWS detached signatures with ECDSA P-256 and RFC 8785 canonicalization</p>
+            <div style="margin-top: 2rem;">
+                <a href="/openapi.json" download style="display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 500; margin-right: 1rem; border: 1px solid rgba(255,255,255,0.3); transition: all 0.2s;">
+                    📥 Download OpenAPI JSON
+                </a>
+                <a href="https://github.com/srbryant86/certnode" target="_blank" rel="noopener" style="display: inline-block; background: rgba(255,255,255,0.1); color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 500; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s;">
+                    🔗 View Source Code
+                </a>
+            </div>
         </div>
     </div>
-    <div id="swagger-ui"></div>
+
+    <div style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+        <div id="swagger-loading" style="text-align: center; padding: 3rem; color: var(--text-muted); display: block;">
+            <div style="font-size: 2rem; margin-bottom: 1rem;">⚙️</div>
+            <p>Loading interactive API documentation...</p>
+            <p style="font-size: 0.875rem;">If this doesn't load, you can <a href="/openapi.json" style="color: var(--primary);">download the OpenAPI specification</a> directly.</p>
+        </div>
+        <div id="swagger-ui"></div>
+    </div>
     
     <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
     <script>
-        window.ui = SwaggerUIBundle({
-            url: './openapi.json',
-            dom_id: '#swagger-ui',
-            deepLinking: true,
-            presets: [
-                SwaggerUIBundle.presets.apis,
-                SwaggerUIBundle.presets.standalone
-            ],
-            plugins: [
-                SwaggerUIBundle.plugins.DownloadUrl
-            ],
-            layout: "BaseLayout",
-            defaultModelsExpandDepth: 2,
-            defaultModelExpandDepth: 2,
-            docExpansion: "list",
-            filter: true,
-            showRequestHeaders: true,
-            showCommonExtensions: true,
-            tryItOutEnabled: true
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingElement = document.getElementById('swagger-loading');
+
+            try {
+                window.ui = SwaggerUIBundle({
+                    url: './openapi.json',
+                    dom_id: '#swagger-ui',
+                    deepLinking: true,
+                    presets: [
+                        SwaggerUIBundle.presets.apis,
+                        SwaggerUIBundle.presets.standalone
+                    ],
+                    plugins: [
+                        SwaggerUIBundle.plugins.DownloadUrl
+                    ],
+                    layout: "BaseLayout",
+                    defaultModelsExpandDepth: 2,
+                    defaultModelExpandDepth: 2,
+                    docExpansion: "list",
+                    filter: true,
+                    showRequestHeaders: true,
+                    showCommonExtensions: true,
+                    tryItOutEnabled: true,
+                    onComplete: function() {
+                        // Hide loading indicator when Swagger UI is ready
+                        if (loadingElement) {
+                            loadingElement.style.display = 'none';
+                        }
+                        console.log('Swagger UI loaded successfully');
+                    },
+                    onFailure: function(error) {
+                        // Show error message if Swagger UI fails to load
+                        if (loadingElement) {
+                            loadingElement.innerHTML = `
+                                <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                                    <div style="font-size: 2rem; margin-bottom: 1rem;">⚠️</div>
+                                    <p style="color: #dc2626; font-weight: 500;">Failed to load interactive documentation</p>
+                                    <p style="font-size: 0.875rem;">You can still <a href="/openapi.json" style="color: var(--primary);">download the OpenAPI specification</a> or <a href="https://github.com/srbryant86/certnode" style="color: var(--primary);">view the source code</a>.</p>
+                                    <details style="margin-top: 1rem; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto;">
+                                        <summary style="cursor: pointer; color: var(--text-muted);">Technical details</summary>
+                                        <pre style="background: #f8f9fa; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.75rem; margin-top: 0.5rem;">${error}</pre>
+                                    </details>
+                                </div>
+                            `;
+                        }
+                        console.error('Swagger UI failed to load:', error);
+                    }
+                });
+            } catch (error) {
+                console.error('Error initializing Swagger UI:', error);
+                if (loadingElement) {
+                    loadingElement.innerHTML = `
+                        <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">⚠️</div>
+                            <p style="color: #dc2626; font-weight: 500;">Error loading API documentation</p>
+                            <p style="font-size: 0.875rem;">Please <a href="/openapi.json" style="color: var(--primary);">download the OpenAPI specification</a> directly.</p>
+                        </div>
+                    `;
+                }
+            }
         });
     </script>
 </body>

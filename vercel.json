@@ -16,6 +16,18 @@
       "dest": "api/src/index.js"
     },
     {
+      "src": "/validator",
+      "dest": "/web/verify.html"
+    },
+    {
+      "src": "/implementation",
+      "dest": "/web/pricing.html"
+    },
+    {
+      "src": "/specification",
+      "dest": "/web/openapi.html"
+    },
+    {
       "src": "/verify",
       "dest": "/web/verify.html"
     },

@@ -17,7 +17,11 @@
     "example:verify": "node examples/node-verify.js --receipt examples/receipt.example.json --jwks examples/jwks.example.json",
     "docs:update": "node scripts/audit-roadmap.js && node scripts/audit-tasks.js",
     "tsa:canary": "node tools/tsa-canary.js",
-    "gen:samples": "node scripts/generate-demo-samples.mjs"
+    "gen:samples": "node scripts/generate-demo-samples.mjs",
+    "gen:vectors": "node scripts/generate-test-vectors.mjs"
+  },
+  "bin": {
+    "certnode-verify": "tools/cli/certnode-verify.mjs"
   },
   "devDependencies": {
     "jose": "^5.9.2"

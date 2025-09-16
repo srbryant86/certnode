@@ -1,0 +1,5 @@
+Contact: mailto:security@certnode.io
+Policy: https://certnode.vercel.app/security/disclosure
+Preferred-Languages: en
+Canonical: https://certnode.vercel.app/.well-known/security.txt
+# No bug bounty program at this time. Please disclose privately.

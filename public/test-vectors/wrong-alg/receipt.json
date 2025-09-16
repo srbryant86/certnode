@@ -1,0 +1,6 @@
+{
+  "protected": "eyJhbGciOiJIUzI1NiIsImtpZCI6ImhzLWRlbW8ifQ",
+  "payload": "eyJkb2NJZCI6InR2LTEyMyIsImhhc2giOiJzaGEyNTYtQVJndkcvcUpWV1R0TllUNmh5bEx3cUVvblhkNUVPbC9qZVcxTmNxd0JKUT0iLCJpc3N1ZXIiOiJjZXJ0bm9kZS50ZXN0IiwiaXNzdWVkX2F0IjoiMjAyNS0wOS0xNlQwNjowNTo1Ni42NDhaIn0",
+  "signature": "m49Y-vn7uYGHwf-ORNDKaDpz79l8_YQXbOGs59IxW7g",
+  "kid": "hs-demo"
+}

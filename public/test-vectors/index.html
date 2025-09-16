@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Test Vectors — CertNode</title>
+<style>body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:0}main{max-width:960px;margin:0 auto;padding:24px}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid #eee;padding:8px;text-align:left}</style>
+</head><body><main>
+<h1>Test Vectors</h1>
+<p>Deterministic fixtures for verifying detached JWS receipts. Each case includes <code>receipt.json</code>, <code>jwks.json</code>, <code>payload.json</code>, and <code>expected.json</code>.</p>
+<table><thead><tr><th>Case</th><th>Purpose</th><th>Expected</th><th>Links</th></tr></thead><tbody>
+<tr><td><code>valid</code></td><td>Baseline ES256 verification</td><td>ok: true</td><td><a href="/test-vectors/valid/receipt.json">receipt</a> · <a href="/test-vectors/valid/jwks.json">jwks</a> · <a href="/test-vectors/valid/payload.json">payload</a> · <a href="/test-vectors/valid/expected.json">expected</a></td></tr>
+<tr><td><code>wrong-kid</code></td><td>Receipt signed by unknown KID</td><td>ok: false</td><td><a href="/test-vectors/wrong-kid/receipt.json">receipt</a> · <a href="/test-vectors/wrong-kid/jwks.json">jwks</a> · <a href="/test-vectors/wrong-kid/payload.json">payload</a> · <a href="/test-vectors/wrong-kid/expected.json">expected</a></td></tr>
+<tr><td><code>tampered-payload</code></td><td>Payload changed post-sign</td><td>ok: false</td><td><a href="/test-vectors/tampered-payload/receipt.json">receipt</a> · <a href="/test-vectors/tampered-payload/jwks.json">jwks</a> · <a href="/test-vectors/tampered-payload/payload.json">payload</a> · <a href="/test-vectors/tampered-payload/expected.json">expected</a></td></tr>
+<tr><td><code>wrong-alg</code></td><td>HS256 signature rejected</td><td>ok: false</td><td><a href="/test-vectors/wrong-alg/receipt.json">receipt</a> · <a href="/test-vectors/wrong-alg/jwks.json">jwks</a> · <a href="/test-vectors/wrong-alg/payload.json">payload</a> · <a href="/test-vectors/wrong-alg/expected.json">expected</a></td></tr>
+<tr><td><code>malformed-payloadb64</code></td><td>Base64url payload corrupted</td><td>ok: false</td><td><a href="/test-vectors/malformed-payloadb64/receipt.json">receipt</a> · <a href="/test-vectors/malformed-payloadb64/jwks.json">jwks</a> · <a href="/test-vectors/malformed-payloadb64/payload.json">payload</a> · <a href="/test-vectors/malformed-payloadb64/expected.json">expected</a></td></tr>
+</tbody></table>
+</main></body></html>

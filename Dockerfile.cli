@@ -1,0 +1,10 @@
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --omit=dev
+COPY tools/cli tools/cli
+RUN chmod +x tools/cli/certnode-verify.mjs
+ENTRYPOINT ["node","tools/cli/certnode-verify.mjs"]
+# Example:
+# docker run --rm -v $PWD/public/test-vectors:/tv ghcr.io/yourorg/certnode-verify \
+#   --receipt /tv/valid/receipt.json --jwks /tv/valid/jwks.json --payload /tv/valid/payload.json

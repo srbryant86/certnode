@@ -1,0 +1,4 @@
+{
+  "ok": false,
+  "reason": "alg not allowed (ES256 only)"
+}

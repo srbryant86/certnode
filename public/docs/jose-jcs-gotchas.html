@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>JOSE & JCS Gotchas — CertNode</title>
+<style>
+body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;line-height:1.45}
+main{max-width:900px;margin:0 auto;padding:24px} h1,h2{line-height:1.2}
+code{background:#f6f6f6;padding:2px 4px;border-radius:4px}
+</style></head><body><main>
+<h1>JOSE & JCS: Common Gotchas</h1>
+<h2>JSON Canonicalization (RFC 8785)</h2>
+<ul>
+  <li><strong>Key order matters:</strong> Use RFC 8785 to canonicalize before signing; library "pretty print" or regular <code>JSON.stringify</code> won't guarantee order.</li>
+  <li><strong>Numbers:</strong> Avoid NaN/Infinity; use strings for high-precision decimals.</li>
+  <li><strong>Unicode:</strong> Normalize to NFC; ensure your library doesn't re-encode differently across platforms.</li>
+</ul>
+<h2>JOSE Constraints</h2>
+<ul>
+  <li><strong>alg:</strong> Only <code>ES256</code> supported. Reject others (e.g., HS256) to prevent downgrade.</li>
+  <li><strong>kid:</strong> Required; must map to a public key in your JWKS.</li>
+  <li><strong>b64=false:</strong> Not supported unless explicitly documented; keep payload base64url-encoded.</li>
+  <li><strong>crit:</strong> Reject unknown critical headers.</li>
+</ul>
+<h2>Verification Tips</h2>
+<ul>
+  <li>Reconstruct compact JWS as <code>protected.payload.signature</code> if using a detached object.</li>
+  <li>Validate <code>alg</code> ∈ {ES256} and <code>kid</code> ∈ JWKS before signature verification.</li>
+  <li>Compare decoded payload to your expected canonical JSON (deep equality), not a string compare.</li>
+</ul>
+<h2>Libraries</h2>
+<p>Use mature JOSE/JCS libs in your language; test against our <a href="/test-vectors">Test Vectors</a>.</p>
+</main></body></html>

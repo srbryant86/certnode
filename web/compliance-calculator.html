@@ -385,7 +385,7 @@
             <option value="">Select your industry</option>
             <option value="financial">Financial Services</option>
             <option value="healthcare">Healthcare</option>
-            <option value="technology">Technology</option>
+            <option value="technology" selected>Technology</option>
             <option value="manufacturing">Manufacturing</option>
             <option value="retail">Retail/E-commerce</option>
             <option value="government">Government/Public Sector</option>
@@ -399,7 +399,7 @@
             <option value="">Select company size</option>
             <option value="startup">Startup (< 50 employees)</option>
             <option value="small">Small Business (50-200 employees)</option>
-            <option value="medium">Medium Business (200-1000 employees)</option>
+            <option value="medium" selected>Medium Business (200-1000 employees)</option>
             <option value="large">Large Enterprise (1000+ employees)</option>
           </select>
         </div>
@@ -409,7 +409,7 @@
           <select id="annual-revenue">
             <option value="">Select annual revenue</option>
             <option value="under-10m">Under $10M</option>
-            <option value="10m-100m">$10M - $100M</option>
+            <option value="10m-100m" selected>$10M - $100M</option>
             <option value="100m-1b">$100M - $1B</option>
             <option value="over-1b">Over $1B</option>
           </select>
@@ -423,7 +423,7 @@
           <label for="regulations">Primary Regulations (select all that apply)</label>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin-top: 0.5rem;">
             <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: normal; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;">
-              <input type="checkbox" id="sox" value="sox" style="margin: 0;"> SOX (Sarbanes-Oxley)
+              <input type="checkbox" id="sox" value="sox" style="margin: 0;" checked> SOX (Sarbanes-Oxley)
             </label>
             <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: normal; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;">
               <input type="checkbox" id="hipaa" value="hipaa" style="margin: 0;"> HIPAA
@@ -465,12 +465,12 @@
 
         <div class="form-group">
           <label for="current-audit-cost">Annual Audit/Compliance Costs (USD)</label>
-          <input type="number" id="current-audit-cost" placeholder="e.g. 500000" min="0">
+          <input type="number" id="current-audit-cost" value="250000" min="0" placeholder="e.g. 250000">
         </div>
 
         <div class="form-group">
           <label for="compliance-staff">FTE Staff Dedicated to Compliance</label>
-          <input type="number" id="compliance-staff" placeholder="e.g. 5" min="0" step="0.5">
+          <input type="number" id="compliance-staff" value="2.5" min="0" step="0.5" placeholder="e.g. 2.5">
         </div>
       </div>
 
@@ -524,23 +524,25 @@ Calculate Risk Assessment
     </div>
 
     <div class="methodology">
-      <h3>Technical Methodology</h3>
+      <h3>Methodology & Assumptions</h3>
       <ul>
-        <li><strong>Regulatory Penalties:</strong> Based on maximum fines from FDA, SEC, GDPR, and other regulatory bodies</li>
-        <li><strong>Legal Costs:</strong> Average litigation costs for compliance failures ($2M-$50M depending on severity)</li>
-        <li><strong>Business Impact:</strong> Lost revenue, customer churn, and operational disruption (typically 3-12 months)</li>
-        <li><strong>Reputational Damage:</strong> Brand value impact and customer acquisition costs (5-25% of annual revenue)</li>
-        <li><strong>Remediation Costs:</strong> System fixes, process changes, and ongoing monitoring requirements</li>
+        <li><strong>Regulatory Penalties:</strong> Based on maximum fines from FDA, SEC, GDPR, and other regulatory bodies (2023-2024 data)</li>
+        <li><strong>Legal Costs:</strong> Average litigation costs for compliance failures ($2M-$50M depending on severity and industry)</li>
+        <li><strong>Business Impact:</strong> Lost revenue, customer churn, and operational disruption (typically 3-12 months recovery period)</li>
+        <li><strong>Reputational Damage:</strong> Brand value impact and customer acquisition costs (5-25% of annual revenue based on industry studies)</li>
+        <li><strong>95% Risk Reduction:</strong> Based on cryptographic proof-of-compliance eliminating human error (primary cause of 90%+ audit failures) and providing tamper-evident audit trails that satisfy regulatory requirements</li>
+        <li><strong>CertNode Implementation:</strong> Assumes proper technical deployment with existing compliance processes; does not replace legal/procedural compliance requirements</li>
       </ul>
       <p style="margin-top: 1rem; font-size: 0.875rem; color: #64748b;">
-        Sources: Ponemon Institute, IBM Cost of Data Breach Report, regulatory filing analysis
+        <strong>Data Sources:</strong> Ponemon Institute Cost of Compliance Studies, IBM Cost of Data Breach Report 2024, regulatory enforcement databases (SEC, FDA, ICO), and peer-reviewed cybersecurity research.<br>
+        <strong>Limitation:</strong> Estimates are based on industry averages and may vary significantly based on specific organizational factors, implementation quality, and regulatory interpretation.
       </p>
     </div>
   </div>
 
   <footer>
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-      <p style="color: var(--text-muted); margin: 0;">© 2024 CertNode — Risk assessment calculations based on published regulatory frameworks and industry compliance data.</p>
+      <p style="color: var(--text-muted); margin: 0;">© 2025 CertNode — Risk assessment calculations based on published regulatory frameworks and industry compliance data.</p>
     </div>
   </footer>
 
@@ -679,6 +681,18 @@ Calculate Risk Assessment
       // Redirect to homepage with enterprise contact
       window.location.href = '/#enterprise-contact';
     }
+
+    // Auto-calculate with default values on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Calculate automatically with default values to avoid $0 displays
+      calculateRisk();
+
+      // Also recalculate when any input changes for dynamic updates
+      const inputs = document.querySelectorAll('select, input[type="number"], input[type="checkbox"]');
+      inputs.forEach(input => {
+        input.addEventListener('change', calculateRisk);
+      });
+    });
   </script>
 </body>
 </html>

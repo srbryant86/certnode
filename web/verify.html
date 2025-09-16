@@ -363,38 +363,27 @@
     </div>
 
     <section class="technical-panel">
-      <h2 style="color: var(--primary);">Step 1: Upload Your Document Receipt</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><strong>Skip this step—just click one of the sample buttons above!</strong> Or if you have a CertNode receipt, drag it here to verify your own documents.</p>
-      <div class="row grid-2">
-        <div class="dropzone" id="receipt-drop" role="button" tabindex="0" aria-label="Drop receipt.json here or press Enter to choose a file" style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
-          Drop receipt.json here or click to browse
-        </div>
-        <div class="toolbar justify-end">
+      <h2 style="color: var(--primary);">Step 1: Document Receipt</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><strong>✅ Auto-filled when you click a sample button above!</strong> <br/>Or drag your own CertNode receipt here if you have one.</p>
+      <div style="text-align: center;">
+        <div class="dropzone" id="receipt-drop" role="button" tabindex="0" aria-label="Drop receipt.json here or press Enter to choose a file" style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s; max-width: 500px; margin: 0 auto;">
           <input type="file" id="receipt-file" accept="application/json" aria-label="Choose receipt JSON file" style="display: none;" />
-          <button id="receipt-sample" class="btn-secondary">Load Sample</button>
-          <button id="receipt-format" class="btn-secondary">Format</button>
-          <button id="receipt-minify" class="btn-secondary">Minify</button>
+          📁 Drop your CertNode receipt here<br/>
+          <small style="color: var(--text-light);">or click to browse files</small>
         </div>
       </div>
       <textarea id="receipt" placeholder='{"protected":"...","payload":{...},"signature":"...","kid":"..."}' style="width: 100%; min-height: 120px; margin-top: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.875rem;"></textarea>
     </section>
 
     <section class="technical-panel">
-      <h2 style="color: var(--primary);">Step 2: Upload Your Organization's Keys</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><strong>Also auto-filled by the sample buttons!</strong> These public keys prove the document came from your organization—like a digital company seal that auditors can verify.</p>
-      <div class="row grid-2">
-        <div class="dropzone" id="jwks-drop" role="button" tabindex="0" aria-label="Drop jwks.json here or press Enter to choose a file" style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
-          Drop jwks.json here or click to browse
-        </div>
-        <div class="toolbar justify-end">
+      <h2 style="color: var(--primary);">Step 2: Organization Keys</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><strong>✅ Also auto-filled by sample buttons!</strong> <br/>These public keys prove authenticity—like a digital company seal.</p>
+      <div style="text-align: center;">
+        <div class="dropzone" id="jwks-drop" role="button" tabindex="0" aria-label="Drop jwks.json here or press Enter to choose a file" style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s; max-width: 500px; margin: 0 auto;">
           <input type="file" id="jwks-file" accept="application/json" aria-label="Choose JWKS JSON file" style="display: none;" />
-          <button id="jwks-format" class="btn-secondary">Format</button>
-          <button id="jwks-minify" class="btn-secondary">Minify</button>
+          🔑 Drop your organization keys here<br/>
+          <small style="color: var(--text-light);">or click to browse files</small>
         </div>
-      </div>
-      <div class="row mt-8" style="margin-top: 1rem;">
-        <input type="url" id="jwks-url" placeholder="Or fetch from URL: https://.../.well-known/jwks.json" aria-label="JWKS URL" style="flex: 1; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; margin-right: 0.5rem;" />
-        <button id="fetch-jwks" class="btn-primary">Fetch JWKS</button>
       </div>
       <textarea id="jwks" placeholder='{"keys":[{"kty":"EC","crv":"P-256","x":"...","y":"...","kid":"..."}]}' style="width: 100%; min-height: 120px; margin-top: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.875rem;"></textarea>
       <div style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.5rem;">JWKS cached locally for performance and security</div>

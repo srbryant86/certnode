@@ -622,14 +622,14 @@
 
         <div class="flex justify-center mb-48">
           <a href="#" onclick="showEnterpriseForm()" class="btn btn-primary btn-lg">Request Access</a>
-          <a href="/compliance-calculator" class="btn btn-secondary btn-lg">Technical Specifications</a>
+          <a href="/openapi" class="btn btn-secondary btn-lg">Technical Specifications</a>
         </div>
 
         <div class="flex justify-center">
-          <div class="compliance-badge">SOC 2 Type II</div>
           <div class="compliance-badge">ES256 Signatures</div>
-          <div class="compliance-badge">GDPR Compliant</div>
-          <div class="compliance-badge">ISO 27001</div>
+          <div class="compliance-badge">RFC 7515 JWS</div>
+          <div class="compliance-badge">RFC 8785 JCS</div>
+          <a href="/trust" class="compliance-badge" style="text-decoration: none;">Trust Center</a>
         </div>
       </div>
     </div>
@@ -652,27 +652,27 @@
   <section class="research-metrics">
     <div class="container">
       <div class="text-center mb-48">
-        <h2 class="text-4xl mb-16">Research Findings</h2>
-        <p class="text-xl text-muted">Peer-reviewed analysis of cryptographic compliance systems in enterprise environments</p>
+        <h2 class="text-4xl mb-16">Technical Implementation</h2>
+        <p class="text-xl text-muted">Standards-based cryptographic implementation following established RFC specifications</p>
       </div>
       <div class="grid grid-3 text-center">
         <div class="metric-card">
-          <div class="metric-number">99.7%</div>
-          <h3 class="text-2xl mb-16">Cryptographic Integrity</h3>
-          <p class="text-muted">Tamper-evidence verification rate in controlled research deployments</p>
-          <cite class="metric-source">Journal of Applied Cryptography, 2024</cite>
+          <div class="metric-number">P-256</div>
+          <h3 class="text-2xl mb-16">ECDSA Implementation</h3>
+          <p class="text-muted">NIST P-256 elliptic curve with SHA-256 hashing for digital signatures</p>
+          <cite class="metric-source">FIPS 186-4 Standard</cite>
         </div>
         <div class="metric-card">
-          <div class="metric-number">ES256</div>
-          <h3 class="text-2xl mb-16">Digital Signature Standard</h3>
-          <p class="text-muted">ECDSA P-256 with SHA-256 cryptographic implementation following RFC 7515</p>
-          <cite class="metric-source">IETF Standards Compliance</cite>
+          <div class="metric-number">RFC 7515</div>
+          <h3 class="text-2xl mb-16">JSON Web Signature</h3>
+          <p class="text-muted">Standards-compliant JWS implementation for detached signatures</p>
+          <cite class="metric-source">IETF RFC 7515</cite>
         </div>
         <div class="metric-card">
-          <div class="metric-number">SOC 2</div>
-          <h3 class="text-2xl mb-16">Security Framework</h3>
-          <p class="text-muted">Type II attestation for security, availability, and confidentiality controls</p>
-          <cite class="metric-source">AICPA Certification Body</cite>
+          <div class="metric-number">RFC 8785</div>
+          <h3 class="text-2xl mb-16">JSON Canonicalization</h3>
+          <p class="text-muted">JCS normalization for deterministic payload representation</p>
+          <cite class="metric-source">IETF RFC 8785</cite>
         </div>
       </div>
     </div>
@@ -747,7 +747,7 @@
 
       <div class="flex justify-center">
         <a href="#" onclick="showEnterpriseForm()" class="btn btn-white btn-lg">Request Implementation Guide</a>
-        <a href="/compliance-calculator" class="btn btn-secondary btn-lg" style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3);">Technical Assessment</a>
+        <a href="/compliance-calculator" class="btn btn-secondary btn-lg" style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3);">Risk Assessment</a>
       </div>
     </div>
   </section>

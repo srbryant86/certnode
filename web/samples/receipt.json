@@ -1,0 +1,12 @@
+{
+  "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImRlbW8tMjAyNC1rZXkifQ",
+  "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "payload": {
+    "hello": "world",
+    "timestamp": "2024-01-01T00:00:00Z",
+    "document": "sample-document"
+  },
+  "kid": "demo-2024-key",
+  "payload_jcs_sha256": "3q2-7wEB4-bUvr3TF1JNdH1XQF8t0sT5qR6uY7vZ8aB",
+  "receipt_id": "Z1X2c3V4b5N6m7L8k9J0i1H2g3F4e5D6c7B8a9Z0y1X"
+}

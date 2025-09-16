@@ -170,16 +170,35 @@ $('#fetch-jwks').addEventListener('click', async () => {
 });
 
 // Load sample
-$('#receipt-sample').addEventListener('click', () => {
-  const sample = {
-    protected: 'eyJhbGciOiJFUzI1NiIsImtpZCI6ImRlbW8ta2lkIn0',
-    payload: { hello: 'world', n: 42 },
-    signature: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-    kid: 'demo-kid'
-  };
-  const txt = JSON.stringify(sample, null, 2);
-  $('#receipt').value = txt;
-  localStorage.setItem(LS_RECEIPT, txt);
+$('#receipt-sample').addEventListener('click', async () => {
+  try {
+    // Load both sample receipt and JWKS
+    const [receiptRes, jwksRes] = await Promise.all([
+      fetch('/samples/receipt.json'),
+      fetch('/samples/jwks.json')
+    ]);
+
+    if (!receiptRes.ok || !jwksRes.ok) {
+      setStatus(false, 'Failed to load sample files');
+      return;
+    }
+
+    const receipt = await receiptRes.json();
+    const jwks = await jwksRes.json();
+
+    const receiptTxt = JSON.stringify(receipt, null, 2);
+    const jwksTxt = JSON.stringify(jwks, null, 2);
+
+    $('#receipt').value = receiptTxt;
+    $('#jwks').value = jwksTxt;
+
+    localStorage.setItem(LS_RECEIPT, receiptTxt);
+    localStorage.setItem(LS_JWKS, jwksTxt);
+
+    setStatus(true, 'Sample data loaded successfully');
+  } catch (e) {
+    setStatus(false, 'Failed to load sample: ' + e.message);
+  }
 });
 
 // Format/minify and copy

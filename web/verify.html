@@ -601,7 +601,112 @@
     });
   </script>
   <script src="js/verify-helper.js"></script>
-  <script src="js/verify-page.js"></script>
+  <script>
+    // Only load verify-page.js functionality that we need
+    // Skip the parts that expect missing DOM elements
+
+    const $ = (s) => document.querySelector(s);
+
+    // Just load the core verification functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Custom verify handler loaded');
+
+      // Core verify functionality from verify-page.js
+      $('#verify').addEventListener('click', async () => {
+        const btn = $('#verify');
+        btn.disabled = true;
+        btn.textContent = 'Verifying...';
+        $('#result').textContent = '';
+        $('#hdr').textContent = '';
+
+        const receiptTxt = $('#receipt').value.trim();
+        const jwksTxt = $('#jwks').value.trim();
+
+        if (!receiptTxt || !jwksTxt) {
+          setStatus(false, 'Provide both receipt and JWKS');
+          btn.disabled = false;
+          btn.textContent = '🔍 Verify Document Now';
+          return;
+        }
+
+        const receipt = parseJsonSafe(receiptTxt);
+        const jwks = parseJsonSafe(jwksTxt);
+        if (!receipt || !jwks) {
+          setStatus(false, 'Invalid JSON in receipt or JWKS');
+          btn.disabled = false;
+          btn.textContent = '🔍 Verify Document Now';
+          return;
+        }
+
+        const header = decodeHeaderB64u(receipt.protected || '');
+        if (header) $('#hdr').textContent = JSON.stringify(header, null, 2);
+
+        try {
+          console.log('Starting verification...');
+          console.log('window.CertNode available:', !!window.CertNode);
+
+          if (!window.CertNode || !window.CertNode.verifyReceipt) {
+            throw new Error('CertNode verification module not loaded');
+          }
+
+          console.log('Calling verifyReceipt...');
+          const res = await window.CertNode.verifyReceipt(receipt, jwks);
+          console.log('Verification result:', res);
+
+          if (res && res.ok) {
+            setStatus(true, 'Receipt valid');
+            $('#result').textContent = JSON.stringify({ ok: true }, null, 2);
+          } else {
+            const reason = (res && res.reason) || 'signature_invalid';
+            const friendly = reasonMap[reason] || reason;
+            setStatus(false, 'Invalid: ' + friendly);
+            $('#result').textContent = JSON.stringify({ ok: false, reason, message: friendly }, null, 2);
+          }
+        } catch (e) {
+          const reason = e && e.message ? e.message : 'error';
+          const friendly = reasonMap[reason] || String(reason);
+          setStatus(false, 'Verification error: ' + friendly);
+          $('#result').textContent = JSON.stringify({ ok: false, error: String(reason), message: friendly }, null, 2);
+        }
+
+        btn.disabled = false;
+        btn.textContent = '🔍 Verify Document Now';
+      });
+
+      // Helper functions
+      function parseJsonSafe(s) {
+        try { return JSON.parse(s); } catch { return null; }
+      }
+
+      function decodeHeaderB64u(protectedB64u) {
+        try {
+          const padded = protectedB64u + '='.repeat((4 - protectedB64u.length % 4) % 4);
+          const base64 = padded.replace(/-/g, '+').replace(/_/g, '/');
+          return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(base64), c => c.charCodeAt(0))));
+        } catch { return null; }
+      }
+
+      function setStatus(ok, msg) {
+        const el = $('#status');
+        el.style.display = 'block';
+        el.className = 'status ' + (ok ? 'status-success' : 'status-error');
+        el.textContent = msg;
+      }
+
+      const reasonMap = {
+        missing_fields: 'Receipt missing required fields (protected, payload, signature, kid).',
+        bad_protected: 'Protected header is not valid base64url-encoded JSON.',
+        unsupported_alg: 'Unsupported algorithm in header. Only ES256 (P-256) is supported.',
+        kid_mismatch: 'Key ID mismatch between protected header and receipt.',
+        kid_not_found: 'Key not found in the provided JWKS (check kid/thumbprint).',
+        payload_hash_mismatch: 'Payload hash mismatch (JCS) - receipt payload was modified or JCS mismatch.',
+        signature_invalid: 'Signature verification failed - receipt may be invalid or JWKS incorrect.',
+        receipt_id_mismatch: 'Receipt ID does not match computed value.',
+        bad_receipt: 'Receipt must be a JSON object.',
+        invalid_json: 'Invalid JSON provided.'
+      };
+    });
+  </script>
 </body>
 </html>
 

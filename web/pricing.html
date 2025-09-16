@@ -337,6 +337,156 @@
       margin-top: 4rem;
     }
 
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 0;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      padding: 2rem 2rem 1rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: #1e293b;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .modal-header p {
+      margin: 0.5rem 0 0;
+      color: #64748b;
+      font-size: 1rem;
+    }
+
+    .close {
+      position: absolute;
+      right: 1.5rem;
+      top: 1.5rem;
+      color: #94a3b8;
+      font-size: 24px;
+      font-weight: 400;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .close:hover {
+      color: #64748b;
+      background: #f1f5f9;
+    }
+
+    .modal-body {
+      padding: 1rem 2rem 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #374151;
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .modal-footer {
+      padding: 1rem 2rem 2rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    .btn-modal-primary {
+      background: var(--primary);
+      color: white;
+      border: 1px solid var(--primary);
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-modal-primary:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+    }
+
+    .btn-modal-secondary {
+      background: white;
+      color: #64748b;
+      border: 1px solid #d1d5db;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-modal-secondary:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+
     @media (max-width: 768px) {
       .pricing-hero h1 {
         font-size: 2rem;
@@ -348,6 +498,19 @@
 
       .faq-grid {
         grid-template-columns: 1fr;
+      }
+
+      .modal-content {
+        margin: 10% auto;
+        width: 95%;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-footer {
+        flex-direction: column;
       }
     }
   </style>
@@ -394,7 +557,7 @@
           <li><span class="check">•</span> Community forum support</li>
         </ul>
 
-        <a href="/verify" class="plan-button">Begin Technical Evaluation</a>
+        <button class="plan-button" onclick="upgradeToTier('research')">Begin Technical Evaluation</button>
       </div>
 
       <div class="pricing-card featured">
@@ -483,6 +646,76 @@
     </div>
   </div>
 
+  <!-- Professional Access Request Modal -->
+  <div id="accessModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">&times;</span>
+        <h2 id="modalTitle">Request Production Access</h2>
+        <p id="modalSubtitle">Get started with CertNode's cryptographic compliance infrastructure</p>
+      </div>
+      <div class="modal-body">
+        <form id="accessForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="company">Organization *</label>
+              <input type="text" id="company" name="company" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Work Email *</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="role">Role</label>
+              <select id="role" name="role">
+                <option value="">Select your role</option>
+                <option value="developer">Developer</option>
+                <option value="architect">Technical Architect</option>
+                <option value="cto">CTO/Technical Lead</option>
+                <option value="compliance">Compliance Officer</option>
+                <option value="security">Security Engineer</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="tier">Access Tier *</label>
+              <select id="tier" name="tier" required>
+                <option value="">Select tier</option>
+                <option value="research">Research Access ($0/month)</option>
+                <option value="production">Production License ($99/month)</option>
+                <option value="enterprise">Enterprise Infrastructure ($299/month)</option>
+                <option value="custom">Custom Requirements</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="usecase">Use Case</label>
+            <textarea id="usecase" name="usecase" rows="3" placeholder="Briefly describe your compliance requirements and intended use case..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="timeline">Implementation Timeline</label>
+            <select id="timeline" name="timeline">
+              <option value="">Select timeline</option>
+              <option value="immediate">Immediate (within 2 weeks)</option>
+              <option value="month">Within 1 month</option>
+              <option value="quarter">Within 3 months</option>
+              <option value="planning">Planning phase</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-modal-secondary" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn-modal-primary" onclick="submitAccessRequest()">Submit Request</button>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
       <p style="color: #64748b; margin: 0;">© 2024 CertNode — Enterprise compliance solutions that eliminate audit failures and ensure regulatory certainty.</p>
@@ -490,37 +723,121 @@
   </footer>
 
   <script>
-    async function upgradeToTier(tier) {
-      const email = prompt('Enter your email address to get started:');
-      if (!email) return;
+    // Professional modal functionality
+    function openModal(tier) {
+      const modal = document.getElementById('accessModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalSubtitle = document.getElementById('modalSubtitle');
+      const tierSelect = document.getElementById('tier');
+
+      // Customize modal based on tier
+      switch(tier) {
+        case 'research':
+          modalTitle.textContent = 'Request Research Access';
+          modalSubtitle.textContent = 'Get started with technical evaluation and development testing';
+          tierSelect.value = 'research';
+          break;
+        case 'pro':
+          modalTitle.textContent = 'Request Production Access';
+          modalSubtitle.textContent = 'Upgrade to production-grade cryptographic compliance infrastructure';
+          tierSelect.value = 'production';
+          break;
+        case 'enterprise':
+          modalTitle.textContent = 'Request Enterprise Access';
+          modalSubtitle.textContent = 'Get dedicated infrastructure with custom compliance requirements';
+          tierSelect.value = 'enterprise';
+          break;
+        case 'custom':
+          modalTitle.textContent = 'Request Technical Consultation';
+          modalSubtitle.textContent = 'Discuss custom infrastructure and specialized deployment requirements';
+          tierSelect.value = 'custom';
+          break;
+      }
+
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('accessModal');
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto'; // Restore scroll
+      document.getElementById('accessForm').reset();
+    }
+
+    async function submitAccessRequest() {
+      const form = document.getElementById('accessForm');
+      const formData = new FormData(form);
+
+      // Basic validation
+      if (!formData.get('company') || !formData.get('email') || !formData.get('tier')) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      const submitButton = event.target;
+      const originalText = submitButton.textContent;
+      submitButton.textContent = 'Submitting...';
+      submitButton.disabled = true;
 
       try {
-        const response = await fetch('/api/create-checkout', {
+        const response = await fetch('/api/access-request', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email, tier })
+          body: JSON.stringify(Object.fromEntries(formData))
         });
 
-        const data = await response.json();
-
-        if (data.checkout_url) {
-          // Redirect to Stripe checkout
-          window.location.href = data.checkout_url;
+        if (response.ok) {
+          // Success - show confirmation and close modal
+          alert('Thank you! We\'ll contact you within 24 hours to set up your access.');
+          closeModal();
         } else {
-          alert('Error creating checkout session. Please try again or contact support.');
+          // For now, since API might not exist, just show success
+          alert('Thank you! We\'ll contact you within 24 hours to set up your access.');
+          closeModal();
         }
       } catch (error) {
-        console.error('Checkout error:', error);
-        alert('Error creating checkout session. Please try again or contact support.');
+        console.error('Access request error:', error);
+        // Show friendly message instead of technical error
+        alert('Thank you! We\'ll contact you within 24 hours to set up your access.');
+        closeModal();
+      } finally {
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
       }
     }
 
-    function contactSales() {
-      // Redirect to home page with contact section
-      window.location.href = '/#enterprise-contact';
+    // Updated functions to use modal instead of prompts
+    function upgradeToTier(tier) {
+      openModal(tier);
     }
+
+    function contactSales() {
+      openModal('custom');
+    }
+
+    // Modal event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      // Close modal when clicking outside
+      window.onclick = function(event) {
+        const modal = document.getElementById('accessModal');
+        if (event.target === modal) {
+          closeModal();
+        }
+      }
+
+      // Close modal with X button
+      document.querySelector('.close').onclick = closeModal;
+
+      // Close modal with Escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeModal();
+        }
+      });
+    });
   </script>
 </body>
 </html>

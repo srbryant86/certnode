@@ -190,6 +190,12 @@ $('#jwks-minify').addEventListener('click', () => minifyTextarea('jwks'));
 $('#copy-hdr').addEventListener('click', () => copyText($('#hdr').textContent));
 $('#copy-result').addEventListener('click', () => copyText($('#result').textContent));
 
+// Clear button functionality
+$('#clear').addEventListener('click', () => {
+  clearAll();
+  setStatus(false, 'All fields cleared');
+});
+
 // Restore from localStorage
 (function restore() {
   const jwks = localStorage.getItem(LS_JWKS);
@@ -217,13 +223,22 @@ $('#verify').addEventListener('click', async () => {
 
   try {
     setBusy(true);
+    console.log('Starting verification...');
+    console.log('window.CertNode available:', !!window.CertNode);
+    console.log('window.CertNode.verifyReceipt available:', !!(window.CertNode && window.CertNode.verifyReceipt));
+
     // Quick check first
     if (window.CertNode && window.CertNode.quickCheck) {
       const qc = await window.CertNode.quickCheck(receipt);
       if (!qc.ok) { setStatus(false, `Quick check failed: ${qc.reason}`); btn.disabled = false; btn.textContent = 'Verify'; return; }
     }
     // Full WebCrypto verify
+    if (!window.CertNode || !window.CertNode.verifyReceipt) {
+      throw new Error('CertNode verification module not loaded');
+    }
+    console.log('Calling verifyReceipt...');
     const res = await window.CertNode.verifyReceipt(receipt, jwks);
+    console.log('Verification result:', res);
     if (res && res.ok) {
       setStatus(true, 'Receipt valid');
       $('#result').textContent = JSON.stringify({ ok: true }, null, 2);

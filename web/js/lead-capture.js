@@ -1,18 +1,7 @@
 // Lead capture and monetization tracking
-document.addEventListener('DOMContentLoaded', () => {
-  const enterpriseBtn = document.getElementById('enterprise-demo');
-  const contactBtn = document.getElementById('contact-sales');
-  const contactForm = document.getElementById('contact-form');
-  const enterpriseForm = document.getElementById('enterprise-demo-form');
-  const leadForm = document.getElementById('lead-form');
-  const demoForm = document.getElementById('demo-form');
-  const cancelBtn = document.getElementById('cancel-form');
-  const cancelDemoBtn = document.getElementById('cancel-demo-form');
-  const statusDiv = document.getElementById('form-status');
-  const demoStatusDiv = document.getElementById('demo-form-status');
 
-  // Track button clicks for monetization intel
-  function trackEvent(action, data = {}) {
+// Track button clicks for monetization intel
+function trackEvent(action, data = {}) {
     const event = {
       action: action,
       timestamp: new Date().toISOString(),
@@ -31,24 +20,41 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Lead Event:', event);
   }
 
-  // Show contact form
-  function showContactForm(source) {
-    contactForm.style.display = 'block';
-    enterpriseForm.style.display = 'none';
-    contactForm.scrollIntoView({ behavior: 'smooth' });
-    trackEvent('contact_form_opened', { source: source });
+// Show contact form
+function showContactForm(source) {
+  const contactForm = document.getElementById('contact-form');
+  const enterpriseForm = document.getElementById('enterprise-demo-form');
+  contactForm.style.display = 'block';
+  enterpriseForm.style.display = 'none';
+  contactForm.scrollIntoView({ behavior: 'smooth' });
+  trackEvent('contact_form_opened', { source: source });
+}
+
+// Show enterprise demo form
+function showEnterpriseForm() {
+  const enterpriseForm = document.getElementById('enterprise-demo-form');
+  const contactForm = document.getElementById('contact-form');
+  enterpriseForm.style.display = 'block';
+  contactForm.style.display = 'none';
+  enterpriseForm.scrollIntoView({ behavior: 'smooth' });
+  trackEvent('enterprise_demo_opened', {
+    source: 'homepage',
+    lead_quality: 'high_value'
+  });
   }
 
-  // Show enterprise demo form
-  function showEnterpriseForm() {
-    enterpriseForm.style.display = 'block';
-    contactForm.style.display = 'none';
-    enterpriseForm.scrollIntoView({ behavior: 'smooth' });
-    trackEvent('enterprise_demo_opened', {
-      source: 'homepage',
-      lead_quality: 'high_value'
-    });
-  }
+// DOM-dependent functions and event listeners
+document.addEventListener('DOMContentLoaded', () => {
+  const enterpriseBtn = document.getElementById('enterprise-demo');
+  const contactBtn = document.getElementById('contact-sales');
+  const contactForm = document.getElementById('contact-form');
+  const enterpriseForm = document.getElementById('enterprise-demo-form');
+  const leadForm = document.getElementById('lead-form');
+  const demoForm = document.getElementById('demo-form');
+  const cancelBtn = document.getElementById('cancel-form');
+  const cancelDemoBtn = document.getElementById('cancel-demo-form');
+  const statusDiv = document.getElementById('form-status');
+  const demoStatusDiv = document.getElementById('demo-form-status');
 
   // Hide contact form
   function hideContactForm() {

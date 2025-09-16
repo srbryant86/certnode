@@ -39,11 +39,17 @@ document.addEventListener('DOMContentLoaded', () => {
     trackEvent('contact_form_opened', { source: source });
   }
 
-  // Show enterprise demo form
+  // Show enterprise demo form using new modal
   function showEnterpriseForm() {
-    enterpriseForm.style.display = 'block';
-    contactForm.style.display = 'none';
-    enterpriseForm.scrollIntoView({ behavior: 'smooth' });
+    // Use the new modal system instead of the old form
+    if (typeof openAccessModal === 'function') {
+      openAccessModal('enterprise');
+    } else {
+      // Fallback to old form if modal not available
+      enterpriseForm.style.display = 'block';
+      contactForm.style.display = 'none';
+      enterpriseForm.scrollIntoView({ behavior: 'smooth' });
+    }
     trackEvent('enterprise_demo_opened', {
       source: 'homepage',
       lead_quality: 'high_value'

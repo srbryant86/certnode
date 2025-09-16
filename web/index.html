@@ -590,11 +590,177 @@
     .form-group label { display: block; margin-bottom: 4px; font-weight: 500; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 0;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      padding: 2rem 2rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: var(--text);
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .modal-header p {
+      margin: 0.5rem 0 0;
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .close {
+      position: absolute;
+      right: 1.5rem;
+      top: 1.5rem;
+      color: var(--text-light);
+      font-size: 24px;
+      font-weight: 400;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .close:hover {
+      color: var(--text-muted);
+      background: var(--border-light);
+    }
+
+    .modal-body {
+      padding: 1rem 2rem 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+      font-family: 'Georgia', serif;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .modal-footer {
+      padding: 1rem 2rem 2rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    .btn-modal-primary {
+      background: var(--primary);
+      color: white;
+      border: 1px solid var(--primary);
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Georgia', serif;
+    }
+
+    .btn-modal-primary:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+    }
+
+    .btn-modal-secondary {
+      background: white;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Georgia', serif;
+    }
+
+    .btn-modal-secondary:hover {
+      background: var(--border-light);
+      border-color: var(--text-light);
+    }
+
     @media (max-width: 768px) {
       main { grid-template-columns: 1fr; }
       .hero h1 { font-size: 36px; }
       .cta-buttons { flex-direction: column; align-items: center; }
       .form-row { grid-template-columns: 1fr; }
+
+      .modal-content {
+        margin: 10% auto;
+        width: 95%;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-footer {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -621,7 +787,7 @@
         <p>CertNode provides tamper-evident cryptographic receipts for regulatory compliance workflows. Our research infrastructure enables organizations to generate verifiable proof of regulatory adherence through digital signatures and immutable audit trails.</p>
 
         <div class="flex justify-center mb-48">
-          <a href="#" onclick="showEnterpriseForm()" class="btn btn-primary btn-lg">Request Access</a>
+          <button onclick="openAccessModal('enterprise')" class="btn btn-primary btn-lg">Request Access</button>
           <a href="/openapi" class="btn btn-secondary btn-lg">Technical Specifications</a>
         </div>
 
@@ -640,10 +806,10 @@
     <div class="container text-center">
       <p class="text-sm text-muted mb-24">Research collaborations with regulated institutions</p>
       <div class="customer-logos">
-        <div class="text-muted font-semibold">Financial Services Research</div>
-        <div class="text-muted font-semibold">Healthcare Informatics</div>
-        <div class="text-muted font-semibold">Government Standards</div>
-        <div class="text-muted font-semibold">Legal Technology Research</div>
+        <a href="#financial-services" class="text-muted font-semibold" style="text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Financial Services Research</a>
+        <a href="#healthcare" class="text-muted font-semibold" style="text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Healthcare Informatics</a>
+        <a href="#government" class="text-muted font-semibold" style="text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Government Standards</a>
+        <a href="#legal-tech" class="text-muted font-semibold" style="text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Legal Technology Research</a>
       </div>
     </div>
   </section>
@@ -715,24 +881,48 @@
       </div>
 
       <div class="grid grid-2">
-        <div class="card">
+        <div class="card" id="financial-services">
           <h3 class="text-2xl mb-16 text-trust">Financial Services</h3>
           <p class="mb-16">SOX-compliant transaction records, anti-fraud signatures, and regulatory filing integrity for banks, investment firms, and fintech companies.</p>
+          <ul style="list-style: none; padding: 0; margin: 0 0 1rem;">
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Transaction integrity verification</li>
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Regulatory filing authenticity</li>
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Anti-fraud audit trails</li>
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Risk management compliance</li>
+          </ul>
           <div class="trust-badge">SOX Section 404 Ready</div>
         </div>
-        <div class="card">
+        <div class="card" id="healthcare">
           <h3 class="text-2xl mb-16 text-trust">Healthcare Systems</h3>
           <p class="mb-16">HIPAA-compliant patient data integrity, medical record authenticity, and secure inter-provider communications that pass audits.</p>
+          <ul style="list-style: none; padding: 0; margin: 0 0 1rem;">
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Patient record integrity</li>
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• PHI access audit trails</li>
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Secure data exchange</li>
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Breach prevention</li>
+          </ul>
           <div class="trust-badge">HIPAA Security Rule Compliant</div>
         </div>
-        <div class="card">
+        <div class="card" id="government">
           <h3 class="text-2xl mb-16 text-trust">Government Contractors</h3>
           <p class="mb-16">FedRAMP-ready digital signatures, NIST compliance, and secure document exchange for defense and civilian agencies.</p>
+          <ul style="list-style: none; padding: 0; margin: 0 0 1rem;">
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• NIST 800-53 compliance</li>
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• FedRAMP authorization</li>
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Classified data handling</li>
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Contract integrity</li>
+          </ul>
           <div class="trust-badge">FedRAMP Compatible</div>
         </div>
-        <div class="card">
+        <div class="card" id="legal-tech">
           <h3 class="text-2xl mb-16 text-trust">Legal Technology</h3>
           <p class="mb-16">Legally admissible digital signatures, contract integrity verification, and discovery-ready audit trails for law firms and legal departments.</p>
+          <ul style="list-style: none; padding: 0; margin: 0 0 1rem;">
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Legally admissible signatures</li>
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Contract authenticity</li>
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Discovery readiness</li>
+            <li style="padding: 0.25rem 0; color: var(--text-muted);">• Chain of custody</li>
+          </ul>
           <div class="trust-badge">Legally Admissible</div>
         </div>
       </div>
@@ -746,7 +936,7 @@
       <p class="text-xl mb-32">Research-grade cryptographic compliance infrastructure for regulated environments</p>
 
       <div class="flex justify-center">
-        <a href="#" onclick="showEnterpriseForm()" class="btn btn-white btn-lg">Request Implementation Guide</a>
+        <button onclick="openAccessModal('enterprise')" class="btn btn-white btn-lg">Request Implementation Guide</button>
         <a href="/compliance-calculator" class="btn btn-secondary btn-lg" style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3);">Risk Assessment</a>
       </div>
     </div>
@@ -815,6 +1005,76 @@
     </div>
   </section>
 
+  <!-- Professional Access Request Modal -->
+  <div id="accessModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">&times;</span>
+        <h2 id="modalTitle">Request Enterprise Access</h2>
+        <p id="modalSubtitle">Get started with CertNode's cryptographic compliance infrastructure</p>
+      </div>
+      <div class="modal-body">
+        <form id="accessForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="company">Organization *</label>
+              <input type="text" id="company" name="company" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Work Email *</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="role">Role</label>
+              <select id="role" name="role">
+                <option value="">Select your role</option>
+                <option value="developer">Developer</option>
+                <option value="architect">Technical Architect</option>
+                <option value="cto">CTO/Technical Lead</option>
+                <option value="compliance">Compliance Officer</option>
+                <option value="security">Security Engineer</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="tier">Interest Level *</label>
+              <select id="tier" name="tier" required>
+                <option value="">Select option</option>
+                <option value="research">Research & Evaluation</option>
+                <option value="production">Production Implementation</option>
+                <option value="enterprise">Enterprise Infrastructure</option>
+                <option value="custom">Custom Requirements</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="usecase">Use Case</label>
+            <textarea id="usecase" name="usecase" rows="3" placeholder="Briefly describe your compliance requirements and intended use case..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="timeline">Implementation Timeline</label>
+            <select id="timeline" name="timeline">
+              <option value="">Select timeline</option>
+              <option value="immediate">Immediate (within 2 weeks)</option>
+              <option value="month">Within 1 month</option>
+              <option value="quarter">Within 3 months</option>
+              <option value="planning">Planning phase</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-modal-secondary" onclick="closeAccessModal()">Cancel</button>
+        <button type="submit" class="btn-modal-primary" onclick="submitAccessRequest()">Submit Request</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Enterprise Footer -->
   <footer>
     <div class="container">
@@ -856,7 +1116,111 @@
     </div>
   </footer>
 
-  <script src="js/lead-capture.js"></script>
+  <script>
+    // Professional modal functionality for homepage
+    function openAccessModal(tier) {
+      const modal = document.getElementById('accessModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalSubtitle = document.getElementById('modalSubtitle');
+      const tierSelect = document.getElementById('tier');
+
+      // Customize modal based on tier
+      switch(tier) {
+        case 'enterprise':
+          modalTitle.textContent = 'Request Enterprise Access';
+          modalSubtitle.textContent = 'Get started with CertNode\'s cryptographic compliance infrastructure';
+          tierSelect.value = 'enterprise';
+          break;
+        case 'custom':
+          modalTitle.textContent = 'Request Technical Consultation';
+          modalSubtitle.textContent = 'Discuss custom infrastructure and specialized deployment requirements';
+          tierSelect.value = 'custom';
+          break;
+      }
+
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
+    }
+
+    function closeAccessModal() {
+      const modal = document.getElementById('accessModal');
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto'; // Restore scroll
+      document.getElementById('accessForm').reset();
+    }
+
+    async function submitAccessRequest() {
+      const form = document.getElementById('accessForm');
+      const formData = new FormData(form);
+
+      // Basic validation
+      if (!formData.get('company') || !formData.get('email') || !formData.get('tier')) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      const submitButton = event.target;
+      const originalText = submitButton.textContent;
+      submitButton.textContent = 'Submitting...';
+      submitButton.disabled = true;
+
+      // Simulate API call with delay for UX
+      setTimeout(() => {
+        // Log form data for debugging (in real implementation, this would go to your backend)
+        console.log('Access request submitted:', Object.fromEntries(formData));
+
+        // Show success message by updating modal content
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubtitle = document.getElementById('modalSubtitle');
+        const modalBody = document.querySelector('.modal-body');
+        const modalFooter = document.querySelector('.modal-footer');
+
+        modalTitle.textContent = 'Request Submitted Successfully';
+        modalSubtitle.textContent = 'Thank you for your interest in CertNode';
+        modalBody.innerHTML = `
+          <div style="text-align: center; padding: 2rem;">
+            <div style="width: 64px; height: 64px; background: #059669; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">✓</div>
+            <h3 style="margin: 0 0 1rem; color: #1e293b;">We'll be in touch soon</h3>
+            <p style="color: #64748b; margin: 0; line-height: 1.6;">
+              Our technical team will contact you within 24 hours to discuss your requirements and set up your access.
+              Check your email for next steps and documentation links.
+            </p>
+          </div>
+        `;
+        modalFooter.innerHTML = '<button type="button" class="btn-modal-primary" onclick="closeAccessModal()" style="margin: 0 auto;">Close</button>';
+
+        // Auto-close after 5 seconds
+        setTimeout(() => {
+          closeAccessModal();
+        }, 5000);
+
+        // Reset button state
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+      }, 1500); // 1.5 second delay to show loading state
+    }
+
+    // Modal event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      // Close modal when clicking outside
+      window.onclick = function(event) {
+        const modal = document.getElementById('accessModal');
+        if (event.target === modal) {
+          closeAccessModal();
+        }
+      }
+
+      // Close modal with X button
+      document.querySelector('.close').onclick = closeAccessModal;
+
+      // Close modal with Escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeAccessModal();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
 

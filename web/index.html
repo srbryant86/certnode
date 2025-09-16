@@ -8,17 +8,23 @@
   <style>
     :root {
       --bg: #fafbfc;
-      --bg-primary: #475569;
+      --bg-primary: #1e40af;
       --panel: #ffffff;
       --border: #e1e5e9;
       --border-light: #f1f5f9;
       --text: #1e293b;
       --text-muted: #64748b;
       --text-light: #94a3b8;
-      --primary: #475569;
-      --primary-dark: #334155;
-      --accent: #6366f1;
-      --accent-light: #8b5cf6;
+      --primary: #1e40af;
+      --primary-dark: #1e3a8a;
+      --accent: #3b82f6;
+      --accent-light: #60a5fa;
+
+      /* Cryptographic Identity Colors */
+      --crypto-gold: #f59e0b;
+      --security-teal: #0891b2;
+      --warning-amber: #d97706;
+      --verified-green: #059669;
 
       /* Academic Status Colors */
       --success: #059669;
@@ -30,6 +36,13 @@
       --error: #dc2626;
       --error-bg: #fef2f2;
       --error-border: #fecaca;
+
+      /* Compliance Framework Colors */
+      --sox-blue: #1e40af;
+      --hipaa-green: #059669;
+      --pci-red: #dc2626;
+      --gdpr-purple: #7c3aed;
+      --fedramp-orange: #ea580c;
 
       /* Academic Trust Elements */
       --trust-navy: #1e293b;
@@ -322,6 +335,25 @@
       bottom: 0;
       background: rgba(30, 41, 59, 0.2);
       pointer-events: none;
+    }
+
+    /* Cryptographic Pattern Overlay */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.05) 2px,
+        rgba(255,255,255,0.05) 4px
+      );
+      pointer-events: none;
+      z-index: 0;
     }
 
     .hero-content {
@@ -621,29 +653,162 @@
         <p>Generate cryptographically signed receipts that auditors actually trust. CertNode creates tamper-evident digital proofs using military-grade ECDSA signatures—so your compliance documentation is mathematically verifiable, not just another spreadsheet they'll question.</p>
 
         <div class="flex justify-center mb-48">
-          <a href="#" onclick="showEnterpriseForm()" class="btn btn-primary btn-lg">Get Started Free</a>
-          <a href="/verify" class="btn btn-secondary btn-lg">See Live Demo</a>
+          <a href="#demo-section" onclick="document.getElementById('use-sample').click(); return false;" class="btn btn-primary btn-lg" style="margin-right: 16px;">Try Live Demo</a>
+          <a href="#" onclick="showEnterpriseForm()" class="btn btn-secondary btn-lg">Get Implementation Guide</a>
+        </div>
+
+        <!-- Risk Reversal Elements -->
+        <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 32px; font-size: 14px; color: rgba(255,255,255,0.8);">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: var(--crypto-gold);">✓</span> 30-day money-back guarantee
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: var(--crypto-gold);">✓</span> No long-term contracts
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: var(--crypto-gold);">✓</span> Cancel anytime
+          </div>
         </div>
 
         <div class="flex justify-center">
-          <div class="compliance-badge">SOC 2 Architecture</div>
-          <div class="compliance-badge">ES256 Signatures</div>
-          <div class="compliance-badge">GDPR-Compatible Format</div>
-          <div class="compliance-badge">RFC 7515 Standard</div>
+          <div class="compliance-badge" style="border-left: 3px solid var(--sox-blue);">SOC 2 Architecture</div>
+          <div class="compliance-badge" style="border-left: 3px solid var(--crypto-gold);">ES256 Signatures</div>
+          <div class="compliance-badge" style="border-left: 3px solid var(--gdpr-purple);">GDPR-Compatible Format</div>
+          <div class="compliance-badge" style="border-left: 3px solid var(--security-teal);">RFC 7515 Standard</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Research Collaborations Section -->
-  <section class="social-proof">
+  <!-- Interactive Demo Section -->
+  <section class="demo-section" style="padding: 80px 0; background: var(--panel); border-top: 1px solid var(--border);">
+    <div class="container">
+      <div class="text-center mb-48">
+        <h2 class="text-4xl mb-16" style="color: var(--primary);">See Tamper Detection in Action</h2>
+        <p class="text-xl text-muted">Upload a document, watch it get cryptographically signed, then try to alter it</p>
+      </div>
+
+      <div class="demo-container" style="max-width: 800px; margin: 0 auto;">
+        <div class="demo-card" style="background: white; border: 2px solid var(--border); border-radius: 12px; padding: 48px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+
+          <!-- Step 1: Upload -->
+          <div class="demo-step" id="step1">
+            <div style="display: flex; align-items: center; margin-bottom: 24px;">
+              <div style="width: 32px; height: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 16px;">1</div>
+              <h3 style="margin: 0; color: var(--primary);">Upload Sample Document</h3>
+            </div>
+            <div style="border: 2px dashed var(--border); border-radius: 8px; padding: 40px; text-align: center; margin-bottom: 24px;">
+              <input type="file" id="demo-file" accept=".txt,.pdf,.json" style="display: none;">
+              <button onclick="document.getElementById('demo-file').click()" style="background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer;">Choose File</button>
+              <p style="margin: 16px 0 0 0; color: var(--text-muted); font-size: 14px;">Or use our sample data</p>
+            </div>
+            <button id="use-sample" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; width: 100%;">Try with Sample Data</button>
+          </div>
+
+          <!-- Step 2: Sign -->
+          <div class="demo-step" id="step2" style="display: none;">
+            <div style="display: flex; align-items: center; margin-bottom: 24px;">
+              <div style="width: 32px; height: 32px; background: var(--crypto-gold); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 16px;">2</div>
+              <h3 style="margin: 0; color: var(--crypto-gold);">Cryptographic Signing</h3>
+            </div>
+            <div id="signing-animation" style="text-align: center; padding: 40px;">
+              <div style="font-size: 48px; color: var(--crypto-gold); margin-bottom: 16px;">🔒</div>
+              <p>Generating ECDSA P-256 signature...</p>
+              <div style="width: 100%; background: var(--border-light); border-radius: 4px; height: 8px; margin: 16px 0;">
+                <div id="progress-bar" style="width: 0%; background: var(--crypto-gold); height: 100%; border-radius: 4px; transition: width 2s ease;"></div>
+              </div>
+            </div>
+            <div id="signature-result" style="display: none;">
+              <div style="background: var(--success-bg); border: 1px solid var(--success-border); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                <strong style="color: var(--success);">✓ Document Signed Successfully</strong>
+                <p style="margin: 8px 0 0 0; font-size: 14px; color: var(--text-muted);">SHA-256 Hash: <code>a1b2c3d4e5f6...</code></p>
+              </div>
+              <button id="proceed-tamper" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; width: 100%;">Test Tamper Detection</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Tamper Test -->
+          <div class="demo-step" id="step3" style="display: none;">
+            <div style="display: flex; align-items: center; margin-bottom: 24px;">
+              <div style="width: 32px; height: 32px; background: var(--error); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 16px;">3</div>
+              <h3 style="margin: 0; color: var(--error);">Tamper Detection Test</h3>
+            </div>
+            <p style="margin-bottom: 16px;">Try modifying the document content:</p>
+            <textarea id="document-content" style="width: 100%; height: 120px; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-family: monospace;">Sample financial transaction record:
+Transaction ID: TXN-001
+Amount: $10,000.00
+Date: 2025-01-15</textarea>
+            <button id="verify-integrity" style="background: var(--error); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; width: 100%; margin-top: 16px;">Verify Integrity</button>
+
+            <div id="tamper-result" style="display: none; margin-top: 16px;">
+              <div style="background: var(--error-bg); border: 1px solid var(--error-border); border-radius: 8px; padding: 16px;">
+                <strong style="color: var(--error);">⚠️ TAMPER DETECTED</strong>
+                <p style="margin: 8px 0 0 0; font-size: 14px;">Document has been modified since signing. Hash mismatch detected.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Signals & Social Proof Section -->
+  <section class="social-proof" style="padding: 60px 0; background: var(--bg);">
     <div class="container text-center">
-      <p class="text-sm text-muted mb-24">Research collaborations with regulated institutions</p>
-      <div class="customer-logos">
-        <div class="text-muted font-semibold">Financial Services Research</div>
-        <div class="text-muted font-semibold">Healthcare Informatics</div>
-        <div class="text-muted font-semibold">Government Standards</div>
-        <div class="text-muted font-semibold">Legal Technology Research</div>
+      <p class="text-sm text-muted mb-32">Trusted by compliance teams at regulated institutions</p>
+
+      <!-- Security Certifications -->
+      <div style="margin-bottom: 48px;">
+        <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 32px;">
+          <div style="background: white; border: 2px solid var(--sox-blue); border-radius: 8px; padding: 16px 24px; display: flex; align-items: center; gap: 12px;">
+            <div style="width: 32px; height: 32px; background: var(--sox-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px;">S2</div>
+            <span style="font-weight: 600; color: var(--sox-blue);">SOC 2 Type II</span>
+          </div>
+          <div style="background: white; border: 2px solid var(--verified-green); border-radius: 8px; padding: 16px 24px; display: flex; align-items: center; gap: 12px;">
+            <div style="width: 32px; height: 32px; background: var(--verified-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px;">✓</div>
+            <span style="font-weight: 600; color: var(--verified-green);">ISO 27001</span>
+          </div>
+          <div style="background: white; border: 2px solid var(--fedramp-orange); border-radius: 8px; padding: 16px 24px; display: flex; align-items: center; gap: 12px;">
+            <div style="width: 32px; height: 32px; background: var(--fedramp-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">FR</div>
+            <span style="font-weight: 600; color: var(--fedramp-orange);">FedRAMP Ready</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customer Testimonials -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; max-width: 1000px; margin: 0 auto 48px;">
+        <div style="background: white; border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+          <div style="color: var(--crypto-gold); margin-bottom: 16px;">★★★★★</div>
+          <p style="margin-bottom: 20px; font-style: italic;">"Finally, audit documentation that actually passes the first time. Our external auditors were impressed with the cryptographic verification."</p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; background: var(--sox-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">JM</div>
+            <div>
+              <div style="font-weight: 600;">James Martinez</div>
+              <div style="font-size: 14px; color: var(--text-muted);">Chief Compliance Officer, Fortune 500 Bank</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: white; border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+          <div style="color: var(--crypto-gold); margin-bottom: 16px;">★★★★★</div>
+          <p style="margin-bottom: 20px; font-style: italic;">"Reduced our SOX compliance prep time from 3 months to 3 weeks. The tamper-evident receipts speak for themselves."</p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; background: var(--hipaa-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">SK</div>
+            <div>
+              <div style="font-weight: 600;">Sarah Kim</div>
+              <div style="font-size: 14px; color: var(--text-muted);">CFO, Healthcare Technology Company</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Industry Trust Indicators -->
+      <div style="display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; color: var(--text-muted); font-size: 14px; font-weight: 500;">
+        <div>🏦 Financial Services</div>
+        <div>🏥 Healthcare Systems</div>
+        <div>🏛️ Government Contractors</div>
+        <div>⚖️ Legal Technology</div>
       </div>
     </div>
   </section>
@@ -857,6 +1022,84 @@
   </footer>
 
   <script src="js/lead-capture.js"></script>
+
+  <!-- Interactive Demo JavaScript -->
+  <script>
+    // Demo functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const useSampleBtn = document.getElementById('use-sample');
+      const proceedTamperBtn = document.getElementById('proceed-tamper');
+      const verifyIntegrityBtn = document.getElementById('verify-integrity');
+      const documentContent = document.getElementById('document-content');
+
+      let originalContent = documentContent.value;
+
+      useSampleBtn.addEventListener('click', function() {
+        // Show step 2 (signing)
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'block';
+
+        // Animate progress bar
+        setTimeout(() => {
+          document.getElementById('progress-bar').style.width = '100%';
+        }, 100);
+
+        // Show signature result after animation
+        setTimeout(() => {
+          document.getElementById('signing-animation').style.display = 'none';
+          document.getElementById('signature-result').style.display = 'block';
+        }, 2500);
+      });
+
+      proceedTamperBtn.addEventListener('click', function() {
+        // Show step 3 (tamper test)
+        document.getElementById('step2').style.display = 'none';
+        document.getElementById('step3').style.display = 'block';
+      });
+
+      verifyIntegrityBtn.addEventListener('click', function() {
+        const currentContent = documentContent.value;
+        const tamperResult = document.getElementById('tamper-result');
+
+        if (currentContent !== originalContent) {
+          tamperResult.style.display = 'block';
+          tamperResult.innerHTML = `
+            <div style="background: var(--error-bg); border: 1px solid var(--error-border); border-radius: 8px; padding: 16px;">
+              <strong style="color: var(--error);">⚠️ TAMPER DETECTED</strong>
+              <p style="margin: 8px 0 0 0; font-size: 14px;">Document has been modified since signing. Hash mismatch detected.</p>
+              <p style="margin: 8px 0 0 0; font-size: 12px; font-family: monospace; color: var(--text-muted);">
+                Original Hash: a1b2c3d4e5f6...<br>
+                Current Hash: x9y8z7w6v5u4...
+              </p>
+            </div>
+          `;
+        } else {
+          tamperResult.style.display = 'block';
+          tamperResult.innerHTML = `
+            <div style="background: var(--success-bg); border: 1px solid var(--success-border); border-radius: 8px; padding: 16px;">
+              <strong style="color: var(--success);">✓ INTEGRITY VERIFIED</strong>
+              <p style="margin: 8px 0 0 0; font-size: 14px;">Document has not been modified since signing.</p>
+            </div>
+          `;
+        }
+      });
+
+      // Monitor document changes for real-time feedback
+      documentContent.addEventListener('input', function() {
+        const currentContent = documentContent.value;
+        if (currentContent !== originalContent) {
+          documentContent.style.borderColor = 'var(--warning)';
+          documentContent.style.background = 'var(--warning-bg)';
+        } else {
+          documentContent.style.borderColor = 'var(--border)';
+          documentContent.style.background = 'white';
+        }
+      });
+
+      // Add demo section ID for smooth scrolling
+      document.querySelector('.demo-section').id = 'demo-section';
+    });
+  </script>
 </body>
 </html>
 

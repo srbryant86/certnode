@@ -126,11 +126,13 @@ function setupDrop(zoneId, targetTextarea, fileInputId) {
   });
 })();
 
-// Hook up dropzones
-setupDrop('receipt-drop', 'receipt', 'receipt-file');
-setupDrop('jwks-drop', 'jwks', 'jwks-file');
+// Wait for DOM to be ready before setting up event listeners
+document.addEventListener('DOMContentLoaded', function() {
+  // Hook up dropzones
+  setupDrop('receipt-drop', 'receipt', 'receipt-file');
+  setupDrop('jwks-drop', 'jwks', 'jwks-file');
 
-// File inputs
+  // File inputs
 $('#receipt-file').addEventListener('change', async (e) => {
   const f = e.target.files && e.target.files[0];
   if (!f) return;
@@ -250,3 +252,5 @@ $('#verify').addEventListener('click', async () => {
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
 })();
+
+}); // End DOMContentLoaded

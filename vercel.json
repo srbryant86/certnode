@@ -23,6 +23,6 @@
     { "source": "/verify", "destination": "/web/verify.html" },
     { "source": "/compliance-calculator", "destination": "/web/compliance-calculator.html" },
     { "source": "/pricing", "destination": "/web/pricing.html" },
-    { "source": "/trust", "destination": "/public/trust/index.html" }
+    { "source": "/trust", "destination": "/trust/index.html" }
   ]
 }

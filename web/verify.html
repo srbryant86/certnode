@@ -331,9 +331,9 @@
       <a href="/" class="logo">CertNode</a>
       <nav class="nav">
         <a href="/">Home</a>
-        <a href="/verify">Verify</a>
-        <a href="/pricing">Pricing</a>
-        <a href="/openapi">API</a>
+        <a href="/verify">Validator</a>
+        <a href="/pricing">Implementation</a>
+        <a href="/openapi">Specification</a>
         <a href="/trust">Trust</a>
         <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
       </nav>
@@ -342,8 +342,8 @@
 
   <div class="verify-hero">
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-      <h1>Prove It Works: Live Verification Demo</h1>
-      <p>See how auditors verify your cryptographic receipts in real-time. Upload any CertNode receipt and watch tamper detection in action—exactly what your compliance team needs.</p>
+      <h1>CertNode Protocol Validator</h1>
+      <p>Validate CertNode-compliant cryptographic receipts using RFC-standard verification. Test your implementations, verify document integrity, and confirm tamper detection works correctly.</p>
     </div>
   </div>
   <a href="#main" class="skip-link">Skip to main content</a>
@@ -351,16 +351,16 @@
 
     <!-- Business Context Section -->
     <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; text-align: center;">
-      <h2 style="color: var(--primary); margin-bottom: 1rem;">🚀 Quick Demo - Just Click a Button!</h2>
-      <p style="margin-bottom: 1.5rem;">Skip all the manual steps below. Just click one of these buttons to instantly load sample data, then scroll down and click "Verify Document" to see the magic happen.</p>
+      <h2 style="color: var(--primary); margin-bottom: 1rem;">🔍 Quick Validation - Test With Sample Data</h2>
+      <p style="margin-bottom: 1.5rem;">Load standardized test vectors to validate the protocol implementation. These samples demonstrate proper CertNode receipt format and cryptographic verification.</p>
 
       <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-        <button id="load-sample-financial" class="btn-primary" style="margin: 0;" onclick="loadFinancialSample();">💰 Financial Transaction</button>
-        <button id="load-sample-healthcare" class="btn-secondary" style="margin: 0;" onclick="loadHealthcareSample();">🏥 Healthcare Record</button>
-        <button id="load-sample-tampered" style="background: var(--warning-amber); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; margin: 0;" onclick="loadTamperedSample();">⚠️ Fraud Detection</button>
+        <button id="load-sample-financial" class="btn-primary" style="margin: 0;" onclick="loadFinancialSample();">✅ Valid Receipt</button>
+        <button id="load-sample-healthcare" class="btn-secondary" style="margin: 0;" onclick="loadHealthcareSample();">✅ Valid Receipt #2</button>
+        <button id="load-sample-tampered" style="background: var(--warning-amber); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; margin: 0;" onclick="loadTamperedSample();">❌ Tampered Data</button>
       </div>
 
-      <p style="margin-top: 1rem; font-size: 14px; color: var(--text-muted);">Each button loads realistic business data and shows you exactly how auditors verify your documents</p>
+      <p style="margin-top: 1rem; font-size: 14px; color: var(--text-muted);">Test vectors demonstrate valid receipts and tamper detection using standard cryptographic verification</p>
     </div>
 
     <section class="technical-panel">

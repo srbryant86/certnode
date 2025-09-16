@@ -575,20 +575,7 @@
       }
     }
 
-    function loadFinancialSample() {
-      console.log('loadFinancialSample called');
-      loadSample('financial', 'financial transaction record');
-    }
-
-    function loadHealthcareSample() {
-      console.log('loadHealthcareSample called');
-      loadSample('healthcare', 'healthcare encounter record');
-    }
-
-    function loadTamperedSample() {
-      console.log('loadTamperedSample called');
-      loadSample('tampered', 'tampered document (will fail verification)');
-    }
+    // Old sample functions removed - using new demo simulation instead
 
     // Verify button functionality is handled by verify-page.js
   </script>
@@ -617,12 +604,14 @@
     document.addEventListener('DOMContentLoaded', function() {
       console.log('Demo-first validator loaded');
 
-      // One-click demo buttons
+      // One-click demo buttons with debugging
       $('#demo-valid').addEventListener('click', () => {
+        console.log('Demo valid button clicked');
         runInstantDemo(true);
       });
 
       $('#demo-tampered').addEventListener('click', () => {
+        console.log('Demo tampered button clicked');
         runInstantDemo(false);
       });
 
@@ -640,9 +629,16 @@
       });
 
       async function runInstantDemo(isValid) {
+        console.log('runInstantDemo called with isValid:', isValid);
         const resultDiv = $('#demo-result');
         const statusDiv = $('#demo-status');
         const explanationDiv = $('#demo-explanation');
+
+        console.log('Demo elements found:', {
+          resultDiv: !!resultDiv,
+          statusDiv: !!statusDiv,
+          explanationDiv: !!explanationDiv
+        });
 
         // Show loading
         resultDiv.style.display = 'block';

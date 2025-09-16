@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "CertNode API",
-    "version": "0.1.0",
-    "description": "Tamper-evident receipt service using detached JWS with ES256 and RFC 8785 JCS canonicalization",
+    "version": "1.0.0",
+    "description": "Tamper-evident receipts using detached JWS (ES256) with RFC 8785 JCS canonicalization.",
     "contact": {
       "name": "CertNode",
       "url": "https://certnode.io"
@@ -15,7 +15,7 @@
       "description": "Production server"
     },
     {
-      "url": "http://localhost:3000",
+      "url": "http://localhost:8785",
       "description": "Development server"
     }
   ],
@@ -148,8 +148,15 @@
                 "required": ["receipt", "jwks"]
               },
               "examples": {
-                "basic": {
-                  "summary": "Basic receipt verification",
+                "sample": {
+                  "summary": "Verify sample receipt against public JWKS",
+                  "value": {
+                    "receipt_ref": "/samples/receipt.json",
+                    "jwks_ref": "/.well-known/jwks.json"
+                  }
+                },
+                "direct": {
+                  "summary": "Direct receipt verification",
                   "value": {
                     "receipt": {
                       "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjEyMzQ1Njc4OTAifQ",

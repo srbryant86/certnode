@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "description": "Root scripts for CertNode development",
   "engines": { "node": ">=20.0.0" },
+  "type": "module",
   "scripts": {
     "start": "node api/src/index.js",
     "test:fast": "node tools/test-fast.js",
@@ -15,6 +16,10 @@
     "example:sign": "node examples/node-sign.js --payload '{\"hello\":\"world\",\"n\":42}'",
     "example:verify": "node examples/node-verify.js --receipt examples/receipt.example.json --jwks examples/jwks.example.json",
     "docs:update": "node scripts/audit-roadmap.js && node scripts/audit-tasks.js",
-    "tsa:canary": "node tools/tsa-canary.js"
+    "tsa:canary": "node tools/tsa-canary.js",
+    "gen:samples": "node scripts/generate-demo-samples.mjs"
+  },
+  "devDependencies": {
+    "jose": "^5.9.2"
   }
 }

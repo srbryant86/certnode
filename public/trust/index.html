@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Trust Center — CertNode</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="description" content="Audit status, security controls, subprocessors, and JWKS rotation policy for CertNode."/>
+  <style>
+    body{margin:0;font-family:ui-sans-serif,system-ui,Segoe UI,Roboto;line-height:1.45}
+    main{max-width:900px;margin:0 auto;padding:24px}
+    h1,h2{line-height:1.2} code{background:#f6f6f6;padding:2px 4px;border-radius:4px}
+    table{border-collapse:collapse;width:100%} th,td{border:1px solid #eee;padding:8px;text-align:left}
+    .note{background:#fff7ed;border:1px solid #ffedd5;padding:12px;border-radius:8px}
+  </style>
+</head>
+<body>
+<main>
+  <h1>Trust Center</h1>
+  <p class="note"><strong>Status:</strong> SOC 2 Type II — <em>in audit</em>. ISO 27001 — <em>in planning</em>. GDPR — <em>policy-aligned</em>. We do not display certification badges until auditor letters are on file.</p>
+
+  <h2>Security Controls</h2>
+  <ul>
+    <li><strong>Key Management:</strong> ES256 (P-256) via managed KMS/HSM in production; private keys never leave HSM boundary.</li>
+    <li><strong>JWKS:</strong> Public keys published at <code>/.well-known/jwks.json</code>; KID rotation via alias policy (see rotation log).</li>
+    <li><strong>Transport:</strong> HSTS, TLS 1.2+; strict headers; no mixed content.</li>
+    <li><strong>Isolation:</strong> Per-tenant scoping; least-privilege IAM; auditable access paths.</li>
+    <li><strong>Retention:</strong> We sign your digests; we don't store your documents.</li>
+  </ul>
+
+  <h2>SLAs & Availability Targets</h2>
+  <p>Targets (not guarantees) until contracts are executed:</p>
+  <ul>
+    <li>Availability target: <strong>99.9%</strong></li>
+    <li>API response SLOs documented per endpoint</li>
+    <li>Incident comms via status page (link when live)</li>
+  </ul>
+
+  <h2>Subprocessors</h2>
+  <p>List of vendors used for hosting and service delivery (non-exhaustive; contract-dependent):</p>
+  <ul>
+    <li>Cloud provider (compute/network)</li>
+    <li>Object storage + CDN (JWKS hosting)</li>
+    <li>Monitoring/alerting</li>
+  </ul>
+
+  <h2>JWKS Rotation Policy</h2>
+  <p>We rotate signing keys using KMS aliases; overlapping validity ensures continuous verification. Deprecated KIDs remain in JWKS for a grace window before removal.</p>
+  <table>
+    <thead><tr><th>Date</th><th>KID</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>2025-09-16</td><td>demo-2025-09-16</td><td>Public demo key for Verify UI samples only; not used in production.</td></tr>
+      <!-- add production entries here -->
+    </tbody>
+  </table>
+
+  <h2>Policies</h2>
+  <ul>
+    <li>Security Policy (PDF) — <em>to be published</em></li>
+    <li>Privacy Policy — <em>to be published</em></li>
+    <li>Data Retention — <em>to be published</em></li>
+  </ul>
+</main>
+</body>
+</html>

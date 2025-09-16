@@ -1,0 +1,26 @@
+{
+  "info": {
+    "name": "CertNode API",
+    "_postman_id": "c1e7f4e6-0000-4b11-9e55-111111111111",
+    "description": "Sign and verify detached JWS receipts with ES256.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get JWKS",
+      "request": { "method": "GET", "url": { "raw": "https://certnode.vercel.app/.well-known/jwks.json", "protocol":"https","host":["certnode","vercel","app"],"path":[".well-known","jwks.json"] } }
+    },
+    {
+      "name": "Verify (sample)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "content-type", "value": "application/json" }],
+        "url": { "raw": "https://api.certnode.io/v1/verify", "protocol":"https","host":["api","certnode","io"],"path":["v1","verify"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"receipt_ref\": \"/samples/receipt.json\",\n  \"jwks_ref\": \"/.well-known/jwks.json\"\n}"
+        }
+      }
+    }
+  ]
+}

@@ -1,239 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-    <title>API Documentation — CertNode</title>
-    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
-    <style>
-        :root {
-            --bg: #fafbfc;
-            --bg-primary: #475569;
-            --panel: #ffffff;
-            --border: #e1e5e9;
-            --border-light: #f1f5f9;
-            --text: #1e293b;
-            --text-muted: #64748b;
-            --text-light: #94a3b8;
-            --primary: #475569;
-            --primary-dark: #334155;
-            --accent: #6366f1;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Georgia', 'Times New Roman', serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.7;
-            letter-spacing: -0.01em;
-        }
-
-        header {
-            background: var(--panel);
-            border-bottom: 1px solid var(--border);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 600;
-            color: var(--primary);
-            text-decoration: none;
-            letter-spacing: -0.02em;
-        }
-
-        .nav {
-            display: flex;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 15px;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .nav a:hover {
-            color: var(--primary);
-        }
-
-        .nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-
-        .nav a:hover::after {
-            width: 100%;
-        }
-
-        .api-hero {
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 100px 0;
-            text-align: center;
-            position: relative;
-        }
-
-        .api-hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(30, 41, 59, 0.2);
-            pointer-events: none;
-        }
-
-        .api-hero h1 {
-            font-size: 48px;
-            font-weight: 400;
-            margin-bottom: 32px;
-            line-height: 1.3;
-            letter-spacing: -0.02em;
-            position: relative;
-            z-index: 1;
-        }
-
-        .api-hero p {
-            font-size: 22px;
-            color: rgba(255, 255, 255, 0.9);
-            margin: 0 auto;
-            line-height: 1.6;
-            font-weight: 300;
-            max-width: 700px;
-            position: relative;
-            z-index: 1;
-        }
-
-        #swagger-ui {
-            max-width: none;
-            margin-top: 0;
-        }
-    </style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>CertNode API</title>
+  <meta name="description" content="REST API for signing and verifying detached JWS receipts (ES256, RFC 8785 JCS)."/>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.25.54/dist/browser/standalone.min.css"/>
+  <style>
+    html,body,#root{height:100%} body{margin:0;font-family:ui-sans-serif,system-ui,Segoe UI,Roboto}
+    .head {padding:16px;border-bottom:1px solid #eee;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+    .head a.btn{padding:8px 12px;border:1px solid #ddd;border-radius:8px;text-decoration:none}
+    .examples{padding:12px 16px;border-top:1px solid #eee}
+    code,pre{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;font-size:12.5px}
+  </style>
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <a href="/" class="logo">CertNode</a>
-            <nav class="nav">
-                <a href="/">Home</a>
-                <a href="/verify">Verify</a>
-                <a href="/pricing">Pricing</a>
-                <a href="/openapi" aria-current="page">API</a>
-                <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
-            </nav>
-        </div>
-    </header>
+  <div class="head">
+    <strong>CertNode API</strong>
+    <a class="btn" href="/openapi.json" download>Download OpenAPI (JSON)</a>
+    <a class="btn" href="/assets/postman/certnode.postman_collection.json" download>Postman Collection</a>
+    <a class="btn" href="/verify">Live Demo</a>
+    <a class="btn" href="/.well-known/jwks.json">JWKS</a>
+  </div>
 
-    <div class="api-hero">
-        <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-            <h1>API Documentation</h1>
-            <p>Technical specification for cryptographic receipt generation using JWS detached signatures with ECDSA P-256 and RFC 8785 canonicalization</p>
-            <div style="margin-top: 2rem;">
-                <a href="/openapi.json" download style="display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 500; margin-right: 1rem; border: 1px solid rgba(255,255,255,0.3); transition: all 0.2s;">
-                    📥 Download OpenAPI JSON
-                </a>
-                <a href="https://github.com/srbryant86/certnode" target="_blank" rel="noopener" style="display: inline-block; background: rgba(255,255,255,0.1); color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 500; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s;">
-                    🔗 View Source Code
-                </a>
-            </div>
-        </div>
+  <div id="root" aria-label="Interactive API Reference"></div>
+
+  <section class="examples">
+    <details>
+      <summary><strong>Copy-paste examples (curl & Node)</strong></summary>
+      <p><em>JWKS</em></p>
+      <pre><code>curl -s https://certnode.vercel.app/.well-known/jwks.json | jq .</code></pre>
+      <p><em>Verify sample (server)</em></p>
+      <pre><code>curl -s -X POST https://api.certnode.io/v1/verify \
+  -H "content-type: application/json" \
+  -d '{"receipt_ref":"/samples/receipt.json","jwks_ref":"/.well-known/jwks.json"}' | jq .</code></pre>
+      <p><em>Node (client)</em></p>
+      <pre><code>const r = await (await fetch('/samples/receipt.json')).json();
+const k = await (await fetch('/.well-known/jwks.json')).json();
+const p = await (await fetch('/samples/payload.json')).json();
+// verifyDetachedJws({ receipt:r, jwks:k, payload:p })</code></pre>
+    </details>
+  </section>
+
+  <noscript>
+    <div style="padding:16px;color:#b00">
+      JavaScript is disabled. You can still <a href="/openapi.json">download the OpenAPI JSON</a> and use the examples above.
     </div>
+  </noscript>
 
-    <div style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
-        <div id="swagger-loading" style="text-align: center; padding: 3rem; color: var(--text-muted); display: block;">
-            <div style="font-size: 2rem; margin-bottom: 1rem;">⚙️</div>
-            <p>Loading interactive API documentation...</p>
-            <p style="font-size: 0.875rem;">If this doesn't load, you can <a href="/openapi.json" style="color: var(--primary);">download the OpenAPI specification</a> directly.</p>
-        </div>
-        <div id="swagger-ui"></div>
-    </div>
-    
-    <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const loadingElement = document.getElementById('swagger-loading');
-
-            try {
-                window.ui = SwaggerUIBundle({
-                    url: './openapi.json',
-                    dom_id: '#swagger-ui',
-                    deepLinking: true,
-                    presets: [
-                        SwaggerUIBundle.presets.apis,
-                        SwaggerUIBundle.presets.standalone
-                    ],
-                    plugins: [
-                        SwaggerUIBundle.plugins.DownloadUrl
-                    ],
-                    layout: "BaseLayout",
-                    defaultModelsExpandDepth: 2,
-                    defaultModelExpandDepth: 2,
-                    docExpansion: "list",
-                    filter: true,
-                    showRequestHeaders: true,
-                    showCommonExtensions: true,
-                    tryItOutEnabled: true,
-                    onComplete: function() {
-                        // Hide loading indicator when Swagger UI is ready
-                        if (loadingElement) {
-                            loadingElement.style.display = 'none';
-                        }
-                        console.log('Swagger UI loaded successfully');
-                    },
-                    onFailure: function(error) {
-                        // Show error message if Swagger UI fails to load
-                        if (loadingElement) {
-                            loadingElement.innerHTML = `
-                                <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
-                                    <div style="font-size: 2rem; margin-bottom: 1rem;">⚠️</div>
-                                    <p style="color: #dc2626; font-weight: 500;">Failed to load interactive documentation</p>
-                                    <p style="font-size: 0.875rem;">You can still <a href="/openapi.json" style="color: var(--primary);">download the OpenAPI specification</a> or <a href="https://github.com/srbryant86/certnode" style="color: var(--primary);">view the source code</a>.</p>
-                                    <details style="margin-top: 1rem; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto;">
-                                        <summary style="cursor: pointer; color: var(--text-muted);">Technical details</summary>
-                                        <pre style="background: #f8f9fa; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.75rem; margin-top: 0.5rem;">${error}</pre>
-                                    </details>
-                                </div>
-                            `;
-                        }
-                        console.error('Swagger UI failed to load:', error);
-                    }
-                });
-            } catch (error) {
-                console.error('Error initializing Swagger UI:', error);
-                if (loadingElement) {
-                    loadingElement.innerHTML = `
-                        <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
-                            <div style="font-size: 2rem; margin-bottom: 1rem;">⚠️</div>
-                            <p style="color: #dc2626; font-weight: 500;">Error loading API documentation</p>
-                            <p style="font-size: 0.875rem;">Please <a href="/openapi.json" style="color: var(--primary);">download the OpenAPI specification</a> directly.</p>
-                        </div>
-                    `;
-                }
-            }
-        });
-    </script>
+  <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.25.54/dist/browser/standalone.min.js"></script>
+  <script>
+    // Mount Scalar (works offline with the JSON on same origin)
+    ScalarAPIReference.render({
+      spec: "/openapi.json",
+      hideDownloadButton: false,
+      hideTryIt: false,
+      theme: "purple",
+      layout: "modern"
+    }, document.getElementById('root'));
+  </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "cleanUrls": true,
   "headers": [
     {
       "source": "/(.*)",
@@ -12,11 +12,7 @@
     }
   ],
   "rewrites": [
-    { "source": "/trust", "destination": "/trust.html" },
-    { "source": "/verify", "destination": "/verify.html" },
-    { "source": "/pricing", "destination": "/pricing.html" },
-    { "source": "/openapi", "destination": "/openapi.html" },
-    { "source": "/compliance-calculator", "destination": "/compliance-calculator.html" },
-    { "source": "/account", "destination": "/account.html" }
+    { "source": "/openapi", "destination": "/web/openapi.html" },
+    { "source": "/trust", "destination": "/trust/index.html" }
   ]
 }

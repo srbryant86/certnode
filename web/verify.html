@@ -326,6 +326,12 @@
           <button id="receipt-format" class="btn-secondary">Format</button>
           <button id="receipt-minify" class="btn-secondary">Minify</button>
         </div>
+        <!-- Tiny, auditable links -->
+        <p style="margin:8px 0;font-size:12px">
+          <a href="/.well-known/jwks.json">View JWKS JSON</a> ·
+          <a href="/samples/receipt.json">View sample receipt</a> ·
+          <a href="/samples/payload.json">View sample payload</a>
+        </p>
       </div>
       <textarea id="receipt" placeholder='{"protected":"...","payload":{...},"signature":"...","kid":"..."}' style="width: 100%; min-height: 120px; margin-top: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.875rem;"></textarea>
     </section>

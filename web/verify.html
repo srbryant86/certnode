@@ -134,6 +134,13 @@
       z-index: 0;
     }
 
+    /* Pulse animation for verify button */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
     .verify-hero h1 {
       font-size: 48px;
       font-weight: 400;
@@ -343,19 +350,21 @@
 
     <!-- Business Context Section -->
     <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; text-align: center;">
-      <h2 style="color: var(--primary); margin-bottom: 1rem;">What You're About to See</h2>
-      <p style="margin-bottom: 1.5rem;">This is the exact same verification process your auditors will use to validate your compliance documentation. Watch how cryptographic signatures prove document authenticity instantly.</p>
+      <h2 style="color: var(--primary); margin-bottom: 1rem;">🚀 Quick Demo - Just Click a Button!</h2>
+      <p style="margin-bottom: 1.5rem;">Skip all the manual steps below. Just click one of these buttons to instantly load sample data, then scroll down and click "Verify Document" to see the magic happen.</p>
 
       <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-        <button id="load-sample-financial" class="btn-primary" style="margin: 0;" onclick="loadFinancialSample()">Try Sample Financial Record</button>
-        <button id="load-sample-healthcare" class="btn-secondary" style="margin: 0;" onclick="loadHealthcareSample()">Try Sample Healthcare Data</button>
-        <button id="load-sample-tampered" style="background: var(--warning-amber); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; margin: 0;" onclick="loadTamperedSample()">See Tamper Detection</button>
+        <button id="load-sample-financial" class="btn-primary" style="margin: 0;" onclick="loadFinancialSample()">💰 Financial Transaction</button>
+        <button id="load-sample-healthcare" class="btn-secondary" style="margin: 0;" onclick="loadHealthcareSample()">🏥 Healthcare Record</button>
+        <button id="load-sample-tampered" style="background: var(--warning-amber); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; margin: 0;" onclick="loadTamperedSample()">⚠️ Fraud Detection</button>
       </div>
+
+      <p style="margin-top: 1rem; font-size: 14px; color: var(--text-muted);">Each button loads realistic business data and shows you exactly how auditors verify your documents</p>
     </div>
 
     <section class="technical-panel">
-      <h2 style="color: var(--primary);">Step 1: Your Cryptographic Receipt</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">This is what CertNode generates for every piece of data you need to prove in an audit</p>
+      <h2 style="color: var(--primary);">Step 1: Upload Your Document Receipt</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><strong>Skip this step—just click one of the sample buttons above!</strong> Or if you have a CertNode receipt, drag it here to verify your own documents.</p>
       <div class="row grid-2">
         <div class="dropzone" id="receipt-drop" role="button" tabindex="0" aria-label="Drop receipt.json here or press Enter to choose a file" style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
           Drop receipt.json here or click to browse
@@ -371,8 +380,8 @@
     </section>
 
     <section class="technical-panel">
-      <h2 style="color: var(--primary);">Step 2: Your Verification Keys</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">These are the public keys that prove the receipt came from your organization (like a digital seal)</p>
+      <h2 style="color: var(--primary);">Step 2: Upload Your Organization's Keys</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><strong>Also auto-filled by the sample buttons!</strong> These public keys prove the document came from your organization—like a digital company seal that auditors can verify.</p>
       <div class="row grid-2">
         <div class="dropzone" id="jwks-drop" role="button" tabindex="0" aria-label="Drop jwks.json here or press Enter to choose a file" style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
           Drop jwks.json here or click to browse
@@ -392,13 +401,13 @@
     </section>
 
     <section class="technical-panel">
-      <h2 style="color: var(--primary);">Step 3: Prove Authenticity</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Watch the same verification process your auditors use—mathematical proof of document integrity</p>
+      <h2 style="color: var(--primary);">Step 3: Watch the Magic ✨</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><strong>Ready to see proof?</strong> If you clicked a sample button above, just hit the big green button below. CertNode will instantly verify if the document is authentic or tampered with.</p>
       <div class="row" style="margin-bottom: 1.5rem;">
-        <button id="verify" class="btn-primary" style="margin-right: 1rem; background: var(--verified-green); border-color: var(--verified-green);">Verify Document</button>
-        <button id="clear" class="btn-secondary">Try Another Document</button>
-        <span style="color: var(--text-muted); font-size: 0.875rem; margin-left: auto; align-self: center;">Same process auditors use in real audits</span>
+        <button id="verify" class="btn-primary" style="margin-right: 1rem; background: var(--verified-green); border-color: var(--verified-green); font-size: 18px; padding: 16px 32px;">🔍 Verify Document Now</button>
+        <button id="clear" class="btn-secondary">🔄 Try Different Sample</button>
       </div>
+      <p style="color: var(--text-muted); font-size: 14px; text-align: center; font-style: italic;">This is exactly what your auditors see when they verify your CertNode receipts</p>
       <div id="status" class="status hidden" aria-live="polite" role="status" style="padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; font-weight: 500;"></div>
       <div class="grid-2 mt-8" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
         <div>
@@ -537,17 +546,27 @@
         const status = document.getElementById('status');
         if (status) {
           status.className = 'status';
-          status.style.background = 'var(--accent-light)';
+          status.style.background = 'var(--verified-green)';
           status.style.color = 'white';
-          status.innerHTML = `📋 Loaded sample ${description}. Click "Verify Document" to see the result.`;
+          status.style.fontSize = '16px';
+          status.style.textAlign = 'center';
+          status.innerHTML = `✅ Perfect! Sample ${description} loaded. Now click the big green "Verify Document Now" button below to see instant verification!`;
           status.classList.remove('hidden');
         }
 
-        // Scroll to verification section
-        const verifyBtn = document.getElementById('verify');
-        if (verifyBtn) {
-          verifyBtn.scrollIntoView({ behavior: 'smooth' });
-        }
+        // Add visual indicator that steps 1 & 2 are complete
+        document.querySelector('section:nth-of-type(1) h2').innerHTML = '✅ Step 1: Upload Your Document Receipt';
+        document.querySelector('section:nth-of-type(2) h2').innerHTML = '✅ Step 2: Upload Your Organization\'s Keys';
+
+        // Scroll to verification section with a slight delay
+        setTimeout(() => {
+          const verifyBtn = document.getElementById('verify');
+          if (verifyBtn) {
+            verifyBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Make the button pulse to draw attention
+            verifyBtn.style.animation = 'pulse 2s infinite';
+          }
+        }, 500);
       } else {
         console.error('Could not find receipt or JWKS fields');
       }

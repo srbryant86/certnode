@@ -9,16 +9,23 @@
     <style>
         :root {
             --bg: #fafbfc;
-            --bg-primary: #475569;
+            --bg-primary: #1e40af;
             --panel: #ffffff;
             --border: #e1e5e9;
             --border-light: #f1f5f9;
             --text: #1e293b;
             --text-muted: #64748b;
             --text-light: #94a3b8;
-            --primary: #475569;
-            --primary-dark: #334155;
-            --accent: #6366f1;
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --accent: #3b82f6;
+            --accent-light: #60a5fa;
+
+            /* Cryptographic Identity Colors */
+            --crypto-gold: #f59e0b;
+            --security-teal: #0891b2;
+            --warning-amber: #d97706;
+            --verified-green: #059669;
         }
 
         body {
@@ -104,6 +111,25 @@
             bottom: 0;
             background: rgba(30, 41, 59, 0.2);
             pointer-events: none;
+        }
+
+        /* Cryptographic Pattern Overlay */
+        .api-hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 2px,
+                rgba(255,255,255,0.05) 2px,
+                rgba(255,255,255,0.05) 4px
+            );
+            pointer-events: none;
+            z-index: 0;
         }
 
         .api-hero h1 {

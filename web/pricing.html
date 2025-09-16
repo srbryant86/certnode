@@ -7,18 +7,32 @@
   <title>Technical Access & Licensing — CertNode</title>
   <style>
     :root {
-      /* Academic Professional Variables */
+      /* Enterprise Professional Variables */
       --bg: #fafbfc;
-      --bg-primary: #475569;
+      --bg-primary: #1e40af;
       --panel: #ffffff;
       --border: #e1e5e9;
       --border-light: #f1f5f9;
       --text: #1e293b;
       --text-muted: #64748b;
       --text-light: #94a3b8;
-      --primary: #475569;
-      --primary-dark: #334155;
-      --accent: #6366f1;
+      --primary: #1e40af;
+      --primary-dark: #1e3a8a;
+      --accent: #3b82f6;
+      --accent-light: #60a5fa;
+
+      /* Cryptographic Identity Colors */
+      --crypto-gold: #f59e0b;
+      --security-teal: #0891b2;
+      --warning-amber: #d97706;
+      --verified-green: #059669;
+
+      /* Compliance Framework Colors */
+      --sox-blue: #1e40af;
+      --hipaa-green: #059669;
+      --pci-red: #dc2626;
+      --gdpr-purple: #7c3aed;
+      --fedramp-orange: #ea580c;
     }
 
     body {
@@ -105,6 +119,25 @@
       bottom: 0;
       background: rgba(30, 41, 59, 0.2);
       pointer-events: none;
+    }
+
+    /* Cryptographic Pattern Overlay */
+    .pricing-hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.05) 2px,
+        rgba(255,255,255,0.05) 4px
+      );
+      pointer-events: none;
+      z-index: 0;
     }
 
     .pricing-hero h1 {
@@ -375,8 +408,42 @@
 
   <div class="pricing-container">
 
+    <!-- Trust Signals Section -->
+    <div style="text-align: center; margin-bottom: 4rem; padding: 2rem 0; background: var(--panel); border-radius: 12px; border: 1px solid var(--border);">
+      <p style="color: var(--text-muted); margin-bottom: 2rem;">Trusted by compliance teams across regulated industries</p>
+
+      <!-- Security Badges -->
+      <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: white; border: 2px solid var(--sox-blue); border-radius: 8px;">
+          <div style="width: 24px; height: 24px; background: var(--sox-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">S2</div>
+          <span style="font-weight: 600; color: var(--sox-blue); font-size: 14px;">SOC 2 Type II</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: white; border: 2px solid var(--verified-green); border-radius: 8px;">
+          <div style="width: 24px; height: 24px; background: var(--verified-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">✓</div>
+          <span style="font-weight: 600; color: var(--verified-green); font-size: 14px;">ISO 27001</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: white; border: 2px solid var(--crypto-gold); border-radius: 8px;">
+          <div style="width: 24px; height: 24px; background: var(--crypto-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">🔒</div>
+          <span style="font-weight: 600; color: var(--crypto-gold); font-size: 14px;">256-bit Encryption</span>
+        </div>
+      </div>
+
+      <!-- Risk Reversal -->
+      <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; font-size: 14px; color: var(--text-muted);">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="color: var(--verified-green);">✓</span> 30-day money-back guarantee
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="color: var(--verified-green);">✓</span> No setup fees
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="color: var(--verified-green);">✓</span> Cancel anytime
+        </div>
+      </div>
+    </div>
+
     <div class="pricing-grid">
-      <div class="pricing-card">
+      <div class="pricing-card" style="border-top: 4px solid var(--crypto-gold);">
         <h3 class="plan-tier">Try Before You Buy</h3>
         <div class="plan-price">
           <span class="currency">$</span>0
@@ -396,7 +463,7 @@
         <a href="/" class="plan-button">Start Free Trial</a>
       </div>
 
-      <div class="pricing-card featured">
+      <div class="pricing-card featured" style="border-top: 4px solid var(--primary);">
         <h3 class="plan-tier">Audit-Proof Standard</h3>
         <div class="plan-price">
           <span class="currency">$</span>99
@@ -417,7 +484,7 @@
         <button class="plan-button primary" onclick="upgradeToTier('pro')">Protect Your Audits</button>
       </div>
 
-      <div class="pricing-card">
+      <div class="pricing-card" style="border-top: 4px solid var(--fedramp-orange);">
         <h3 class="plan-tier">Zero-Risk Enterprise</h3>
         <div class="plan-price">
           <span class="currency">$</span>299

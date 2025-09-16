@@ -775,45 +775,37 @@
         return;
       }
 
-      const submitButton = event.target;
-      const originalText = submitButton.textContent;
-      submitButton.textContent = 'Submitting...';
-      submitButton.disabled = true;
+      // Create mailto link with form data
+      const company = formData.get('company');
+      const email = formData.get('email');
+      const tier = formData.get('tier');
+      const useCase = formData.get('use-case') || '';
+      const timeline = formData.get('timeline') || '';
+      const message = formData.get('message') || '';
 
-      // Simulate API call with delay for UX
+      const subject = `CertNode ${tier} Access Request - ${company}`;
+      const body = `Access Request Details:
+
+Company: ${company}
+Email: ${email}
+Tier: ${tier}
+Use Case: ${useCase}
+Timeline: ${timeline}
+
+Message:
+${message}
+
+This request was submitted via the CertNode pricing page.`;
+
+      const mailtoUrl = `mailto:sales@certnode.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      // Open email client
+      window.location.href = mailtoUrl;
+
+      // Close modal after brief delay
       setTimeout(() => {
-        // Log form data for debugging (in real implementation, this would go to your backend)
-        console.log('Access request submitted:', Object.fromEntries(formData));
-
-        // Show success message by updating modal content
-        const modalTitle = document.getElementById('modalTitle');
-        const modalSubtitle = document.getElementById('modalSubtitle');
-        const modalBody = document.querySelector('.modal-body');
-        const modalFooter = document.querySelector('.modal-footer');
-
-        modalTitle.textContent = 'Request Submitted Successfully';
-        modalSubtitle.textContent = 'Thank you for your interest in CertNode';
-        modalBody.innerHTML = `
-          <div style="text-align: center; padding: 2rem;">
-            <div style="width: 64px; height: 64px; background: #059669; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">✓</div>
-            <h3 style="margin: 0 0 1rem; color: #1e293b;">We'll be in touch soon</h3>
-            <p style="color: #64748b; margin: 0; line-height: 1.6;">
-              Our technical team will contact you within 24 hours to discuss your requirements and set up your access.
-              Check your email for next steps and documentation links.
-            </p>
-          </div>
-        `;
-        modalFooter.innerHTML = '<button type="button" class="btn-modal-primary" onclick="closeModal()" style="margin: 0 auto;">Close</button>';
-
-        // Auto-close after 5 seconds
-        setTimeout(() => {
-          closeModal();
-        }, 5000);
-
-        // Reset button state
-        submitButton.textContent = originalText;
-        submitButton.disabled = false;
-      }, 1500); // 1.5 second delay to show loading state
+        closeModal();
+      }, 500);
     }
 
     // Updated functions to use modal instead of prompts

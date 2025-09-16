@@ -650,32 +650,31 @@
   <section class="hero">
     <div class="container">
       <div class="hero-content">
-        <h1>Turn Your Data Into Bulletproof Evidence</h1>
-        <p>Generate cryptographically signed receipts that auditors actually trust. CertNode creates tamper-evident digital proofs using military-grade ECDSA signatures—so your compliance documentation is mathematically verifiable, not just another spreadsheet they'll question.</p>
+        <h1>Open Standard for Cryptographic Digital Evidence</h1>
+        <p>CertNode defines the technical specification for tamper-evident digital records using RFC-compliant cryptographic signatures. Build interoperable systems that generate mathematically verifiable proof of document integrity—with open source tools and reference implementations.</p>
 
         <div class="flex justify-center mb-48">
-          <a href="#demo-section" onclick="document.getElementById('use-sample').click(); return false;" class="btn btn-primary btn-lg" style="margin-right: 16px;">Try Live Demo</a>
-          <a href="#" onclick="showEnterpriseForm()" class="btn btn-secondary btn-lg">Get Implementation Guide</a>
+          <a href="#demo-section" onclick="document.getElementById('use-sample').click(); return false;" class="btn btn-primary btn-lg" style="margin-right: 16px;">Try Protocol Demo</a>
+          <a href="/openapi" class="btn btn-secondary btn-lg">View Technical Spec</a>
         </div>
 
-        <!-- Risk Reversal Elements -->
+        <!-- Technical Standards Elements -->
         <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 32px; font-size: 14px; color: rgba(255,255,255,0.8);">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: var(--crypto-gold);">✓</span> 30-day money-back guarantee
+            <span style="color: var(--crypto-gold);">✓</span> RFC 7515 JWS compliant
           </div>
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: var(--crypto-gold);">✓</span> No long-term contracts
+            <span style="color: var(--crypto-gold);">✓</span> Open source verification
           </div>
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: var(--crypto-gold);">✓</span> Cancel anytime
+            <span style="color: var(--crypto-gold);">✓</span> Multiple implementations
           </div>
         </div>
 
         <div class="flex justify-center">
-          <div class="compliance-badge" style="border-left: 3px solid var(--sox-blue);">SOC 2 Architecture</div>
-          <div class="compliance-badge" style="border-left: 3px solid var(--crypto-gold);">ES256 Signatures</div>
-          <div class="compliance-badge" style="border-left: 3px solid var(--gdpr-purple);">GDPR-Compatible Format</div>
-          <div class="compliance-badge" style="border-left: 3px solid var(--security-teal);">RFC 7515 Standard</div>
+          <div class="compliance-badge" style="border-left: 3px solid var(--sox-blue);">RFC 7515 JWS</div>
+          <div class="compliance-badge" style="border-left: 3px solid var(--crypto-gold);">ECDSA P-256</div>
+          <div class="compliance-badge" style="border-left: 3px solid var(--gdpr-purple);">RFC 8785 JCS</div>
         </div>
       </div>
     </div>
@@ -848,25 +847,25 @@ Date: 2025-01-15</textarea>
   <section class="section">
     <div class="container">
       <div class="text-center mb-48">
-        <h2 class="text-4xl mb-16">Stop Failing Audits Over Documentation</h2>
-        <p class="text-xl text-muted">Transform questionable spreadsheets into mathematically verifiable proof</p>
+        <h2 class="text-4xl mb-16">Technical Implementation Features</h2>
+        <p class="text-xl text-muted">Build systems with cryptographically verifiable document integrity</p>
       </div>
 
       <div class="grid grid-3">
         <div class="feature">
           <div class="feature-icon">🔒</div>
-          <h3 class="text-2xl">No More "Trust Me" Documentation</h3>
-          <p>Every receipt includes a cryptographic signature that proves exactly when and how your data was recorded. Auditors can verify authenticity in seconds instead of questioning your processes for hours.</p>
+          <h3 class="text-2xl">RFC-Compliant Cryptography</h3>
+          <p>Every CertNode receipt uses RFC 7515 JWS with ECDSA P-256 signatures and RFC 8785 JSON Canonicalization. Implement with confidence using established cryptographic standards.</p>
         </div>
         <div class="feature">
           <div class="feature-icon">📋</div>
-          <h3 class="text-2xl">Built for Real Compliance Frameworks</h3>
-          <p>Whether you're facing SOX 404, HIPAA audits, or PCI DSS reviews, CertNode generates the tamper-evident documentation these frameworks actually require—not generic logs they'll reject.</p>
+          <h3 class="text-2xl">Cross-Platform Verification</h3>
+          <p>Verify signatures in any environment - browser WebCrypto, Node.js, CLI tools, or custom implementations. No vendor lock-in, just standard cryptographic operations.</p>
         </div>
         <div class="feature">
           <div class="feature-icon">⚠️</div>
-          <h3 class="text-2xl">Catch Issues Before Auditors Do</h3>
-          <p>Get instant alerts if any of your documented processes show signs of tampering or data corruption. Fix problems proactively instead of explaining failures during audit week.</p>
+          <h3 class="text-2xl">Tamper Detection</h3>
+          <p>Any modification to signed content immediately fails verification. Mathematical proof of document integrity that's impossible to forge or circumvent.</p>
         </div>
       </div>
     </div>
@@ -876,30 +875,30 @@ Date: 2025-01-15</textarea>
   <section class="section-sm" style="background: var(--panel);">
     <div class="container">
       <div class="text-center mb-48">
-        <h2 class="text-4xl mb-16">Real Problems We Solve</h2>
-        <p class="text-xl text-muted">Stop explaining data integrity failures to auditors and regulators</p>
+        <h2 class="text-4xl mb-16">Implementation Examples</h2>
+        <p class="text-xl text-muted">Build interoperable systems with cryptographic document integrity</p>
       </div>
 
       <div class="grid grid-2">
         <div class="card">
-          <h3 class="text-2xl mb-16 text-trust">"This spreadsheet could be fake"</h3>
-          <p class="mb-16">Transform questionable Excel files into cryptographically signed receipts that prove when and how every data point was recorded. No more auditor skepticism.</p>
-          <div class="trust-badge">Mathematically Verifiable</div>
+          <h3 class="text-2xl mb-16 text-trust">Document Management Systems</h3>
+          <p class="mb-16">Add tamper-evident signatures to file uploads, contracts, and records. Users can verify document authenticity offline using open source tools.</p>
+          <div class="trust-badge">Zero Vendor Lock-in</div>
         </div>
         <div class="card">
-          <h3 class="text-2xl mb-16 text-trust">"How do we know this wasn't altered?"</h3>
-          <p class="mb-16">Every document gets a tamper-evident signature. If someone changes even one character, the verification immediately fails. Instant proof of authenticity.</p>
-          <div class="trust-badge">Tamper Detection</div>
+          <h3 class="text-2xl mb-16 text-trust">Audit Trail Infrastructure</h3>
+          <p class="mb-16">Generate cryptographic receipts for database operations, API calls, and system events. Build compliance systems with mathematical proof of integrity.</p>
+          <div class="trust-badge">Standards-Based</div>
         </div>
         <div class="card">
-          <h3 class="text-2xl mb-16 text-trust">"Your logs don't meet our standards"</h3>
-          <p class="mb-16">Generate audit trails that actually comply with SOX, HIPAA, and other frameworks. Stop getting dinged for inadequate documentation.</p>
-          <div class="trust-badge">Compliance Ready</div>
+          <h3 class="text-2xl mb-16 text-trust">Legal Tech Platforms</h3>
+          <p class="mb-16">Implement chain-of-custody tracking for digital evidence. Court-admissible proof of document authenticity using established cryptographic standards.</p>
+          <div class="trust-badge">RFC Compliant</div>
         </div>
         <div class="card">
-          <h3 class="text-2xl mb-16 text-trust">"We need this evidence in court"</h3>
-          <p class="mb-16">Create legal-grade digital evidence with cryptographic proof of authenticity. Your documentation becomes unquestionable in legal proceedings.</p>
-          <div class="trust-badge">Court Admissible</div>
+          <h3 class="text-2xl mb-16 text-trust">Open Source Integration</h3>
+          <p class="mb-16">Add CertNode receipt generation to existing systems. Multiple language SDKs and reference implementations available under permissive licenses.</p>
+          <div class="trust-badge">Developer Friendly</div>
         </div>
       </div>
     </div>

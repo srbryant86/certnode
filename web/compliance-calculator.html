@@ -479,6 +479,11 @@ Calculate Risk Assessment
       </button>
     </div>
 
+    <section style="margin:12px 0;padding:12px;border:1px solid #eee;border-radius:8px;background:#fafafa">
+      <strong>Methodology & Assumptions</strong>
+      <p>Figures are <em>modeled</em> from your inputs (volume, failure rates, detection costs). Results vary by process maturity.</p>
+    </section>
+
     <div id="results" style="display: none;">
       <div class="results">
         <h2>Estimated Regulatory Non-Compliance Cost</h2>
@@ -542,7 +547,7 @@ Calculate Risk Assessment
 
   <footer>
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-      <p style="color: var(--text-muted); margin: 0;">© 2025 CertNode — Risk assessment calculations based on published regulatory frameworks and industry compliance data.</p>
+      <p style="color: var(--text-muted); margin: 0;">© <span data-year>2025</span> CertNode — Risk assessment calculations based on published regulatory frameworks and industry compliance data.</p>
     </div>
   </footer>
 
@@ -684,6 +689,10 @@ Calculate Risk Assessment
 
     // Auto-calculate with default values on page load
     document.addEventListener('DOMContentLoaded', function() {
+      // Seed sensible defaults to avoid $0 displays
+      const seed=(id,val)=>{const el=document.getElementById(id); if(el && (!el.value || +el.value===0)) el.value=val;};
+      seed('data-volume', 10000);
+
       // Calculate automatically with default values to avoid $0 displays
       calculateRisk();
 
@@ -693,6 +702,9 @@ Calculate Risk Assessment
         input.addEventListener('change', calculateRisk);
       });
     });
+
+    // Dynamic year script
+    document.addEventListener('DOMContentLoaded',()=>{const y=document.querySelector('[data-year]'); if(y) y.textContent=new Date().getFullYear();});
   </script>
 </body>
 </html>

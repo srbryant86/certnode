@@ -718,7 +718,7 @@
 
   <footer>
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-      <p style="color: #64748b; margin: 0;">© 2025 CertNode — Professional cryptographic compliance infrastructure for regulated environments.</p>
+      <p style="color: #64748b; margin: 0;">© <span data-year>2025</span> CertNode — Professional cryptographic compliance infrastructure for regulated environments.</p>
     </div>
   </footer>
 
@@ -837,6 +837,9 @@ This request was submitted via the CertNode pricing page.`;
         }
       });
     });
+
+    // Dynamic year script
+    document.addEventListener('DOMContentLoaded',()=>{const y=document.querySelector('[data-year]'); if(y) y.textContent=new Date().getFullYear();});
   </script>
 </body>
 </html>

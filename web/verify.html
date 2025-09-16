@@ -583,26 +583,7 @@
       loadSample('tampered', 'tampered document (will fail verification)');
     }
 
-    // Enhanced verify button feedback
-    document.addEventListener('DOMContentLoaded', function() {
-      const verifyBtn = document.getElementById('verify');
-      if (verifyBtn) {
-        verifyBtn.addEventListener('click', function() {
-          console.log('Verify button clicked');
-          // Show processing state
-          const button = this;
-          const originalText = button.textContent;
-          button.textContent = 'Verifying...';
-          button.disabled = true;
-
-          // Re-enable after verification completes
-          setTimeout(() => {
-            button.textContent = originalText;
-            button.disabled = false;
-          }, 2000);
-        });
-      }
-    });
+    // Verify button functionality is handled by verify-page.js
   </script>
 
   <!-- Load other verify scripts after our demo functions -->

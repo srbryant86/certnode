@@ -1,22 +1,22 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "CertNode API",
-    "version": "0.1.0",
-    "description": "Tamper-evident receipt service using detached JWS with ES256 and RFC 8785 JCS canonicalization",
+    "title": "CertNode Standard API",
+    "version": "1.0.0",
+    "description": "Reference implementation of the CertNode standard for cryptographic digital evidence. Produces RFC-compliant tamper-evident receipts using JWS detached signatures with ECDSA P-256 and JSON Canonicalization Scheme.",
     "contact": {
-      "name": "CertNode",
+      "name": "CertNode Standard",
       "url": "https://certnode.io"
     }
   },
   "servers": [
     {
       "url": "https://api.certnode.io",
-      "description": "Production server"
+      "description": "Reference implementation - production signing service"
     },
     {
       "url": "http://localhost:3000",
-      "description": "Development server"
+      "description": "Local development environment"
     }
   ],
   "paths": {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-    <title>API Documentation — CertNode</title>
+    <title>Technical Specification — CertNode Standard</title>
     <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
     <style>
         :root {
@@ -176,10 +176,48 @@
 
     <div class="api-hero">
         <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-            <h1>API Documentation</h1>
-            <p>Technical specification for cryptographic receipt generation using JWS detached signatures with ECDSA P-256 and RFC 8785 canonicalization</p>
+            <h1>CertNode Technical Specification</h1>
+            <p>Open standard for cryptographically signed digital evidence. RFC-compliant implementation using JWS detached signatures with ECDSA P-256 and JSON Canonicalization Scheme for tamper-evident document integrity.</p>
         </div>
     </div>
+
+    <!-- Technical Specification Content -->
+    <div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+        <div style="background: var(--panel); border-radius: 12px; border: 1px solid var(--border); padding: 2rem; margin-bottom: 2rem;">
+            <h2 style="color: var(--primary); margin-bottom: 1rem;">Protocol Overview</h2>
+            <p style="margin-bottom: 1rem;">CertNode defines a cryptographic standard for creating tamper-evident digital records. The protocol generates receipts that provide mathematical proof of document integrity and authenticity.</p>
+
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem 0;">Core Standards</h3>
+            <ul style="margin-bottom: 1rem;">
+                <li><strong>RFC 7515:</strong> JSON Web Signature (JWS) for cryptographic signatures</li>
+                <li><strong>RFC 8785:</strong> JSON Canonicalization Scheme (JCS) for consistent hashing</li>
+                <li><strong>FIPS 186-4:</strong> ECDSA with P-256 curve for digital signatures</li>
+                <li><strong>RFC 7517:</strong> JSON Web Key (JWK) format for public key distribution</li>
+            </ul>
+
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem 0;">Implementation Requirements</h3>
+            <ul style="margin-bottom: 1rem;">
+                <li>Generate JWS detached signatures using ECDSA P-256</li>
+                <li>Apply RFC 8785 canonical JSON serialization before signing</li>
+                <li>Include payload hash (SHA-256) in protected header</li>
+                <li>Support offline verification using published JWKS</li>
+            </ul>
+
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem 0;">Open Source Components</h3>
+            <ul style="margin-bottom: 1rem;">
+                <li><strong>Verification Libraries:</strong> Node.js, Browser, CLI tools (MIT License)</li>
+                <li><strong>Reference Implementation:</strong> Complete working examples</li>
+                <li><strong>Test Vectors:</strong> Cryptographic test cases for compliance testing</li>
+                <li><strong>Documentation:</strong> Complete technical specification and implementation guide</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+        <h2 style="color: var(--primary); margin-bottom: 1rem;">API Reference</h2>
+        <p style="margin-bottom: 2rem;">The following API documentation describes the reference implementation for generating CertNode-compliant receipts. This service provides managed cryptographic signing - you can also implement the standard using the open source libraries.</p>
+    </div>
+
     <div id="swagger-ui"></div>
     
     <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>

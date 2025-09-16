@@ -1,7 +1,16 @@
 // web/js/verify-page.js (module)
 // Drives the verify.html UI without inline scripts (CSP-friendly)
 
-import { JWKSManager } from '../../sdk/web/jwks-manager.js';
+// Simple JWKS fetcher without external dependencies
+class SimpleJWKSManager {
+  async fetchFromUrl(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch JWKS: ${response.status}`);
+    }
+    return await response.json();
+  }
+}
 
 const $ = (s) => document.querySelector(s);
 const LS_JWKS = 'certnode:jwks';
@@ -142,7 +151,7 @@ $('#fetch-jwks').addEventListener('click', async () => {
   const url = $('#jwks-url').value.trim();
   if (!url) return setStatus(false, 'Enter a JWKS URL');
   try {
-    const mgr = new JWKSManager({ ttlMs: 300000 });
+    const mgr = new SimpleJWKSManager();
     const jwks = await mgr.fetchFromUrl(url);
     const text = JSON.stringify(jwks, null, 2);
     $('#jwks').value = text;

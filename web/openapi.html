@@ -181,8 +181,22 @@
         </div>
     </div>
 
+    <!-- Navigation Tabs -->
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+        <div style="border-bottom: 2px solid var(--border); margin-bottom: 2rem;">
+            <nav style="display: flex; gap: 0;">
+                <button id="tab-overview" style="padding: 1rem 2rem; border: none; background: var(--primary); color: white; cursor: pointer; border-radius: 8px 8px 0 0; font-weight: 600;">
+                    📋 Protocol Overview
+                </button>
+                <button id="tab-api" style="padding: 1rem 2rem; border: none; background: var(--panel); color: var(--text-muted); cursor: pointer; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: 4px;">
+                    🔌 API Reference
+                </button>
+            </nav>
+        </div>
+    </div>
+
     <!-- Technical Specification Content -->
-    <div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+    <div id="content-overview" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
         <div style="background: var(--panel); border-radius: 12px; border: 1px solid var(--border); padding: 2rem; margin-bottom: 2rem;">
             <h2 style="color: var(--primary); margin-bottom: 1rem;">Protocol Overview</h2>
             <p style="margin-bottom: 1rem;">CertNode defines a cryptographic standard for creating tamper-evident digital records. The protocol generates receipts that provide mathematical proof of document integrity and authenticity.</p>
@@ -213,12 +227,16 @@
         </div>
     </div>
 
-    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-        <h2 style="color: var(--primary); margin-bottom: 1rem;">API Reference</h2>
-        <p style="margin-bottom: 2rem;">The following API documentation describes the reference implementation for generating CertNode-compliant receipts. This service provides managed cryptographic signing - you can also implement the standard using the open source libraries.</p>
-    </div>
+    <div id="content-api" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: none;">
+        <div style="background: var(--panel); border-radius: 12px; border: 1px solid var(--border); padding: 2rem; margin-bottom: 2rem;">
+            <h2 style="color: var(--primary); margin-bottom: 1rem;">API Reference</h2>
+            <p style="margin-bottom: 2rem;">The following API documentation describes the reference implementation for generating CertNode-compliant receipts. This service provides managed cryptographic signing - you can also implement the standard using the open source libraries.</p>
+        </div>
 
-    <div id="swagger-ui"></div>
+        <div style="background: var(--panel); border-radius: 12px; border: 1px solid var(--border); padding: 1rem;">
+            <div id="swagger-ui"></div>
+        </div>
+    </div>
     
     <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
     <script>
@@ -241,6 +259,47 @@
             showRequestHeaders: true,
             showCommonExtensions: true,
             tryItOutEnabled: true
+        });
+
+        // Tab switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabOverview = document.getElementById('tab-overview');
+            const tabApi = document.getElementById('tab-api');
+            const contentOverview = document.getElementById('content-overview');
+            const contentApi = document.getElementById('content-api');
+
+            function showOverview() {
+                tabOverview.style.background = 'var(--primary)';
+                tabOverview.style.color = 'white';
+                tabApi.style.background = 'var(--panel)';
+                tabApi.style.color = 'var(--text-muted)';
+                contentOverview.style.display = 'block';
+                contentApi.style.display = 'none';
+            }
+
+            function showApi() {
+                tabApi.style.background = 'var(--primary)';
+                tabApi.style.color = 'white';
+                tabOverview.style.background = 'var(--panel)';
+                tabOverview.style.color = 'var(--text-muted)';
+                contentOverview.style.display = 'none';
+                contentApi.style.display = 'block';
+
+                // Force Swagger UI to re-render when tab becomes visible
+                if (window.ui) {
+                    setTimeout(() => {
+                        window.ui.getSystem().layoutActions.updateLayout("BaseLayout");
+                    }, 100);
+                }
+            }
+
+            tabOverview.addEventListener('click', showOverview);
+            tabApi.addEventListener('click', showApi);
+
+            // Show overview by default
+            showOverview();
+
+            console.log('API page tabs initialized');
         });
     </script>
 </body>

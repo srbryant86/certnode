@@ -604,16 +604,35 @@
     document.addEventListener('DOMContentLoaded', function() {
       console.log('Demo-first validator loaded');
 
-      // One-click demo buttons with debugging
-      $('#demo-valid').addEventListener('click', () => {
-        console.log('Demo valid button clicked');
-        runInstantDemo(true);
-      });
+      // FORCE clear any existing handlers and ensure our demo works
+      const validBtn = $('#demo-valid');
+      const tamperedBtn = $('#demo-tampered');
 
-      $('#demo-tampered').addEventListener('click', () => {
-        console.log('Demo tampered button clicked');
-        runInstantDemo(false);
-      });
+      if (validBtn) {
+        // Remove any existing handlers and clone to clear all events
+        const newValidBtn = validBtn.cloneNode(true);
+        validBtn.parentNode.replaceChild(newValidBtn, validBtn);
+
+        newValidBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('FORCE: Demo valid button clicked');
+          runInstantDemo(true);
+        });
+      }
+
+      if (tamperedBtn) {
+        // Remove any existing handlers and clone to clear all events
+        const newTamperedBtn = tamperedBtn.cloneNode(true);
+        tamperedBtn.parentNode.replaceChild(newTamperedBtn, tamperedBtn);
+
+        newTamperedBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('FORCE: Demo tampered button clicked');
+          runInstantDemo(false);
+        });
+      }
 
       // Progressive disclosure
       $('#show-advanced').addEventListener('click', () => {
@@ -639,6 +658,15 @@
           statusDiv: !!statusDiv,
           explanationDiv: !!explanationDiv
         });
+
+        if (!resultDiv || !statusDiv || !explanationDiv) {
+          console.error('Demo elements not found! Creating fallback...');
+          alert(`Demo would show: ${isValid ? '✅ Valid Document' : '❌ Tampered Document'}`);
+          return;
+        }
+
+        // Clear any previous content
+        explanationDiv.innerHTML = '';
 
         // Show loading
         resultDiv.style.display = 'block';

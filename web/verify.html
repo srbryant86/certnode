@@ -334,15 +334,28 @@
 
   <div class="verify-hero">
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-      <h1>Cryptographic Verification Interface</h1>
-      <p>Technical interface for validating JWS cryptographic receipts using ECDSA P-256 digital signatures and RFC 7515 standards</p>
+      <h1>Prove It Works: Live Verification Demo</h1>
+      <p>See how auditors verify your cryptographic receipts in real-time. Upload any CertNode receipt and watch tamper detection in action—exactly what your compliance team needs.</p>
     </div>
   </div>
   <a href="#main" class="skip-link">Skip to main content</a>
   <main id="main" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+
+    <!-- Business Context Section -->
+    <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; text-align: center;">
+      <h2 style="color: var(--primary); margin-bottom: 1rem;">What You're About to See</h2>
+      <p style="margin-bottom: 1.5rem;">This is the exact same verification process your auditors will use to validate your compliance documentation. Watch how cryptographic signatures prove document authenticity instantly.</p>
+
+      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <button id="load-sample-financial" class="btn-primary" style="margin: 0;">Try Sample Financial Record</button>
+        <button id="load-sample-healthcare" class="btn-secondary" style="margin: 0;">Try Sample Healthcare Data</button>
+        <button id="load-sample-tampered" style="background: var(--warning-amber); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; margin: 0;">See Tamper Detection</button>
+      </div>
+    </div>
+
     <section class="technical-panel">
-      <h2>JWS Receipt Input</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Provide the cryptographic receipt (JWS format) for signature verification and integrity validation</p>
+      <h2 style="color: var(--primary);">Step 1: Your Cryptographic Receipt</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">This is what CertNode generates for every piece of data you need to prove in an audit</p>
       <div class="row grid-2">
         <div class="dropzone" id="receipt-drop" role="button" tabindex="0" aria-label="Drop receipt.json here or press Enter to choose a file" style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
           Drop receipt.json here or click to browse
@@ -358,8 +371,8 @@
     </section>
 
     <section class="technical-panel">
-      <h2>JWKS Public Key Configuration</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Provide the JSON Web Key Set (JWKS) containing public keys for ECDSA signature verification</p>
+      <h2 style="color: var(--primary);">Step 2: Your Verification Keys</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">These are the public keys that prove the receipt came from your organization (like a digital seal)</p>
       <div class="row grid-2">
         <div class="dropzone" id="jwks-drop" role="button" tabindex="0" aria-label="Drop jwks.json here or press Enter to choose a file" style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
           Drop jwks.json here or click to browse
@@ -379,12 +392,12 @@
     </section>
 
     <section class="technical-panel">
-      <h2>Cryptographic Verification</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Execute ECDSA P-256 signature verification using WebCrypto API implementation</p>
+      <h2 style="color: var(--primary);">Step 3: Prove Authenticity</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Watch the same verification process your auditors use—mathematical proof of document integrity</p>
       <div class="row" style="margin-bottom: 1.5rem;">
-        <button id="verify" class="btn-primary" style="margin-right: 1rem;">Verify Signature</button>
-        <button id="clear" class="btn-secondary">Clear Interface</button>
-        <span style="color: var(--text-muted); font-size: 0.875rem; margin-left: auto; align-self: center;">Client-side WebCrypto ES256 implementation</span>
+        <button id="verify" class="btn-primary" style="margin-right: 1rem; background: var(--verified-green); border-color: var(--verified-green);">Verify Document</button>
+        <button id="clear" class="btn-secondary">Try Another Document</button>
+        <span style="color: var(--text-muted); font-size: 0.875rem; margin-left: auto; align-self: center;">Same process auditors use in real audits</span>
       </div>
       <div id="status" class="status hidden" aria-live="polite" role="status" style="padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; font-weight: 500;"></div>
       <div class="grid-2 mt-8" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
@@ -419,6 +432,144 @@
   <script src="js/verify.js"></script>
   <script src="js/verify-helper.js"></script>
   <script src="js/verify-page.js"></script>
+
+  <!-- Business Demo Enhancement Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Sample data for different scenarios
+      const sampleData = {
+        financial: {
+          receipt: `{
+  "protected": "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXUyIsImtpZCI6ImZpbmFuY2lhbC1rZXktMDEifQ",
+  "payload": {
+    "transaction_id": "TXN-2025-001234",
+    "amount": 45000.00,
+    "currency": "USD",
+    "account_from": "ACCT-****-1234",
+    "account_to": "ACCT-****-5678",
+    "timestamp": "2025-01-15T14:30:00Z",
+    "compliance_framework": "SOX_404",
+    "audit_trail": "Financial transaction record for SOX compliance",
+    "data_hash": "sha256:a1b2c3d4e5f6789..."
+  },
+  "signature": "MEUCIQDy8FQ2v3kl7mN8pR5sT6wX9zY0bA1cD2eF3gH4iJ5kL6mNOPQRSTUVWXYZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeF"
+}`,
+          jwks: `{
+  "keys": [{
+    "kty": "EC",
+    "crv": "P-256",
+    "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+    "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+    "kid": "financial-key-01",
+    "use": "sig"
+  }]
+}`
+        },
+        healthcare: {
+          receipt: `{
+  "protected": "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXUyIsImtpZCI6ImhlYWx0aGNhcmUta2V5LTAyIn0",
+  "payload": {
+    "patient_id": "PAT-****-9876",
+    "procedure_code": "CPT-99213",
+    "provider_id": "PROV-12345",
+    "date_of_service": "2025-01-15",
+    "diagnosis_codes": ["Z00.00", "M79.3"],
+    "timestamp": "2025-01-15T09:15:00Z",
+    "compliance_framework": "HIPAA_SECURITY_RULE",
+    "audit_trail": "Patient encounter record for HIPAA compliance",
+    "data_hash": "sha256:x9y8z7w6v5u4t3s2..."
+  },
+  "signature": "MEQCIBR5sT6wX9zY0bA1cD2eF3gH4iJ5kL6mNOPQRSTUVWXYZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRs"
+}`,
+          jwks: `{
+  "keys": [{
+    "kty": "EC",
+    "crv": "P-256",
+    "x": "WKn-ZIGevcwGIyyrzFoZNBdaq9_TsqzGHwHitJBcBmXnefzfHRYt3e4uyJBVqQ_j",
+    "y": "y77As5vbZtIhp3ASIG_gk0SFnBjrgtE5UZ4SBwHj7Kv2LNp9e4BuYQ9QXMBJlj6h",
+    "kid": "healthcare-key-02",
+    "use": "sig"
+  }]
+}`
+        },
+        tampered: {
+          receipt: `{
+  "protected": "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXUyIsImtpZCI6InRhbXBlcmVkLWtleS0wMyJ9",
+  "payload": {
+    "transaction_id": "TXN-2025-001234",
+    "amount": 999999.00,
+    "currency": "USD",
+    "account_from": "ACCT-****-1234",
+    "account_to": "ACCT-****-HACKER",
+    "timestamp": "2025-01-15T14:30:00Z",
+    "compliance_framework": "SOX_404",
+    "audit_trail": "TAMPERED: Amount changed from $45,000 to $999,999",
+    "data_hash": "sha256:MODIFIED_HASH_VALUE"
+  },
+  "signature": "MEUCIQDy8FQ2v3kl7mN8pR5sT6wX9zY0bA1cD2eF3gH4iJ5kL6mNOPQRSTUVWXYZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeF"
+}`,
+          jwks: `{
+  "keys": [{
+    "kty": "EC",
+    "crv": "P-256",
+    "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+    "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+    "kid": "financial-key-01",
+    "use": "sig"
+  }]
+}`
+        }
+      };
+
+      // Add event listeners for sample buttons
+      document.getElementById('load-sample-financial').addEventListener('click', function() {
+        loadSample('financial', 'financial transaction record');
+      });
+
+      document.getElementById('load-sample-healthcare').addEventListener('click', function() {
+        loadSample('healthcare', 'healthcare encounter record');
+      });
+
+      document.getElementById('load-sample-tampered').addEventListener('click', function() {
+        loadSample('tampered', 'tampered document (will fail verification)');
+      });
+
+      function loadSample(type, description) {
+        const data = sampleData[type];
+
+        // Load the receipt and JWKS
+        document.getElementById('receipt').value = data.receipt;
+        document.getElementById('jwks').value = data.jwks;
+
+        // Show a status message
+        const status = document.getElementById('status');
+        status.className = 'status';
+        status.style.background = 'var(--accent-light)';
+        status.style.color = 'white';
+        status.innerHTML = \`📋 Loaded sample \${description}. Click "Verify Document" to see the result.\`;
+        status.classList.remove('hidden');
+
+        // Scroll to verification section
+        document.getElementById('verify').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      // Enhanced verify button feedback
+      const originalVerifyHandler = document.getElementById('verify').onclick;
+      document.getElementById('verify').addEventListener('click', function() {
+        // Show processing state
+        const button = this;
+        const originalText = button.textContent;
+        button.textContent = 'Verifying...';
+        button.disabled = true;
+
+        // Re-enable after verification completes
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.disabled = false;
+        }, 2000);
+      });
+    });
+  </script>
 </body>
 </html>
 

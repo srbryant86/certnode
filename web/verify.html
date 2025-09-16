@@ -354,9 +354,9 @@
       <p style="margin-bottom: 1.5rem;">Skip all the manual steps below. Just click one of these buttons to instantly load sample data, then scroll down and click "Verify Document" to see the magic happen.</p>
 
       <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-        <button id="load-sample-financial" class="btn-primary" style="margin: 0;" onclick="loadFinancialSample()">💰 Financial Transaction</button>
-        <button id="load-sample-healthcare" class="btn-secondary" style="margin: 0;" onclick="loadHealthcareSample()">🏥 Healthcare Record</button>
-        <button id="load-sample-tampered" style="background: var(--warning-amber); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; margin: 0;" onclick="loadTamperedSample()">⚠️ Fraud Detection</button>
+        <button id="load-sample-financial" class="btn-primary" style="margin: 0;" onclick="alert('Financial button clicked!'); loadFinancialSample();">💰 Financial Transaction</button>
+        <button id="load-sample-healthcare" class="btn-secondary" style="margin: 0;" onclick="alert('Healthcare button clicked!'); loadHealthcareSample();">🏥 Healthcare Record</button>
+        <button id="load-sample-tampered" style="background: var(--warning-amber); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; margin: 0;" onclick="alert('Tampered button clicked!'); loadTamperedSample();">⚠️ Fraud Detection</button>
       </div>
 
       <p style="margin-top: 1rem; font-size: 14px; color: var(--text-muted);">Each button loads realistic business data and shows you exactly how auditors verify your documents</p>
@@ -427,13 +427,9 @@
     </div>
   </footer>
 
-  <script src="js/verify.js"></script>
-  <script src="js/verify-helper.js"></script>
-  <script src="js/verify-page.js"></script>
-
   <!-- Business Demo Enhancement Script -->
   <script>
-    // Global sample data
+    // Global sample data - loaded first!
     const sampleData = {
         financial: {
           receipt: `{
@@ -594,6 +590,11 @@
       }
     });
   </script>
+
+  <!-- Load other verify scripts after our demo functions -->
+  <script src="js/verify.js"></script>
+  <script src="js/verify-helper.js"></script>
+  <script src="js/verify-page.js"></script>
 </body>
 </html>
 

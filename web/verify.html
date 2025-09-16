@@ -349,73 +349,80 @@
   <a href="#main" class="skip-link">Skip to main content</a>
   <main id="main" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
 
-    <!-- Business Context Section -->
-    <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; text-align: center;">
-      <h2 style="color: var(--primary); margin-bottom: 1rem;">🔍 Quick Validation - Test With Sample Data</h2>
-      <p style="margin-bottom: 1.5rem;">Load standardized test vectors to validate the protocol implementation. These samples demonstrate proper CertNode receipt format and cryptographic verification.</p>
+    <!-- Live Demo Section -->
+    <div style="background: linear-gradient(135deg, var(--verified-green) 0%, #047857 100%); border-radius: 12px; padding: 3rem 2rem; margin-bottom: 3rem; text-align: center; color: white; box-shadow: 0 8px 32px rgba(5, 150, 105, 0.2);">
+      <h2 style="font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700;">🚀 Try Live Demo</h2>
+      <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9;">See cryptographic verification in action. One click, instant results.</p>
 
-      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-        <button id="load-sample-financial" class="btn-primary" style="margin: 0;" onclick="loadFinancialSample();">✅ Valid Receipt</button>
-        <button id="load-sample-healthcare" class="btn-secondary" style="margin: 0;" onclick="loadHealthcareSample();">✅ Valid Receipt #2</button>
-        <button id="load-sample-tampered" style="background: var(--warning-amber); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; margin: 0;" onclick="loadTamperedSample();">❌ Tampered Data</button>
+      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+        <button id="demo-valid" style="background: white; color: var(--verified-green); border: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 18px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+          ✅ Test Valid Receipt
+        </button>
+        <button id="demo-tampered" style="background: var(--warning-amber); color: white; border: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 18px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+          ❌ Test Tampered Data
+        </button>
       </div>
 
-      <p style="margin-top: 1rem; font-size: 14px; color: var(--text-muted);">Test vectors demonstrate valid receipts and tamper detection using standard cryptographic verification</p>
+      <div id="demo-result" style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 2rem; margin-top: 2rem; backdrop-filter: blur(10px); display: none;">
+        <div id="demo-status" style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;"></div>
+        <div id="demo-explanation" style="font-size: 1rem; opacity: 0.9;"></div>
+      </div>
     </div>
 
-    <section class="technical-panel">
-      <h2 style="color: var(--primary);">Step 1: Document Receipt</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><strong>✅ Auto-filled when you click a sample button above!</strong> <br/>Or drag your own CertNode receipt here if you have one.</p>
-      <div style="text-align: center;">
-        <div class="dropzone" id="receipt-drop" role="button" tabindex="0" aria-label="Drop receipt.json here or press Enter to choose a file" style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s; max-width: 500px; margin: 0 auto;">
-          <input type="file" id="receipt-file" accept="application/json" aria-label="Choose receipt JSON file" style="display: none;" />
-          📁 Drop your CertNode receipt here<br/>
-          <small style="color: var(--text-light);">or click to browse files</small>
-        </div>
-      </div>
-      <textarea id="receipt" placeholder='{"protected":"...","payload":{...},"signature":"...","kid":"..."}' style="width: 100%; min-height: 120px; margin-top: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.875rem;"></textarea>
-    </section>
+    <!-- Advanced Section -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <button id="show-advanced" style="background: var(--panel); border: 1px solid var(--border); color: var(--primary); padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 500;">
+        📄 Upload Your Own Files (Advanced)
+      </button>
+    </div>
 
-    <section class="technical-panel">
-      <h2 style="color: var(--primary);">Step 2: Organization Keys</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><strong>✅ Also auto-filled by sample buttons!</strong> <br/>These public keys prove authenticity—like a digital company seal.</p>
-      <div style="text-align: center;">
-        <div class="dropzone" id="jwks-drop" role="button" tabindex="0" aria-label="Drop jwks.json here or press Enter to choose a file" style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.2s; max-width: 500px; margin: 0 auto;">
-          <input type="file" id="jwks-file" accept="application/json" aria-label="Choose JWKS JSON file" style="display: none;" />
-          🔑 Drop your organization keys here<br/>
-          <small style="color: var(--text-light);">or click to browse files</small>
-        </div>
-      </div>
-      <textarea id="jwks" placeholder='{"keys":[{"kty":"EC","crv":"P-256","x":"...","y":"...","kid":"..."}]}' style="width: 100%; min-height: 120px; margin-top: 1rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.875rem;"></textarea>
-      <div style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.5rem;">JWKS cached locally for performance and security</div>
-    </section>
+    <div id="advanced-section" style="display: none;">
+      <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem;">
+        <h3 style="color: var(--primary); margin-bottom: 1rem;">Upload Your CertNode Files</h3>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Have your own CertNode receipt and JWKS? Upload them here for verification.</p>
 
-    <section class="technical-panel">
-      <h2 style="color: var(--primary);">Step 3: Watch the Magic ✨</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><strong>Ready to see proof?</strong> If you clicked a sample button above, just hit the big green button below. CertNode will instantly verify if the document is authentic or tampered with.</p>
-      <div class="row" style="margin-bottom: 1.5rem;">
-        <button id="verify" class="btn-primary" style="margin-right: 1rem; background: var(--verified-green); border-color: var(--verified-green); font-size: 18px; padding: 16px 32px;">🔍 Verify Document Now</button>
-        <button id="clear" class="btn-secondary">🔄 Try Different Sample</button>
-      </div>
-      <p style="color: var(--text-muted); font-size: 14px; text-align: center; font-style: italic;">This is exactly what your auditors see when they verify your CertNode receipts</p>
-      <div id="status" class="status hidden" aria-live="polite" role="status" style="padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; font-weight: 500;"></div>
-      <div class="grid-2 mt-8" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-        <div>
-          <div class="row justify-between" style="margin-bottom: 0.5rem;">
-            <h3 style="margin: 0; color: var(--text); font-size: 1rem; font-weight: 500;">Protected Header</h3>
-            <button id="copy-hdr" class="btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Copy</button>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+          <div>
+            <h4 style="margin-bottom: 0.5rem;">Document Receipt</h4>
+            <textarea id="receipt" placeholder='{"protected":"...","payload":{...},"signature":"...","kid":"..."}' style="width: 100%; min-height: 120px; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-family: monospace; font-size: 0.875rem;"></textarea>
           </div>
-          <pre id="hdr" style="background: var(--bg); padding: 1rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.875rem; overflow-x: auto;"></pre>
+          <div>
+            <h4 style="margin-bottom: 0.5rem;">Organization Keys (JWKS)</h4>
+            <textarea id="jwks" placeholder='{"keys":[{"kty":"EC","crv":"P-256","x":"...","y":"...","kid":"..."}]}' style="width: 100%; min-height: 120px; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-family: monospace; font-size: 0.875rem;"></textarea>
+          </div>
         </div>
-        <div>
-          <div class="row justify-between" style="margin-bottom: 0.5rem;">
-            <h3 style="margin: 0; color: var(--text); font-size: 1rem; font-weight: 500;">Verification Result</h3>
-            <button id="copy-result" class="btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Copy</button>
-          </div>
-          <pre id="result" style="background: var(--bg); padding: 1rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.875rem; overflow-x: auto;"></pre>
+
+        <div style="text-align: center;">
+          <button id="verify" style="background: var(--verified-green); color: white; border: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 18px; cursor: pointer; margin-right: 1rem;">
+            🔍 Verify Document
+          </button>
+          <button id="clear" style="background: var(--panel); border: 1px solid var(--border); color: var(--text); padding: 16px 32px; border-radius: 8px; font-weight: 600; cursor: pointer;">
+            🔄 Clear Fields
+          </button>
         </div>
       </div>
-    </section>
+
+      <!-- Technical Results -->
+      <div id="technical-results" style="display: none;">
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Technical Details</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div>
+              <h4 style="margin-bottom: 0.5rem;">Protected Header</h4>
+              <pre id="hdr" style="background: var(--bg); padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.875rem; overflow-x: auto;"></pre>
+            </div>
+            <div>
+              <h4 style="margin-bottom: 0.5rem;">Verification Result</h4>
+              <pre id="result" style="background: var(--bg); padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.875rem; overflow-x: auto;"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Message -->
+    <div id="status" style="display: none; padding: 1rem; border-radius: 8px; margin: 2rem 0; font-weight: 500; text-align: center;"></div>
+
   </main>
   <footer style="background: var(--bg); border-top: 1px solid var(--border); padding: 2rem 0; text-align: center; margin-top: 3rem;">
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
@@ -603,16 +610,93 @@
   </script>
   <script src="js/verify-helper.js"></script>
   <script>
-    // Only load verify-page.js functionality that we need
-    // Skip the parts that expect missing DOM elements
+    // New simplified demo-first approach
 
     const $ = (s) => document.querySelector(s);
 
-    // Just load the core verification functionality
+    // Load the demo functionality first
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('Custom verify handler loaded');
+      console.log('Demo-first validator loaded');
 
-      // Core verify functionality from verify-page.js
+      // One-click demo buttons
+      $('#demo-valid').addEventListener('click', () => {
+        runInstantDemo(true);
+      });
+
+      $('#demo-tampered').addEventListener('click', () => {
+        runInstantDemo(false);
+      });
+
+      // Progressive disclosure
+      $('#show-advanced').addEventListener('click', () => {
+        const advanced = $('#advanced-section');
+        const button = $('#show-advanced');
+        if (advanced.style.display === 'none') {
+          advanced.style.display = 'block';
+          button.textContent = '📄 Hide Advanced Options';
+        } else {
+          advanced.style.display = 'none';
+          button.textContent = '📄 Upload Your Own Files (Advanced)';
+        }
+      });
+
+      async function runInstantDemo(isValid) {
+        const resultDiv = $('#demo-result');
+        const statusDiv = $('#demo-status');
+        const explanationDiv = $('#demo-explanation');
+
+        // Show loading
+        resultDiv.style.display = 'block';
+        statusDiv.innerHTML = '⏳ Verifying...';
+        explanationDiv.innerHTML = 'Running cryptographic verification...';
+
+        // Load sample data
+        const sampleType = isValid ? 'financial' : 'tampered';
+        const data = sampleData[sampleType];
+
+        if (!data) {
+          statusDiv.innerHTML = '❌ Error';
+          explanationDiv.innerHTML = 'Sample data not found';
+          return;
+        }
+
+        try {
+          // Parse data
+          const receipt = JSON.parse(data.receipt);
+          const jwks = JSON.parse(data.jwks);
+
+          // Run verification
+          if (!window.CertNode || !window.CertNode.verifyReceipt) {
+            throw new Error('CertNode verification module not loaded');
+          }
+
+          const result = await window.CertNode.verifyReceipt(receipt, jwks);
+
+          // Show results with animation
+          await new Promise(resolve => setTimeout(resolve, 1000)); // Demo delay
+
+          if (result.ok) {
+            statusDiv.innerHTML = '✅ Document Valid';
+            explanationDiv.innerHTML = isValid
+              ? 'This $45,000 financial transaction is cryptographically authentic. The ECDSA P-256 signature confirms the document has not been tampered with.'
+              : 'Unexpected: This should have failed verification.';
+            statusDiv.parentElement.style.background = 'rgba(5, 150, 105, 0.2)';
+          } else {
+            statusDiv.innerHTML = '❌ Document Invalid';
+            explanationDiv.innerHTML = isValid
+              ? 'Unexpected: This valid document failed verification.'
+              : 'This document has been tampered with. The signature verification failed, proving the amount was changed from $45,000 to $999,999.';
+            statusDiv.parentElement.style.background = 'rgba(245, 158, 11, 0.2)';
+          }
+
+        } catch (error) {
+          statusDiv.innerHTML = '❌ Verification Failed';
+          explanationDiv.innerHTML = `Error: ${error.message}`;
+          statusDiv.parentElement.style.background = 'rgba(239, 68, 68, 0.2)';
+        }
+      }
+
+      // Advanced verification functionality
       $('#verify').addEventListener('click', async () => {
         const btn = $('#verify');
         btn.disabled = true;
@@ -624,54 +708,63 @@
         const jwksTxt = $('#jwks').value.trim();
 
         if (!receiptTxt || !jwksTxt) {
-          setStatus(false, 'Provide both receipt and JWKS');
+          setStatus(false, 'Please provide both a receipt and JWKS data');
           btn.disabled = false;
-          btn.textContent = '🔍 Verify Document Now';
+          btn.textContent = '🔍 Verify Document';
           return;
         }
 
         const receipt = parseJsonSafe(receiptTxt);
         const jwks = parseJsonSafe(jwksTxt);
         if (!receipt || !jwks) {
-          setStatus(false, 'Invalid JSON in receipt or JWKS');
+          setStatus(false, 'Invalid JSON format in receipt or JWKS');
           btn.disabled = false;
-          btn.textContent = '🔍 Verify Document Now';
+          btn.textContent = '🔍 Verify Document';
           return;
         }
+
+        // Show technical results section
+        $('#technical-results').style.display = 'block';
 
         const header = decodeHeaderB64u(receipt.protected || '');
         if (header) $('#hdr').textContent = JSON.stringify(header, null, 2);
 
         try {
-          console.log('Starting verification...');
-          console.log('window.CertNode available:', !!window.CertNode);
-
           if (!window.CertNode || !window.CertNode.verifyReceipt) {
             throw new Error('CertNode verification module not loaded');
           }
 
-          console.log('Calling verifyReceipt...');
           const res = await window.CertNode.verifyReceipt(receipt, jwks);
-          console.log('Verification result:', res);
 
           if (res && res.ok) {
-            setStatus(true, 'Receipt valid');
-            $('#result').textContent = JSON.stringify({ ok: true }, null, 2);
+            setStatus(true, '✅ Document is cryptographically valid and authentic');
+            $('#result').textContent = JSON.stringify({ ok: true, message: 'Valid signature' }, null, 2);
           } else {
             const reason = (res && res.reason) || 'signature_invalid';
             const friendly = reasonMap[reason] || reason;
-            setStatus(false, 'Invalid: ' + friendly);
+            setStatus(false, `❌ Document verification failed: ${friendly}`);
             $('#result').textContent = JSON.stringify({ ok: false, reason, message: friendly }, null, 2);
           }
         } catch (e) {
           const reason = e && e.message ? e.message : 'error';
           const friendly = reasonMap[reason] || String(reason);
-          setStatus(false, 'Verification error: ' + friendly);
+          setStatus(false, `❌ Verification error: ${friendly}`);
           $('#result').textContent = JSON.stringify({ ok: false, error: String(reason), message: friendly }, null, 2);
         }
 
         btn.disabled = false;
-        btn.textContent = '🔍 Verify Document Now';
+        btn.textContent = '🔍 Verify Document';
+      });
+
+      // Clear functionality
+      $('#clear').addEventListener('click', () => {
+        $('#receipt').value = '';
+        $('#jwks').value = '';
+        $('#result').textContent = '';
+        $('#hdr').textContent = '';
+        $('#status').style.display = 'none';
+        $('#technical-results').style.display = 'none';
+        setStatus(false, 'Fields cleared');
       });
 
       // Helper functions

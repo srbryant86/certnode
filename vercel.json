@@ -8,8 +8,32 @@
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/api/(.*)",
       "dest": "api/src/index.js"
+    },
+    {
+      "src": "/verify",
+      "dest": "/web/verify.html"
+    },
+    {
+      "src": "/pricing",
+      "dest": "/web/pricing.html"
+    },
+    {
+      "src": "/openapi",
+      "dest": "/web/openapi.html"
+    },
+    {
+      "src": "/trust",
+      "dest": "/web/trust.html"
+    },
+    {
+      "src": "/",
+      "dest": "/web/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/web/$1"
     }
   ]
 }

@@ -126,7 +126,7 @@ function setupDrop(zoneId, targetTextarea, fileInputId) {
   });
 })();
 
-// Wait for DOM to be ready before setting up event listeners
+// Wait for DOM to be ready before setting up event listeners (fixed deployment)
 document.addEventListener('DOMContentLoaded', function() {
   // Hook up dropzones
   setupDrop('receipt-drop', 'receipt', 'receipt-file');

@@ -89,7 +89,13 @@ function copyText(text) { try { navigator.clipboard.writeText(text); } catch {} 
 
 // Drag & drop
 function setupDrop(zoneId, targetTextarea, fileInputId) {
+  console.log(`Setting up dropzone: ${zoneId}`);
   const dz = document.getElementById(zoneId);
+  if (!dz) {
+    console.error(`Element not found: ${zoneId}`);
+    return;
+  }
+  console.log(`Found element:`, dz);
   function reset() { dz.classList.remove('drag'); }
   dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('drag'); });
   dz.addEventListener('dragleave', reset);
@@ -128,6 +134,8 @@ function setupDrop(zoneId, targetTextarea, fileInputId) {
 
 // Wait for DOM to be ready before setting up event listeners (fixed deployment)
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('CertNode verify-page.js loaded and DOM ready');
+
   // Hook up dropzones
   setupDrop('receipt-drop', 'receipt', 'receipt-file');
   setupDrop('jwks-drop', 'jwks', 'jwks-file');

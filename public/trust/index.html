@@ -21,35 +21,32 @@
   <h2>Security Controls</h2>
   <ul>
     <li><strong>Key Management:</strong> ES256 (P-256) via managed KMS/HSM in production; private keys never leave HSM boundary.</li>
-    <li><strong>JWKS:</strong> Public keys published at <code>/.well-known/jwks.json</code>; KID rotation via alias policy (see rotation log).</li>
+    <li><strong>JWKS:</strong> Public keys at <code>/.well-known/jwks.json</code>; KID rotation via alias policy (see log).</li>
     <li><strong>Transport:</strong> HSTS, TLS 1.2+; strict headers; no mixed content.</li>
     <li><strong>Isolation:</strong> Per-tenant scoping; least-privilege IAM; auditable access paths.</li>
     <li><strong>Retention:</strong> We sign your digests; we don't store your documents.</li>
   </ul>
 
   <h2>SLAs & Availability Targets</h2>
-  <p>Targets (not guarantees) until contracts are executed:</p>
   <ul>
-    <li>Availability target: <strong>99.9%</strong></li>
+    <li>Availability <strong>target</strong>: 99.9%</li>
     <li>API response SLOs documented per endpoint</li>
     <li>Incident comms via status page (link when live)</li>
   </ul>
 
   <h2>Subprocessors</h2>
-  <p>List of vendors used for hosting and service delivery (non-exhaustive; contract-dependent):</p>
   <ul>
     <li>Cloud provider (compute/network)</li>
     <li>Object storage + CDN (JWKS hosting)</li>
     <li>Monitoring/alerting</li>
   </ul>
 
-  <h2>JWKS Rotation Policy</h2>
-  <p>We rotate signing keys using KMS aliases; overlapping validity ensures continuous verification. Deprecated KIDs remain in JWKS for a grace window before removal.</p>
+  <h2>JWKS Rotation Policy & Log</h2>
+  <p>We rotate signing keys using KMS aliases; overlapping validity ensures continuous verification.</p>
   <table>
     <thead><tr><th>Date</th><th>KID</th><th>Notes</th></tr></thead>
     <tbody>
       <tr><td>2025-09-16</td><td>demo-2025-09-16</td><td>Public demo key for Verify UI samples only; not used in production.</td></tr>
-      <!-- add production entries here -->
     </tbody>
   </table>
 

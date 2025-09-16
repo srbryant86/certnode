@@ -5,14 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>CertNode API</title>
   <meta name="description" content="REST API for signing and verifying detached JWS receipts (ES256, RFC 8785 JCS)."/>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.25.54/dist/browser/standalone.min.css"/>
+  <link rel="stylesheet" href="/vendor/scalar/standalone.min.css"/>
   <style>
     html,body,#root{height:100%} body{margin:0;font-family:ui-sans-serif,system-ui,Segoe UI,Roboto}
-    .head {padding:16px;border-bottom:1px solid #eee;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+    .head {padding:16px;border-bottom:1px solid #eee;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
     .head a.btn{padding:8px 12px;border:1px solid #ddd;border-radius:8px;text-decoration:none}
     .examples{padding:12px 16px;border-top:1px solid #eee}
-    code,pre{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;font-size:12.5px}
+    code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
   </style>
 </head>
 <body>
@@ -45,13 +44,12 @@ const p = await (await fetch('/samples/payload.json')).json();
 
   <noscript>
     <div style="padding:16px;color:#b00">
-      JavaScript is disabled. You can still <a href="/openapi.json">download the OpenAPI JSON</a> and use the examples above.
+      JavaScript is disabled. You can still <a href="/openapi.json">download the OpenAPI JSON</a>.
     </div>
   </noscript>
 
-  <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.25.54/dist/browser/standalone.min.js"></script>
+  <script src="/vendor/scalar/standalone.min.js"></script>
   <script>
-    // Mount Scalar (works offline with the JSON on same origin)
     ScalarAPIReference.render({
       spec: "/openapi.json",
       hideDownloadButton: false,

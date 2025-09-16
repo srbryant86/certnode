@@ -1,0 +1,119 @@
+name: CI Smoke Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6 AM UTC
+
+jobs:
+  smoke-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Health Check
+        run: |
+          curl -f -s https://certnode.vercel.app/api/health || exit 1
+          echo "✓ Health check passed"
+
+      - name: JWKS Endpoint
+        run: |
+          response=$(curl -f -s https://certnode.vercel.app/.well-known/jwks.json)
+          echo "$response" | jq -e '.keys | length > 0' || exit 1
+          echo "✓ JWKS endpoint accessible with valid keys"
+
+      - name: OpenAPI Spec
+        run: |
+          response=$(curl -f -s https://certnode.vercel.app/openapi.json)
+          echo "$response" | jq -e '.openapi' || exit 1
+          echo "✓ OpenAPI specification accessible"
+
+      - name: Sample Files
+        run: |
+          curl -f -s https://certnode.vercel.app/samples/receipt.json | jq -e '.protected' || exit 1
+          curl -f -s https://certnode.vercel.app/samples/payload.json | jq -e '.docId' || exit 1
+          echo "✓ Sample files accessible"
+
+      - name: Static Pages
+        run: |
+          curl -f -s https://certnode.vercel.app/ | grep -q "CertNode" || exit 1
+          curl -f -s https://certnode.vercel.app/verify | grep -q "Cryptographic Verification" || exit 1
+          curl -f -s https://certnode.vercel.app/trust | grep -q "Trust Center" || exit 1
+          curl -f -s https://certnode.vercel.app/openapi | grep -q "API Reference" || exit 1
+          echo "✓ All static pages accessible"
+
+      - name: SEO Files
+        run: |
+          curl -f -s https://certnode.vercel.app/robots.txt | grep -q "User-agent" || exit 1
+          curl -f -s https://certnode.vercel.app/sitemap.xml | grep -q "urlset" || exit 1
+          echo "✓ SEO files accessible"
+
+      - name: Security Headers
+        run: |
+          headers=$(curl -I -s https://certnode.vercel.app/)
+          echo "$headers" | grep -q "strict-transport-security" || exit 1
+          echo "$headers" | grep -q "x-content-type-options" || exit 1
+          echo "✓ Security headers present"
+
+      - name: API Integration Test
+        run: |
+          # Test receipt creation and verification flow
+          payload='{"docId":"ci-test","hash":"sha256-test","issuer":"ci.test"}'
+          receipt_response=$(curl -f -s -X POST \
+            -H "Content-Type: application/json" \
+            -d "$payload" \
+            https://certnode.vercel.app/api/receipt)
+
+          echo "$receipt_response" | jq -e '.receipt.signature' || exit 1
+          echo "✓ Receipt creation successful"
+
+          # Test verification
+          verify_payload=$(echo "$receipt_response" | jq '{receipt: .receipt, payload: {docId:"ci-test",hash:"sha256-test",issuer:"ci.test",issued_at:.payload.issued_at}}')
+          verify_response=$(curl -f -s -X POST \
+            -H "Content-Type: application/json" \
+            -d "$verify_payload" \
+            https://certnode.vercel.app/api/verify)
+
+          echo "$verify_response" | jq -e '.valid == true' || exit 1
+          echo "✓ Receipt verification successful"
+
+  accessibility:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.12.x
+
+      - name: Run Lighthouse CI
+        run: |
+          lhci autorun --collect.url=https://certnode.vercel.app/ \
+                       --collect.url=https://certnode.vercel.app/verify \
+                       --collect.url=https://certnode.vercel.app/trust \
+                       --collect.url=https://certnode.vercel.app/openapi \
+                       --assert.assertions.accessibility=0.95
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}

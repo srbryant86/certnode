@@ -1,0 +1,708 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CertNode API",
+    "version": "1.0.0",
+    "description": "Tamper-evident receipts using detached JWS (ES256) with RFC 8785 JCS canonicalization.",
+    "contact": {
+      "name": "CertNode",
+      "url": "https://certnode.io"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.certnode.io",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:8785",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "description": "Returns server health status",
+        "operationId": "getHealth",
+        "tags": ["Health"],
+        "responses": {
+          "200": {
+            "description": "Server is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  },
+                  "required": ["ok"]
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "methodNotAllowed": {
+                    "value": { "error": "method_not_allowed", "request_id": "req_abc" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "internalError": {
+                    "value": { "error": "internal_error", "message": "unexpected failure", "request_id": "req_abc" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "summary": "Health check (alias)",
+        "description": "Alias of /health for health probes",
+        "operationId": "getHealthAlias",
+        "tags": ["Health"],
+        "responses": {
+          "200": {
+            "description": "Server is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "example": true }
+                  },
+                  "required": ["ok"]
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "methodNotAllowed": {
+                    "value": { "error": "method_not_allowed", "request_id": "req_abc" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "internalError": {
+                    "value": { "error": "internal_error", "message": "unexpected failure", "request_id": "req_abc" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/verify": {
+      "post": {
+        "summary": "Verify detached JWS receipt",
+        "description": "Verifies the integrity and authenticity of a tamper-evident receipt using the provided JWKS or individual JWK",
+        "operationId": "verifyReceipt",
+        "tags": ["Verification"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "receipt": {
+                    "$ref": "#/components/schemas/Receipt",
+                    "description": "The receipt to verify"
+                  },
+                  "jwks": {
+                    "$ref": "#/components/schemas/JWKS",
+                    "description": "JSON Web Key Set containing public keys for verification"
+                  }
+                },
+                "required": ["receipt", "jwks"]
+              },
+              "examples": {
+                "sample": {
+                  "summary": "Verify sample receipt against public JWKS",
+                  "value": {
+                    "receipt_ref": "/samples/receipt.json",
+                    "jwks_ref": "/.well-known/jwks.json"
+                  }
+                },
+                "direct": {
+                  "summary": "Direct receipt verification",
+                  "value": {
+                    "receipt": {
+                      "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjEyMzQ1Njc4OTAifQ",
+                      "signature": "MEUCIQD7X8wZ9fEa1J2mK3N-oqL4d5mF2pQ8tR6sU7vY9wX0ZgIgK1-M2nP3qR4sT5uV6wX7yZ8aB9cD0eF1gH2iJ3kL4mN",
+                      "payload": {"hello": "world"},
+                      "kid": "1234567890",
+                      "payload_jcs_sha256": "3q2+7wEB4+bUvr3TF1JNdH1XQF8t0sT5qR6uY7vZ8aB",
+                      "receipt_id": "Z1X2c3V4b5N6m7L8k9J0i1H2g3F4e5D6c7B8a9Z0y1X"
+                    },
+                    "jwks": {
+                      "keys": [
+                        {
+                          "kty": "EC",
+                          "crv": "P-256",
+                          "x": "WKn-ZIGevcwGIyyrzFoZNBdaq9_TsqzGHwHitJBcBmXdwe",
+                          "y": "24hHSsIcKLm2eo_PKdCENWdsg_ZSN-XAQ_UM-HQs9",
+                          "kid": "1234567890"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verification result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyResult"
+                },
+                "examples": {
+                  "valid": {
+                    "summary": "Valid receipt",
+                    "value": {
+                      "ok": true,
+                      "verified_at": "2024-01-01T12:00:00Z",
+                      "payload_verified": true,
+                      "signature_verified": true,
+                      "kid": "1234567890"
+                    }
+                  },
+                  "invalid": {
+                    "summary": "Invalid receipt",
+                    "value": {
+                      "ok": false,
+                      "reason": "signature_invalid",
+                      "message": "Signature verification failed"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid receipt or JWKS",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/ValidationError"},
+                "examples": {
+                  "missingReceipt": {
+                    "summary": "Missing receipt",
+                    "value": {"error": "missing_receipt", "message": "receipt is required"}
+                  },
+                  "invalidJWKS": {
+                    "summary": "Invalid JWKS",
+                    "value": {"error": "invalid_jwks", "message": "JWKS must contain at least one key"}
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "headers": {
+              "Retry-After": {"description": "Seconds to wait before retrying", "schema": {"type": "integer"}},
+              "X-RateLimit-Limit": {"description": "Request limit per window", "schema": {"type": "integer"}},
+              "X-RateLimit-Remaining": {"description": "Remaining requests in current window", "schema": {"type": "integer"}}
+            },
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/RateLimitError"}
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/ErrorResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/.well-known/jwks.json": {
+      "get": {
+        "summary": "Public JSON Web Key Set",
+        "description": "Returns the current public JWKS for signature verification",
+        "operationId": "getJWKS",
+        "tags": ["Keys"],
+        "responses": {
+          "200": {
+            "description": "Current public JWKS",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JWKS"
+                },
+                "examples": {
+                  "current": {
+                    "summary": "Current JWKS",
+                    "value": {
+                      "keys": [
+                        {
+                          "kty": "EC",
+                          "crv": "P-256",
+                          "x": "WKn-ZIGevcwGIyyrzFoZNBdaq9_TsqzGHwHitJBcBmXdwe",
+                          "y": "24hHSsIcKLm2eo_PKdCENWdsg_ZSN-XAQ_UM-HQs9",
+                          "kid": "current-2024",
+                          "use": "sig",
+                          "alg": "ES256"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/ErrorResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sign": {
+      "post": {
+        "summary": "Sign payload and return detached JWS (receipt)",
+        "description": "Creates a tamper-evident receipt for the provided payload using ES256 signature with RFC 8785 JCS canonicalization",
+        "operationId": "signPayload",
+        "tags": ["Signing"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "payload": {
+                    "description": "JSON payload to sign (will be canonicalized using RFC 8785 JCS)"
+                  },
+                  "headers": {
+                    "type": "object",
+                    "description": "Optional signing headers",
+                    "properties": {
+                      "kid": {
+                        "$ref": "#/components/schemas/JwkThumbprint",
+                        "description": "RFC7638 JWK thumbprint (optional; computed if absent)"
+                      },
+                      "tsr": {
+                        "type": "boolean",
+                        "description": "Request RFC3161 timestamp token (optional)",
+                        "example": true
+                      },
+                      "require_tsr": {
+                        "type": "boolean",
+                        "description": "If true, fail with 503 if TSA is unavailable",
+                        "example": false
+                      }
+                    }
+                  }
+                },
+                "required": ["payload"]
+              },
+              "examples": {
+                "basic": {
+                  "summary": "Basic payload signing",
+                  "value": {
+                    "payload": {
+                      "hello": "world"
+                    }
+                  }
+                },
+                "withHeaders": {
+                  "summary": "Signing with optional headers",
+                  "value": {
+                    "payload": {
+                      "document": "contract_v1.2",
+                      "timestamp": "2024-01-01T00:00:00Z"
+                    },
+                    "headers": {
+                      "tsr": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "405": {
+            "description": "Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "methodNotAllowed": {
+                    "value": { "error": "method_not_allowed", "request_id": "req_abc" }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Successfully created tamper-evident receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "protected": {
+                      "$ref": "#/components/schemas/Base64Url",
+                      "description": "Base64url encoded JWS protected header containing alg and kid"
+                    },
+                    "signature": {
+                      "$ref": "#/components/schemas/Base64Url",
+                      "description": "Base64url encoded ES256 signature in JOSE format (r||s)"
+                    },
+                    "payload": {
+                      "description": "Original payload (unchanged)"
+                    },
+                    "kid": {
+                      "$ref": "#/components/schemas/JwkThumbprint",
+                      "description": "RFC7638 JWK thumbprint used for signing"
+                    },
+                    "payload_jcs_sha256": {
+                      "$ref": "#/components/schemas/Base64Url",
+                      "description": "Base64url encoded SHA-256 hash of RFC 8785 JCS canonicalized payload"
+                    },
+                    "receipt_id": {
+                      "$ref": "#/components/schemas/Base64Url",
+                      "description": "Base64url encoded SHA-256 hash of the complete JWS (protected.payload.signature)"
+                    },
+                    "tsr": {
+                      "$ref": "#/components/schemas/Base64Url",
+                      "description": "Base64url encoded RFC3161 timestamp token in DER format (optional)"
+                    }
+                  },
+                  "required": [
+                    "protected",
+                    "signature", 
+                    "payload",
+                    "kid",
+                    "payload_jcs_sha256",
+                    "receipt_id"
+                  ]
+                },
+                "examples": {
+                  "sample": {
+                    "summary": "Sample receipt response",
+                    "value": {
+                      "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6Ii0tLSJ9",
+                      "signature": "MEUCIQD7X8wZ9fEa1J2mK3N-oqL4d5mF2pQ8tR6sU7vY9wX0ZgIgK1-M2nP3qR4sT5uV6wX7yZ8aB9cD0eF1gH2iJ3kL4mN",
+                      "payload": {
+                        "hello": "world"
+                      },
+                      "kid": "abc123",
+                      "payload_jcs_sha256": "3q2+7wEB4+bUvr3TF1JNdH1XQF8t0sT5qR6uY7vZ8aB",
+                      "receipt_id": "Z1X2c3V4b5N6m7L8k9J0i1H2g3F4e5D6c7B8a9Z0y1X"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid payload or headers",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ValidationError" },
+                "examples": {
+                  "missingPayload": {
+                    "summary": "Missing payload",
+                    "value": { "error": "missing_payload", "message": "payload is required" }
+                  },
+                  "invalidHeaders": {
+                    "summary": "Invalid headers",
+                    "value": { "error": "invalid_headers", "message": "headers.tsr must be boolean" }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "headers": {
+              "Retry-After": { "description": "Seconds to wait before retrying", "schema": { "type": "integer" } },
+              "X-RateLimit-Limit": { "description": "Request limit per window", "schema": { "type": "integer" } },
+              "X-RateLimit-Remaining": { "description": "Remaining requests in current window", "schema": { "type": "integer" } }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RateLimitError" },
+                "examples": {
+                  "rateLimited": {
+                    "summary": "Rate limited",
+                    "value": { "error": "rate_limited", "retry_after_ms": 1500, "request_id": "req_123" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "internalError": {
+                    "summary": "Generic failure",
+                    "value": { "error": "internal_error", "message": "unexpected failure", "request_id": "req_abc" }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Timestamp authority unavailable (when headers.require_tsr is true)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "tsaUnavailable": {
+                    "summary": "TSA unavailable",
+                    "value": { "error": "tsa_unavailable", "message": "timestamp authority unavailable", "request_id": "req_123" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": { "type": "string" },
+          "message": { "type": "string" },
+          "request_id": { "type": "string", "description": "Correlation id if available" }
+        },
+        "required": [ "error" ]
+      },
+      "ValidationError": {
+        "allOf": [ { "$ref": "#/components/schemas/ErrorResponse" } ],
+        "description": "Validation failure: invalid payload or headers",
+        "examples": [
+          { "error": "missing_payload", "message": "payload is required" },
+          { "error": "invalid_headers", "message": "headers.tsr must be boolean" },
+          { "error": "payload_too_large", "message": "payload exceeds hard limit" }
+        ]
+      },
+      "RateLimitError": {
+        "allOf": [ { "$ref": "#/components/schemas/ErrorResponse" } ],
+        "description": "Rate limit exceeded",
+        "properties": {
+          "retry_after_ms": { "type": "integer" }
+        },
+        "required": [ "error", "retry_after_ms" ]
+      },
+      "JwkThumbprint": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_-]{43}$",
+        "description": "RFC7638 JWK thumbprint - base64url encoded SHA-256 hash",
+        "example": "YRU7hT6Br3XlaljIJw4h8eh-E8BgFNqRtiTQDYMkwGk"
+      },
+      "Base64Url": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_-]+$",
+        "description": "Base64url encoded data (RFC 4648 Section 5)",
+        "example": "eyJhbGciOiJFUzI1NiJ9"
+      },
+      "Receipt": {
+        "type": "object",
+        "description": "Tamper-evident cryptographic receipt (detached JWS)",
+        "properties": {
+          "protected": {
+            "$ref": "#/components/schemas/Base64Url",
+            "description": "Base64url encoded JWS protected header"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/Base64Url",
+            "description": "Base64url encoded ES256 signature"
+          },
+          "payload": {
+            "description": "Original payload (unchanged)"
+          },
+          "kid": {
+            "$ref": "#/components/schemas/JwkThumbprint",
+            "description": "RFC7638 JWK thumbprint"
+          },
+          "payload_jcs_sha256": {
+            "$ref": "#/components/schemas/Base64Url",
+            "description": "Base64url encoded SHA-256 hash of JCS canonicalized payload"
+          },
+          "receipt_id": {
+            "$ref": "#/components/schemas/Base64Url",
+            "description": "Base64url encoded SHA-256 hash of complete JWS"
+          },
+          "tsr": {
+            "$ref": "#/components/schemas/Base64Url",
+            "description": "Base64url encoded RFC3161 timestamp token (optional)"
+          }
+        },
+        "required": ["protected", "signature", "payload", "kid", "payload_jcs_sha256", "receipt_id"]
+      },
+      "JWKS": {
+        "type": "object",
+        "description": "JSON Web Key Set (RFC 7517)",
+        "properties": {
+          "keys": {
+            "type": "array",
+            "description": "Array of JSON Web Keys",
+            "items": {
+              "$ref": "#/components/schemas/JWK"
+            },
+            "minItems": 1
+          }
+        },
+        "required": ["keys"]
+      },
+      "JWK": {
+        "type": "object",
+        "description": "JSON Web Key for ECDSA P-256 (RFC 7518)",
+        "properties": {
+          "kty": {
+            "type": "string",
+            "enum": ["EC"],
+            "description": "Key type"
+          },
+          "crv": {
+            "type": "string",
+            "enum": ["P-256"],
+            "description": "Curve name"
+          },
+          "x": {
+            "$ref": "#/components/schemas/Base64Url",
+            "description": "Base64url encoded x coordinate"
+          },
+          "y": {
+            "$ref": "#/components/schemas/Base64Url",
+            "description": "Base64url encoded y coordinate"
+          },
+          "kid": {
+            "type": "string",
+            "description": "Key ID"
+          },
+          "use": {
+            "type": "string",
+            "enum": ["sig"],
+            "description": "Public key use"
+          },
+          "alg": {
+            "type": "string",
+            "enum": ["ES256"],
+            "description": "Algorithm"
+          }
+        },
+        "required": ["kty", "crv", "x", "y"]
+      },
+      "VerifyResult": {
+        "type": "object",
+        "description": "Receipt verification result",
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "description": "Whether the receipt is valid"
+          },
+          "verified_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Verification timestamp (ISO 8601)"
+          },
+          "payload_verified": {
+            "type": "boolean",
+            "description": "Whether payload hash verification passed"
+          },
+          "signature_verified": {
+            "type": "boolean",
+            "description": "Whether signature verification passed"
+          },
+          "kid": {
+            "type": "string",
+            "description": "Key ID used for verification"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Failure reason (when ok=false)",
+            "enum": [
+              "missing_fields",
+              "bad_protected",
+              "unsupported_alg",
+              "kid_mismatch",
+              "kid_not_found",
+              "payload_hash_mismatch",
+              "signature_invalid",
+              "receipt_id_mismatch"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message (when ok=false)"
+          }
+        },
+        "required": ["ok"]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Health",
+      "description": "Health check endpoints"
+    },
+    {
+      "name": "Signing",
+      "description": "Digital signature and receipt generation"
+    },
+    {
+      "name": "Verification",
+      "description": "Receipt verification and validation"
+    },
+    {
+      "name": "Keys",
+      "description": "Public key management and JWKS endpoints"
+    }
+  ]
+}

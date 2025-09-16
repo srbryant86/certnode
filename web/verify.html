@@ -362,6 +362,7 @@
       <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Execute ECDSA P-256 signature verification using WebCrypto API implementation</p>
       <div class="row" style="margin-bottom: 1.5rem;">
         <button id="verify" class="btn-primary" style="margin-right: 1rem;">Verify Signature</button>
+        <button type="button" id="load-sample" class="btn-secondary" style="margin-right: 1rem;">Load Sample & Verify</button>
         <button id="clear" class="btn-secondary">Clear Interface</button>
         <span style="color: var(--text-muted); font-size: 0.875rem; margin-left: auto; align-self: center;">Client-side WebCrypto ES256 implementation</span>
       </div>
@@ -398,6 +399,26 @@
   <script src="js/verify.js"></script>
   <script src="js/verify-helper.js"></script>
   <script src="js/verify-page.js"></script>
+
+  <script>
+  (function () {
+    const btn = document.getElementById('load-sample');
+    if (!btn) return;
+    btn.addEventListener('click', async () => {
+      const [r,k,p] = await Promise.all([
+        fetch('/samples/receipt.json').then(x=>x.json()),
+        fetch('/.well-known/jwks.json').then(x=>x.json()),
+        fetch('/samples/payload.json').then(x=>x.json())
+      ]);
+      if (window.verifyDetachedJws) {
+        const result = await window.verifyDetachedJws({ receipt: r, jwks: k, payload: p });
+        console.log('Verification result:', result);
+      } else {
+        alert('verifyDetachedJws() not found — wire your verifier to this button.');
+      }
+    });
+  })();
+  </script>
 </body>
 </html>
 

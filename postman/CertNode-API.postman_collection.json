@@ -1,0 +1,151 @@
+{
+  "info": {
+    "name": "CertNode API",
+    "description": "CertNode cryptographic verification service API collection with variableized endpoints for development and production testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://certnode.vercel.app",
+      "type": "string",
+      "description": "CertNode API base URL"
+    },
+    {
+      "key": "docId",
+      "value": "demo-123",
+      "type": "string",
+      "description": "Document ID for testing"
+    },
+    {
+      "key": "issuer",
+      "value": "certnode.sample",
+      "type": "string",
+      "description": "Test issuer identifier"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "health"]
+        },
+        "description": "Verify API service health and availability"
+      },
+      "response": []
+    },
+    {
+      "name": "Get JWKS",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/.well-known/jwks.json",
+          "host": ["{{baseUrl}}"],
+          "path": [".well-known", "jwks.json"]
+        },
+        "description": "Retrieve JSON Web Key Set for signature verification"
+      },
+      "response": []
+    },
+    {
+      "name": "Create Receipt",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"docId\": \"{{docId}}\",\n  \"hash\": \"sha256-KpdRbDVLaISM29j1SiJqClWyHtE44getbFy7nACqWuo=\",\n  \"issuer\": \"{{issuer}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/receipt",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "receipt"]
+        },
+        "description": "Create cryptographic receipt for document with ECDSA P-256 signature"
+      },
+      "response": []
+    },
+    {
+      "name": "Verify Receipt",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"receipt\": {\n    \"protected\": \"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXUyIsImtpZCI6ImNlcnRub2RlLTIwMjUtMDkifQ\",\n    \"signature\": \"MEUCIQDz1234example5678abcd\"\n  },\n  \"payload\": {\n    \"docId\": \"{{docId}}\",\n    \"hash\": \"sha256-KpdRbDVLaISM29j1SiJqClWyHtE44getbFy7nACqWuo=\",\n    \"issuer\": \"{{issuer}}\",\n    \"issued_at\": \"2025-09-16T02:44:13.647Z\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/verify",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "verify"]
+        },
+        "description": "Verify detached JWS receipt signature using JWKS public keys"
+      },
+      "response": []
+    },
+    {
+      "name": "Get OpenAPI Spec",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/openapi.json",
+          "host": ["{{baseUrl}}"],
+          "path": ["openapi.json"]
+        },
+        "description": "Retrieve OpenAPI 3.0 specification for CertNode API"
+      },
+      "response": []
+    }
+  ]
+}

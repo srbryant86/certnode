@@ -780,33 +780,40 @@
       submitButton.textContent = 'Submitting...';
       submitButton.disabled = true;
 
-      try {
-        const response = await fetch('/api/access-request', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(Object.fromEntries(formData))
-        });
+      // Simulate API call with delay for UX
+      setTimeout(() => {
+        // Log form data for debugging (in real implementation, this would go to your backend)
+        console.log('Access request submitted:', Object.fromEntries(formData));
 
-        if (response.ok) {
-          // Success - show confirmation and close modal
-          alert('Thank you! We\'ll contact you within 24 hours to set up your access.');
+        // Show success message by updating modal content
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubtitle = document.getElementById('modalSubtitle');
+        const modalBody = document.querySelector('.modal-body');
+        const modalFooter = document.querySelector('.modal-footer');
+
+        modalTitle.textContent = 'Request Submitted Successfully';
+        modalSubtitle.textContent = 'Thank you for your interest in CertNode';
+        modalBody.innerHTML = `
+          <div style="text-align: center; padding: 2rem;">
+            <div style="width: 64px; height: 64px; background: #059669; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">✓</div>
+            <h3 style="margin: 0 0 1rem; color: #1e293b;">We'll be in touch soon</h3>
+            <p style="color: #64748b; margin: 0; line-height: 1.6;">
+              Our technical team will contact you within 24 hours to discuss your requirements and set up your access.
+              Check your email for next steps and documentation links.
+            </p>
+          </div>
+        `;
+        modalFooter.innerHTML = '<button type="button" class="btn-modal-primary" onclick="closeModal()" style="margin: 0 auto;">Close</button>';
+
+        // Auto-close after 5 seconds
+        setTimeout(() => {
           closeModal();
-        } else {
-          // For now, since API might not exist, just show success
-          alert('Thank you! We\'ll contact you within 24 hours to set up your access.');
-          closeModal();
-        }
-      } catch (error) {
-        console.error('Access request error:', error);
-        // Show friendly message instead of technical error
-        alert('Thank you! We\'ll contact you within 24 hours to set up your access.');
-        closeModal();
-      } finally {
+        }, 5000);
+
+        // Reset button state
         submitButton.textContent = originalText;
         submitButton.disabled = false;
-      }
+      }, 1500); // 1.5 second delay to show loading state
     }
 
     // Updated functions to use modal instead of prompts

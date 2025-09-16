@@ -28,6 +28,10 @@
       "dest": "/web/openapi.html"
     },
     {
+      "src": "/api",
+      "dest": "/web/openapi.html"
+    },
+    {
       "src": "/verify",
       "dest": "/web/verify.html"
     },

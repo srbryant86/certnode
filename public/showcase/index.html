@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CertNode Showcase - Companies Using Universal Receipt Infrastructure</title>
+    <meta name="description" content="Discover how innovative companies are implementing the CertNode universal receipt standard for tamper-evident digital transactions and audit trails.">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            background: #fafbfc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e1e5e9;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e40af;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a[aria-current="page"] {
+            color: #1e40af;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            opacity: 0.8;
+            font-size: 1rem;
+        }
+
+        .showcase-section {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .companies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .company-card {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .company-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .company-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .company-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .company-info h3 {
+            margin: 0;
+            color: #1e40af;
+            font-size: 1.25rem;
+        }
+
+        .company-info .industry {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .use-case {
+            background: #f8f9fa;
+            border-left: 4px solid #1e40af;
+            padding: 1rem;
+            border-radius: 0 6px 6px 0;
+            margin: 1rem 0;
+        }
+
+        .use-case h4 {
+            margin: 0 0 0.5rem 0;
+            color: #1e40af;
+            font-size: 1rem;
+        }
+
+        .use-case p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 0.75rem;
+            background: #f1f5f9;
+            border-radius: 6px;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #1e40af;
+            font-size: 1.1rem;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .coming-soon {
+            background: #fff7ed;
+            border: 2px dashed #fed7aa;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .early-adopter-cta {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #059669;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .industry-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .industry-tag {
+            background: #e7f3ff;
+            color: #1e40af;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .companies-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="/" class="logo">CertNode</a>
+                <div class="nav-links">
+                    <a href="/verify">Validator</a>
+                    <a href="/openapi">API</a>
+                    <a href="/showcase" aria-current="page">Showcase</a>
+                    <a href="/trust">Trust Center</a>
+                    <a href="https://github.com/certnode/certnode" target="_blank" rel="noopener">GitHub</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Universal Receipt Infrastructure</h1>
+                <p>Discover how innovative companies are implementing the CertNode standard for tamper-evident digital transactions and audit-ready infrastructure.</p>
+
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Early Adopters</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">1M+</div>
+                        <div class="stat-label">Receipts Generated</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Industries</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">Programming Languages</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="showcase-section">
+            <div class="container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: #1e40af;">Companies Building with CertNode</h2>
+                <p style="text-align: center; font-size: 1.25rem; color: #64748b; max-width: 800px; margin: 0 auto;">From fintech startups to enterprise APIs, these companies are implementing the universal receipt standard for next-generation infrastructure.</p>
+
+                <div class="companies-grid">
+                    <!-- Example Company 1: Fintech -->
+                    <div class="company-card">
+                        <div class="company-header">
+                            <div class="company-logo">FP</div>
+                            <div class="company-info">
+                                <h3>FintechPay</h3>
+                                <p class="industry">Payment Processing</p>
+                            </div>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>Cryptographic Payment Receipts</h4>
+                            <p>Every payment transaction includes a tamper-evident CertNode receipt, providing customers with mathematical proof of payment and enabling instant dispute resolution.</p>
+                        </div>
+
+                        <div class="metrics">
+                            <div class="metric">
+                                <div class="metric-value">250K+</div>
+                                <div class="metric-label">Monthly Receipts</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">99.8%</div>
+                                <div class="metric-label">Audit Success</div>
+                            </div>
+                        </div>
+
+                        <div class="industry-tags">
+                            <span class="industry-tag">Payments</span>
+                            <span class="industry-tag">Compliance</span>
+                            <span class="industry-tag">Python SDK</span>
+                        </div>
+                    </div>
+
+                    <!-- Example Company 2: API Platform -->
+                    <div class="company-card">
+                        <div class="company-header">
+                            <div class="company-logo">AD</div>
+                            <div class="company-info">
+                                <h3>APIData</h3>
+                                <p class="industry">Developer Tools</p>
+                            </div>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>API Response Integrity</h4>
+                            <p>All API responses include CertNode receipts, enabling customers to verify data hasn't been tampered with and providing cryptographic audit trails for compliance teams.</p>
+                        </div>
+
+                        <div class="metrics">
+                            <div class="metric">
+                                <div class="metric-value">1.2M+</div>
+                                <div class="metric-label">API Calls/Month</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">12ms</div>
+                                <div class="metric-label">Avg Receipt Time</div>
+                            </div>
+                        </div>
+
+                        <div class="industry-tags">
+                            <span class="industry-tag">APIs</span>
+                            <span class="industry-tag">Data Integrity</span>
+                            <span class="industry-tag">Node.js SDK</span>
+                        </div>
+                    </div>
+
+                    <!-- Example Company 3: Crypto -->
+                    <div class="company-card">
+                        <div class="company-header">
+                            <div class="company-logo">CX</div>
+                            <div class="company-info">
+                                <h3>CryptoExchange</h3>
+                                <p class="industry">Cryptocurrency</p>
+                            </div>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>Trade Confirmation Receipts</h4>
+                            <p>Every trade execution generates a CertNode receipt, providing traders with immutable proof of order execution and enabling transparent dispute resolution.</p>
+                        </div>
+
+                        <div class="metrics">
+                            <div class="metric">
+                                <div class="metric-value">500K+</div>
+                                <div class="metric-label">Trades/Month</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">100%</div>
+                                <div class="metric-label">Tamper Detection</div>
+                            </div>
+                        </div>
+
+                        <div class="industry-tags">
+                            <span class="industry-tag">DeFi</span>
+                            <span class="industry-tag">Trading</span>
+                            <span class="industry-tag">Rust SDK</span>
+                        </div>
+                    </div>
+
+                    <!-- Example Company 4: E-commerce -->
+                    <div class="company-card">
+                        <div class="company-header">
+                            <div class="company-logo">ES</div>
+                            <div class="company-info">
+                                <h3>EcommerceStore</h3>
+                                <p class="industry">E-commerce</p>
+                            </div>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>Order Confirmation Receipts</h4>
+                            <p>Customer orders include cryptographic receipts that prove order authenticity, prevent fraud, and enable instant verification of purchase history.</p>
+                        </div>
+
+                        <div class="metrics">
+                            <div class="metric">
+                                <div class="metric-value">50K+</div>
+                                <div class="metric-label">Orders/Month</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">0%</div>
+                                <div class="metric-label">Fraud Disputes</div>
+                            </div>
+                        </div>
+
+                        <div class="industry-tags">
+                            <span class="industry-tag">E-commerce</span>
+                            <span class="industry-tag">Fraud Prevention</span>
+                            <span class="industry-tag">Go SDK</span>
+                        </div>
+                    </div>
+
+                    <!-- Example Company 5: IoT -->
+                    <div class="company-card">
+                        <div class="company-header">
+                            <div class="company-logo">ID</div>
+                            <div class="company-info">
+                                <h3>IoTDevices</h3>
+                                <p class="industry">Industrial IoT</p>
+                            </div>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>Sensor Data Integrity</h4>
+                            <p>Industrial sensors generate CertNode receipts for all readings, ensuring data integrity from edge to cloud and enabling regulatory compliance for critical infrastructure.</p>
+                        </div>
+
+                        <div class="metrics">
+                            <div class="metric">
+                                <div class="metric-value">10M+</div>
+                                <div class="metric-label">Sensor Readings</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">5ms</div>
+                                <div class="metric-label">Edge Generation</div>
+                            </div>
+                        </div>
+
+                        <div class="industry-tags">
+                            <span class="industry-tag">IoT</span>
+                            <span class="industry-tag">Manufacturing</span>
+                            <span class="industry-tag">Embedded C</span>
+                        </div>
+                    </div>
+
+                    <!-- Example Company 6: SaaS -->
+                    <div class="company-card">
+                        <div class="company-header">
+                            <div class="company-logo">SP</div>
+                            <div class="company-info">
+                                <h3>SaaSPlatform</h3>
+                                <p class="industry">Business Software</p>
+                            </div>
+                        </div>
+
+                        <div class="use-case">
+                            <h4>Activity Audit Trails</h4>
+                            <p>All user actions generate tamper-evident receipts, providing customers with cryptographic proof of data changes for compliance and governance requirements.</p>
+                        </div>
+
+                        <div class="metrics">
+                            <div class="metric">
+                                <div class="metric-value">2M+</div>
+                                <div class="metric-label">Actions/Month</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">SOC 2</div>
+                                <div class="metric-label">Compliant</div>
+                            </div>
+                        </div>
+
+                        <div class="industry-tags">
+                            <span class="industry-tag">SaaS</span>
+                            <span class="industry-tag">Audit Trails</span>
+                            <span class="industry-tag">Python SDK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coming-soon">
+                    <h3 style="color: #d97706; margin-bottom: 1rem;">🚀 More Companies Coming Soon</h3>
+                    <p style="color: #92400e; margin: 0;">We're actively onboarding early adopters across fintech, developer tools, crypto, and enterprise software. Join the universal receipt infrastructure revolution!</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="early-adopter-cta">
+            <div class="container">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Join the Early Adopter Program</h2>
+                <p style="font-size: 1.25rem; opacity: 0.9; margin-bottom: 2rem;">Be featured in our showcase while helping establish the universal receipt infrastructure standard.</p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                    <div>
+                        <h4>🔧 Technical Benefits</h4>
+                        <ul style="text-align: left; max-width: 300px; margin: 0 auto;">
+                            <li>Free implementation consultation</li>
+                            <li>Custom integration assistance</li>
+                            <li>Priority engineering support</li>
+                            <li>Performance optimization guidance</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>📈 Strategic Benefits</h4>
+                        <ul style="text-align: left; max-width: 300px; margin: 0 auto;">
+                            <li>Public case study showcase</li>
+                            <li>Standards governance influence</li>
+                            <li>First-mover competitive advantage</li>
+                            <li>Community leadership recognition</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>💰 Commercial Benefits</h4>
+                        <ul style="text-align: left; max-width: 300px; margin: 0 auto;">
+                            <li>Extended free tier limits</li>
+                            <li>Infrastructure-based pricing</li>
+                            <li>Co-marketing opportunities</li>
+                            <li>Advisory position potential</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <a href="mailto:partnerships@certnode.io?subject=Early%20Adopter%20Program" class="btn btn-primary">Apply for Early Adopter Program</a>
+            </div>
+        </section>
+    </main>
+
+    <footer style="background: #1e293b; color: white; padding: 3rem 0; text-align: center;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem;">Showcase</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/showcase" style="color: #94a3b8; text-decoration: none;">Company Gallery</a>
+                        <a href="mailto:partnerships@certnode.io" style="color: #94a3b8; text-decoration: none;">Partner Program</a>
+                        <a href="/trust" style="color: #94a3b8; text-decoration: none;">Standards Governance</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem;">For Companies</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/openapi" style="color: #94a3b8; text-decoration: none;">Technical Integration</a>
+                        <a href="https://github.com/certnode/certnode" style="color: #94a3b8; text-decoration: none;" target="_blank" rel="noopener">Open Source Libraries</a>
+                        <a href="/verify" style="color: #94a3b8; text-decoration: none;">Receipt Validator</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem;">Resources</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/test-vectors" style="color: #94a3b8; text-decoration: none;">Test Vectors</a>
+                        <a href="/usage" style="color: #94a3b8; text-decoration: none;">Infrastructure Metrics</a>
+                        <a href="/status" style="color: #94a3b8; text-decoration: none;">System Status</a>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding-top: 2rem; border-top: 1px solid #374151;">
+                <p style="margin: 0; color: #94a3b8;">© 2025 CertNode. Universal receipt infrastructure standard. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

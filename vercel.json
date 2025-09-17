@@ -43,7 +43,9 @@
   "rewrites": [
     { "source": "/trust", "destination": "/public/trust/index.html" },
     { "source": "/status", "destination": "/public/status/index.html" },
-    { "source": "/usage", "destination": "/public/usage/index.html" }
+    { "source": "/usage", "destination": "/public/usage/index.html" },
+    { "source": "/showcase", "destination": "/public/showcase/index.html" },
+    { "source": "/trust/governance", "destination": "/public/trust/governance.html" }
   ],
   "routes": [
     {

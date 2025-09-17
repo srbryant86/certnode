@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standards Governance - CertNode Trust Center</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+            color: #333;
+            background: #fafbfc;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            color: white;
+            border-radius: 12px;
+        }
+
+        .governance-notice {
+            background: linear-gradient(135deg, #e7f3ff 0%, #f0f9ff 100%);
+            border-left: 4px solid #1e40af;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .governance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .governance-card {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .governance-card h4 {
+            color: #1e40af;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .committee-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid #e1e5e9;
+        }
+
+        .committee-role {
+            border-left: 4px solid #059669;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            background: #f0fdf4;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .committee-role h4 {
+            color: #047857;
+            margin-top: 0;
+        }
+
+        .participation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .participation-card {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .participation-card h4 {
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+
+        .participation-card ul {
+            text-align: left;
+            margin: 1rem 0;
+        }
+
+        .participation-link {
+            display: inline-block;
+            background: #1e40af;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+
+        .participation-link:hover {
+            background: #1e3a8a;
+        }
+
+        .rfc-process {
+            background: #fffbeb;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .rfc-process h3 {
+            color: #92400e;
+            margin-top: 0;
+        }
+
+        .timeline {
+            display: grid;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .timeline-marker {
+            width: 12px;
+            height: 12px;
+            background: #1e40af;
+            border-radius: 50%;
+            margin-top: 0.5rem;
+        }
+
+        .nav-links {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .nav-links a {
+            color: #1e40af;
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-links">
+        <a href="/">← CertNode</a> |
+        <a href="/trust">Trust Center</a> |
+        <a href="/openapi">Technical Spec</a> |
+        <a href="/showcase">Showcase</a>
+    </div>
+
+    <div class="header">
+        <h1>CertNode Standards Governance</h1>
+        <p>Open governance for the universal receipt infrastructure standard</p>
+    </div>
+
+    <div class="governance-notice">
+        <h3>🎯 Protocol Stewardship, Not Ownership</h3>
+        <p>CertNode operates as infrastructure, not a proprietary platform. Like TCP/IP or HTTP, the standard is designed for universal implementation by anyone, anywhere. The Standards Committee serves as protocol steward, ensuring quality and interoperability while encouraging competitive collaboration.</p>
+    </div>
+
+    <section>
+        <h2>Governance Philosophy</h2>
+
+        <div class="governance-grid">
+            <div class="governance-card">
+                <h4>🌍 Universal Standard</h4>
+                <p>CertNode belongs to the global community, not any single organization. Multiple implementations encouraged to prevent vendor lock-in and ensure resilience.</p>
+            </div>
+
+            <div class="governance-card">
+                <h4>🔬 Technical Merit</h4>
+                <p>Protocol evolution driven by technical excellence, security requirements, and real-world implementation feedback. Politics and commercial interests are secondary.</p>
+            </div>
+
+            <div class="governance-card">
+                <h4>📢 Transparent Process</h4>
+                <p>All decisions made through public discussion, documented RFC process, and community review. No backroom deals or hidden agendas.</p>
+            </div>
+
+            <div class="governance-card">
+                <h4>🤝 Competitive Collaboration</h4>
+                <p>The standard succeeds when multiple vendors implement it. Competition happens in implementation quality, not protocol control.</p>
+            </div>
+
+            <div class="governance-card">
+                <h4>🔐 Security First</h4>
+                <p>Cryptographic security and privacy protection take precedence over convenience or compatibility concerns.</p>
+            </div>
+
+            <div class="governance-card">
+                <h4>⚡ Implementation Freedom</h4>
+                <p>Anyone can implement CertNode using open source libraries, building from specifications, or creating entirely new implementations.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="committee-section">
+        <h2>Committee Structure</h2>
+        <p>CertNode governance operates through specialized working groups focused on different aspects of standards development and maintenance.</p>
+
+        <div class="committee-role">
+            <h4>Technical Working Group (TWG)</h4>
+            <p><strong>Responsibilities:</strong> Protocol specification, security review, implementation guidelines, compatibility testing</p>
+            <p><strong>Membership:</strong> Senior engineers from implementing organizations, cryptography experts, standards body representatives</p>
+            <p><strong>Meetings:</strong> Monthly technical reviews, quarterly specification updates, emergency sessions for security issues</p>
+            <p><strong>Deliverables:</strong> RFC specifications, security guidelines, implementation test suites, compatibility matrices</p>
+        </div>
+
+        <div class="committee-role">
+            <h4>Governance Council</h4>
+            <p><strong>Responsibilities:</strong> Standards process oversight, conflict resolution, ecosystem coordination, strategic direction</p>
+            <p><strong>Membership:</strong> Representatives from major implementers, academic institutions, industry associations, community leaders</p>
+            <p><strong>Meetings:</strong> Quarterly governance reviews, annual strategic planning, ad-hoc conflict resolution</p>
+            <p><strong>Deliverables:</strong> Governance policies, strategic roadmap, ecosystem health reports, dispute resolutions</p>
+        </div>
+
+        <div class="committee-role">
+            <h4>Security Advisory Board (SAB)</h4>
+            <p><strong>Responsibilities:</strong> Vulnerability disclosure, security incident response, cryptographic review, threat modeling</p>
+            <p><strong>Membership:</strong> Security researchers, cryptographers, implementation security leads, incident response experts</p>
+            <p><strong>Meetings:</strong> As-needed for security issues, quarterly security reviews, annual threat assessment</p>
+            <p><strong>Deliverables:</strong> Security advisories, vulnerability reports, cryptographic audits, incident response procedures</p>
+        </div>
+    </div>
+
+    <div class="rfc-process">
+        <h3>📋 RFC Process</h3>
+        <p>CertNode follows a structured RFC (Request for Comments) process for all protocol changes, ensuring community input and technical review.</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div>
+                    <h4>1. Draft RFC</h4>
+                    <p>Community member or working group creates initial draft with problem statement, proposed solution, and implementation considerations.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div>
+                    <h4>2. Community Review</h4>
+                    <p>30-day public comment period with discussion on GitHub, mailing lists, and community forums. Technical feedback incorporated.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div>
+                    <h4>3. Technical Evaluation</h4>
+                    <p>TWG conducts formal technical review, security analysis, and compatibility assessment. May require prototype implementation.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div>
+                    <h4>4. Governance Approval</h4>
+                    <p>Governance Council reviews RFC for alignment with standards goals, ecosystem impact, and implementation burden.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div>
+                    <h4>5. Final Standard</h4>
+                    <p>Approved RFCs become part of official CertNode specification with implementation guidelines and migration timeline.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section>
+        <h2>How to Participate</h2>
+        <p>CertNode governance is open to all stakeholders in the receipt infrastructure ecosystem. Multiple paths for meaningful participation.</p>
+
+        <div class="participation-grid">
+            <div class="participation-card">
+                <h4>🔧 For Implementers</h4>
+                <p>Companies and organizations building CertNode-compatible systems</p>
+                <ul>
+                    <li>Technical working group participation</li>
+                    <li>Implementation feedback and testing</li>
+                    <li>Compatibility certification programs</li>
+                    <li>Performance benchmarking and optimization</li>
+                </ul>
+                <a href="mailto:implementers@certnode.io?subject=Implementer%20Participation" class="participation-link">Join Implementers Group</a>
+            </div>
+
+            <div class="participation-card">
+                <h4>🔬 For Researchers</h4>
+                <p>Academic and industry security researchers, cryptographers</p>
+                <ul>
+                    <li>Security advisory board participation</li>
+                    <li>Vulnerability disclosure coordination</li>
+                    <li>Cryptographic protocol review and analysis</li>
+                    <li>Threat modeling and security research</li>
+                </ul>
+                <a href="mailto:security@certnode.io?subject=Security%20Advisory%20Participation" class="participation-link">Join Security Advisory</a>
+            </div>
+
+            <div class="participation-card">
+                <h4>🏢 For Organizations</h4>
+                <p>Standards bodies, industry associations, large enterprises</p>
+                <ul>
+                    <li>Governance council representation</li>
+                    <li>Strategic direction and roadmap input</li>
+                    <li>Industry liaison and coordination</li>
+                    <li>Policy and compliance guidance</li>
+                </ul>
+                <a href="mailto:governance@certnode.io?subject=Governance%20Council%20Participation" class="participation-link">Join Governance Council</a>
+            </div>
+
+            <div class="participation-card">
+                <h4>👥 For Community</h4>
+                <p>Individual developers, users, and community members</p>
+                <ul>
+                    <li>GitHub discussions and issue reporting</li>
+                    <li>RFC review and public commenting</li>
+                    <li>Community advocacy and education</li>
+                    <li>Documentation and example contributions</li>
+                </ul>
+                <a href="https://github.com/certnode/certnode/discussions" class="participation-link" target="_blank" rel="noopener">Join Community Discussions</a>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Current Initiatives</h2>
+
+        <div class="governance-grid">
+            <div class="governance-card">
+                <h4>📝 RFC 001: Core Protocol</h4>
+                <p><strong>Status:</strong> Published</p>
+                <p>Base specification for CertNode receipt format, cryptographic requirements, and verification procedures.</p>
+            </div>
+
+            <div class="governance-card">
+                <h4>🔐 RFC 002: Key Management</h4>
+                <p><strong>Status:</strong> Draft Review</p>
+                <p>Guidelines for JWKS deployment, key rotation, and multi-tenant key management scenarios.</p>
+            </div>
+
+            <div class="governance-card">
+                <h4>⚡ RFC 003: Performance Extensions</h4>
+                <p><strong>Status:</strong> Community Input</p>
+                <p>Optional optimizations for high-throughput implementations including batch verification and caching strategies.</p>
+            </div>
+
+            <div class="governance-card">
+                <h4>🌐 RFC 004: Federation</h4>
+                <p><strong>Status:</strong> Early Draft</p>
+                <p>Cross-organization receipt verification and trust delegation mechanisms for federated environments.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e1e5e9; color: #64748b;">
+        <p>CertNode Standards Governance • Open, Transparent, Community-Driven</p>
+        <p>
+            <a href="/trust" style="color: #1e40af;">Trust Center</a> |
+            <a href="/.well-known/jwks.json" style="color: #1e40af;">JWKS Endpoint</a> |
+            <a href="https://github.com/certnode/certnode" style="color: #1e40af;" target="_blank" rel="noopener">GitHub</a>
+        </p>
+    </footer>
+</body>
+</html>

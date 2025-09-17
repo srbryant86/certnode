@@ -39,11 +39,11 @@
 - [x] **Open source examples** for common use cases (e-commerce, APIs, IoT)
 
 #### **Market Validation**
-- [ ] **Target 50 early adopters** - fintech startups, crypto projects, API companies
-- [ ] **Infrastructure pricing model** - Usage-based for scale, not SaaS tiers
-- [ ] **Build showcase** - public gallery of companies using CertNode receipts
-- [ ] **Developer community** - Discord, GitHub discussions, Stack Overflow presence
-- [ ] **Standards governance signals** - Position as protocol steward, not vendor
+- [x] **Target 50 early adopters** - fintech startups, crypto projects, API companies
+- [x] **Infrastructure pricing model** - Usage-based for scale, not SaaS tiers
+- [x] **Build showcase** - public gallery of companies using CertNode receipts
+- [x] **Developer community** - Discord, GitHub discussions, Stack Overflow presence
+- [x] **Standards governance signals** - Position as protocol steward, not vendor
 
 #### **Content & Positioning**
 - [ ] **"Why Every API Needs Receipts"** - viral developer blog post

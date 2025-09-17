@@ -42,7 +42,8 @@
   ],
   "rewrites": [
     { "source": "/trust", "destination": "/public/trust/index.html" },
-    { "source": "/status", "destination": "/public/status/index.html" }
+    { "source": "/status", "destination": "/public/status/index.html" },
+    { "source": "/usage", "destination": "/public/usage/index.html" }
   ],
   "routes": [
     {

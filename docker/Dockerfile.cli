@@ -1,0 +1,48 @@
+# CertNode CLI Docker Image
+# Lightweight image for receipt verification and project scaffolding
+
+FROM node:20-alpine
+
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init curl
+
+# Create non-root user
+RUN addgroup -g 1001 -S certnode && \
+    adduser -S certnode -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Install CertNode CLI globally
+RUN npm install -g @certnode/cli && npm cache clean --force
+
+# Create directories for volume mounts
+RUN mkdir -p /app/receipts /app/jwks /app/output && \
+    chown -R certnode:certnode /app
+
+# Switch to non-root user
+USER certnode
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD certnode --version || exit 1
+
+# Default working directory for mounted volumes
+WORKDIR /app
+
+# Default command shows help
+ENTRYPOINT ["dumb-init", "--", "certnode"]
+CMD ["--help"]
+
+# Labels for metadata
+LABEL org.opencontainers.image.title="CertNode CLI"
+LABEL org.opencontainers.image.description="Command-line interface for CertNode receipt verification"
+LABEL org.opencontainers.image.vendor="CertNode"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.source="https://github.com/srbryant86/certnode"
+LABEL org.opencontainers.image.documentation="https://certnode.io/docs"
+
+# Usage examples in labels
+LABEL usage.verify="docker run --rm -v \$(pwd):/app certnode/cli verify -r receipt.json -k jwks.json"
+LABEL usage.init="docker run --rm -v \$(pwd):/app certnode/cli init my-project"
+LABEL usage.generate="docker run --rm -v \$(pwd):/app certnode/cli generate jwks --algorithm ES256"

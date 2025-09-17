@@ -1,0 +1,225 @@
+{
+  "version": "1.1",
+  "description": "Valid CertNode receipts that should pass verification",
+  "vectors": [
+    {
+      "id": "es256_basic",
+      "description": "Basic ES256 receipt with simple payload",
+      "algorithm": "ES256",
+      "input": {
+        "receipt": {
+          "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6InRlc3Qta2V5LTEiLCJ0eXAiOiJjZXJ0bm9kZStqd3MifQ",
+          "payload": {
+            "document_id": "DOC-2025-001",
+            "content": "Sample document content",
+            "timestamp": "2025-01-15T10:30:00Z"
+          },
+          "signature": "MEQCIAH8B3K2l1D0F9X7Zz8Q2P5M6N7R3S4T5U6V7W8X9Y0ZAiBCK3L4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8A9B0C1D2E3F4",
+          "kid": "test-key-1"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "EC",
+              "crv": "P-256",
+              "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+              "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+              "kid": "test-key-1",
+              "use": "sig",
+              "alg": "ES256"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": true,
+        "algorithm": "ES256",
+        "key_id": "test-key-1"
+      },
+      "notes": "Standard ES256 receipt with all required fields"
+    },
+    {
+      "id": "eddsa_basic",
+      "description": "Basic EdDSA receipt with simple payload",
+      "algorithm": "EdDSA",
+      "input": {
+        "receipt": {
+          "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3Qta2V5LTIiLCJ0eXAiOiJjZXJ0bm9kZStqd3MifQ",
+          "payload": {
+            "document_id": "DOC-2025-002",
+            "content": "Sample document content for EdDSA",
+            "timestamp": "2025-01-15T11:30:00Z"
+          },
+          "signature": "hgyY0il_MGCjP0JzlnLWG1PPOt7-09PGcvMg3AIbQR6dWbhijcNR4ki4iylGjg5BhVsPt9g7sVvpAr_MuM0KAA",
+          "kid": "test-key-2"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "OKP",
+              "crv": "Ed25519",
+              "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+              "kid": "test-key-2",
+              "use": "sig",
+              "alg": "EdDSA"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": true,
+        "algorithm": "EdDSA",
+        "key_id": "test-key-2"
+      },
+      "notes": "EdDSA receipt providing deterministic signatures"
+    },
+    {
+      "id": "with_payload_hash",
+      "description": "Receipt with payload hash verification",
+      "algorithm": "ES256",
+      "input": {
+        "receipt": {
+          "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6InRlc3Qta2V5LTEiLCJ0eXAiOiJjZXJ0bm9kZStqd3MifQ",
+          "payload": {
+            "document_id": "DOC-2025-003",
+            "data": {
+              "amount": 45000,
+              "currency": "USD",
+              "transaction_id": "TXN-123456"
+            },
+            "timestamp": "2025-01-15T12:30:00Z"
+          },
+          "signature": "MEQCIAH8B3K2l1D0F9X7Zz8Q2P5M6N7R3S4T5U6V7W8X9Y0ZAiBCK3L4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8A9B0C1D2E3F4",
+          "kid": "test-key-1",
+          "payload_jcs_sha256": "uU0nuZNNPgilLlLX2n2r-sSE7-N6U4DukIj3rOLvzek"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "EC",
+              "crv": "P-256",
+              "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+              "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+              "kid": "test-key-1",
+              "use": "sig",
+              "alg": "ES256"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": true,
+        "algorithm": "ES256",
+        "key_id": "test-key-1",
+        "payload_hash_valid": true
+      },
+      "notes": "Receipt includes optional payload hash for canonicalization verification"
+    },
+    {
+      "id": "complex_payload",
+      "description": "Receipt with complex nested payload requiring canonicalization",
+      "algorithm": "EdDSA",
+      "input": {
+        "receipt": {
+          "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6InRlc3Qta2V5LTIiLCJ0eXAiOiJjZXJ0bm9kZStqd3MifQ",
+          "payload": {
+            "metadata": {
+              "version": "1.0",
+              "created": "2025-01-15T13:30:00Z"
+            },
+            "document": {
+              "title": "Financial Report Q4 2024",
+              "sections": [
+                {
+                  "name": "Revenue",
+                  "data": [1000000, 1100000, 1200000]
+                },
+                {
+                  "name": "Expenses",
+                  "data": [800000, 850000, 900000]
+                }
+              ]
+            },
+            "signatures": {
+              "cfo": "John Smith",
+              "ceo": "Jane Doe"
+            }
+          },
+          "signature": "hgyY0il_MGCjP0JzlnLWG1PPOt7-09PGcvMg3AIbQR6dWbhijcNR4ki4iylGjg5BhVsPt9g7sVvpAr_MuM0KAA",
+          "kid": "test-key-2"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "OKP",
+              "crv": "Ed25519",
+              "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+              "kid": "test-key-2",
+              "use": "sig",
+              "alg": "EdDSA"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": true,
+        "algorithm": "EdDSA",
+        "key_id": "test-key-2"
+      },
+      "notes": "Tests canonicalization of complex nested objects with arrays and multiple data types"
+    },
+    {
+      "id": "multiple_keys_jwks",
+      "description": "Receipt verification with multiple keys in JWKS",
+      "algorithm": "ES256",
+      "input": {
+        "receipt": {
+          "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6InRlc3Qta2V5LTMiLCJ0eXAiOiJjZXJ0bm9kZStqd3MifQ",
+          "payload": {
+            "document_id": "DOC-2025-005",
+            "content": "Multi-key environment test",
+            "timestamp": "2025-01-15T14:30:00Z"
+          },
+          "signature": "MEQCIAH8B3K2l1D0F9X7Zz8Q2P5M6N7R3S4T5U6V7W8X9Y0ZAiBCK3L4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8A9B0C1D2E3F4",
+          "kid": "test-key-3"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "EC",
+              "crv": "P-256",
+              "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+              "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+              "kid": "test-key-1",
+              "use": "sig",
+              "alg": "ES256"
+            },
+            {
+              "kty": "OKP",
+              "crv": "Ed25519",
+              "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+              "kid": "test-key-2",
+              "use": "sig",
+              "alg": "EdDSA"
+            },
+            {
+              "kty": "EC",
+              "crv": "P-256",
+              "x": "WKn-ZIGevcwGIyyrzFoZNBdaq9_TsqzGHwHitJBcBmXmyPpadQn_VgqhQoC-VMwD",
+              "y": "y77As5vbZdIh1VjayLysHWtDtKxWZ6gITXLhAJPgzjQUm1vKM4PzkSjmWlPsI2LP",
+              "kid": "test-key-3",
+              "use": "sig",
+              "alg": "ES256"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": true,
+        "algorithm": "ES256",
+        "key_id": "test-key-3"
+      },
+      "notes": "Tests key selection from JWKS with multiple keys of different algorithms"
+    }
+  ]
+}

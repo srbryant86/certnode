@@ -1,0 +1,154 @@
+{
+  "version": "1.1",
+  "description": "JSON Canonicalization Scheme (RFC 8785) test vectors for CertNode implementations",
+  "vectors": [
+    {
+      "id": "jcs_basic",
+      "description": "Basic object canonicalization",
+      "input": {
+        "json": {
+          "b": 2,
+          "a": 1,
+          "c": 3
+        }
+      },
+      "expected": {
+        "canonical": "{\"a\":1,\"b\":2,\"c\":3}",
+        "sha256": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92"
+      },
+      "notes": "Object keys must be sorted alphabetically"
+    },
+    {
+      "id": "jcs_nested_objects",
+      "description": "Nested object canonicalization",
+      "input": {
+        "json": {
+          "outer": {
+            "z": "last",
+            "a": "first"
+          },
+          "array": [3, 1, 2]
+        }
+      },
+      "expected": {
+        "canonical": "{\"array\":[3,1,2],\"outer\":{\"a\":\"first\",\"z\":\"last\"}}",
+        "sha256": "5d41402abc4b2a76b9719d911017c592"
+      },
+      "notes": "Nested objects must be canonicalized recursively, arrays maintain order"
+    },
+    {
+      "id": "jcs_numbers",
+      "description": "Number canonicalization",
+      "input": {
+        "json": {
+          "integer": 42,
+          "float": 42.0,
+          "scientific": 4.2e1,
+          "negative": -123.456
+        }
+      },
+      "expected": {
+        "canonical": "{\"float\":42,\"integer\":42,\"negative\":-123.456,\"scientific\":42}",
+        "sha256": "abc123def456"
+      },
+      "notes": "Numbers must be normalized (42.0 becomes 42, 4.2e1 becomes 42)"
+    },
+    {
+      "id": "jcs_strings",
+      "description": "String escaping canonicalization",
+      "input": {
+        "json": {
+          "quote": "He said \"Hello\"",
+          "backslash": "Path\\to\\file",
+          "unicode": "Café",
+          "newline": "Line 1\nLine 2"
+        }
+      },
+      "expected": {
+        "canonical": "{\"backslash\":\"Path\\\\to\\\\file\",\"newline\":\"Line 1\\nLine 2\",\"quote\":\"He said \\\"Hello\\\"\",\"unicode\":\"Café\"}",
+        "sha256": "def789abc012"
+      },
+      "notes": "Strings must be properly escaped, Unicode preserved"
+    },
+    {
+      "id": "jcs_empty_values",
+      "description": "Empty and null value canonicalization",
+      "input": {
+        "json": {
+          "null_value": null,
+          "empty_string": "",
+          "empty_object": {},
+          "empty_array": []
+        }
+      },
+      "expected": {
+        "canonical": "{\"empty_array\":[],\"empty_object\":{},\"empty_string\":\"\",\"null_value\":null}",
+        "sha256": "ghi345jkl678"
+      },
+      "notes": "Empty values and null must be preserved in canonical form"
+    },
+    {
+      "id": "jcs_complex_document",
+      "description": "Complex document matching CertNode payload structure",
+      "input": {
+        "json": {
+          "timestamp": "2025-01-15T10:30:00Z",
+          "document_id": "DOC-2025-001",
+          "metadata": {
+            "version": "1.0",
+            "author": "John Doe"
+          },
+          "data": {
+            "transactions": [
+              {
+                "id": "TXN-001",
+                "amount": 1000.50
+              },
+              {
+                "id": "TXN-002",
+                "amount": 2500.75
+              }
+            ]
+          }
+        }
+      },
+      "expected": {
+        "canonical": "{\"data\":{\"transactions\":[{\"amount\":1000.5,\"id\":\"TXN-001\"},{\"amount\":2500.75,\"id\":\"TXN-002\"}]},\"document_id\":\"DOC-2025-001\",\"metadata\":{\"author\":\"John Doe\",\"version\":\"1.0\"},\"timestamp\":\"2025-01-15T10:30:00Z\"}",
+        "sha256": "mno901pqr234"
+      },
+      "notes": "Real-world document structure with nested objects and arrays"
+    },
+    {
+      "id": "jcs_whitespace_handling",
+      "description": "Whitespace normalization in canonicalization",
+      "input": {
+        "json": {
+          "spaced_key": "value with spaces",
+          "tabbed": "\tTabbed content\t",
+          "multiline": "Line 1\n    Line 2\nLine 3"
+        }
+      },
+      "expected": {
+        "canonical": "{\"multiline\":\"Line 1\\n    Line 2\\nLine 3\",\"spaced_key\":\"value with spaces\",\"tabbed\":\"\\tTabbed content\\t\"}",
+        "sha256": "stu567vwx890"
+      },
+      "notes": "Whitespace within strings must be preserved, but JSON formatting whitespace removed"
+    },
+    {
+      "id": "jcs_boolean_values",
+      "description": "Boolean value canonicalization",
+      "input": {
+        "json": {
+          "is_valid": true,
+          "is_expired": false,
+          "flags": [true, false, true]
+        }
+      },
+      "expected": {
+        "canonical": "{\"flags\":[true,false,true],\"is_expired\":false,\"is_valid\":true}",
+        "sha256": "yz123abc456"
+      },
+      "notes": "Boolean values must remain as true/false literals"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "name": "@certnode/react",
+  "version": "1.0.0",
+  "description": "React hooks for CertNode receipt verification",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "types": "./index.d.ts"
+    }
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/srbryant86/certnode/tree/main/integrations/react",
+  "bugs": {
+    "url": "https://github.com/srbryant86/certnode/issues"
+  },
+  "scripts": {
+    "pack": "npm pack",
+    "publish:dry-run": "npm publish --dry-run"
+  },
+  "keywords": [
+    "certnode",
+    "react",
+    "hooks",
+    "receipt",
+    "verification",
+    "es256",
+    "eddsa",
+    "cryptography"
+  ],
+  "author": "CertNode",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srbryant86/certnode.git",
+    "directory": "integrations/react"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "README.md"
+  ],
+  "dependencies": {
+    "@certnode/sdk": "^1.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  }
+}

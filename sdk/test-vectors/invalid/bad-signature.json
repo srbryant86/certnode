@@ -1,0 +1,35 @@
+{
+  "description": "Receipt with invalid signature",
+  "receipt": {
+    "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6InRlc3QtZWMta2V5LTEifQ",
+    "payload": {
+      "document": "This signature has been tampered with"
+    },
+    "signature": "INVALID_SIGNATURE_DATA_HERE_SHOULD_FAIL_VERIFICATION",
+    "kid": "test-ec-key-1",
+    "payload_jcs_sha256": null,
+    "receipt_id": null
+  },
+  "jwks": {
+    "keys": [
+      {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+        "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+        "kid": "test-ec-key-1",
+        "alg": "ES256"
+      }
+    ]
+  },
+  "expected_result": {
+    "valid": false,
+    "reason": "Invalid signature encoding"
+  },
+  "metadata": {
+    "algorithm": "ES256",
+    "features": ["invalid_signature"],
+    "created": "2024-01-15T10:00:00Z",
+    "notes": "Tests signature validation with malformed signature data"
+  }
+}

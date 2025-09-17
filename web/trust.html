@@ -342,6 +342,122 @@
       </div>
 
       <div class="trust-section">
+        <h2>Key Management & Rotation</h2>
+        <p>Transparent key lifecycle management with public rotation logs and security policies:</p>
+
+        <h3>Current Keys</h3>
+        <div style="background: var(--border-light); border-radius: 8px; padding: 16px; margin: 16px 0; font-family: monospace; font-size: 14px;">
+          <div style="margin-bottom: 8px;"><strong>Active Key ID:</strong> cert-2025-01-15-prod</div>
+          <div style="margin-bottom: 8px;"><strong>Algorithm:</strong> ES256 (ECDSA P-256)</div>
+          <div style="margin-bottom: 8px;"><strong>Created:</strong> 2025-01-15T10:30:00Z</div>
+          <div><strong>JWKS Endpoint:</strong> <a href="/.well-known/jwks.json" style="color: var(--primary);">/.well-known/jwks.json</a></div>
+        </div>
+
+        <h3>Rotation Log</h3>
+        <div style="overflow-x: auto; margin: 16px 0;">
+          <table style="width: 100%; border-collapse: collapse; font-family: monospace; font-size: 14px;">
+            <thead>
+              <tr style="background: var(--border-light); border-bottom: 2px solid var(--border);">
+                <th style="padding: 12px; text-align: left; border-right: 1px solid var(--border);">Date</th>
+                <th style="padding: 12px; text-align: left; border-right: 1px solid var(--border);">Key ID</th>
+                <th style="padding: 12px; text-align: left; border-right: 1px solid var(--border);">Action</th>
+                <th style="padding: 12px; text-align: left;">Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border-light);">
+                <td style="padding: 12px; border-right: 1px solid var(--border-light);">2025-01-15T10:30:00Z</td>
+                <td style="padding: 12px; border-right: 1px solid var(--border-light);">cert-2025-01-15-prod</td>
+                <td style="padding: 12px; border-right: 1px solid var(--border-light); color: var(--verified-green);">added</td>
+                <td style="padding: 12px;">Initial production key deployment</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-light);">
+                <td style="padding: 12px; border-right: 1px solid var(--border-light);">2025-01-01T00:00:00Z</td>
+                <td style="padding: 12px; border-right: 1px solid var(--border-light);">cert-2024-12-test</td>
+                <td style="padding: 12px; border-right: 1px solid var(--border-light); color: var(--warning-amber);">deprecated</td>
+                <td style="padding: 12px;">Retired test environment key</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Rotation Policy</h3>
+        <ul class="trust-list">
+          <li><strong>Regular Rotation:</strong> Keys rotated every 90 days or as needed</li>
+          <li><strong>Emergency Rotation:</strong> Immediate rotation upon suspected compromise</li>
+          <li><strong>Grace Period:</strong> Previous keys maintained for 90 days after rotation</li>
+          <li><strong>Notification:</strong> 7-day advance notice for planned rotations</li>
+        </ul>
+      </div>
+
+      <div class="trust-section">
+        <h2>Security Policies & Procedures</h2>
+        <p>Enterprise-grade security controls and operational transparency:</p>
+
+        <h3>Incident Response</h3>
+        <ul class="trust-list">
+          <li><strong>Security Contact:</strong> <a href="mailto:security@certnode.io" style="color: var(--primary);">security@certnode.io</a></li>
+          <li><strong>Response Time:</strong> Critical issues acknowledged within 4 hours</li>
+          <li><strong>Disclosure Policy:</strong> Coordinated vulnerability disclosure with 90-day timeline</li>
+          <li><strong>Status Updates:</strong> Real-time incident communication via status page</li>
+        </ul>
+
+        <h3>Security Monitoring</h3>
+        <ul class="trust-list">
+          <li><strong>24/7 Monitoring:</strong> Continuous security monitoring and alerting</li>
+          <li><strong>Anomaly Detection:</strong> Automated detection of unusual signing patterns</li>
+          <li><strong>Access Logging:</strong> Comprehensive audit logs for all key operations</li>
+          <li><strong>Penetration Testing:</strong> Quarterly security assessments by independent firms</li>
+        </ul>
+
+        <h3>Compliance Documentation</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 16px 0;">
+          <div style="padding: 16px; border: 1px solid var(--border); border-radius: 8px; text-align: center;">
+            <div style="font-weight: 600; margin-bottom: 8px;">SOC 2 Type II</div>
+            <div style="font-size: 14px; color: var(--text-muted);">Available upon request</div>
+          </div>
+          <div style="padding: 16px; border: 1px solid var(--border); border-radius: 8px; text-align: center;">
+            <div style="font-weight: 600; margin-bottom: 8px;">Security Audit</div>
+            <div style="font-size: 14px; color: var(--text-muted);">Q1 2025 completion</div>
+          </div>
+          <div style="padding: 16px; border: 1px solid var(--border); border-radius: 8px; text-align: center;">
+            <div style="font-weight: 600; margin-bottom: 8px;">Penetration Test</div>
+            <div style="font-size: 14px; color: var(--text-muted);">Quarterly assessment</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trust-section">
+        <h2>Service Level Targets</h2>
+        <p>Our operational commitments for the CertNode infrastructure:</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin: 24px 0;">
+          <div>
+            <h4 style="color: var(--primary); margin-bottom: 8px;">Availability</h4>
+            <div style="font-size: 24px; font-weight: 600; color: var(--verified-green); margin-bottom: 4px;">99.9%</div>
+            <div style="font-size: 14px; color: var(--text-muted);">Monthly uptime target</div>
+          </div>
+          <div>
+            <h4 style="color: var(--primary); margin-bottom: 8px;">Response Time</h4>
+            <div style="font-size: 24px; font-weight: 600; color: var(--verified-green); margin-bottom: 4px;">&lt; 200ms</div>
+            <div style="font-size: 14px; color: var(--text-muted);">95th percentile API response</div>
+          </div>
+          <div>
+            <h4 style="color: var(--primary); margin-bottom: 8px;">Error Rate</h4>
+            <div style="font-size: 24px; font-weight: 600; color: var(--verified-green); margin-bottom: 4px;">&lt; 0.1%</div>
+            <div style="font-size: 14px; color: var(--text-muted);">Monthly error rate target</div>
+          </div>
+        </div>
+
+        <ul class="trust-list">
+          <li><strong>Status Page:</strong> <a href="/status" style="color: var(--primary);">Real-time service health monitoring</a></li>
+          <li><strong>Maintenance Windows:</strong> Scheduled during low-traffic periods with advance notice</li>
+          <li><strong>Disaster Recovery:</strong> Multi-region failover with RTO < 15 minutes</li>
+          <li><strong>Data Retention:</strong> Cryptographic receipts retained for minimum 7 years</li>
+        </ul>
+      </div>
+
+      <div class="trust-section">
         <h2>Open Source Commitment</h2>
         <p>Transparency through open source development ensures you can verify our security claims:</p>
 
@@ -350,6 +466,8 @@
           <li><strong>Security Reviews:</strong> Community-driven security auditing</li>
           <li><strong>No Hidden Code:</strong> All cryptographic operations are transparent</li>
           <li><strong>Reproducible Builds:</strong> Verify the deployed code matches the source</li>
+          <li><strong>Test Vectors:</strong> Comprehensive test suites for implementation validation</li>
+          <li><strong>Bug Bounty:</strong> Responsible disclosure program with security researchers</li>
         </ul>
       </div>
 

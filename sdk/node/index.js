@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------
-// sdk/node/index.js 
-// Minimal Node SDK for CertNode receipt verification (ES256 only, no deps)
+// sdk/node/index.js
+// Node.js SDK for CertNode receipt verification (ES256 + EdDSA, zero dependencies)
 const crypto = require('crypto');
 const { JWKSManager } = require('./jwks-manager');
 
@@ -51,11 +51,14 @@ function b64uToBuf(str) {
 }
 
 function jwkThumbprint(jwk) {
-  if (!jwk || jwk.kty !== 'EC' || jwk.crv !== 'P-256' || !jwk.x || !jwk.y) {
-    throw new Error('Only EC P-256 JWK supported for thumbprint');
+  if (jwk.kty === 'EC' && jwk.crv === 'P-256' && jwk.x && jwk.y) {
+    const json = JSON.stringify({ crv: jwk.crv, kty: jwk.kty, x: jwk.x, y: jwk.y });
+    return b64u(crypto.createHash('sha256').update(json, 'utf8').digest());
+  } else if (jwk.kty === 'OKP' && jwk.crv === 'Ed25519' && jwk.x) {
+    const json = JSON.stringify({ crv: jwk.crv, kty: jwk.kty, x: jwk.x });
+    return b64u(crypto.createHash('sha256').update(json, 'utf8').digest());
   }
-  const json = JSON.stringify({ crv: jwk.crv, kty: jwk.kty, x: jwk.x, y: jwk.y });
-  return b64u(crypto.createHash('sha256').update(json, 'utf8').digest());
+  throw new Error('Only EC P-256 and OKP Ed25519 JWK supported for thumbprint');
 }
 
 function joseToDer(jose) {
@@ -86,21 +89,40 @@ function spkiFromP256Jwk(jwk) {
   if (!jwk || jwk.kty !== 'EC' || jwk.crv !== 'P-256' || !jwk.x || !jwk.y) {
     throw new Error('Invalid P-256 JWK');
   }
-  
+
   const xBuf = b64uToBuf(jwk.x);
   const yBuf = b64uToBuf(jwk.y);
-  
+
   if (xBuf.length !== 32 || yBuf.length !== 32) {
     throw new Error('Invalid coordinate length for P-256');
   }
-  
+
   // SPKI prefix for P-256 uncompressed point
   const spkiPrefix = Buffer.from([
-    0x30, 0x59, 0x30, 0x13, 0x06, 0x07, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x02, 0x01, 
+    0x30, 0x59, 0x30, 0x13, 0x06, 0x07, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x02, 0x01,
     0x06, 0x08, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x03, 0x01, 0x07, 0x03, 0x42, 0x00, 0x04
   ]);
-  
+
   return Buffer.concat([spkiPrefix, xBuf, yBuf]);
+}
+
+function spkiFromEd25519Jwk(jwk) {
+  if (!jwk || jwk.kty !== 'OKP' || jwk.crv !== 'Ed25519' || !jwk.x) {
+    throw new Error('Invalid Ed25519 JWK');
+  }
+
+  const publicKey = b64uToBuf(jwk.x);
+
+  if (publicKey.length !== 32) {
+    throw new Error('Invalid public key length for Ed25519');
+  }
+
+  // SPKI prefix for Ed25519
+  const spkiPrefix = Buffer.from([
+    0x30, 0x2a, 0x30, 0x05, 0x06, 0x03, 0x2b, 0x65, 0x70, 0x03, 0x21, 0x00
+  ]);
+
+  return Buffer.concat([spkiPrefix, publicKey]);
 }
 
 /**
@@ -126,9 +148,9 @@ async function verifyReceipt({ receipt, jwks }) {
     const protectedBuf = b64uToBuf(receipt.protected);
     const header = JSON.parse(protectedBuf.toString('utf8'));
     
-    // Validate header
-    if (header.alg !== 'ES256') {
-      return { ok: false, reason: `Unsupported algorithm: ${header.alg}` };
+    // Validate algorithm
+    if (!['ES256', 'EdDSA'].includes(header.alg)) {
+      return { ok: false, reason: `Unsupported algorithm: ${header.alg}. Use ES256 or EdDSA.` };
     }
     
     if (header.kid !== receipt.kid) {
@@ -169,17 +191,37 @@ async function verifyReceipt({ receipt, jwks }) {
     const payloadB64u = b64u(canonicalize(receipt.payload));
     const signingInput = receipt.protected + '.' + payloadB64u;
     
-    // Verify signature
-    const spki = spkiFromP256Jwk(key);
-    const publicKey = crypto.createPublicKey({ key: spki, format: 'der', type: 'spki' });
-    
+    // Verify signature based on algorithm
+    let isValid = false;
     const signatureBuf = b64uToBuf(receipt.signature);
-    const derSignature = joseToDer(signatureBuf);
-    
-    const verify = crypto.createVerify('SHA256');
-    verify.update(signingInput, 'utf8');
-    
-    const isValid = verify.verify(publicKey, derSignature);
+
+    if (header.alg === 'ES256') {
+      // ES256 verification with P-256
+      if (key.kty !== 'EC' || key.crv !== 'P-256') {
+        return { ok: false, reason: 'ES256 requires EC P-256 key' };
+      }
+
+      const spki = spkiFromP256Jwk(key);
+      const publicKey = crypto.createPublicKey({ key: spki, format: 'der', type: 'spki' });
+      const derSignature = joseToDer(signatureBuf);
+
+      const verify = crypto.createVerify('SHA256');
+      verify.update(signingInput, 'utf8');
+      isValid = verify.verify(publicKey, derSignature);
+
+    } else if (header.alg === 'EdDSA') {
+      // EdDSA verification with Ed25519
+      if (key.kty !== 'OKP' || key.crv !== 'Ed25519') {
+        return { ok: false, reason: 'EdDSA requires OKP Ed25519 key' };
+      }
+
+      const spki = spkiFromEd25519Jwk(key);
+      const publicKey = crypto.createPublicKey({ key: spki, format: 'der', type: 'spki' });
+
+      const verify = crypto.createVerify(null);
+      verify.update(signingInput, 'utf8');
+      isValid = verify.verify(publicKey, signatureBuf);
+    }
     
     if (!isValid) {
       return { ok: false, reason: 'Invalid signature' };

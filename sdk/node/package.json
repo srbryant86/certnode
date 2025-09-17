@@ -1,7 +1,7 @@
 {
     "name": "@certnode/sdk",
-    "version": "1.0.7",
-    "description": "Minimal Node SDK for CertNode receipt verification",
+    "version": "1.1.0",
+    "description": "Node.js SDK for CertNode receipt verification - supports ES256 and EdDSA algorithms with zero dependencies",
     "main": "index.js",
     "types": "index.d.ts",
     "exports": {
@@ -30,9 +30,13 @@
         "receipt",
         "verification",
         "es256",
+        "eddsa",
         "ecdsa",
+        "ed25519",
         "jws",
-        "cryptography"
+        "cryptography",
+        "digital-evidence",
+        "tamper-evident"
     ],
     "author": "CertNode",
     "license": "MIT",

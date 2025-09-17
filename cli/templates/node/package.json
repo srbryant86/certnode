@@ -1,0 +1,20 @@
+{
+  "name": "{{projectName}}",
+  "version": "1.0.0",
+  "description": "CertNode project - receipt verification with Node.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "@certnode/sdk": "^1.1.0"
+  },
+  "keywords": [
+    "certnode",
+    "receipt",
+    "verification"
+  ],
+  "author": "",
+  "license": "MIT"
+}

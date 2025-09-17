@@ -1,0 +1,51 @@
+# CertNode Web SDK Docker Image
+# Serves the browser SDK and documentation site
+
+FROM nginx:alpine
+
+# Install Node.js for building (if needed)
+RUN apk add --no-cache nodejs npm
+
+# Create working directory
+WORKDIR /usr/share/nginx/html
+
+# Copy web SDK files
+COPY sdk/web/ ./sdk/
+COPY docs/ ./docs/
+
+# Copy custom nginx configuration
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+
+# Create index.html that redirects to docs
+RUN echo '<!DOCTYPE html>\
+<html>\
+<head>\
+    <title>CertNode SDK</title>\
+    <meta http-equiv="refresh" content="0; url=/docs/">\
+</head>\
+<body>\
+    <h1>Redirecting to CertNode Documentation...</h1>\
+    <p>If you are not redirected, <a href="/docs/">click here</a>.</p>\
+</body>\
+</html>' > index.html
+
+# Set permissions
+RUN chown -R nginx:nginx /usr/share/nginx/html
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:80/sdk/index.js || exit 1
+
+# Expose port
+EXPOSE 80
+
+# Labels
+LABEL org.opencontainers.image.title="CertNode Web SDK"
+LABEL org.opencontainers.image.description="Browser SDK and documentation for CertNode"
+LABEL org.opencontainers.image.vendor="CertNode"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.source="https://github.com/srbryant86/certnode"
+LABEL org.opencontainers.image.documentation="https://certnode.io/docs"
+
+# Default nginx command
+CMD ["nginx", "-g", "daemon off;"]

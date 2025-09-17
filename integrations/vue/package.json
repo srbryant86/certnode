@@ -1,0 +1,56 @@
+{
+  "name": "@certnode/vue",
+  "version": "1.0.0",
+  "description": "Vue composables for CertNode receipt verification",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "types": "./index.d.ts"
+    }
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/srbryant86/certnode/tree/main/integrations/vue",
+  "bugs": {
+    "url": "https://github.com/srbryant86/certnode/issues"
+  },
+  "scripts": {
+    "pack": "npm pack",
+    "publish:dry-run": "npm publish --dry-run"
+  },
+  "keywords": [
+    "certnode",
+    "vue",
+    "composables",
+    "receipt",
+    "verification",
+    "es256",
+    "eddsa",
+    "cryptography"
+  ],
+  "author": "CertNode",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srbryant86/certnode.git",
+    "directory": "integrations/vue"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "README.md"
+  ],
+  "dependencies": {
+    "@certnode/sdk": "^1.1.0"
+  },
+  "peerDependencies": {
+    "vue": ">=3.0.0"
+  }
+}

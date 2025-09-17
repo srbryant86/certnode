@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CertNode - Developer Documentation & Interactive Examples</title>
+    <style>
+        :root {
+            --primary: #007bff;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #343a40;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), #0056b3);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav {
+            background: var(--light);
+            padding: 1rem 0;
+            border-bottom: 1px solid #dee2e6;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .section {
+            padding: 3rem 0;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            margin-bottom: 2rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .interactive-demo {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        textarea.form-control {
+            height: 120px;
+            font-family: monospace;
+            resize: vertical;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .feature-list li:before {
+            content: "✅ ";
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .stat {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            float: right;
+            margin-top: -2rem;
+            margin-right: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            background: #545b62;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>🔐 CertNode Developer Documentation</h1>
+            <p>Interactive examples, SDKs, and comprehensive guides for tamper-evident digital records</p>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#overview" class="nav-link active" onclick="showSection('overview')">Overview</a>
+            <a href="#quickstart" class="nav-link" onclick="showSection('quickstart')">Quick Start</a>
+            <a href="#interactive" class="nav-link" onclick="showSection('interactive')">Interactive Demo</a>
+            <a href="#sdks" class="nav-link" onclick="showSection('sdks')">SDKs & Tools</a>
+            <a href="#examples" class="nav-link" onclick="showSection('examples')">Examples</a>
+            <a href="#api" class="nav-link" onclick="showSection('api')">API Reference</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <h2>🎯 Overview</h2>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Cryptographic Algorithms</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Dependencies (Node.js)</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">SDKs Available</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">5min</div>
+                    <div class="stat-label">Setup Time</div>
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>🚀 Zero Dependencies</h3>
+                    <p>Pure Node.js crypto implementation with no external dependencies. Lightweight browser SDK using WebCrypto API.</p>
+                    <ul class="feature-list">
+                        <li>Node.js SDK: Built on native crypto module</li>
+                        <li>Browser SDK: WebCrypto API integration</li>
+                        <li>CLI Tool: Commander.js for scaffolding</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>🔐 Dual Algorithm Support</h3>
+                    <p>Support for both traditional and modern cryptographic algorithms with RFC compliance.</p>
+                    <ul class="feature-list">
+                        <li>ES256: ECDSA P-256 with SHA-256</li>
+                        <li>EdDSA: Ed25519 deterministic signatures</li>
+                        <li>RFC 7515: JSON Web Signature compliance</li>
+                        <li>RFC 8785: JSON Canonicalization Scheme</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>⚡ Production Ready</h3>
+                    <p>Enterprise-grade verification with comprehensive error handling and TypeScript support.</p>
+                    <ul class="feature-list">
+                        <li>TypeScript definitions included</li>
+                        <li>Comprehensive error handling</li>
+                        <li>JWKS management with caching</li>
+                        <li>Batch verification support</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <strong>💡 What is CertNode?</strong> CertNode provides tamper-evident digital records through cryptographic receipts.
+                Verify document integrity and authenticity using ES256 or EdDSA algorithms with zero-dependency SDKs.
+            </div>
+        </section>
+
+        <!-- Quick Start Section -->
+        <section id="quickstart" class="section">
+            <h2>🏃 Quick Start</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>📦 Node.js Installation</h3>
+                    <div class="code-block">npm install @certnode/sdk<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <div class="code-block">const { verifyReceipt } = require('@certnode/sdk');
+
+const result = await verifyReceipt({
+  receipt: {
+    protected: "eyJhbGciOiJFUzI1Ni...",
+    payload: { document: "Hello, World!" },
+    signature: "MEQCIAH8B3K2l1D0F9...",
+    kid: "test-key"
+  },
+  jwks: { keys: [...] }
+});
+
+console.log(result.ok ? 'Valid!' : result.reason);<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+
+                <div class="card">
+                    <h3>🌐 Browser Usage</h3>
+                    <div class="code-block">&lt;script type="module"&gt;
+  import { verifyReceipt } from './certnode-web.js';
+
+  const result = await verifyReceipt({ receipt, jwks });
+  console.log(result.ok ? 'Valid!' : result.reason);
+&lt;/script&gt;<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+
+                <div class="card">
+                    <h3>⚡ CLI Usage</h3>
+                    <div class="code-block"># Install CLI globally
+npm install -g @certnode/cli
+
+# Verify a receipt
+certnode verify -r receipt.json -k jwks.json
+
+# Create new project
+certnode init my-app --template node<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3>🚀 Try It Now</h3>
+                <p>Choose your preferred setup method:</p>
+                <div style="margin: 1rem 0;">
+                    <button class="btn" onclick="showSetupMethod('node')">Node.js Project</button>
+                    <button class="btn" onclick="showSetupMethod('web')">Web Application</button>
+                    <button class="btn" onclick="showSetupMethod('cli')">CLI Tool</button>
+                </div>
+                <div id="setup-content"></div>
+            </div>
+        </section>
+
+        <!-- Interactive Demo Section -->
+        <section id="interactive" class="section">
+            <h2>🎮 Interactive Demo</h2>
+
+            <div class="interactive-demo">
+                <h3>Receipt Verification Playground</h3>
+                <p>Test receipt verification with real examples. All verification happens in your browser.</p>
+
+                <div class="grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="demo-receipt">Receipt JSON:</label>
+                            <textarea id="demo-receipt" class="form-control" placeholder="Paste your receipt JSON here..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="demo-jwks">JWKS JSON:</label>
+                            <textarea id="demo-jwks" class="form-control" placeholder="Paste your JWKS JSON here..."></textarea>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label>Quick Examples:</label>
+                            <div style="margin-top: 0.5rem;">
+                                <button class="btn btn-success" onclick="loadDemoExample('es256')">Load ES256 Example</button>
+                                <button class="btn btn-warning" onclick="loadDemoExample('eddsa')">Load EdDSA Example</button>
+                                <button class="btn" onclick="loadDemoExample('invalid')">Load Invalid Example</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn" onclick="verifyDemo()" style="width: 100%; font-size: 16px;">🔍 Verify Receipt</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="demo-result"></div>
+            </div>
+
+            <div class="card">
+                <h3>📊 Algorithm Comparison</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: var(--light);">
+                            <th style="padding: 0.75rem; border: 1px solid #dee2e6;">Algorithm</th>
+                            <th style="padding: 0.75rem; border: 1px solid #dee2e6;">Key Type</th>
+                            <th style="padding: 0.75rem; border: 1px solid #dee2e6;">Signature Size</th>
+                            <th style="padding: 0.75rem; border: 1px solid #dee2e6;">Performance</th>
+                            <th style="padding: 0.75rem; border: 1px solid #dee2e6;">Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #dee2e6;"><strong>ES256</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #dee2e6;">EC P-256</td>
+                            <td style="padding: 0.75rem; border: 1px solid #dee2e6;">64 bytes</td>
+                            <td style="padding: 0.75rem; border: 1px solid #dee2e6;">Fast</td>
+                            <td style="padding: 0.75rem; border: 1px solid #dee2e6;">General purpose, widely supported</td>
+                        </tr>
+                        <tr style="background: #f8f9fa;">
+                            <td style="padding: 0.75rem; border: 1px solid #dee2e6;"><strong>EdDSA</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #dee2e6;">Ed25519</td>
+                            <td style="padding: 0.75rem; border: 1px solid #dee2e6;">64 bytes</td>
+                            <td style="padding: 0.75rem; border: 1px solid #dee2e6;">Very fast</td>
+                            <td style="padding: 0.75rem; border: 1px solid #dee2e6;">Modern, deterministic, immune to timing attacks</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SDKs Section -->
+        <section id="sdks" class="section">
+            <h2>📚 SDKs & Tools</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>📦 @certnode/sdk (Node.js)</h3>
+                    <p>Zero-dependency Node.js SDK with full TypeScript support.</p>
+                    <div class="code-block">npm install @certnode/sdk<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <ul class="feature-list">
+                        <li>ES256 and EdDSA support</li>
+                        <li>JWKS management with caching</li>
+                        <li>Batch verification</li>
+                        <li>TypeScript definitions</li>
+                        <li>Zero dependencies</li>
+                    </ul>
+                    <div style="margin-top: 1rem;">
+                        <a href="https://www.npmjs.com/package/@certnode/sdk" class="btn">View on NPM</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🌐 Browser SDK</h3>
+                    <p>WebCrypto-based SDK for client-side verification.</p>
+                    <div class="code-block">import { verifyReceipt } from './certnode-web.js';<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <ul class="feature-list">
+                        <li>WebCrypto API integration</li>
+                        <li>ES modules support</li>
+                        <li>No server dependencies</li>
+                        <li>Same API as Node.js SDK</li>
+                        <li>Lightweight (&lt;10KB)</li>
+                    </ul>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn" onclick="downloadWebSDK()">Download Web SDK</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>⚡ @certnode/cli</h3>
+                    <p>Command-line tool for verification and project scaffolding.</p>
+                    <div class="code-block">npm install -g @certnode/cli<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <ul class="feature-list">
+                        <li>Receipt verification</li>
+                        <li>Project scaffolding</li>
+                        <li>Key generation</li>
+                        <li>File inspection</li>
+                        <li>CI/CD integration</li>
+                    </ul>
+                    <div style="margin-top: 1rem;">
+                        <a href="https://www.npmjs.com/package/@certnode/cli" class="btn">View on NPM</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3>🛠️ Quick Commands</h3>
+                <div class="grid">
+                    <div class="code-block"># Verify a receipt
+certnode verify \
+  --receipt receipt.json \
+  --jwks https://api.certnode.io/.well-known/jwks.json
+
+# Create new Node.js project
+certnode init my-app
+
+# Create Express.js API
+certnode init my-api --template express
+
+# Generate test keys
+certnode generate keys --algorithm EdDSA<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Examples Section -->
+        <section id="examples" class="section">
+            <h2>💡 Examples</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>🔍 Basic Verification</h3>
+                    <div class="code-block">const { verifyReceipt } = require('@certnode/sdk');
+
+async function verify() {
+  const receipt = {
+    protected: "eyJhbGciOiJFUzI1Ni...",
+    payload: { document_id: "DOC-123" },
+    signature: "MEQCIAH8B3K2l1D0...",
+    kid: "key-2025"
+  };
+
+  const jwks = { keys: [...] };
+  const result = await verifyReceipt({ receipt, jwks });
+
+  if (result.ok) {
+    console.log('✅ Valid receipt');
+  } else {
+    console.log('❌ Invalid:', result.reason);
+  }
+}<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+
+                <div class="card">
+                    <h3>🌐 Express.js Middleware</h3>
+                    <div class="code-block">const { verifyReceipt, JWKSManager } = require('@certnode/sdk');
+
+const jwksManager = new JWKSManager();
+
+function certNodeAuth(jwksUrl) {
+  return async (req, res, next) => {
+    try {
+      const receipt = req.body.receipt;
+      const jwks = await jwksManager.fetchFromUrl(jwksUrl);
+      const result = await verifyReceipt({ receipt, jwks });
+
+      if (result.ok) {
+        req.verifiedPayload = receipt.payload;
+        next();
+      } else {
+        res.status(401).json({ error: result.reason });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+}
+
+app.post('/api/submit',
+  certNodeAuth('https://api.certnode.io/.well-known/jwks.json'),
+  (req, res) => {
+    res.json({ data: req.verifiedPayload });
+  }
+);<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+
+                <div class="card">
+                    <h3>📱 React Integration</h3>
+                    <div class="code-block">import { verifyReceipt } from './certnode-web.js';
+
+function ReceiptVerifier() {
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleVerify = async (receipt, jwks) => {
+    setLoading(true);
+    try {
+      const verification = await verifyReceipt({ receipt, jwks });
+      setResult(verification);
+    } catch (error) {
+      setResult({ ok: false, reason: error.message });
+    }
+    setLoading(false);
+  };
+
+  return (
+    &lt;div&gt;
+      {loading && &lt;p&gt;Verifying...&lt;/p&gt;}
+      {result && (
+        &lt;div className={result.ok ? 'success' : 'error'}&gt;
+          {result.ok ? '✅ Valid' : `❌ ${result.reason}`}
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+
+                <div class="card">
+                    <h3>🔄 Batch Verification</h3>
+                    <div class="code-block">async function verifyBatch(receipts, jwks) {
+  const results = await Promise.all(
+    receipts.map(async (receipt, index) => {
+      const result = await verifyReceipt({ receipt, jwks });
+      return {
+        index,
+        receiptId: receipt.kid,
+        valid: result.ok,
+        reason: result.reason
+      };
+    })
+  );
+
+  const validCount = results.filter(r => r.valid).length;
+  console.log(`${validCount}/${results.length} receipts valid`);
+
+  // Log failures
+  results
+    .filter(r => !r.valid)
+    .forEach(r => {
+      console.log(`Receipt ${r.index}: ${r.reason}`);
+    });
+
+  return results;
+}<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+
+                <div class="card">
+                    <h3>🔐 EdDSA Example</h3>
+                    <div class="code-block">// EdDSA (Ed25519) verification
+const receipt = {
+  protected: "eyJhbGciOiJFZERTQSIsImtpZCI6ImVkMjU1MTkta2V5In0",
+  payload: {
+    transaction_id: "TXN-123456",
+    amount: 45000,
+    currency: "USD"
+  },
+  signature: "hgyY0il_MGCjP0JzlnLWG1PPOt7-09PGcvMg3AIbQR6d...",
+  kid: "ed25519-key"
+};
+
+const jwks = {
+  keys: [{
+    kty: "OKP",
+    crv: "Ed25519",
+    x: "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+    kid: "ed25519-key",
+    alg: "EdDSA"
+  }]
+};
+
+const result = await verifyReceipt({ receipt, jwks });
+console.log(result.ok ? 'Valid EdDSA!' : result.reason);<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+
+                <div class="card">
+                    <h3>⚙️ TypeScript Usage</h3>
+                    <div class="code-block">import { verifyReceipt, Receipt, JWKS, VerifyResult } from '@certnode/sdk';
+
+interface DocumentReceipt extends Receipt {
+  payload: {
+    document_id: string;
+    content: string;
+    timestamp: string;
+  };
+}
+
+async function verifyDocument(
+  receipt: DocumentReceipt,
+  jwks: JWKS
+): Promise&lt;VerifyResult&gt; {
+  return await verifyReceipt({ receipt, jwks });
+}
+
+// Usage with type safety
+const result: VerifyResult = await verifyDocument(receipt, jwks);
+if (result.ok) {
+  console.log('Document verified successfully');
+}<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Reference Section -->
+        <section id="api" class="section">
+            <h2>📖 API Reference</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>verifyReceipt(options)</h3>
+                    <p>Core verification function for CertNode receipts.</p>
+                    <div class="code-block">async function verifyReceipt({
+  receipt: Receipt,
+  jwks: JWKS
+}): Promise&lt;VerifyResult&gt;<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                    <p><strong>Parameters:</strong></p>
+                    <ul>
+                        <li><code>receipt</code> - The receipt to verify</li>
+                        <li><code>jwks</code> - JWKS containing public keys</li>
+                    </ul>
+                    <p><strong>Returns:</strong> <code>Promise&lt;{ok: boolean, reason?: string}&gt;</code></p>
+                </div>
+
+                <div class="card">
+                    <h3>JWKSManager</h3>
+                    <p>Manages JWKS fetching and caching.</p>
+                    <div class="code-block">class JWKSManager {
+  constructor(options?: {
+    ttlMs?: number;
+    fetcher?: Function;
+  });
+
+  getFresh(): JWKS | null;
+  setFromObject(jwks: JWKS): JWKS;
+  fetchFromUrl(url: string): Promise&lt;JWKS&gt;;
+  thumbprints(jwks?: JWKS): string[];
+}<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+
+                <div class="card">
+                    <h3>Receipt Interface</h3>
+                    <div class="code-block">interface Receipt {
+  protected: string;          // Base64url JWS header
+  payload: any;              // Original data
+  signature: string;         // Base64url signature
+  kid: string;              // Key identifier
+  payload_jcs_sha256?: string; // Optional payload hash
+  receipt_id?: string;       // Optional receipt ID
+}<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+
+                <div class="card">
+                    <h3>JWKS Interface</h3>
+                    <div class="code-block">interface JWKS {
+  keys: JWK[]
+}
+
+// ES256 Key
+interface ECJWK {
+  kty: 'EC';
+  crv: 'P-256';
+  x: string;
+  y: string;
+  kid?: string;
+  alg?: 'ES256';
+}
+
+// EdDSA Key
+interface OKPJwk {
+  kty: 'OKP';
+  crv: 'Ed25519';
+  x: string;
+  kid?: string;
+  alg?: 'EdDSA';
+}<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <strong>📚 Need More Help?</strong>
+                <br>• Visit the <a href="https://certnode.io/docs">full documentation</a>
+                <br>• Check out the <a href="https://certnode.io/openapi">OpenAPI specification</a>
+                <br>• Browse <a href="https://github.com/srbryant86/certnode">source code on GitHub</a>
+                <br>• Report issues on <a href="https://github.com/srbryant86/certnode/issues">GitHub Issues</a>
+            </div>
+        </section>
+    </div>
+
+    <script type="module">
+        // Import the CertNode WebCrypto SDK for the interactive demo
+        import { verifyReceipt } from '../sdk/web/index.js';
+        window.verifyReceiptAPI = verifyReceipt;
+    </script>
+
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked nav link
+            event.target.classList.add('active');
+        }
+
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.textContent.replace('Copy', '').trim();
+
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = '#28a745';
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '#6c757d';
+                }, 2000);
+            });
+        }
+
+        // Quick start setup methods
+        function showSetupMethod(method) {
+            const content = document.getElementById('setup-content');
+
+            const methods = {
+                node: `
+                    <div class="code-block">
+# Install Node.js SDK
+npm install @certnode/sdk
+
+# Create a simple verification script
+cat > verify.js << 'EOF'
+const { verifyReceipt } = require('@certnode/sdk');
+
+async function main() {
+  const receipt = {
+    protected: "eyJhbGciOiJFUzI1NiIsImtpZCI6InRlc3Qta2V5In0",
+    payload: { document: "Hello, World!" },
+    signature: "MEQCIAH8B3K2l1D0F9X7Zz8Q2P5M6N7R3S4T5U6V7W8X9Y0Z...",
+    kid: "test-key"
+  };
+
+  const jwks = { keys: [...] }; // Your JWKS here
+  const result = await verifyReceipt({ receipt, jwks });
+  console.log(result.ok ? 'Valid!' : result.reason);
+}
+
+main().catch(console.error);
+EOF
+
+# Run the script
+node verify.js
+                    </div>
+                `,
+                web: `
+                    <div class="code-block">
+# Download the browser SDK
+curl -o certnode-web.js https://certnode.io/sdk/web/index.js
+
+# Create an HTML file
+cat > index.html << 'EOF'
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;CertNode Demo&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;CertNode Browser Demo&lt;/h1&gt;
+  &lt;script type="module"&gt;
+    import { verifyReceipt } from './certnode-web.js';
+
+    // Your verification code here
+    const result = await verifyReceipt({ receipt, jwks });
+    console.log(result.ok ? 'Valid!' : result.reason);
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EOF
+
+# Serve the file
+python3 -m http.server 8080
+                    </div>
+                `,
+                cli: `
+                    <div class="code-block">
+# Install CLI globally
+npm install -g @certnode/cli
+
+# Create a new project
+certnode init my-certnode-app
+
+# Enter the project directory
+cd my-certnode-app
+
+# Install dependencies
+npm install
+
+# Run the example
+npm start
+
+# Verify a receipt
+certnode verify --receipt receipt.json --jwks jwks.json
+                    </div>
+                `
+            };
+
+            content.innerHTML = methods[method];
+        }
+
+        // Demo examples
+        function loadDemoExample(type) {
+            const receiptTextarea = document.getElementById('demo-receipt');
+            const jwksTextarea = document.getElementById('demo-jwks');
+
+            const examples = {
+                es256: {
+                    receipt: {
+                        "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImVzMjU2LWtleSJ9",
+                        "payload": {
+                            "document_id": "DOC-ES256-001",
+                            "content": "ES256 signed document",
+                            "timestamp": "2025-01-15T10:30:00Z"
+                        },
+                        "signature": "EXAMPLE_ES256_SIGNATURE",
+                        "kid": "es256-key"
+                    },
+                    jwks: {
+                        "keys": [{
+                            "kty": "EC",
+                            "crv": "P-256",
+                            "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+                            "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+                            "kid": "es256-key",
+                            "alg": "ES256"
+                        }]
+                    }
+                },
+                eddsa: {
+                    receipt: {
+                        "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImVkMjU1MTkta2V5In0",
+                        "payload": {
+                            "transaction_id": "TXN-EdDSA-001",
+                            "amount": 45000,
+                            "currency": "USD"
+                        },
+                        "signature": "EXAMPLE_EDDSA_SIGNATURE",
+                        "kid": "ed25519-key"
+                    },
+                    jwks: {
+                        "keys": [{
+                            "kty": "OKP",
+                            "crv": "Ed25519",
+                            "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+                            "kid": "ed25519-key",
+                            "alg": "EdDSA"
+                        }]
+                    }
+                },
+                invalid: {
+                    receipt: {
+                        "payload": { "test": "data" }
+                        // Missing required fields
+                    },
+                    jwks: { "keys": [] }
+                }
+            };
+
+            const example = examples[type];
+            receiptTextarea.value = JSON.stringify(example.receipt, null, 2);
+            jwksTextarea.value = JSON.stringify(example.jwks, null, 2);
+        }
+
+        // Demo verification
+        async function verifyDemo() {
+            const resultDiv = document.getElementById('demo-result');
+            resultDiv.innerHTML = '<div class="alert alert-info">🔄 Verifying...</div>';
+
+            try {
+                const receiptText = document.getElementById('demo-receipt').value;
+                const jwksText = document.getElementById('demo-jwks').value;
+
+                if (!receiptText.trim() || !jwksText.trim()) {
+                    resultDiv.innerHTML = '<div class="alert alert-danger">❌ Please provide both receipt and JWKS JSON</div>';
+                    return;
+                }
+
+                const receipt = JSON.parse(receiptText);
+                const jwks = JSON.parse(jwksText);
+
+                const result = await window.verifyReceiptAPI({ receipt, jwks });
+
+                if (result.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            ✅ <strong>Receipt verification: VALID</strong><br>
+                            Kid: ${receipt.kid}<br>
+                            ${receipt.protected ?
+                                `Algorithm: ${JSON.parse(atob(receipt.protected.replace(/-/g, '+').replace(/_/g, '/'))).alg}` :
+                                ''
+                            }
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="alert alert-danger">
+                            ❌ <strong>Receipt verification: INVALID</strong><br>
+                            Reason: ${result.reason}
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        🚨 <strong>Error:</strong> ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Download Web SDK
+        function downloadWebSDK() {
+            // This would normally fetch the actual SDK file
+            alert('In a real implementation, this would download the latest Web SDK file.');
+        }
+
+        // Initialize with ES256 example
+        window.addEventListener('load', () => {
+            loadDemoExample('es256');
+        });
+    </script>
+</body>
+</html>

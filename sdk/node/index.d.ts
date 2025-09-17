@@ -11,13 +11,24 @@ export interface Receipt {
   receipt_id?: string;
 }
 
-export interface JWK { 
-  kty: 'EC'; 
-  crv: 'P-256'; 
-  x: string; 
-  y: string; 
+export interface ECJWK {
+  kty: 'EC';
+  crv: 'P-256';
+  x: string;
+  y: string;
   kid?: string;
+  alg?: 'ES256';
 }
+
+export interface OKPJwk {
+  kty: 'OKP';
+  crv: 'Ed25519';
+  x: string;
+  kid?: string;
+  alg?: 'EdDSA';
+}
+
+export type JWK = ECJWK | OKPJwk;
 
 export interface JWKS { 
   keys: JWK[] 

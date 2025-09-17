@@ -2,11 +2,16 @@
   "openapi": "3.1.0",
   "info": {
     "title": "CertNode Standard API",
-    "version": "1.0.0",
-    "description": "Reference implementation of the CertNode standard for cryptographic digital evidence. Produces RFC-compliant tamper-evident receipts using JWS detached signatures with ECDSA P-256 and JSON Canonicalization Scheme.",
+    "version": "1.1.0",
+    "description": "Reference implementation of the CertNode standard for cryptographic digital evidence. Produces RFC-compliant tamper-evident receipts using JWS detached signatures with ES256 (ECDSA P-256) or EdDSA (Ed25519) and JSON Canonicalization Scheme (RFC 8785).",
     "contact": {
       "name": "CertNode Standard",
-      "url": "https://certnode.io"
+      "url": "https://certnode.io",
+      "email": "security@certnode.io"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/srbryant86/certnode/blob/main/LICENSE"
     }
   },
   "servers": [
@@ -147,6 +152,12 @@
                         "$ref": "#/components/schemas/JwkThumbprint",
                         "description": "RFC7638 JWK thumbprint (optional; computed if absent)"
                       },
+                      "alg": {
+                        "type": "string",
+                        "enum": ["ES256", "EdDSA"],
+                        "description": "Signature algorithm to use (optional; defaults to ES256)",
+                        "example": "ES256"
+                      },
                       "tsr": {
                         "type": "boolean",
                         "description": "Request RFC3161 timestamp token (optional)",
@@ -182,6 +193,19 @@
                       "tsr": true
                     }
                   }
+                },
+                "withEdDSA": {
+                  "summary": "Using EdDSA algorithm for deterministic signatures",
+                  "value": {
+                    "payload": {
+                      "transaction_id": "TXN-123456",
+                      "amount": 45000,
+                      "currency": "USD"
+                    },
+                    "headers": {
+                      "alg": "EdDSA"
+                    }
+                  }
                 }
               }
             }
@@ -210,11 +234,11 @@
                   "properties": {
                     "protected": {
                       "$ref": "#/components/schemas/Base64Url",
-                      "description": "Base64url encoded JWS protected header containing alg and kid"
+                      "description": "Base64url encoded JWS protected header containing alg (ES256 or EdDSA), kid, and typ fields"
                     },
                     "signature": {
                       "$ref": "#/components/schemas/Base64Url",
-                      "description": "Base64url encoded ES256 signature in JOSE format (r||s)"
+                      "description": "Base64url encoded cryptographic signature (ES256 in JOSE format r||s, or EdDSA in native format)"
                     },
                     "payload": {
                       "description": "Original payload (unchanged)"
@@ -282,11 +306,24 @@
             }
           },
           "429": {
-            "description": "Rate limit exceeded",
+            "description": "Rate limit exceeded - too many requests",
             "headers": {
-              "Retry-After": { "description": "Seconds to wait before retrying", "schema": { "type": "integer" } },
-              "X-RateLimit-Limit": { "description": "Request limit per window", "schema": { "type": "integer" } },
-              "X-RateLimit-Remaining": { "description": "Remaining requests in current window", "schema": { "type": "integer" } }
+              "Retry-After": {
+                "description": "Seconds to wait before retrying",
+                "schema": { "type": "integer", "example": 60 }
+              },
+              "X-RateLimit-Limit": {
+                "description": "Request limit per window (signing: 100/min, verification: 1000/min)",
+                "schema": { "type": "integer", "example": 100 }
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Remaining requests in current window",
+                "schema": { "type": "integer", "example": 0 }
+              },
+              "X-RateLimit-Reset": {
+                "description": "Unix timestamp when the rate limit resets",
+                "schema": { "type": "integer", "example": 1640995200 }
+              }
             },
             "content": {
               "application/json": {
@@ -337,11 +374,55 @@
       "ErrorResponse": {
         "type": "object",
         "properties": {
-          "error": { "type": "string" },
-          "message": { "type": "string" },
-          "request_id": { "type": "string", "description": "Correlation id if available" }
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "invalid_json",
+                  "unsupported_algorithm",
+                  "missing_key",
+                  "invalid_signature",
+                  "canonicalization_error",
+                  "missing_required_field",
+                  "invalid_header",
+                  "rate_limit_exceeded",
+                  "key_expired",
+                  "malformed_receipt",
+                  "method_not_allowed",
+                  "internal_error",
+                  "tsa_unavailable"
+                ],
+                "description": "Standardized error code for programmatic handling"
+              },
+              "message": {
+                "type": "string",
+                "description": "Human-readable error description"
+              },
+              "request_id": {
+                "type": "string",
+                "description": "Unique request identifier for correlation"
+              },
+              "hint": {
+                "type": "string",
+                "description": "Optional suggestion for resolution"
+              }
+            },
+            "required": ["code", "message"]
+          }
         },
-        "required": [ "error" ]
+        "required": ["error"],
+        "examples": [
+          {
+            "error": {
+              "code": "unsupported_algorithm",
+              "message": "Algorithm not supported: RS256",
+              "request_id": "req_abc123",
+              "hint": "Use ES256 or EdDSA algorithms"
+            }
+          }
+        ]
       },
       "ValidationError": {
         "allOf": [ { "$ref": "#/components/schemas/ErrorResponse" } ],

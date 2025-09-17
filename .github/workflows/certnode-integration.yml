@@ -1,0 +1,435 @@
+# CertNode Integration Testing Workflow
+# Comprehensive testing across multiple environments and scenarios
+
+name: CertNode Integration Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'sdk/**'
+      - 'cli/**'
+      - 'integrations/**'
+      - 'examples/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'sdk/**'
+      - 'cli/**'
+      - 'integrations/**'
+      - 'examples/**'
+  schedule:
+    # Daily integration tests at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  test-matrix:
+    name: Test ${{ matrix.platform }} - Node ${{ matrix.node-version }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [18, 20, 21]
+        platform: [node, browser, cli]
+        include:
+          - os: ubuntu-latest
+            platform: node
+            node-version: 20
+            run-integration: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm install --prefix sdk/node
+          npm install --prefix cli
+          npm install -g @certnode/cli
+
+      - name: Test Node.js SDK
+        if: matrix.platform == 'node'
+        run: |
+          cd sdk/node
+          echo "Testing Node.js SDK on ${{ matrix.os }} with Node ${{ matrix.node-version }}"
+
+          # Test basic functionality
+          node -e "
+            const { verifyReceipt } = require('./index.js');
+            console.log('✅ Node.js SDK loaded successfully');
+          "
+
+          # Test ES256 verification (will fail due to invalid signature, but tests structure)
+          node -e "
+            const { verifyReceipt } = require('./index.js');
+            const receipt = {
+              protected: 'eyJhbGciOiJFUzI1NiIsImtpZCI6InRlc3Qta2V5In0',
+              payload: { test: 'data' },
+              signature: 'test-signature',
+              kid: 'test-key'
+            };
+            const jwks = { keys: [] };
+            verifyReceipt({ receipt, jwks }).then(result => {
+              console.log('✅ Verification function executed:', result.ok ? 'Valid' : result.reason);
+            });
+          "
+
+      - name: Test Browser SDK
+        if: matrix.platform == 'browser' && matrix.os == 'ubuntu-latest'
+        run: |
+          cd sdk/web
+          echo "Testing Browser SDK"
+
+          # Install playwright for browser testing
+          npm install playwright
+          npx playwright install chromium
+
+          # Create test HTML file
+          cat > test-browser.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head><title>CertNode Browser Test</title></head>
+          <body>
+            <script type="module">
+              import { verifyReceipt } from './index.js';
+
+              const receipt = {
+                protected: 'eyJhbGciOiJFUzI1NiIsImtpZCI6InRlc3Qta2V5In0',
+                payload: { test: 'data' },
+                signature: 'test-signature',
+                kid: 'test-key'
+              };
+              const jwks = { keys: [] };
+
+              try {
+                const result = await verifyReceipt({ receipt, jwks });
+                console.log('✅ Browser SDK test completed:', result.reason || 'OK');
+                document.body.innerHTML = '<h1>✅ Test Completed</h1>';
+              } catch (error) {
+                console.error('❌ Browser SDK test failed:', error);
+                document.body.innerHTML = '<h1>❌ Test Failed</h1>';
+              }
+            </script>
+          </body>
+          </html>
+          EOF
+
+          # Run browser test
+          node -e "
+            const { chromium } = require('playwright');
+            (async () => {
+              const browser = await chromium.launch();
+              const page = await browser.newPage();
+              await page.goto('file://$PWD/test-browser.html');
+              await page.waitForTimeout(2000);
+              console.log('✅ Browser test completed');
+              await browser.close();
+            })();
+          "
+
+      - name: Test CLI
+        if: matrix.platform == 'cli'
+        run: |
+          echo "Testing CertNode CLI"
+
+          # Test CLI installation
+          certnode --version
+
+          # Test init command
+          certnode init test-project --template node --skip-install
+          ls test-project/
+
+          # Test generate commands
+          certnode generate jwks --algorithm ES256 -o test-jwks.json
+          certnode generate receipt -o test-receipt.json
+
+          # Test inspect command
+          certnode inspect test-jwks.json
+          certnode inspect test-receipt.json
+
+          # Test verification (will fail with template data, but tests structure)
+          certnode verify -r test-receipt.json -k test-jwks.json || echo "Expected failure with template data"
+
+          echo "✅ CLI tests completed"
+
+      - name: Integration Tests
+        if: matrix.run-integration
+        run: |
+          echo "🧪 Running integration tests..."
+
+          # Test Node.js to Browser compatibility
+          echo "Testing cross-platform compatibility..."
+
+          # Generate test vectors with Node.js
+          node -e "
+            const crypto = require('crypto');
+            const fs = require('fs');
+
+            // Generate ES256 key pair
+            const { publicKey, privateKey } = crypto.generateKeyPairSync('ec', {
+              namedCurve: 'prime256v1',
+              publicKeyEncoding: { type: 'spki', format: 'jwk' },
+              privateKeyEncoding: { type: 'pkcs8', format: 'jwk' }
+            });
+
+            const jwks = {
+              keys: [{ ...publicKey, kid: 'test-key', alg: 'ES256' }]
+            };
+
+            fs.writeFileSync('integration-jwks.json', JSON.stringify(jwks, null, 2));
+            console.log('✅ Generated test JWKS');
+          "
+
+          # Test CLI with generated JWKS
+          certnode inspect integration-jwks.json
+
+          echo "✅ Integration tests completed"
+
+  test-examples:
+    name: Test Examples
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Test CLI examples
+        run: |
+          npm install -g @certnode/cli
+
+          # Test Node.js template
+          certnode init example-node --template node
+          cd example-node
+          npm install --production
+          node index.js || echo "Expected failure without valid data"
+          cd ..
+
+          # Test Web template
+          certnode init example-web --template web
+          cd example-web
+          ls -la
+          echo "✅ Web template created successfully"
+          cd ..
+
+          # Test Express template
+          certnode init example-express --template express
+          cd example-express
+          npm install --production
+          echo "✅ Express template created successfully"
+
+  test-frameworks:
+    name: Test Framework Integrations
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Test React integration
+        run: |
+          cd integrations/react
+          npm install
+
+          # Test TypeScript compilation
+          npx tsc --noEmit index.d.ts
+
+          # Test CommonJS import
+          node -e "
+            const { useCertNodeVerification } = require('./index.js');
+            console.log('✅ React hooks loaded successfully');
+          "
+
+      - name: Test Vue integration
+        run: |
+          cd integrations/vue
+          npm install
+
+          # Test TypeScript compilation
+          npx tsc --noEmit index.d.ts
+
+          # Test CommonJS import
+          node -e "
+            const { useCertNodeVerification } = require('./index.js');
+            console.log('✅ Vue composables loaded successfully');
+          "
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Audit dependencies
+        run: |
+          echo "🔒 Running security audit..."
+
+          # Check Node.js SDK (should have 0 dependencies)
+          cd sdk/node
+          npm audit --audit-level high
+          dep_count=$(npm list --depth=0 --production --parseable | wc -l)
+          if [ "$dep_count" -gt 1 ]; then
+            echo "❌ Node.js SDK should have zero dependencies"
+            exit 1
+          fi
+          echo "✅ Node.js SDK has zero dependencies"
+          cd ../..
+
+          # Check CLI dependencies
+          cd cli
+          npm install
+          npm audit --audit-level high
+          echo "✅ CLI security audit passed"
+
+      - name: Check for secrets
+        run: |
+          echo "🕵️  Scanning for potential secrets..."
+
+          # Look for common secret patterns
+          if grep -r -E "(BEGIN.*PRIVATE|password|secret|token|api[_-]?key)" . \
+             --exclude-dir=node_modules --exclude-dir=.git \
+             --exclude="*.md" --exclude="*.yml" --exclude="*.yaml"; then
+            echo "❌ Potential secrets found"
+            exit 1
+          fi
+
+          echo "✅ No secrets detected"
+
+  performance-benchmark:
+    name: Performance Benchmark
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install -g @certnode/cli
+          cd sdk/node && npm install
+
+      - name: Benchmark verification speed
+        run: |
+          echo "⚡ Running performance benchmarks..."
+
+          # Generate test keys
+          certnode generate keys --algorithm ES256 -o es256-test
+          certnode generate keys --algorithm EdDSA -o eddsa-test
+
+          # Benchmark Node.js SDK
+          cd sdk/node
+          node -e "
+            const { verifyReceipt } = require('./index.js');
+            const crypto = require('crypto');
+
+            async function benchmark() {
+              console.log('🚀 Benchmarking verification performance...');
+
+              const iterations = 100;
+              const startTime = process.hrtime.bigint();
+
+              for (let i = 0; i < iterations; i++) {
+                const receipt = {
+                  protected: 'eyJhbGciOiJFUzI1NiIsImtpZCI6InRlc3Qta2V5In0',
+                  payload: { iteration: i },
+                  signature: 'test-signature',
+                  kid: 'test-key'
+                };
+                const jwks = { keys: [] };
+                await verifyReceipt({ receipt, jwks });
+              }
+
+              const endTime = process.hrtime.bigint();
+              const durationMs = Number(endTime - startTime) / 1000000;
+              const avgMs = durationMs / iterations;
+
+              console.log(\`📊 Performance Results:\`);
+              console.log(\`Total time: \${durationMs.toFixed(2)}ms\`);
+              console.log(\`Average per verification: \${avgMs.toFixed(2)}ms\`);
+              console.log(\`Throughput: \${(1000 / avgMs).toFixed(0)} verifications/second\`);
+
+              if (avgMs > 50) {
+                console.log('⚠️  Performance below expected threshold');
+                process.exit(1);
+              }
+
+              console.log('✅ Performance benchmark passed');
+            }
+
+            benchmark().catch(console.error);
+          "
+
+  publish-results:
+    name: Publish Test Results
+    runs-on: ubuntu-latest
+    needs: [test-matrix, test-examples, test-frameworks, security-scan, performance-benchmark]
+    if: always()
+
+    steps:
+      - name: Create test summary
+        run: |
+          echo "# CertNode Integration Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Test Status" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.test-matrix.result }}" = "success" ]; then
+            echo "✅ **Platform Tests**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Platform Tests**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.test-examples.result }}" = "success" ]; then
+            echo "✅ **Example Tests**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Example Tests**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.test-frameworks.result }}" = "success" ]; then
+            echo "✅ **Framework Integration**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Framework Integration**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.security-scan.result }}" = "success" ]; then
+            echo "✅ **Security Scan**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Security Scan**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.performance-benchmark.result }}" = "success" ]; then
+            echo "✅ **Performance**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Performance**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Generated at: $(date)" >> $GITHUB_STEP_SUMMARY

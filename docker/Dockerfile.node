@@ -1,0 +1,57 @@
+# CertNode Node.js SDK Docker Image
+# Multi-stage build for optimized production image
+
+# Build stage
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY sdk/node/package.json sdk/node/package-lock.json* ./
+
+# Install dependencies (should be zero for SDK)
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy source code
+COPY sdk/node/ ./
+
+# Production stage
+FROM node:20-alpine AS production
+
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init
+
+# Create non-root user
+RUN addgroup -g 1001 -S certnode && \
+    adduser -S certnode -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Copy built application
+COPY --from=builder --chown=certnode:certnode /app ./
+
+# Install global CLI if needed
+RUN npm install -g @certnode/cli
+
+# Switch to non-root user
+USER certnode
+
+# Expose port (if running a server)
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD node -e "console.log('Health check passed')" || exit 1
+
+# Default command
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["node", "-e", "console.log('CertNode SDK ready for use')"]
+
+# Labels for metadata
+LABEL org.opencontainers.image.title="CertNode Node.js SDK"
+LABEL org.opencontainers.image.description="Zero-dependency Node.js SDK for CertNode receipt verification"
+LABEL org.opencontainers.image.vendor="CertNode"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.source="https://github.com/srbryant86/certnode"
+LABEL org.opencontainers.image.documentation="https://certnode.io/docs"

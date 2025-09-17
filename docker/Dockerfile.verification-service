@@ -1,0 +1,46 @@
+# CertNode Verification Service
+# Microservice for receipt verification with Redis caching
+
+FROM node:20-alpine
+
+# Install dumb-init and curl
+RUN apk add --no-cache dumb-init curl
+
+# Create app directory
+WORKDIR /app
+
+# Create non-root user
+RUN addgroup -g 1001 -S certnode && \
+    adduser -S certnode -u 1001
+
+# Copy package.json
+COPY docker/verification-service/package.json ./
+RUN npm ci --only=production && \
+    npm cache clean --force
+
+# Copy application code
+COPY docker/verification-service/ ./
+
+# Create logs directory
+RUN mkdir -p logs && \
+    chown -R certnode:certnode /app
+
+# Switch to non-root user
+USER certnode
+
+# Expose port
+EXPOSE 4000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:4000/health || exit 1
+
+# Start application
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["node", "server.js"]
+
+# Labels
+LABEL org.opencontainers.image.title="CertNode Verification Service"
+LABEL org.opencontainers.image.description="Microservice for CertNode receipt verification with caching"
+LABEL org.opencontainers.image.vendor="CertNode"
+LABEL org.opencontainers.image.licenses="MIT"

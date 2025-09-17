@@ -1,0 +1,168 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://certnode.io/schemas/test-vector-receipt.json",
+  "title": "CertNode Test Vector Receipt",
+  "description": "Schema for CertNode test vector files containing receipts and expected results",
+  "type": "object",
+  "required": [
+    "description",
+    "receipt",
+    "jwks",
+    "expected_result",
+    "metadata"
+  ],
+  "properties": {
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of the test case"
+    },
+    "receipt": {
+      "type": "object",
+      "required": ["protected", "payload", "signature", "kid"],
+      "properties": {
+        "protected": {
+          "type": "string",
+          "description": "Base64url-encoded JWS protected header"
+        },
+        "payload": {
+          "type": "object",
+          "description": "JSON payload object"
+        },
+        "signature": {
+          "type": "string",
+          "description": "Base64url-encoded signature"
+        },
+        "kid": {
+          "type": "string",
+          "description": "Key identifier"
+        },
+        "payload_jcs_sha256": {
+          "type": ["string", "null"],
+          "description": "Optional JCS SHA-256 hash of payload"
+        },
+        "receipt_id": {
+          "type": ["string", "null"],
+          "description": "Optional receipt identifier"
+        }
+      },
+      "additionalProperties": false
+    },
+    "jwks": {
+      "type": "object",
+      "required": ["keys"],
+      "properties": {
+        "keys": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": ["kty", "crv", "x", "y"],
+                "properties": {
+                  "kty": {
+                    "type": "string",
+                    "const": "EC"
+                  },
+                  "crv": {
+                    "type": "string",
+                    "const": "P-256"
+                  },
+                  "x": {
+                    "type": "string",
+                    "description": "Base64url-encoded x coordinate"
+                  },
+                  "y": {
+                    "type": "string",
+                    "description": "Base64url-encoded y coordinate"
+                  },
+                  "kid": {
+                    "type": ["string", "null"],
+                    "description": "Key identifier"
+                  },
+                  "alg": {
+                    "type": ["string", "null"],
+                    "description": "Algorithm"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "required": ["kty", "crv", "x"],
+                "properties": {
+                  "kty": {
+                    "type": "string",
+                    "const": "OKP"
+                  },
+                  "crv": {
+                    "type": "string",
+                    "const": "Ed25519"
+                  },
+                  "x": {
+                    "type": "string",
+                    "description": "Base64url-encoded public key"
+                  },
+                  "kid": {
+                    "type": ["string", "null"],
+                    "description": "Key identifier"
+                  },
+                  "alg": {
+                    "type": ["string", "null"],
+                    "description": "Algorithm"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "expected_result": {
+      "type": "object",
+      "required": ["valid"],
+      "properties": {
+        "valid": {
+          "type": "boolean",
+          "description": "Expected verification result"
+        },
+        "reason": {
+          "type": ["string", "null"],
+          "description": "Expected failure reason (if valid is false)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["algorithm", "features", "created"],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": ["ES256", "EdDSA"],
+          "description": "Cryptographic algorithm used"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["basic", "jcs", "receipt_id", "invalid_signature", "missing_key", "tampered_payload", "invalid_algorithm", "malformed_header"]
+          },
+          "description": "Features being tested"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Test vector creation timestamp"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional context or notes"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

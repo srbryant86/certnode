@@ -1,0 +1,136 @@
+# CertNode Docker Compose Configuration
+# Development and testing environment
+
+version: '3.8'
+
+services:
+  # CertNode CLI for verification tasks
+  certnode-cli:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.cli
+    image: certnode/cli:latest
+    container_name: certnode-cli
+    volumes:
+      - ./receipts:/app/receipts:ro
+      - ./jwks:/app/jwks:ro
+      - ./output:/app/output
+    environment:
+      - JWKS_URL=${JWKS_URL:-https://api.certnode.io/.well-known/jwks.json}
+    command: verify --receipt /app/receipts/example.json --jwks ${JWKS_URL}
+    restart: "no"
+
+  # Web SDK and documentation server
+  certnode-web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.web
+    image: certnode/web:latest
+    container_name: certnode-web
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Example Express.js application with CertNode middleware
+  example-api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.example-api
+    image: certnode/example-api:latest
+    container_name: certnode-example-api
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - JWKS_URL=${JWKS_URL:-https://api.certnode.io/.well-known/jwks.json}
+      - PORT=3000
+    depends_on:
+      - certnode-web
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Receipt verification service
+  verification-service:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.verification-service
+    image: certnode/verification-service:latest
+    container_name: certnode-verification-service
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - JWKS_URL=${JWKS_URL:-https://api.certnode.io/.well-known/jwks.json}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - PORT=4000
+    depends_on:
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis for caching JWKS and verification results
+  redis:
+    image: redis:7-alpine
+    container_name: certnode-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Monitoring with basic metrics
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: certnode-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+    driver: local
+  prometheus-data:
+    driver: local
+
+networks:
+  default:
+    name: certnode-network
+    driver: bridge
+
+# Health check for entire stack
+x-healthcheck-depends: &healthcheck-depends
+  test: ["CMD-SHELL", "curl -f http://certnode-web/health && curl -f http://example-api:3000/health"]
+  interval: 60s
+  timeout: 10s
+  retries: 3

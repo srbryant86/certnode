@@ -1,0 +1,293 @@
+{
+  "version": "1.1",
+  "description": "Invalid CertNode receipts that should fail verification with specific error codes",
+  "vectors": [
+    {
+      "id": "missing_protected_header",
+      "description": "Receipt missing protected header field",
+      "input": {
+        "receipt": {
+          "payload": {
+            "document_id": "DOC-2025-001",
+            "content": "Sample content"
+          },
+          "signature": "MEQCIAH8B3K2l1D0F9X7Zz8Q2P5M6N7R3S4T5U6V7W8X9Y0ZAiBCK3L4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8A9B0C1D2E3F4",
+          "kid": "test-key-1"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "EC",
+              "crv": "P-256",
+              "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+              "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+              "kid": "test-key-1",
+              "use": "sig",
+              "alg": "ES256"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": false,
+        "error_code": "missing_required_field",
+        "error_message": "Missing required field: protected"
+      },
+      "notes": "Must reject receipts without protected header"
+    },
+    {
+      "id": "unsupported_algorithm",
+      "description": "Receipt with unsupported algorithm",
+      "input": {
+        "receipt": {
+          "protected": "eyJhbGciOiJSUzI1NiIsImtpZCI6InRlc3Qta2V5LTEiLCJ0eXAiOiJjZXJ0bm9kZStqd3MifQ",
+          "payload": {
+            "document_id": "DOC-2025-002",
+            "content": "Sample content"
+          },
+          "signature": "invalid-rsa-signature",
+          "kid": "test-key-1"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "RSA",
+              "n": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS",
+              "e": "AQAB",
+              "kid": "test-key-1",
+              "use": "sig",
+              "alg": "RS256"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": false,
+        "error_code": "unsupported_algorithm",
+        "error_message": "Unsupported algorithm: RS256"
+      },
+      "notes": "Must reject algorithms other than ES256 and EdDSA"
+    },
+    {
+      "id": "key_not_found",
+      "description": "Receipt with key ID not found in JWKS",
+      "input": {
+        "receipt": {
+          "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6Im5vbmV4aXN0ZW50LWtleSIsInR5cCI6ImNlcnRub2RlK2p3cyJ9",
+          "payload": {
+            "document_id": "DOC-2025-003",
+            "content": "Sample content"
+          },
+          "signature": "MEQCIAH8B3K2l1D0F9X7Zz8Q2P5M6N7R3S4T5U6V7W8X9Y0ZAiBCK3L4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8A9B0C1D2E3F4",
+          "kid": "nonexistent-key"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "EC",
+              "crv": "P-256",
+              "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+              "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+              "kid": "test-key-1",
+              "use": "sig",
+              "alg": "ES256"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": false,
+        "error_code": "missing_key",
+        "error_message": "Key identifier not found in JWKS: nonexistent-key"
+      },
+      "notes": "Must reject receipts when key ID not found in JWKS"
+    },
+    {
+      "id": "invalid_signature",
+      "description": "Receipt with tampered signature",
+      "input": {
+        "receipt": {
+          "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6InRlc3Qta2V5LTEiLCJ0eXAiOiJjZXJ0bm9kZStqd3MifQ",
+          "payload": {
+            "document_id": "DOC-2025-004",
+            "content": "Sample content"
+          },
+          "signature": "TAMPERED_SIGNATURE_INVALID_BASE64URL_ENCODED_DATA_HERE",
+          "kid": "test-key-1"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "EC",
+              "crv": "P-256",
+              "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+              "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+              "kid": "test-key-1",
+              "use": "sig",
+              "alg": "ES256"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": false,
+        "error_code": "invalid_signature",
+        "error_message": "Signature verification failed"
+      },
+      "notes": "Must detect and reject tampered signatures"
+    },
+    {
+      "id": "malformed_json",
+      "description": "Receipt with invalid JSON structure",
+      "input": {
+        "receipt": "{ invalid json structure missing quotes }",
+        "jwks": {
+          "keys": []
+        }
+      },
+      "expected": {
+        "valid": false,
+        "error_code": "invalid_json",
+        "error_message": "Malformed JSON structure"
+      },
+      "notes": "Must handle malformed JSON gracefully"
+    },
+    {
+      "id": "invalid_base64url_protected",
+      "description": "Receipt with invalid base64url in protected header",
+      "input": {
+        "receipt": {
+          "protected": "invalid-base64url-data-with-invalid-characters!@#$",
+          "payload": {
+            "document_id": "DOC-2025-006",
+            "content": "Sample content"
+          },
+          "signature": "MEQCIAH8B3K2l1D0F9X7Zz8Q2P5M6N7R3S4T5U6V7W8X9Y0ZAiBCK3L4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8A9B0C1D2E3F4",
+          "kid": "test-key-1"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "EC",
+              "crv": "P-256",
+              "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+              "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+              "kid": "test-key-1",
+              "use": "sig",
+              "alg": "ES256"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": false,
+        "error_code": "invalid_header",
+        "error_message": "Invalid base64url encoding in protected header"
+      },
+      "notes": "Must validate base64url encoding in protected header"
+    },
+    {
+      "id": "missing_algorithm",
+      "description": "Receipt with protected header missing algorithm field",
+      "input": {
+        "receipt": {
+          "protected": "eyJraWQiOiJ0ZXN0LWtleS0xIiwidHlwIjoiY2VydG5vZGUrand3cyJ9",
+          "payload": {
+            "document_id": "DOC-2025-007",
+            "content": "Sample content"
+          },
+          "signature": "MEQCIAH8B3K2l1D0F9X7Zz8Q2P5M6N7R3S4T5U6V7W8X9Y0ZAiBCK3L4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8A9B0C1D2E3F4",
+          "kid": "test-key-1"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "EC",
+              "crv": "P-256",
+              "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+              "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+              "kid": "test-key-1",
+              "use": "sig",
+              "alg": "ES256"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": false,
+        "error_code": "missing_required_field",
+        "error_message": "Missing required field in protected header: alg"
+      },
+      "notes": "Must require algorithm field in protected header"
+    },
+    {
+      "id": "unknown_critical_parameter",
+      "description": "Receipt with unknown critical header parameter",
+      "input": {
+        "receipt": {
+          "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6InRlc3Qta2V5LTEiLCJ0eXAiOiJjZXJ0bm9kZStqd3MiLCJjcml0IjpbInVua25vd24tcGFyYW0iXSwidW5rbm93bi1wYXJhbSI6InZhbHVlIn0",
+          "payload": {
+            "document_id": "DOC-2025-008",
+            "content": "Sample content"
+          },
+          "signature": "MEQCIAH8B3K2l1D0F9X7Zz8Q2P5M6N7R3S4T5U6V7W8X9Y0ZAiBCK3L4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8A9B0C1D2E3F4",
+          "kid": "test-key-1"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "EC",
+              "crv": "P-256",
+              "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+              "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+              "kid": "test-key-1",
+              "use": "sig",
+              "alg": "ES256"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": false,
+        "error_code": "invalid_header",
+        "error_message": "Unknown critical header parameter: unknown-param"
+      },
+      "notes": "Must reject receipts with unknown critical header parameters"
+    },
+    {
+      "id": "wrong_payload_hash",
+      "description": "Receipt with incorrect payload hash",
+      "input": {
+        "receipt": {
+          "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6InRlc3Qta2V5LTEiLCJ0eXAiOiJjZXJ0bm9kZStqd3MifQ",
+          "payload": {
+            "document_id": "DOC-2025-009",
+            "content": "Sample content"
+          },
+          "signature": "MEQCIAH8B3K2l1D0F9X7Zz8Q2P5M6N7R3S4T5U6V7W8X9Y0ZAiBCK3L4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8A9B0C1D2E3F4",
+          "kid": "test-key-1",
+          "payload_jcs_sha256": "WRONG_HASH_VALUE_HERE"
+        },
+        "jwks": {
+          "keys": [
+            {
+              "kty": "EC",
+              "crv": "P-256",
+              "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+              "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+              "kid": "test-key-1",
+              "use": "sig",
+              "alg": "ES256"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "valid": false,
+        "error_code": "canonicalization_error",
+        "error_message": "Payload hash verification failed"
+      },
+      "notes": "Must validate payload hash when provided"
+    }
+  ]
+}

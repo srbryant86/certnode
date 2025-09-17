@@ -1,0 +1,98 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "certnode"
+version = "1.1.0"
+description = "Python SDK for CertNode receipt verification - supports ES256 and EdDSA algorithms with zero dependencies"
+readme = "README.md"
+license = "MIT"
+keywords = [
+    "certnode",
+    "receipt",
+    "verification",
+    "es256",
+    "eddsa",
+    "ecdsa",
+    "ed25519",
+    "jws",
+    "cryptography",
+    "digital-evidence",
+    "tamper-evident"
+]
+authors = [
+    {name = "CertNode", email = "noreply@certnode.io"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "cryptography>=41.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov",
+    "black",
+    "flake8",
+    "mypy",
+    "isort",
+]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme",
+]
+
+[project.urls]
+Homepage = "https://github.com/srbryant86/certnode/tree/main/sdk/python"
+Documentation = "https://certnode.io/docs"
+Repository = "https://github.com/srbryant86/certnode.git"
+Issues = "https://github.com/srbryant86/certnode/issues"
+
+[project.scripts]
+certnode-py = "certnode.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/certnode"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/README.md",
+    "/LICENSE",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--cov=src/certnode --cov-report=html --cov-report=term-missing"

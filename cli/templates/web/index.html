@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{projectName}} - CertNode Browser Verification</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            font-family: monospace;
+            font-size: 12px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .example {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .example code {
+            background: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 {{projectName}}</h1>
+    <p>Browser-based CertNode receipt verification using WebCrypto API</p>
+
+    <div class="container">
+        <h2>📋 Receipt Verification</h2>
+
+        <div>
+            <label for="receipt">Receipt JSON:</label>
+            <textarea id="receipt" placeholder="Paste your CertNode receipt JSON here...">{
+  "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImV4YW1wbGUta2V5In0",
+  "payload": {
+    "document_id": "DOC-12345",
+    "content": "Hello, CertNode!",
+    "timestamp": "2025-01-15T10:30:00Z"
+  },
+  "signature": "MEQCIAH8B3K2l1D0F9X7Zz8Q2P5M6N7R3S4T5U6V7W8X9Y0Z...",
+  "kid": "example-key"
+}</textarea>
+        </div>
+
+        <div style="margin-top: 15px;">
+            <label for="jwks">JWKS JSON:</label>
+            <textarea id="jwks" placeholder="Paste your JWKS JSON here...">{
+  "keys": [{
+    "kty": "EC",
+    "crv": "P-256",
+    "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+    "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+    "kid": "example-key",
+    "alg": "ES256"
+  }]
+}</textarea>
+        </div>
+
+        <button onclick="verifyReceipt()">🔍 Verify Receipt</button>
+
+        <div id="result"></div>
+    </div>
+
+    <div class="container">
+        <h2>📚 Examples</h2>
+
+        <div class="example">
+            <h3>ES256 (ECDSA P-256) Example</h3>
+            <p>Traditional elliptic curve signatures with SHA-256</p>
+            <button onclick="loadES256Example()">Load ES256 Example</button>
+        </div>
+
+        <div class="example">
+            <h3>EdDSA (Ed25519) Example</h3>
+            <p>Modern deterministic signatures with Ed25519</p>
+            <button onclick="loadEdDSAExample()">Load EdDSA Example</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🛠️ Development</h2>
+        <p>This page uses the CertNode WebCrypto SDK for client-side verification.</p>
+        <p>No data is sent to any server - all verification happens in your browser.</p>
+        <p>Open browser dev tools to see detailed logging.</p>
+    </div>
+
+    <script type="module">
+        // Import the CertNode WebCrypto SDK
+        import { verifyReceipt } from './certnode-web.js';
+
+        // Make verify function globally available
+        window.verifyReceiptAPI = verifyReceipt;
+
+        console.log('🚀 CertNode WebCrypto SDK loaded');
+    </script>
+
+    <script>
+        async function verifyReceipt() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>🔄 Verifying...</p>';
+
+            try {
+                const receiptText = document.getElementById('receipt').value;
+                const jwksText = document.getElementById('jwks').value;
+
+                const receipt = JSON.parse(receiptText);
+                const jwks = JSON.parse(jwksText);
+
+                console.log('Receipt:', receipt);
+                console.log('JWKS:', jwks);
+
+                const result = await window.verifyReceiptAPI({ receipt, jwks });
+
+                console.log('Verification result:', result);
+
+                if (result.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            ✅ Receipt verification: VALID<br>
+                            Kid: ${receipt.kid}<br>
+                            Algorithm: ${JSON.parse(atob(receipt.protected.replace(/-/g, '+').replace(/_/g, '/'))).alg}
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            ❌ Receipt verification: INVALID<br>
+                            Reason: ${result.reason}
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                console.error('Verification error:', error);
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        🚨 Error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function loadES256Example() {
+            document.getElementById('receipt').value = JSON.stringify({
+                "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImVzMjU2LWtleSJ9",
+                "payload": {
+                    "document_id": "DOC-ES256-001",
+                    "content": "ES256 signed document",
+                    "timestamp": "2025-01-15T10:30:00Z"
+                },
+                "signature": "EXAMPLE_ES256_SIGNATURE",
+                "kid": "es256-key"
+            }, null, 2);
+
+            document.getElementById('jwks').value = JSON.stringify({
+                "keys": [{
+                    "kty": "EC",
+                    "crv": "P-256",
+                    "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+                    "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+                    "kid": "es256-key",
+                    "alg": "ES256"
+                }]
+            }, null, 2);
+        }
+
+        function loadEdDSAExample() {
+            document.getElementById('receipt').value = JSON.stringify({
+                "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImVkMjU1MTkta2V5In0",
+                "payload": {
+                    "transaction_id": "TXN-EdDSA-001",
+                    "amount": 45000,
+                    "currency": "USD"
+                },
+                "signature": "EXAMPLE_EDDSA_SIGNATURE",
+                "kid": "ed25519-key"
+            }, null, 2);
+
+            document.getElementById('jwks').value = JSON.stringify({
+                "keys": [{
+                    "kty": "OKP",
+                    "crv": "Ed25519",
+                    "x": "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo",
+                    "kid": "ed25519-key",
+                    "alg": "EdDSA"
+                }]
+            }, null, 2);
+        }
+
+        // Make functions globally available
+        window.verifyReceipt = verifyReceipt;
+        window.loadES256Example = loadES256Example;
+        window.loadEdDSAExample = loadEdDSAExample;
+    </script>
+</body>
+</html>

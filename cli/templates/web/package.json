@@ -1,0 +1,22 @@
+{
+  "name": "{{projectName}}",
+  "version": "1.0.0",
+  "description": "CertNode project - browser-based receipt verification",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8080 || python -m http.server 8080 || npx serve .",
+    "serve": "npx serve ."
+  },
+  "devDependencies": {
+    "serve": "^14.0.0"
+  },
+  "keywords": [
+    "certnode",
+    "receipt",
+    "verification",
+    "browser",
+    "webcrypto"
+  ],
+  "author": "",
+  "license": "MIT"
+}

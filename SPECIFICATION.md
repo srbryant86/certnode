@@ -1,8 +1,9 @@
 # CertNode Technical Specification
 
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Draft Standard
-**Date:** September 2025
+**Date:** January 2025
+**Previous Version:** 1.0 (September 2025)
 
 ## Abstract
 
@@ -50,10 +51,27 @@ CertNode is built on the following established standards:
 
 ### 2.2 Cryptographic Requirements
 
-**Signature Algorithm**: ES256 (ECDSA using P-256 and SHA-256)
+**Supported Signature Algorithms**:
+- **ES256**: ECDSA using P-256 and SHA-256 (REQUIRED for FIPS compliance)
+- **EdDSA**: Ed25519 signature algorithm (RECOMMENDED for deterministic signatures)
+
 **Hash Algorithm**: SHA-256
-**Key Curve**: P-256 (secp256r1)
-**Canonicalization**: RFC 8785 JSON Canonicalization Scheme
+**Key Curves**:
+- P-256 (secp256r1) for ES256
+- Ed25519 for EdDSA
+**Canonicalization**: RFC 8785 JSON Canonicalization Scheme (REQUIRED)
+
+### 2.3 Deterministic Verification
+
+**Canonicalization Requirements**:
+- Implementations MUST canonicalize payloads with RFC 8785 prior to signing
+- Verification MUST operate on the canonical form
+- Canonicalization MUST be deterministic and reproducible across implementations
+
+**Algorithm Determinism**:
+- **ES256**: Produces non-deterministic signatures (acceptable for compatibility)
+- **EdDSA**: Produces deterministic signatures (RECOMMENDED for reproducible verification)
+- Verifiers MUST accept both when announced by `alg` field
 
 ## 3. Receipt Format
 
@@ -74,7 +92,10 @@ A CertNode receipt is a JSON object with the following required fields:
 
 **protected** (string, required)
 - Base64url-encoded JSON object containing JWS protected header
-- Must include `alg: "ES256"` and `kid` fields
+- Must include `alg` field with value `"ES256"` or `"EdDSA"`
+- Must include `kid` field for key identification
+- Must include `typ: "certnode+jws"` field (RECOMMENDED)
+- Must NOT include unknown `crit` header parameters
 
 **payload** (object, required)
 - The original document or data being signed
@@ -143,6 +164,7 @@ const signatureB64u = base64urlEncode(derToIeee(signature));
 
 Public keys must be distributed in RFC 7517 JWKS format:
 
+**ES256 (ECDSA P-256) Key**:
 ```json
 {
   "keys": [{
@@ -151,7 +173,22 @@ Public keys must be distributed in RFC 7517 JWKS format:
     "x": "base64url_encoded_x_coordinate",
     "y": "base64url_encoded_y_coordinate",
     "kid": "key_identifier",
-    "use": "sig"
+    "use": "sig",
+    "alg": "ES256"
+  }]
+}
+```
+
+**EdDSA (Ed25519) Key**:
+```json
+{
+  "keys": [{
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "x": "base64url_encoded_public_key",
+    "kid": "key_identifier",
+    "use": "sig",
+    "alg": "EdDSA"
   }]
 }
 ```
@@ -164,11 +201,36 @@ Keys are identified using:
 
 ### 5.3 Key Rotation
 
-Implementations should:
-- Support multiple active keys simultaneously
-- Maintain historical keys for verification
-- Publish key rotation schedules
-- Use standard JWKS endpoints (e.g., `/.well-known/jwks.json`)
+**Requirements**:
+- Implementations MUST support multiple active keys simultaneously
+- Historical keys MUST be maintained for verification of existing receipts
+- Key rotation logs MUST be published and maintained
+- Standard JWKS endpoints MUST be used (e.g., `/.well-known/jwks.json`)
+
+**Rotation Process**:
+1. Generate new key pair and assign unique `kid`
+2. Add new public key to JWKS with current timestamp
+3. Begin signing new receipts with new key
+4. Maintain old keys for verification (minimum 90 days)
+5. Log rotation event with timestamp and reason
+
+**Rotation Log Format**:
+```csv
+date,kid,action,comment
+2025-01-15T10:30:00Z,abc123,added,Regular key rotation
+2025-01-14T09:00:00Z,xyz789,deprecated,Scheduled replacement
+```
+
+### 5.4 Algorithm Agility
+
+**Current Algorithms**: ES256 (required), EdDSA (recommended)
+**Deprecation Policy**: 12-month notice before algorithm deprecation
+**Migration Strategy**: Dual-algorithm support during transition periods
+
+**Future Considerations**:
+- Post-quantum cryptographic algorithms under evaluation
+- Algorithm deprecation process documented and communicated
+- Backward compatibility maintained for minimum 24 months
 
 ## 6. Verification Process
 
@@ -176,11 +238,12 @@ Implementations should:
 
 1. **Parse Receipt**: Validate JSON structure and required fields
 2. **Decode Protected Header**: Base64url decode and parse JSON
-3. **Verify Algorithm**: Confirm `alg: "ES256"`
+3. **Verify Algorithm**: Confirm `alg` is `"ES256"` or `"EdDSA"`
 4. **Locate Public Key**: Find key in JWKS using `kid` field
 5. **Reconstruct Signing Input**: `protected_b64u + "." + payload_b64u`
-6. **Verify Signature**: Use ECDSA-SHA256 to validate signature
+6. **Verify Signature**: Use appropriate algorithm (ECDSA-SHA256 or Ed25519)
 7. **Verify Payload Hash**: If `payload_jcs_sha256` present, verify canonicalization
+8. **Check Critical Parameters**: Reject if unknown `crit` parameters present
 
 ### 6.2 Implementation Example
 
@@ -191,7 +254,9 @@ async function verifyReceipt(receipt, jwks) {
 
   // Decode protected header
   const header = JSON.parse(base64urlDecode(protectedB64u));
-  if (header.alg !== "ES256") throw new Error("Unsupported algorithm");
+  if (!["ES256", "EdDSA"].includes(header.alg)) {
+    throw new Error(`Unsupported algorithm: ${header.alg}`);
+  }
 
   // Find public key
   const publicKey = findKeyInJwks(jwks, header.kid || kid);
@@ -217,11 +282,18 @@ async function verifyReceipt(receipt, jwks) {
 
 ### 7.1 Mandatory Features
 
-- ES256 (ECDSA P-256) signature generation/verification
-- RFC 8785 JSON canonicalization
-- RFC 7517 JWKS parsing
-- Base64url encoding/decoding
-- IEEE P1363 signature format support
+**Cryptographic Support**:
+- ES256 (ECDSA P-256) signature generation/verification (REQUIRED)
+- EdDSA (Ed25519) signature generation/verification (RECOMMENDED)
+- RFC 8785 JSON canonicalization (REQUIRED)
+- RFC 7517 JWKS parsing (REQUIRED)
+- Base64url encoding/decoding (REQUIRED)
+
+**Operational Requirements**:
+- Rate limiting with HTTP 429 responses
+- Proper error code reporting (see Section 7.3)
+- JWKS caching with appropriate TTL (minimum 300 seconds)
+- Key rotation support with historical key maintenance
 
 ### 7.2 Optional Features
 
@@ -232,12 +304,58 @@ async function verifyReceipt(receipt, jwks) {
 
 ### 7.3 Error Handling
 
-Implementations must handle:
-- Invalid JSON structure
-- Unsupported algorithms
-- Missing or invalid keys
-- Signature verification failures
-- Canonicalization errors
+Implementations must handle and report errors consistently using the following structure:
+
+```json
+{
+  "error": {
+    "code": "error_code",
+    "message": "Human-readable error description",
+    "request_id": "unique_request_identifier",
+    "hint": "Optional suggestion for resolution"
+  }
+}
+```
+
+**Required Error Codes**:
+- `invalid_json`: Malformed JSON structure
+- `unsupported_algorithm`: Algorithm not supported (not ES256 or EdDSA)
+- `missing_key`: Key identifier not found in JWKS
+- `invalid_signature`: Signature verification failed
+- `canonicalization_error`: JCS canonicalization failed
+- `missing_required_field`: Required field absent in receipt
+- `invalid_header`: Protected header malformed or invalid
+- `rate_limit_exceeded`: Request rate limit exceeded (HTTP 429)
+- `key_expired`: Signing key has expired
+- `malformed_receipt`: Receipt structure invalid
+
+**HTTP Status Codes**:
+- `400`: Bad Request (client error in receipt format)
+- `401`: Unauthorized (invalid or missing authentication)
+- `404`: Not Found (key or resource not found)
+- `422`: Unprocessable Entity (valid JSON, invalid semantics)
+- `429`: Too Many Requests (rate limiting)
+- `500`: Internal Server Error (server-side processing error)
+
+### 7.4 Rate Limiting
+
+**Requirements**:
+- Implementations SHOULD implement rate limiting to prevent abuse
+- Rate limit responses MUST use HTTP 429 status code
+- Rate limit headers SHOULD be included in responses
+
+**Recommended Headers**:
+```
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1640995200
+Retry-After: 60
+```
+
+**Rate Limit Structure**:
+- **Signing operations**: 100 requests per minute per API key
+- **Verification operations**: 1000 requests per minute per IP
+- **JWKS retrieval**: 10 requests per minute per IP (with caching encouraged)
 
 ## 8. Security Considerations
 

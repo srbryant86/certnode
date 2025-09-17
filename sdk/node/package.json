@@ -1,7 +1,7 @@
 {
     "name": "@certnode/sdk",
     "version": "1.1.0",
-    "description": "Node.js SDK for CertNode receipt verification - supports ES256 and EdDSA algorithms with zero dependencies",
+    "description": "Universal receipt infrastructure - Node.js implementation of the CertNode open standard for tamper-evident digital receipts",
     "main": "index.js",
     "types": "index.d.ts",
     "exports": {
@@ -17,9 +17,9 @@
     "publishConfig": {
         "access": "public"
     },
-    "homepage": "https://github.com/srbryant86/certnode/tree/main/sdk/node",
+    "homepage": "https://certnode.io",
     "bugs": {
-        "url": "https://github.com/srbryant86/certnode/issues"
+        "url": "https://github.com/certnode/certnode/issues"
     },
     "scripts": {
         "pack": "npm pack",
@@ -29,6 +29,8 @@
         "certnode",
         "receipt",
         "verification",
+        "universal-standard",
+        "infrastructure",
         "es256",
         "eddsa",
         "ecdsa",
@@ -36,13 +38,14 @@
         "jws",
         "cryptography",
         "digital-evidence",
-        "tamper-evident"
+        "tamper-evident",
+        "rfc-compliant"
     ],
-    "author": "CertNode",
+    "author": "CertNode Standards Committee",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/srbryant86/certnode.git",
+        "url": "git+https://github.com/certnode/certnode.git",
         "directory": "sdk/node"
     },
     "files": [

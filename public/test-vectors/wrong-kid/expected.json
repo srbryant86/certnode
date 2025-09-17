@@ -1,0 +1,5 @@
+{
+  "ok": false,
+  "note": "Receipt uses 'wrong-kid-2025-09' but JWKS only contains 'p256-2025-09'",
+  "expected_behavior": "Should fail with 'Key not found' or 'Invalid kid' error"
+}

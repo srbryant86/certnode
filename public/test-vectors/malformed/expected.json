@@ -1,0 +1,5 @@
+{
+  "ok": false,
+  "note": "Receipt has malformed protected header and invalid signature format",
+  "expected_behavior": "Should fail with 'Invalid base64' or 'Malformed receipt' error during parsing"
+}

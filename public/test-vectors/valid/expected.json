@@ -1,0 +1,5 @@
+{
+  "ok": false,
+  "note": "Placeholder signature will fail verification - this tests the verification logic path",
+  "expected_behavior": "Should fail with 'Invalid signature' due to test data"
+}

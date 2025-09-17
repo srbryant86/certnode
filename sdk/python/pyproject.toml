@@ -5,13 +5,15 @@ build-backend = "hatchling.build"
 [project]
 name = "certnode"
 version = "1.1.0"
-description = "Python SDK for CertNode receipt verification - supports ES256 and EdDSA algorithms with zero dependencies"
+description = "Universal receipt infrastructure - Python implementation of the CertNode open standard for tamper-evident digital receipts"
 readme = "README.md"
 license = "MIT"
 keywords = [
     "certnode",
     "receipt",
     "verification",
+    "universal-standard",
+    "infrastructure",
     "es256",
     "eddsa",
     "ecdsa",
@@ -19,10 +21,11 @@ keywords = [
     "jws",
     "cryptography",
     "digital-evidence",
-    "tamper-evident"
+    "tamper-evident",
+    "rfc-compliant"
 ]
 authors = [
-    {name = "CertNode", email = "noreply@certnode.io"},
+    {name = "CertNode Standards Committee", email = "standards@certnode.io"},
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -57,10 +60,11 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/srbryant86/certnode/tree/main/sdk/python"
-Documentation = "https://certnode.io/docs"
-Repository = "https://github.com/srbryant86/certnode.git"
-Issues = "https://github.com/srbryant86/certnode/issues"
+Homepage = "https://certnode.io"
+Documentation = "https://certnode.io/openapi"
+Repository = "https://github.com/certnode/certnode"
+Issues = "https://github.com/certnode/certnode/issues"
+Standard = "https://certnode.io/trust"
 
 [project.scripts]
 certnode-py = "certnode.cli:main"

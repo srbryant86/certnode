@@ -1,111 +1,141 @@
-# Agent Guide — CertNode
+# 🤖 **AI Agent Operating Manual**
 
-This document equips agents and contributors to continue work without prior context. It captures conventions, status, and the next actionable steps.
+*Essential protocols for AI agents working on the CertNode project*
 
-## Mission Snapshot
-- CertNode: Tamper‑evident receipt service (ES256 on P‑256, RFC 8785 JCS) with offline verifiability.
-- Primary entry points:
-  - API/server: `api/src/index.js`, `api/src/server.js`
-  - Web verify UI: `web/verify.html`
-  - SDKs: `sdk/node`, `sdk/web`
-  - Tools/Tests: `tools/*`, `api/test/*`
-  - OpenAPI: `web/openapi.json`
+## 📋 **MANDATORY REQUIREMENTS FOR EVERY SESSION**
 
-## Conventions
-- Commit subjects: `type(labelNN): summary`
-  - Labels (taxonomy):
-    - a (Application), i (Infra), w (Website), d (Docs), s (SDKs), t (Tools/Tests), c (CI/CD), m (Monitoring), r (Rotation/Keys), e (Examples), g (Governance)
-  - Example: `feat(a34): error model consistency`
-- Always push after each commit (auto‑push hook available; see CONTRIBUTING.md).
-- Keep PRs using `.github/pull_request_template.md` and CODEOWNERS review.
+### 🔄 **Documentation Updates (CRITICAL)**
 
-## Quality Gates
-- Fast unit tests: `node tools/test-fast.js` → ends with “ALL PASSED”
-- OpenAPI check: `node tools/check-openapi.js` (CI enforced)
-- JWKS tooling:
-  - Integrity: `node tools/jwks-integrity-check.js --jwks path`
-  - Rotation: `node tools/jwks-rotate-validate.js --current a.json --next b.json`
-  - Unified: `node tools/jwks-tool.js <cmd>`
-- Docker: `docker build -t certnode:latest .` (CI builds on every push)
-- Metrics endpoint: `/metrics` (Prometheus text format)
+**MUST UPDATE ON EVERY COMMIT:**
+1. **BILLION_DOLLAR_BLUEPRINT.md** - Update current status, mark completed items, add new insights
+2. **Relevant documentation** - Update any docs that touch the changes made
+3. **TODO tracking** - Use TodoWrite tool to track progress throughout session
 
-### CI Signals
-- PRs include a Benchmark Summary comment with a table of P50/P95/P99 per payload.
-- Web SDK size budget enforced (<10KB) via CI gate.
+**Format for roadmap updates:**
+```markdown
+- [x] **Completed item** - Brief description of what was accomplished
+- [ ] **🚨 CURRENT PRIORITY:** What's being executed now
+- [ ] **Next item** - What comes next
+```
 
-## Status & Roadmap
-- Canonical mapping: `docs/internal/ROADMAP_CANON.md`
-- Latest update & completions: `docs/internal/ACTUAL_ROADMAP.md`
-- Task queue: `docs/internal/TASKS_TODO.md`
-- Taxonomy reference: `docs/TASK_TAXONOMY.md`
+### 📝 **Commit Protocol**
 
-## Current State (high‑level)
-- Completed through a33; infra/containerization (i01) and monitoring pack (m04) are done.
-- Web verify page hardened (CSP tightened, external module added, a11y improvements).
-- CI: tests, OpenAPI check, Docker build, commit‑lint (strict on PRs).
+**EVERY commit must:**
+1. **Update strategic documentation** before committing code
+2. **Include status in commit message** - Reference roadmap phase
+3. **Always push after commit** - Never leave uncommitted work
+4. **Use descriptive messages** that explain both technical and strategic impact
 
-## Next Steps (prioritized)
-1) a37 — TSA integration completion
-   - Goal: Replace TSA stub with real RFC3161 client; configurable endpoint/CA; include DER token in `tsr` field.
-   - Acceptance: New tests pass; example receipt with real TSR validates offline.
-2) a34+ — OpenAPI/error examples consistency
-   - Goal: Ensure all endpoints reference shared error schemas; examples reflect final error model.
-   - Acceptance: OpenAPI check passes; tests green.
-3) t16 — Test/fuzz expansion
-   - Goal: Extend fuzz corpus for malformed JOSE/JCS edges, large/empty payloads, header variants.
-   - Acceptance: Fast tests green; coverage for new edge classes.
+**Commit message template:**
+```
+feat(phase-X): brief technical description
 
-### Recent Completions
-- w14 — Website home + nav integration: index.html implemented with WEBSITE_PLAN; nav added to verify.html; <50KB budget met; a11y compliant.
-- a37 — TSA integration groundwork: optional RFC3161 client with metrics; require_tsr strict mode (503) and canary tool; OpenAPI/docs/tests updated.
-- s18 — Node SDK published: @certnode/sdk v1.0.7 live on npm; release workflow verified.
-- s16 — Web SDK published: @certnode/sdk-web v0.1.3 tagged; CDN/SRI docs included; CI size gate enforced.
-- a34 — Error model consistency: standardized error schema and X-Request-Id on error responses; minor tests updated.
-- w12 — Verify page hardening: inline scripts removed; CSP tightened; a11y improved for dropzones.
-- bench — Benchmark script hardened: disables rate limit during bench; correct request shape; robust success/latency output.
-- ci/pr — CI benchmark summary + docs gate; PR template includes docs gate + benchmark checklist.
-- ci-matrix — CI runs on Node 20.x and 22.x; nightly benchmark supports manual dispatch and includes P99 summary.
-- ci-release — Release workflows run tests on Node 20/22; publish on Node 20 only; CI splits benchmark into a soft-fail job.
-- a35 — Verify route aligned to error model (request_id + headers) and tests added.
-- w13 — Verify page a11y polish (aria-live on status, labelled file inputs, skip link).
-- s15 — SDK-web publish readiness: added types field, SRI tool, README CDN/SRI examples; CI builds and sizes web SDK.
-- t15 — Fuzz/edge tests: added validation fuzz cases for invalid JSON, unknown fields, kid variants, and tsr type.
-- s15 — Size budget: added CI gate to fail if web SDK bundle exceeds 10KB.
-- w12 — CSP hardening: added object-src/base-uri/frame-ancestors to verify page.
-- a36 — OpenAPI: add error responses for /health (405/500) referencing shared ErrorResponse.
+Strategic context: How this advances the billion-dollar vision
+- Updated BILLION_DOLLAR_BLUEPRINT.md with current progress
+- Marked [specific items] as completed
+- Added [strategic insights] from execution
 
-## Useful Commands
-- Start API: `npm run start` (or `node api/src/index.js`)
-- Compose dev: `docker compose up --build`
-- Benchmark: `node tools/benchmark.js` (p99 target <100ms)
-- Release (tags + Actions): push `sdk-node-vX.Y.Z` or `sdk-web-vA.B.C` with `NPM_TOKEN` configured
+🤖 Generated with [Claude Code](https://claude.ai/code)
 
-## Documentation Index
-- Monitoring: `docs/MONITORING.md` (includes Prometheus/alerts/Grafana assets)
-- Docker: `docs/DOCKER.md`
-- Release: `docs/RELEASE.md`
-- Security/Privacy/Threat Model/Runbook/SLOs:
-  - `docs/SECURITY.md`, `docs/PRIVACY.md`, `docs/THREAT_MODEL.md`, `docs/RUNBOOK.md`, `docs/SLOS.md`
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
 
-## Metrics Quick Reference
-- `certnode_requests_total{method,path,status}` — total requests.
-- `certnode_request_duration_ms` — histogram for request latency.
-- `certnode_rate_limit_triggered_total` — total rate limit triggers.
-- `certnode_errors_total{method,path,status}` — total error responses (status >= 400).
+### 🎯 **Strategic Context Maintenance**
 
-## Guardrails
-- No new production dependencies without justification; prefer dev‑only for tooling.
-- Keep metrics label cardinality bounded (method, path, status only).
-- Avoid logging payload contents; logs should be hash‑only and correlation‑safe.
+**Always remember:**
+- **Vision:** Billion-dollar receipt infrastructure empire
+- **Current phase:** Phase 1 - Prove the Standard Works (0-6 months)
+- **Key insight:** Professional foundation + standards positioning (not SaaS service)
+- **Positioning:** Universal receipt protocol owner, not service vendor
 
-## CI Failures — Quick Fixes
-- Web SDK size gate failed: run `npm run build:web-sdk` and ensure `sdk/web/dist/index.esm.min.js` <10KB. If needed, trim comments/exports; avoid adding prod deps.
-- A11y check failed: open `http://localhost:8080/verify.html` locally and address reported axe-core violations (labels, roles, color contrast). Utility classes are in `web/assets/certnode.css`.
-- Benchmark regression: run `node tools/benchmark.js`; target p99 <100ms. Inspect server logs and rate-limit env in bench step.
-- Docs gate: update `AGENTS.md`, `docs/internal/ACTUAL_ROADMAP.md`, or run `npm run docs:update` and commit.
+### 🔧 **Technical Decision Framework**
 
-## If Context Is Lost
-- Read: ROADMAP_CANON, ACTUAL_ROADMAP, TASKS_TODO, MONITORING, DOCKER, RELEASE, CONTRIBUTING.
-- Run: `node tools/test-fast.js` to sanity‑check.
-- Pick the top “Next Steps” item; implement with minimal surface area; add/adjust tests and docs.
-- Use the commit subject convention and push each commit.
+**When making technical choices:**
+1. **Standards-first:** Will this position us as protocol owner?
+2. **Ecosystem thinking:** How does this enable other implementations?
+3. **Infrastructure scale:** Does this support billion-transaction volume?
+4. **Enterprise credibility:** Does this meet Fortune 500 requirements?
+5. **Developer adoption:** Will this drive viral developer usage?
+
+## 🚀 **Current Execution Context**
+
+### **Active Strategy: Hybrid Approach**
+- **Foundation:** Enterprise-grade professional infrastructure
+- **Messaging:** Universal receipt standard (not SaaS tool)
+- **Revenue model:** Usage-based infrastructure pricing
+- **Competition positioning:** Protocol owner building ecosystem
+
+### **Immediate Priorities**
+1. **Professional site infrastructure** - JWKS, trust center, security headers
+2. **Standards governance signals** - Position as protocol steward
+3. **Developer-first experience** - Interactive docs, test vectors
+4. **Usage metering foundation** - Infrastructure for scaling
+
+### **Phase 1 Success Metrics**
+- **1,000+ developers** using CertNode
+- **Enterprise credibility** established
+- **Standards positioning** recognized
+- **Revenue model** proven
+
+## 📊 **Context for Future Sessions**
+
+### **What We've Built**
+- ✅ **Three production SDKs** (Python, Go, Rust)
+- ✅ **Comprehensive examples** and documentation
+- ✅ **Cross-language test vectors** for compatibility
+- ✅ **Strategic roadmap** with billion-dollar vision
+- 🚨 **EXECUTING:** Professional infrastructure foundation
+
+### **What's Next**
+- Professional JWKS endpoint with rotation
+- Trust center with governance transparency
+- Interactive OpenAPI with ecosystem positioning
+- Public test vectors for standards compliance
+- Usage metering for infrastructure scaling
+
+### **Key Files to Monitor**
+- `BILLION_DOLLAR_BLUEPRINT.md` - Strategic roadmap (UPDATE ALWAYS)
+- `vercel.json` - Infrastructure configuration
+- `web/*.html` - Site positioning and messaging
+- `public/.well-known/jwks.json` - Standards compliance
+- `sdk/` - Developer experience
+
+## 🎯 **Success Indicators**
+
+**We're on track when:**
+- Documentation reflects current reality
+- Commits advance both technical and strategic goals
+- Positioning consistently emphasizes standards over service
+- Every change considers billion-dollar infrastructure scale
+
+**Red flags:**
+- SaaS-first thinking (pricing tiers, service vendor positioning)
+- Missing documentation updates
+- Technical work without strategic context
+- Uncommitted or unpushed work
+
+## 📚 **Essential Reading**
+
+Before starting work, review:
+1. **BILLION_DOLLAR_BLUEPRINT.md** - Current strategic context
+2. **Latest commit messages** - Recent progress and decisions
+3. **Current branch state** - What's in progress
+
+## 🔄 **End-of-Session Protocol**
+
+**Before ending any session:**
+1. ✅ Update BILLION_DOLLAR_BLUEPRINT.md with progress
+2. ✅ Commit all changes with strategic context
+3. ✅ Push to remote repository
+4. ✅ Update TodoWrite with current status
+5. ✅ Note any strategic insights or pivots
+
+---
+
+**Remember:** We're not building a SaaS service. We're building the foundational infrastructure for a billion-dollar receipt ecosystem. Every decision should reinforce this positioning.
+
+🚀 **Mission:** Make CertNode the universal standard for digital receipts, then own the entire ecosystem.
+
+---
+
+*This document should be updated whenever strategic direction or operating procedures change.*

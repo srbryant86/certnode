@@ -1,0 +1,12 @@
+{
+  "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6Indyb25nLWtpZC0yMDI1LTA5In0",
+  "payload": {
+    "document": "Sample document for testing",
+    "timestamp": "2025-09-17T12:00:00Z",
+    "version": "1.0"
+  },
+  "signature": "MEQCIB5K7H8vN2P1Q7wE3sF9gL2mR4tY6uI8oP0qA1sD3fG5H7J9KCIABC8L1mN2oP3qR4sT5uV6wX7yZ8A9bC0dE1fG2hI3jK4L",
+  "kid": "wrong-kid-2025-09",
+  "payload_jcs_sha256": null,
+  "receipt_id": null
+}

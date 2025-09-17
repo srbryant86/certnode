@@ -1,4 +1,4 @@
-module github.com/srbryant86/certnode/sdk/go
+module github.com/certnode/certnode/sdk/go
 
 go 1.20
 

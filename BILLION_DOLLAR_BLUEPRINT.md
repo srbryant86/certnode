@@ -33,10 +33,10 @@
 - [x] **Standards-first messaging** - Position as universal receipt protocol, not SaaS
 
 #### **Technical Launch**
-- [ ] **Publish SDKs** to package managers (PyPI, npm, crates.io)
-- [ ] **Launch CertNode.io** with developer-focused landing page
-- [ ] **Create receipt viewer** - public tool to verify any CertNode receipt
-- [ ] **Open source examples** for common use cases (e-commerce, APIs, IoT)
+- [x] **Publish SDKs** to package managers (PyPI, npm, crates.io)
+- [x] **Launch CertNode.io** with developer-focused landing page
+- [x] **Create receipt viewer** - public tool to verify any CertNode receipt
+- [x] **Open source examples** for common use cases (e-commerce, APIs, IoT)
 
 #### **Market Validation**
 - [ ] **Target 50 early adopters** - fintech startups, crypto projects, API companies

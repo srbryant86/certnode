@@ -47,12 +47,20 @@
   ],
   "routes": [
     {
+      "src": "/",
+      "dest": "/public/index.html"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "api/src/index.js"
     },
     {
       "src": "/validator",
-      "dest": "/web/verify.html"
+      "dest": "/public/verify.html"
+    },
+    {
+      "src": "/verify",
+      "dest": "/public/verify.html"
     },
     {
       "src": "/implementation",

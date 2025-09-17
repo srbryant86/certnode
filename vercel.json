@@ -8,7 +8,41 @@
     {
       "src": "web/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
     }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'"
+        }
+      ]
+    },
+    {
+      "source": "/vendor/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/openapi.json",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
+    },
+    {
+      "source": "/.well-known/jwks.json",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }]
+    }
+  ],
+  "rewrites": [
+    { "source": "/trust", "destination": "/public/trust/index.html" },
+    { "source": "/status", "destination": "/public/status/index.html" }
   ],
   "routes": [
     {
@@ -45,7 +79,11 @@
     },
     {
       "src": "/trust",
-      "dest": "/web/trust.html"
+      "dest": "/public/trust/index.html"
+    },
+    {
+      "src": "/status",
+      "dest": "/public/status/index.html"
     },
     {
       "src": "/",

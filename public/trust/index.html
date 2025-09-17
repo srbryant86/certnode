@@ -1,0 +1,66 @@
+<!doctype html><meta charset="utf-8"><title>Trust Center — CertNode</title>
+<main style="max-width:900px;margin:24px auto;font:16px/1.5 system-ui">
+<h1>Trust Center</h1>
+<p>Transparency, governance, and key rotation policy for the CertNode receipt standard.</p>
+
+<h2>Standards Governance</h2>
+<p>CertNode is designed as an <strong>open, universal standard</strong> for tamper-evident digital receipts. We maintain the reference implementation and coordinate ecosystem development while encouraging independent implementations.</p>
+
+<h2>JWKS Rotation Log</h2>
+<table id="rot" style="width:100%;border-collapse:collapse;margin:16px 0">
+  <thead>
+    <tr style="border-bottom:2px solid #ccc">
+      <th style="text-align:left;padding:8px">Date</th>
+      <th style="text-align:left;padding:8px">Key ID</th>
+      <th style="text-align:left;padding:8px">Action</th>
+      <th style="text-align:left;padding:8px">Comment</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<h2>Key Infrastructure</h2>
+<ul>
+  <li><strong>JWKS Endpoint:</strong> <a href="/.well-known/jwks.json">/.well-known/jwks.json</a></li>
+  <li><strong>Cache Policy:</strong> 300 seconds (5 minutes)</li>
+  <li><strong>Rotation Schedule:</strong> 90-day maximum key lifetime</li>
+  <li><strong>Algorithm Support:</strong> ES256 (ECDSA P-256), EdDSA (Ed25519)</li>
+</ul>
+
+<h2>Ecosystem</h2>
+<p>The CertNode receipt format is <strong>implementation-agnostic</strong>. Organizations can:</p>
+<ul>
+  <li>Use our hosted service for convenience</li>
+  <li>Implement their own CertNode-compatible service</li>
+  <li>Verify receipts from any CertNode implementation</li>
+</ul>
+
+<h2>Audit & Compliance</h2>
+<p>Current audit status: <strong>In preparation</strong></p>
+<ul>
+  <li>SOC 2 Type II - Q1 2026</li>
+  <li>Security assessment - Ongoing</li>
+  <li>Standards compliance - RFC 7515 (JWS), RFC 8785 (JCS)</li>
+</ul>
+
+<p><a href="/status">Service Status</a> · <a href="/openapi">API Documentation</a> · <a href="https://github.com/srbryant86/certnode">Open Source SDKs</a></p>
+
+<script>
+fetch('/trust/rotation.json').then(r=>r.json()).then(rows=>{
+  const tb=document.querySelector('#rot tbody');
+  rows.forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.style.borderBottom='1px solid #eee';
+    ['date','kid','action','comment'].forEach(k=>{
+      const td=document.createElement('td');
+      td.style.padding='8px';
+      td.textContent=r[k]||'';
+      tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  });
+}).catch(()=>{
+  document.querySelector('#rot tbody').innerHTML = '<tr><td colspan="4" style="padding:8px;font-style:italic">Rotation log unavailable</td></tr>';
+});
+</script>
+</main>

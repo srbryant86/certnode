@@ -59,11 +59,15 @@
     },
     {
       "src": "/specification",
-      "dest": "/web/openapi.html"
+      "dest": "/public/openapi.html"
+    },
+    {
+      "src": "/openapi",
+      "dest": "/public/openapi.html"
     },
     {
       "src": "/api",
-      "dest": "/web/openapi.html"
+      "dest": "/public/openapi.html"
     },
     {
       "src": "/verify",

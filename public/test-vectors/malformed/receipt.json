@@ -1,0 +1,12 @@
+{
+  "protected": "INVALID_BASE64_HEADER!!!",
+  "payload": {
+    "document": "Sample document for testing",
+    "timestamp": "2025-09-17T12:00:00Z",
+    "version": "1.0"
+  },
+  "signature": "NOT_VALID_SIGNATURE_FORMAT",
+  "kid": "p256-2025-09",
+  "payload_jcs_sha256": null,
+  "receipt_id": null
+}

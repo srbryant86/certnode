@@ -1,0 +1,5 @@
+{
+  "ok": false,
+  "note": "Payload has been tampered with after receipt creation - signature will not match",
+  "expected_behavior": "Should fail with 'Invalid signature' or 'Signature verification failed' error"
+}

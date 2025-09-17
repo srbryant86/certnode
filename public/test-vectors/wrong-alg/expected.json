@@ -1,0 +1,5 @@
+{
+  "ok": false,
+  "note": "Protected header specifies RS256 but JWKS key is configured for ES256 algorithm",
+  "expected_behavior": "Should fail with 'Algorithm mismatch' or 'Unsupported algorithm' error"
+}

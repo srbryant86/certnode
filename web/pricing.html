@@ -531,6 +531,24 @@
 
             <form id="enterpriseForm" onsubmit="submitEnterpriseForm(event)">
                 <div class="form-group">
+                    <label for="monthly-volume">Estimated monthly receipts *</label>
+                    <input type="number" id="monthly-volume" name="monthly_volume" min="100000" step="100000" placeholder="e.g., 2000000" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Options</label>
+                    <div class="flex">
+                      <label><input type="checkbox" id="opt-priority-slo"> Priority response SLO</label>
+                      <label><input type="checkbox" id="opt-managed-jwks" style="margin-left:16px;"> Managed JWKS + transparency</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                  <div id="estimate-box" class="status" style="border:1px solid var(--border); padding:12px; border-radius:8px;">
+                    <strong>Estimated monthly price:</strong> <span id="est-price">—</span>
+                  </div>
+                </div>
+                <div class="form-group">
                     <label for="company">Company Name *</label>
                     <input type="text" id="company" name="company" required>
                 </div>
@@ -634,6 +652,31 @@
     </section>
 
     <script>
+        // Quote calculator helpers
+        function computeEstimate(vol, opts){
+            let base = 0;
+            if (vol <= 2000000) base = 499;
+            else if (vol <= 10000000) base = 1500;
+            else base = 5000 + Math.ceil((vol - 10000000) / 5000000) * 1000;
+            if (opts && opts.priority) base += 500;
+            if (opts && opts.managed) base += 199;
+            return base;
+        }
+
+        function updateEstimate(){
+            const vol = parseInt(document.getElementById('monthly-volume')?.value || '0', 10);
+            const priority = !!document.getElementById('opt-priority-slo')?.checked;
+            const managed = !!document.getElementById('opt-managed-jwks')?.checked;
+            const el = document.getElementById('est-price');
+            if (!el) return;
+            if (!vol || vol < 100000) { el.textContent = '—'; return; }
+            el.textContent = `$${computeEstimate(vol, { priority, managed }).toLocaleString()}/month`;
+        }
+
+        document.addEventListener('input', (e) => {
+            if (['monthly-volume','opt-priority-slo','opt-managed-jwks'].includes(e.target?.id)) updateEstimate();
+        });
+
         // Stripe Checkout Integration
         async function startCheckout(tier) {
             // For developer tier (free), just redirect to signup/onboarding
@@ -703,6 +746,10 @@
 
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData);
+            const vol = parseInt(document.getElementById('monthly-volume').value || '0', 10);
+            const priority = document.getElementById('opt-priority-slo').checked;
+            const managed = document.getElementById('opt-managed-jwks').checked;
+            const estimate = computeEstimate(vol, { priority, managed });
 
             // Create email body with form data
             const emailBody = `
@@ -719,6 +766,11 @@ Timeline: ${data.timeline}
 
 Special Requirements:
 ${data.requirements || 'None specified'}
+
+Estimated Monthly Receipts: ${vol.toLocaleString()}
+Priority SLO: ${priority ? "Yes" : "No"}
+Managed JWKS: ${managed ? "Yes" : "No"}
+Estimated Price: ${estimate}/month
 
 Please schedule an enterprise consultation to discuss CertNode implementation for our organization.
             `.trim();

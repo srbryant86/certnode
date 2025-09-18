@@ -1,0 +1,21 @@
+name: Smoke endpoints
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  curl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set base URL
+        run: |
+          if [ -z "${{ secrets.SMOKE_BASE_URL }}" ]; then echo "BASE=https://certnode.io" >> $GITHUB_ENV; else echo "BASE=${{ secrets.SMOKE_BASE_URL }}" >> $GITHUB_ENV; fi
+      - name: JWKS
+        run: |
+          curl -fsSL "$BASE/.well-known/jwks.json" -H 'Accept: application/jwk-set+json' >/dev/null
+      - name: Rotation log
+        run: |
+          curl -fsSL "$BASE/trust/keys.jsonl" >/dev/null
+      - name: OpenAPI
+        run: |
+          curl -fsSL "$BASE/openapi.json" -H 'Accept: application/json' >/dev/null
+

@@ -345,6 +345,32 @@
       </nav>
     </div>
   </header>
+    <section style=""background: #1e40af; color: white; padding: 24px 0;"">
+      <div class=""header-container"" style=""justify-content: center; text-align: center; display: block;"">
+        <h1 style=""margin: 0 0 8px 0; font-weight: 600;"">Thank you for your purchase</h1>
+        <p style=""margin: 0; opacity: 0.9;"">During pilot, API keys are delivered within 4 hours. If you don’t see it, check spam or contact <a href=""mailto:contact@certnode.io"" style=""color:#e5e7eb; text-decoration: underline;"">contact@certnode.io</a>.</p>
+      </div>
+    </section>
+
+    <section class=""header-container"" style=""padding: 24px 32px;"">
+      <div class=""card"" style=""border:1px solid var(--border); border-radius:12px; padding:16px; background:#fff;"">
+        <h3 style=""margin-top:0; color: var(--primary)"">Quick start (Node.js)</h3>
+        <pre style=""white-space: pre-wrap; font-size: 12px; color:#475569; background:#f8fafc; padding:12px; border-radius:8px; overflow-x:auto;"">// Sign a receipt via reference API
+const res = await fetch('/v1/sign', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    // Use your API key when available (paid plans)
+    // 'Authorization': 'Bearer YOUR_API_KEY'
+  },
+  body: JSON.stringify({ payload: { hello: 'world' } })
+});
+const receipt = await res.json();
+console.log('receipt_id', receipt.receipt_id);
+</pre>
+        <p style=""margin:8px 0 0 0; color: var(--text-muted)"">Prefer SDKs? See <a href=""/openapi"">Specification</a> for language options and examples.</p>
+      </div>
+    </section>
 
   <div class="platform-hero">
     <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">

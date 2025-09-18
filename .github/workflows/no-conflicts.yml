@@ -1,0 +1,13 @@
+name: No conflict markers
+on:
+  push:
+  pull_request:
+jobs:
+  grep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail on conflict markers
+        run: |
+          ! git grep -nE "<<<<<<<|=======|>>>>>>>" -- . || (echo "Conflict markers detected" && exit 1)
+

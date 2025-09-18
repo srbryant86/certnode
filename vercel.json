@@ -58,7 +58,8 @@
   ],
   "rewrites": [
     { "source": "/openapi.json", "destination": "/public/openapi.json" },
-    { "source": "/.well-known/jwks.json", "destination": "/public/test-vectors/valid/jwks.json" },
+    { "source": "/.well-known/jwks.json", "destination": "/public/.well-known/jwks.json" },
+    { "source": "/trust/keys.jsonl", "destination": "/public/trust/keys.jsonl" },
     { "source": "/api/(.*)", "destination": "/api/src/index.js" },
     { "source": "/trust", "destination": "/public/trust/index.html" },
     { "source": "/status", "destination": "/public/status/index.html" },

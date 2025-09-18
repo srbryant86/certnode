@@ -487,16 +487,60 @@
                 </tbody>
             </table>
 
+<<<<<<< HEAD
             <div style="background: var(--success-bg); border-left: 4px solid var(--success); padding: 24px; border-radius: 8px; margin: 60px 0;">
                 <h3 style="color: var(--success); margin: 0 0 16px 0;">🔒 Security First</h3>
                 <p style="margin: 0; color: var(--text);">
                     CertNode infrastructure follows defense-in-depth principles with automated key rotation, comprehensive audit logging, and RFC-compliant cryptographic implementations. All operations are designed for transparency and verifiability.
                 </p>
+=======
+            <h2>Key Infrastructure</h2>
+            <ul>
+                <li><strong>JWKS Endpoint:</strong> <a href="/.well-known/jwks.json">/.well-known/jwks.json</a></li>
+                <li><strong>Cache Policy:</strong> 300 seconds (5 minutes)</li>
+                <li><strong>Rotation Schedule:</strong> 90-day maximum key lifetime</li>
+                <li><strong>Algorithm Support:</strong> ES256 (ECDSA P-256), EdDSA (Ed25519)</li>
+            </ul>
+
+            <h3>Live JWKS Verification</h3>
+            <div id="jwks-section" style="margin: 1rem 0; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
+                <div id="jwks-status">Loading JWKS...</div>
+                <pre id="jwks-content" style="margin-top: 1rem; white-space: pre-wrap; font-size: 0.875rem; max-height: 200px; overflow-y: auto;"></pre>
+            </div>
+
+            <h3>Live Rotation Log</h3>
+            <div id="rotation-section" style="margin: 1rem 0; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
+                <div id="rotation-status">Loading rotation log...</div>
+                <pre id="rotation-content" style="margin-top: 1rem; white-space: pre-wrap; font-size: 0.875rem; max-height: 200px; overflow-y: auto;"></pre>
+            </div>
+
+            <h2>Ecosystem</h2>
+            <p>The CertNode receipt format is <strong>implementation-agnostic</strong>. Organizations can:</p>
+            <ul>
+                <li>Use our hosted service for convenience</li>
+                <li>Implement their own CertNode-compatible service</li>
+                <li>Verify receipts from any CertNode implementation</li>
+            </ul>
+
+            <h2>Audit & Compliance</h2>
+            <p>Current audit status: <strong>In preparation</strong></p>
+            <ul>
+                <li>SOC 2 Type II - Q1 2026</li>
+                <li>Security assessment - Ongoing</li>
+                <li>Standards compliance - RFC 7515 (JWS), RFC 8785 (JCS)</li>
+            </ul>
+
+            <div class="footer-links">
+                <a href="/status">Service Status</a>
+                <a href="/openapi">API Documentation</a>
+                <a href="https://github.com/srbryant86/certnode">Open Source SDKs</a>
+>>>>>>> hardening/dev-onboarding-v2
             </div>
         </section>
     </div>
 
     <script>
+<<<<<<< HEAD
         // Load live JWKS and rotation log
         (async () => {
             try {
@@ -515,6 +559,76 @@
                 document.getElementById('log-pre').textContent = 'Error loading rotation log';
             }
         })();
+=======
+        // Fetch JWKS endpoint with error handling
+        async function loadJWKS() {
+            try {
+                const response = await fetch('/.well-known/jwks.json', { cache: 'reload' });
+                const status = document.getElementById('jwks-status');
+                const content = document.getElementById('jwks-content');
+
+                if (!response.ok) {
+                    status.innerHTML = `<span style="color: red;">❌ JWKS fetch failed: HTTP ${response.status}</span>`;
+                    content.textContent = 'Failed to load JWKS endpoint';
+                    return;
+                }
+
+                const jwks = await response.json();
+                status.innerHTML = `<span style="color: green;">✅ JWKS loaded successfully (${jwks.keys?.length || 0} keys)</span>`;
+                content.textContent = JSON.stringify(jwks, null, 2);
+            } catch (error) {
+                document.getElementById('jwks-status').innerHTML = `<span style="color: red;">❌ JWKS error: ${error.message}</span>`;
+                document.getElementById('jwks-content').textContent = 'Network error loading JWKS';
+            }
+        }
+
+        // Fetch rotation log endpoint with error handling
+        async function loadRotationLog() {
+            try {
+                const response = await fetch('/trust/keys.jsonl', { cache: 'reload' });
+                const status = document.getElementById('rotation-status');
+                const content = document.getElementById('rotation-content');
+
+                if (!response.ok) {
+                    status.innerHTML = `<span style="color: red;">❌ Rotation log fetch failed: HTTP ${response.status}</span>`;
+                    content.textContent = 'Failed to load rotation log endpoint';
+                    return;
+                }
+
+                const text = await response.text();
+                const lines = text.trim().split('\n').filter(line => line.trim());
+                status.innerHTML = `<span style="color: green;">✅ Rotation log loaded (${lines.length} entries)</span>`;
+                content.textContent = text;
+
+                // Also populate the table
+                const tbody = document.querySelector('#rot tbody');
+                lines.forEach(line => {
+                    try {
+                        const entry = JSON.parse(line);
+                        const tr = document.createElement('tr');
+                        const date = new Date(entry.ts).toLocaleDateString();
+                        [date, entry.kid, entry.event, entry.note || ''].forEach(val => {
+                            const td = document.createElement('td');
+                            td.textContent = val;
+                            tr.appendChild(td);
+                        });
+                        tbody.appendChild(tr);
+                    } catch (e) {
+                        console.warn('Failed to parse rotation log line:', line);
+                    }
+                });
+            } catch (error) {
+                document.getElementById('rotation-status').innerHTML = `<span style="color: red;">❌ Rotation log error: ${error.message}</span>`;
+                document.getElementById('rotation-content').textContent = 'Network error loading rotation log';
+            }
+        }
+
+        // Load both on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadJWKS();
+            loadRotationLog();
+        });
+>>>>>>> hardening/dev-onboarding-v2
     </script>
 </body>
 </html>

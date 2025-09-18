@@ -278,29 +278,48 @@
             tryItOutEnabled: true
         });
 
-        // Tab switching functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        // Tab switching functionality - wait for DOM and Swagger UI to be ready
+        window.addEventListener('load', function() {
+            console.log('Window loaded, initializing tabs...');
+
             const tabOverview = document.getElementById('tab-overview');
             const tabApi = document.getElementById('tab-api');
             const contentOverview = document.getElementById('content-overview');
             const contentApi = document.getElementById('content-api');
 
+            console.log('Tab elements found:', {
+                tabOverview: !!tabOverview,
+                tabApi: !!tabApi,
+                contentOverview: !!contentOverview,
+                contentApi: !!contentApi
+            });
+
             function showOverview() {
+                if (!tabOverview || !tabApi || !contentOverview || !contentApi) {
+                    console.error('Tab elements not found!');
+                    return;
+                }
                 tabOverview.style.background = 'var(--primary)';
                 tabOverview.style.color = 'white';
                 tabApi.style.background = 'var(--panel)';
                 tabApi.style.color = 'var(--text-muted)';
                 contentOverview.style.display = 'block';
                 contentApi.style.display = 'none';
+                console.log('Switched to overview tab');
             }
 
             function showApi() {
+                if (!tabOverview || !tabApi || !contentOverview || !contentApi) {
+                    console.error('Tab elements not found!');
+                    return;
+                }
                 tabApi.style.background = 'var(--primary)';
                 tabApi.style.color = 'white';
                 tabOverview.style.background = 'var(--panel)';
                 tabOverview.style.color = 'var(--text-muted)';
                 contentOverview.style.display = 'none';
                 contentApi.style.display = 'block';
+                console.log('Switched to API tab');
 
                 // Force Swagger UI to re-render when tab becomes visible
                 if (window.ui) {
@@ -310,13 +329,15 @@
                 }
             }
 
-            tabOverview.addEventListener('click', showOverview);
-            tabApi.addEventListener('click', showApi);
-
-            // Show overview by default
-            showOverview();
-
-            console.log('API page tabs initialized');
+            if (tabOverview && tabApi) {
+                tabOverview.addEventListener('click', showOverview);
+                tabApi.addEventListener('click', showApi);
+                // Show overview by default
+                showOverview();
+                console.log('API page tabs initialized successfully');
+            } else {
+                console.error('Failed to initialize tabs - elements not found');
+            }
         });
     </script>
 </body>

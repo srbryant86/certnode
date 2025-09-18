@@ -3,11 +3,20 @@
     {
       "kty": "EC",
       "crv": "P-256",
+      "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+      "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+      "kid": "certnode-demo-2025-01",
+      "use": "sig",
+      "alg": "ES256"
+    },
+    {
+      "kty": "EC",
+      "crv": "P-256",
+      "x": "WKn-ZIGevcwGIyyrzFoZNBdaq9_TsqzGHwHitJBcBmX",
+      "y": "y77As5vbZtIhp3ASIG_gk0SFnBjrgtE5UZ4SBwHj7Kv",
       "kid": "p256-2025-09",
       "use": "sig",
-      "alg": "ES256",
-      "x": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-      "y": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+      "alg": "ES256"
     }
   ]
 }

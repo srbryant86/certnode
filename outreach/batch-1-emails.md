@@ -41,7 +41,7 @@ Would you be interested in a brief technical discussion about how CertNode could
 Best regards,
 Steven Bryant
 Founder, CertNode Standards Committee
-steven@certnode.io | certnode.io
+contact@certnode.io | certnode.io
 
 ---
 
@@ -89,7 +89,7 @@ I'd love to show you a 15-minute demo of how CertNode receipts work for crypto t
 Best regards,
 Steven Bryant
 Founder, CertNode
-steven@certnode.io
+contact@certnode.io
 certnode.io
 
 ---
@@ -144,7 +144,7 @@ Would you be interested in a technical demonstration of how CertNode receipts co
 Best regards,
 Steven Bryant
 Founder, CertNode Standards Committee
-steven@certnode.io | certnode.io
+contact@certnode.io | certnode.io
 
 ---
 
@@ -198,7 +198,7 @@ Currently processing millions of receipts monthly for enterprise customers. Woul
 Best regards,
 Steven Bryant
 Founder, CertNode
-steven@certnode.io | certnode.io
+contact@certnode.io | certnode.io
 
 ---
 
@@ -258,7 +258,7 @@ Would you be interested in discussing how a CertNode Shopify app could create ne
 Best regards,
 Steven Bryant
 Founder, CertNode Standards Committee
-steven@certnode.io | certnode.io
+contact@certnode.io | certnode.io
 
 ---
 
@@ -318,7 +318,7 @@ I'd love to show you a 20-minute demo of how CertNode receipt infrastructure cou
 Best regards,
 Steven Bryant
 Founder, CertNode
-steven@certnode.io | certnode.io
+contact@certnode.io | certnode.io
 
 ---
 

@@ -42,7 +42,7 @@
   ],
   "rewrites": [
     { "source": "/openapi.json", "destination": "/public/openapi.json" },
-    { "source": "/.well-known/jwks.json", "destination": "/api/src/index.js" },
+    { "source": "/.well-known/jwks.json", "destination": "/public/test-vectors/valid/jwks.json" },
     { "source": "/api/(.*)", "destination": "/api/src/index.js" },
     { "source": "/trust", "destination": "/public/trust/index.html" },
     { "source": "/status", "destination": "/public/status/index.html" },

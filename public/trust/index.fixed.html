@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
+  <title>Trust Center — CertNode Standards</title>
+  <style>
+    :root { --bg:#fafbfc; --panel:#fff; --border:#e1e5e9; --text:#1e293b; --text-muted:#64748b; --primary:#1e40af; --success:#059669; }
+    body{font-family: Georgia, 'Times New Roman', serif; margin:0; padding:0; background:var(--bg); color:var(--text); line-height:1.7}
+    header{background:var(--panel); border-bottom:1px solid var(--border)}
+    .header-container{max-width:1200px; margin:0 auto; padding:20px 32px; display:flex; justify-content:space-between; align-items:center}
+    .logo{font-size:28px; font-weight:600; color:var(--primary); text-decoration:none}
+    .nav{display:flex; gap:40px; align-items:center}
+    .nav a{color:var(--text-muted); text-decoration:none; font-size:15px}
+    .nav a[aria-current="page"], .nav a:hover{color:var(--primary)}
+    .hero{background:linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); color:#fff; padding:80px 0; text-align:center}
+    .container{max-width:1200px; margin:0 auto; padding:0 32px}
+    .grid{display:grid; grid-template-columns: repeat(auto-fit,minmax(320px,1fr)); gap:24px; margin:32px 0}
+    .card{background:#fff; border:1px solid var(--border); border-radius:12px; padding:24px}
+    pre{white-space:pre-wrap; font-size:12px; color:#475569; overflow-x:auto; background:#f8fafc; border-radius:8px; padding:16px}
+    .badge{display:inline-block; padding:6px 12px; border-radius:12px; background:#ecfdf5; color:var(--success); font-weight:600; font-size:12px}
+  </style>
+  <script>
+  // Small helper to set text content
+  function show(id, text){ var el = document.getElementById(id); if (el) el.textContent = text; }
+  async function loadTrust(){
+    try{
+      const r = await fetch('/.well-known/jwks.json', { cache:'reload' });
+      if(!r.ok) throw new Error('JWKS HTTP '+r.status);
+      const jwks = await r.json();
+      show('jwks-pre', JSON.stringify(jwks, null, 2));
+    }catch(e){ show('jwks-pre', 'ERROR: '+ (e && e.message || 'failed')); }
+    try{
+      const r2 = await fetch('/trust/keys.jsonl', { cache:'no-store' });
+      if(!r2.ok) throw new Error('LOG HTTP '+r2.status);
+      const txt = (await r2.text()).trim();
+      show('log-pre', txt || '(empty)');
+    }catch(e){ show('log-pre', 'ERROR: '+ (e && e.message || 'failed')); }
+  }
+  </script>
+</head>
+<body onload="loadTrust()">
+  <header>
+    <div class="header-container">
+      <a href="/" class="logo">CertNode</a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/verify">Validator</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/openapi">Specification</a>
+        <a href="/trust" aria-current="page">Trust</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>CertNode Trust Center</h1>
+      <p>Transparency, governance, and cryptographic key distribution for the CertNode standard.</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="grid">
+      <div class="card">
+        <span class="badge">Key Infrastructure</span>
+        <h3>Canonical JWKS</h3>
+        <p><strong>Endpoint:</strong> <a href="/.well-known/jwks.json" target="_blank">/.well-known/jwks.json</a></p>
+        <p><strong>Content-Type:</strong> application/jwk-set+json • <strong>Cache:</strong> 300s</p>
+        <pre id="jwks-pre">Loading...</pre>
+      </div>
+      <div class="card">
+        <span class="badge">Rotation Log</span>
+        <h3>Transparency</h3>
+        <p><strong>Log:</strong> <a href="/trust/keys.jsonl" target="_blank">/trust/keys.jsonl</a> • <strong>Cache:</strong> no-store</p>
+        <pre id="log-pre">Loading...</pre>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Governance</h3>
+      <ul>
+        <li>Standards-first positioning; independent implementations welcome</li>
+        <li>Algorithm support: ES256 (P-256), EdDSA (Ed25519)</li>
+        <li>Rotation policy: 90-day maximum key lifetime</li>
+      </ul>
+    </div>
+  </main>
+</body>
+</html>
+

@@ -10,9 +10,15 @@ function loadLocalJwks() {
   if (process.env.JWKS_JSON) {
     try { return JSON.parse(process.env.JWKS_JSON); } catch (e) { throw new Error('Invalid JWKS_JSON'); }
   }
-  const p = process.env.JWKS_PATH || path.join(process.cwd(), 'web', '.well-known', 'certnode-jwks.json');
-  if (fs.existsSync(p)) {
-    return JSON.parse(fs.readFileSync(p, 'utf8'));
+  // Canonical static JWKS path (served by CDN / .well-known)
+  const primary = process.env.JWKS_PATH || path.join(process.cwd(), '..', 'public', '.well-known', 'jwks.json');
+  if (fs.existsSync(primary)) {
+    return JSON.parse(fs.readFileSync(primary, 'utf8'));
+  }
+  // Back-compat fallback (legacy location)
+  const legacy = path.join(process.cwd(), '..', 'web', '.well-known', 'certnode-jwks.json');
+  if (fs.existsSync(legacy)) {
+    return JSON.parse(fs.readFileSync(legacy, 'utf8'));
   }
   throw new Error('JWKS not found (set JWKS_JSON, JWKS_PATH, or provide DI jwks)');
 }

@@ -18,6 +18,8 @@ function setCorsHeaders(res, origin, allowedOrigins) {
   
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  // Allow browsers to read usage/rate-limit/diagnostic headers
+  res.setHeader('Access-Control-Expose-Headers', 'X-RateLimit-Limit, X-RateLimit-Remaining, X-Usage-Limit, X-Usage-Used, X-Usage-Remaining, X-Request-Id, Retry-After');
   res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
   res.setHeader('Vary', 'Origin');
   

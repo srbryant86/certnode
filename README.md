@@ -34,6 +34,25 @@ node tools/test-fast.js
 - `npm run example:sign` - sign a sample payload via API
 - `npm run example:verify` - verify a sample receipt via SDK
 
+## Payments (Quick Start)
+- Payment Links (no backend keys required):
+  - Set env vars `STARTER_PAYMENT_LINK_URL` and `PRO_PAYMENT_LINK_URL` (and optional `BUSINESS_PAYMENT_LINK_URL`).
+  - The Pricing page calls `/api/create-checkout` and will redirect to your Payment Link.
+- Full Stripe Checkout (automated API keys):
+  - Set `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and price IDs `STRIPE_STARTER_PRICE_ID`, `STRIPE_PRO_PRICE_ID` (optional `STRIPE_BUSINESS_PRICE_ID`).
+  - Webhook endpoint: `POST /stripe-webhook` (or `/api/stripe/webhook`).
+
+PowerShell examples (current session):
+```
+$env:STARTER_PAYMENT_LINK_URL="https://buy.stripe.com/..."
+$env:PRO_PAYMENT_LINK_URL="https://buy.stripe.com/..."
+
+$env:STRIPE_SECRET_KEY="sk_live_..."
+$env:STRIPE_WEBHOOK_SECRET="whsec_..."
+$env:STRIPE_STARTER_PRICE_ID="price_..."
+$env:STRIPE_PRO_PRICE_ID="price_..."
+```
+
 ## Verify (CLI)
 ```
 node tools/verify-receipt.js --receipt path/to/receipt.json --jwks path/to/jwks.json

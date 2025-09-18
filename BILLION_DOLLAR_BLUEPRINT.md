@@ -18,6 +18,12 @@
 
 ### **Month 1-2: Foundation & Launch**
 
+#### Roadmap Update (Sept 2025)
+- [x] Completed item - Payment Link fallback in `/api/create-checkout` to enable sales without secrets
+- [x] Completed item - Stripe webhook raw-body handling and CORS exposed headers for usage/rate metrics
+- [ ] 🚨 CURRENT PRIORITY: Set Payment Link env vars on Vercel and redeploy; wire CTAs
+- [ ] Next item - Unify JWKS source across API/site; minimal account handoff after checkout
+
 #### **IMMEDIATE PRIORITY: Professional Infrastructure Foundation**
 - [x] **Complete SDKs** - Python, Go, Rust with comprehensive examples
 - [x] **Billion-dollar roadmap** documented and committed

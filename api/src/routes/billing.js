@@ -9,7 +9,7 @@
  * - GET /api/account - Get account info (requires API key)
  */
 
-const { readJsonLimited, toPosInt } = require('../utils');
+const { readJsonLimited, toPosInt } = require('../plugins/validation');
 const billing = require('../plugins/stripe-billing');
 
 /**
@@ -24,6 +24,7 @@ async function handle(req, res) {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Expose-Headers': 'X-RateLimit-Limit, X-RateLimit-Remaining, X-Usage-Limit, X-Usage-Used, X-Usage-Remaining, X-Request-Id, Retry-After',
     'Access-Control-Max-Age': '86400'
   };
 
@@ -51,7 +52,7 @@ async function handle(req, res) {
       return res.end(JSON.stringify(body, null, 2));
     }
 
-    // POST /api/create-checkout - Create Stripe checkout session
+    // POST /api/create-checkout - Create Stripe checkout session (or return Payment Link if configured)
     if (req.method === 'POST' && pathname === '/api/create-checkout') {
       const raw = await readJsonLimited(req, { limitBytes: 1024 });
       const { email, tier } = raw;
@@ -66,13 +67,28 @@ async function handle(req, res) {
       }
 
       const tierConfig = billing.PRICING_TIERS[tier];
-      if (!tierConfig || !tierConfig.stripe_price_id) {
+
+      // Fallback to Payment Link URLs if price id not configured
+      const linkEnvMap = {
+        'starter': process.env.STARTER_PAYMENT_LINK_URL,
+        'pro': process.env.PRO_PAYMENT_LINK_URL,
+        'business': process.env.BUSINESS_PAYMENT_LINK_URL
+      };
+      const paymentLink = linkEnvMap[tier];
+      if (!tierConfig) {
         const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
         res.writeHead(400, headers);
-        return res.end(JSON.stringify({
-          error: 'client_error',
-          message: 'invalid tier'
-        }));
+        return res.end(JSON.stringify({ error: 'client_error', message: 'invalid tier' }));
+      }
+      if (!tierConfig.stripe_price_id && paymentLink) {
+        const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
+        res.writeHead(200, headers);
+        return res.end(JSON.stringify({ checkout_url: paymentLink, session_id: null, customer_id: null }));
+      }
+      if (!tierConfig.stripe_price_id && !paymentLink) {
+        const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
+        res.writeHead(400, headers);
+        return res.end(JSON.stringify({ error: 'client_error', message: 'tier not configured (missing Stripe price id or Payment Link URL)' }));
       }
 
       const baseUrl = req.headers.host.includes('localhost')
@@ -155,9 +171,23 @@ async function handle(req, res) {
       return res.end(JSON.stringify(body, null, 2));
     }
 
-    // POST /stripe-webhook - Stripe webhook handler
-    if (req.method === 'POST' && pathname === '/stripe-webhook') {
-      return billing.handleStripeWebhook(req, res);
+    // POST /stripe-webhook or /api/stripe/webhook - Stripe webhook handler (raw body required)
+    if (req.method === 'POST' && (pathname === '/stripe-webhook' || pathname === '/api/stripe/webhook')) {
+      // Collect raw body bytes for Stripe signature verification
+      const chunks = [];
+      req.on('data', (c) => chunks.push(c));
+      req.on('end', () => {
+        try {
+          // Attach raw body buffer so plugin can verify signature
+          req.body = Buffer.concat(chunks);
+          return billing.handleStripeWebhook(req, res);
+        } catch (e) {
+          const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
+          res.writeHead(400, headers);
+          return res.end(JSON.stringify({ error: 'client_error', message: 'invalid webhook payload' }));
+        }
+      });
+      return; // do not fall through
     }
 
     // 404 Not Found

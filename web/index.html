@@ -817,26 +817,26 @@ Date: 2025-01-15</textarea>
   <section class="research-metrics">
     <div class="container">
       <div class="text-center mb-48">
-        <h2 class="text-4xl mb-16">Technical Guarantees</h2>
+        <h2 class="text-4xl mb-16">Standards Compliance</h2>
         <p class="text-xl text-muted">Built on proven RFC standards - the cryptographic foundation for universal receipt infrastructure</p>
       </div>
       <div class="grid grid-3 text-center">
         <div class="metric-card">
-          <div class="metric-number">100%</div>
+          <div class="metric-number">RFC</div>
           <h3 class="text-2xl mb-16">Tamper Detection</h3>
-          <p class="text-muted">Cryptographic signatures instantly reveal any data modification attempts</p>
+          <p class="text-muted">ES256 signatures follow RFC 7515 standard for cryptographic verification</p>
           <cite class="metric-source">ECDSA P-256 Cryptography</cite>
         </div>
         <div class="metric-card">
-          <div class="metric-number">0 sec</div>
-          <h3 class="text-2xl mb-16">Verification Time</h3>
-          <p class="text-muted">Instant validation of document authenticity using standard cryptographic operations</p>
+          <div class="metric-number">JCS</div>
+          <h3 class="text-2xl mb-16">Canonicalization</h3>
+          <p class="text-muted">RFC 8785 JSON Canonicalization ensures consistent verification</p>
           <cite class="metric-source">Digital Signature Standard</cite>
         </div>
         <div class="metric-card">
-          <div class="metric-number">∞</div>
-          <h3 class="text-2xl mb-16">Validity Period</h3>
-          <p class="text-muted">Mathematical proofs remain valid indefinitely with no expiration</p>
+          <div class="metric-number">JWS</div>
+          <h3 class="text-2xl mb-16">Format Standard</h3>
+          <p class="text-muted">JSON Web Signatures provide industry-standard interoperability</p>
           <cite class="metric-source">RFC 7515 Standard</cite>
         </div>
       </div>
@@ -865,7 +865,7 @@ Date: 2025-01-15</textarea>
         <div class="feature">
           <div class="feature-icon">⚠️</div>
           <h3 class="text-2xl">Tamper Detection</h3>
-          <p>Any modification to signed content immediately fails verification. Mathematical proof of document integrity that's impossible to forge or circumvent.</p>
+          <p>Receipts use RFC 7515 JWS over RFC 8785 JCS with ES256. Any payload or header change invalidates verification under standard JOSE rules.</p>
         </div>
       </div>
     </div>

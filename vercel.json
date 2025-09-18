@@ -33,15 +33,33 @@
     },
     {
       "source": "/openapi.json",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
     },
     {
       "source": "/.well-known/jwks.json",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }]
+      "headers": [
+        { "key": "Content-Type", "value": "application/jwk-set+json" },
+        { "key": "Cache-Control", "value": "public, max-age=300, immutable" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
+    {
+      "source": "/trust/keys.jsonl",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" },
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
     }
   ],
   "rewrites": [
     { "source": "/openapi.json", "destination": "/public/openapi.json" },
+    { "source": "/.well-known/jwks.json", "destination": "/public/.well-known/jwks.json" },
+    { "source": "/trust/keys.jsonl", "destination": "/public/trust/keys.jsonl" },
     { "source": "/api/(.*)", "destination": "/api/src/index.js" },
     { "source": "/trust", "destination": "/public/trust/index.html" },
     { "source": "/status", "destination": "/public/status/index.html" },

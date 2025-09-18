@@ -234,6 +234,18 @@
                 <li><strong>Algorithm Support:</strong> ES256 (ECDSA P-256), EdDSA (Ed25519)</li>
             </ul>
 
+            <h3>Live JWKS Verification</h3>
+            <div id="jwks-section" style="margin: 1rem 0; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
+                <div id="jwks-status">Loading JWKS...</div>
+                <pre id="jwks-content" style="margin-top: 1rem; white-space: pre-wrap; font-size: 0.875rem; max-height: 200px; overflow-y: auto;"></pre>
+            </div>
+
+            <h3>Live Rotation Log</h3>
+            <div id="rotation-section" style="margin: 1rem 0; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
+                <div id="rotation-status">Loading rotation log...</div>
+                <pre id="rotation-content" style="margin-top: 1rem; white-space: pre-wrap; font-size: 0.875rem; max-height: 200px; overflow-y: auto;"></pre>
+            </div>
+
             <h2>Ecosystem</h2>
             <p>The CertNode receipt format is <strong>implementation-agnostic</strong>. Organizations can:</p>
             <ul>
@@ -259,19 +271,73 @@
     </div>
 
     <script>
-        fetch('/trust/rotation.json').then(r=>r.json()).then(rows=>{
-            const tb=document.querySelector('#rot tbody');
-            rows.forEach(r=>{
-                const tr=document.createElement('tr');
-                ['date','kid','action','comment'].forEach(k=>{
-                    const td=document.createElement('td');
-                    td.textContent=r[k]||'';
-                    tr.appendChild(td);
+        // Fetch JWKS endpoint with error handling
+        async function loadJWKS() {
+            try {
+                const response = await fetch('/.well-known/jwks.json', { cache: 'reload' });
+                const status = document.getElementById('jwks-status');
+                const content = document.getElementById('jwks-content');
+
+                if (!response.ok) {
+                    status.innerHTML = `<span style="color: red;">❌ JWKS fetch failed: HTTP ${response.status}</span>`;
+                    content.textContent = 'Failed to load JWKS endpoint';
+                    return;
+                }
+
+                const jwks = await response.json();
+                status.innerHTML = `<span style="color: green;">✅ JWKS loaded successfully (${jwks.keys?.length || 0} keys)</span>`;
+                content.textContent = JSON.stringify(jwks, null, 2);
+            } catch (error) {
+                document.getElementById('jwks-status').innerHTML = `<span style="color: red;">❌ JWKS error: ${error.message}</span>`;
+                document.getElementById('jwks-content').textContent = 'Network error loading JWKS';
+            }
+        }
+
+        // Fetch rotation log endpoint with error handling
+        async function loadRotationLog() {
+            try {
+                const response = await fetch('/trust/keys.jsonl', { cache: 'reload' });
+                const status = document.getElementById('rotation-status');
+                const content = document.getElementById('rotation-content');
+
+                if (!response.ok) {
+                    status.innerHTML = `<span style="color: red;">❌ Rotation log fetch failed: HTTP ${response.status}</span>`;
+                    content.textContent = 'Failed to load rotation log endpoint';
+                    return;
+                }
+
+                const text = await response.text();
+                const lines = text.trim().split('\n').filter(line => line.trim());
+                status.innerHTML = `<span style="color: green;">✅ Rotation log loaded (${lines.length} entries)</span>`;
+                content.textContent = text;
+
+                // Also populate the table
+                const tbody = document.querySelector('#rot tbody');
+                lines.forEach(line => {
+                    try {
+                        const entry = JSON.parse(line);
+                        const tr = document.createElement('tr');
+                        const date = new Date(entry.ts).toLocaleDateString();
+                        [date, entry.kid, entry.event, entry.note || ''].forEach(val => {
+                            const td = document.createElement('td');
+                            td.textContent = val;
+                            tr.appendChild(td);
+                        });
+                        tbody.appendChild(tr);
+                    } catch (e) {
+                        console.warn('Failed to parse rotation log line:', line);
+                    }
                 });
-                tb.appendChild(tr);
-            });
-        }).catch(()=>{
-            document.querySelector('#rot tbody').innerHTML = '<tr><td colspan="4" style="padding:1rem;font-style:italic;text-align:center">Rotation log unavailable</td></tr>';
+            } catch (error) {
+                document.getElementById('rotation-status').innerHTML = `<span style="color: red;">❌ Rotation log error: ${error.message}</span>`;
+                document.getElementById('rotation-content').textContent = 'Network error loading rotation log';
+            }
+        }
+
+        // Load both on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadJWKS();
+            loadRotationLog();
         });
     </script>
 </body>

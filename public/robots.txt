@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://certnode.io/sitemap.xml
+
+# Allow access to test vectors for compliance testing
+Allow: /test-vectors/
+Allow: /.well-known/
+
+# Disallow private areas
+Disallow: /signup/
+Disallow: /api/internal/

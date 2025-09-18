@@ -55,15 +55,12 @@ async function handle(req, res) {
     // POST /api/create-checkout - Create Stripe checkout session (or return Payment Link if configured)
     if (req.method === 'POST' && pathname === '/api/create-checkout') {
       const raw = await readJsonLimited(req, { limitBytes: 1024 });
-      const { email, tier } = raw;
+      const { email, tier } = raw || {};
 
-      if (!email || !tier) {
+      if (!tier) {
         const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
         res.writeHead(400, headers);
-        return res.end(JSON.stringify({
-          error: 'client_error',
-          message: 'email and tier are required'
-        }));
+        return res.end(JSON.stringify({ error: 'client_error', message: 'tier is required' }));
       }
 
       const tierConfig = billing.PRICING_TIERS[tier];
@@ -80,6 +77,7 @@ async function handle(req, res) {
         res.writeHead(400, headers);
         return res.end(JSON.stringify({ error: 'client_error', message: 'invalid tier' }));
       }
+      // If a Payment Link is configured for this tier (and no price id), allow missing email
       if (!tierConfig.stripe_price_id && paymentLink) {
         const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
         res.writeHead(200, headers);
@@ -89,6 +87,13 @@ async function handle(req, res) {
         const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
         res.writeHead(400, headers);
         return res.end(JSON.stringify({ error: 'client_error', message: 'tier not configured (missing Stripe price id or Payment Link URL)' }));
+      }
+
+      // At this point we will use Stripe checkout and require email
+      if (!email) {
+        const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
+        res.writeHead(400, headers);
+        return res.end(JSON.stringify({ error: 'client_error', message: 'email is required' }));
       }
 
       const baseUrl = req.headers.host.includes('localhost')

@@ -482,12 +482,12 @@
                     <li>Enhanced SLA (99.7% uptime)</li>
                     <li>Custom subdomain</li>
                 </ul>
-                <button onclick="startCheckout('starter')" class="cta-button secondary">Start 14-Day Trial</button>
+                <button onclick="startCheckout('starter')" class="cta-button secondary">Subscribe with Stripe</button>
             </div>
 
             <div class="pricing-card featured">
-                <div class="plan-name">Professional</div>
-                <div class="plan-price">$200<span class="period">/month</span></div>
+                <div class="plan-name">Pro</div>
+                <div class="plan-price">$199<span class="period">/month</span></div>
                 <div class="plan-description">For growing businesses with compliance needs</div>
                 <ul class="feature-list">
                     <li>500,000 receipts/month</li>
@@ -500,7 +500,7 @@
                     <li>White-label receipt viewer</li>
                     <li>Full source code access</li>
                 </ul>
-                <button onclick="startCheckout('pro')" class="cta-button">Start 30-Day Trial</button>
+                <button onclick="startCheckout('pro')" class="cta-button">Subscribe with Stripe</button>
             </div>
 
             <div class="pricing-card">
@@ -642,39 +642,34 @@
                 return;
             }
 
-            // Prompt for email
-            const email = prompt('Enter your email address to get started:');
-            if (!email || !email.includes('@')) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-
             try {
-                // Call the checkout API
-                const response = await fetch('/api/create-checkout', {
+                // Call the checkout API. When Payment Links are configured, email is not required.
+                let response = await fetch('/api/create-checkout', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        tier: tier
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tier })
                 });
 
+                // If server requires email (Stripe Checkout path), prompt and retry once
+                if (!response.ok) {
+                    let msg = 'Error creating checkout session';
+                    try { const j = await response.json(); msg = j.message || msg; } catch {}
+                    if (response.status === 400 && /email is required/i.test(msg)) {
+                        const email = prompt('Enter your email address to continue:');
+                        if (!email || !email.includes('@')) return alert('Please enter a valid email address.');
+                        response = await fetch('/api/create-checkout', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ tier, email })
+                        });
+                    } else {
+                        return alert(msg);
+                    }
+                }
+
                 const data = await response.json();
-
-                if (data.error) {
-                    alert(`Error: ${data.message}`);
-                    return;
-                }
-
-                // Redirect to Stripe Checkout
-                if (data.checkout_url) {
-                    window.location.href = data.checkout_url;
-                } else {
-                    alert('Error creating checkout session. Please try again.');
-                }
+                if (data && data.checkout_url) return window.location.href = data.checkout_url;
+                alert('Error creating checkout session. Please try again.');
             } catch (error) {
                 console.error('Checkout error:', error);
                 alert('Error creating checkout session. Please try again.');

@@ -41,72 +41,19 @@
     }
   ],
   "rewrites": [
+    { "source": "/openapi.json", "destination": "/public/openapi.json" },
+    { "source": "/api/(.*)", "destination": "/api/src/index.js" },
     { "source": "/trust", "destination": "/public/trust/index.html" },
     { "source": "/status", "destination": "/public/status/index.html" },
     { "source": "/usage", "destination": "/public/usage/index.html" },
     { "source": "/showcase", "destination": "/public/showcase/index.html" },
-    { "source": "/trust/governance", "destination": "/public/trust/governance.html" }
-  ],
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/public/index.html"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "api/src/index.js"
-    },
-    {
-      "src": "/validator",
-      "dest": "/public/verify.html"
-    },
-    {
-      "src": "/verify",
-      "dest": "/public/verify.html"
-    },
-    {
-      "src": "/implementation",
-      "dest": "/web/pricing.html"
-    },
-    {
-      "src": "/specification",
-      "dest": "/public/openapi.html"
-    },
-    {
-      "src": "/openapi",
-      "dest": "/public/openapi.html"
-    },
-    {
-      "src": "/api",
-      "dest": "/public/openapi.html"
-    },
-    {
-      "src": "/verify",
-      "dest": "/web/verify.html"
-    },
-    {
-      "src": "/pricing",
-      "dest": "/web/pricing.html"
-    },
-    {
-      "src": "/openapi",
-      "dest": "/web/openapi.html"
-    },
-    {
-      "src": "/trust",
-      "dest": "/public/trust/index.html"
-    },
-    {
-      "src": "/status",
-      "dest": "/public/status/index.html"
-    },
-    {
-      "src": "/",
-      "dest": "/web/index.html"
-    },
-    {
-      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
-      "dest": "/web/$1"
-    }
+    { "source": "/trust/governance", "destination": "/public/trust/governance.html" },
+    { "source": "/validator", "destination": "/public/verify.html" },
+    { "source": "/verify", "destination": "/public/verify.html" },
+    { "source": "/implementation", "destination": "/web/pricing.html" },
+    { "source": "/specification", "destination": "/public/openapi.html" },
+    { "source": "/openapi", "destination": "/public/openapi.html" },
+    { "source": "/pricing", "destination": "/web/pricing.html" },
+    { "source": "/", "destination": "/web/index.html" }
   ]
 }

@@ -11,6 +11,7 @@
 
 const { emit } = require('./metrics');
 const billing = require('./stripe-billing');
+const crypto = require('crypto');
 
 // In-memory usage tracking (production should use Redis/database)
 const usageStore = new Map();
@@ -100,6 +101,25 @@ function enforceUsageLimits(req, res) {
   const apiKey = req.headers.authorization?.replace('Bearer ', '');
   let customer = null;
   let usageKey = ipAddress;
+
+  // Optional: HMAC API key validation (format: keyId.signatureB64u)
+  // - When present and properly formatted, require validation
+  // - If invalid, return 401 immediately
+  // - On success, use derived identity as usage key
+  if (apiKey && apiKey.includes('.')) {
+    const valid = validateApiKey(apiKey);
+    if (!valid) {
+      const headers = { 'Content-Type': 'application/json' };
+      if (req && req.id) headers['X-Request-Id'] = req.id;
+      res.writeHead(401, headers);
+      const body = { error: 'unauthorized', message: 'Invalid API key' };
+      if (req && req.id) body.request_id = req.id;
+      return res.end(JSON.stringify(body));
+    }
+    // use HMAC keyId as identity (namespaced)
+    const keyId = apiKey.split('.')[0];
+    usageKey = `hmac:${keyId}`;
+  }
 
   if (apiKey) {
     customer = billing.getCustomerByApiKey(apiKey);
@@ -245,3 +265,21 @@ module.exports = {
   cleanupOldUsage,
   FREE_TIER_LIMIT
 };
+
+// --- helpers ---
+function validateApiKey(token) {
+  try {
+    const secret = process.env.API_KEY_SECRET;
+    if (!secret) return false;
+    const parts = String(token).split('.');
+    if (parts.length !== 2) return false;
+    const [keyId, sigB64] = parts;
+    const expected = crypto.createHmac('sha256', secret).update(keyId).digest('base64url');
+    const a = Buffer.from(sigB64 || '', 'base64url');
+    const b = Buffer.from(expected, 'base64url');
+    if (a.length !== b.length) return false;
+    return crypto.timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
+}

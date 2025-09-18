@@ -25,6 +25,9 @@
 - [x] Completed item - Trust Center: resolved merge conflicts; added robust JWKS/rotation fetch with error surfacing
 - [x] Completed item - Vercel rewrites: canonical Trust page mapped to cleaned file; Payment Links set across all envs
 - [x] Completed item - Pricing copy polish: replaced "Direct founder support" with "Priority support"
+- [x] Completed item - Free tier unified at 5,000/month (env + copy)
+- [ ] 🚨 CURRENT PRIORITY: Security (Week 1): HMAC API key validation, composite rate limiting, strict CORS, enhanced security headers
+- [ ] Next item - Performance (Week 2): static caching + gzip, externalize inline CSS
 - [ ] 🚨 CURRENT PRIORITY: Set Payment Link env vars on Vercel and redeploy; wire CTAs
 - [ ] Next item - Unify JWKS source across API/site; minimal account handoff after checkout
 - [ ] Next item - Fix visible title encoding artifacts across web pages (index, trust, verify, openapi, pricing)

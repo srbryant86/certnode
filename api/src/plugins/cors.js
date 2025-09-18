@@ -5,8 +5,11 @@ function parseAllowedOrigins(envVar) {
 
 function isOriginAllowed(origin, allowedOrigins) {
   if (!origin) return false;
-  // If no explicit allowlist is configured, allow all origins (solo-friendly default)
-  if (allowedOrigins.length === 0) return true;
+  if (allowedOrigins.length === 0) {
+    // Strict default: allow localhost in development only
+    if ((process.env.NODE_ENV || 'development') !== 'development') return false;
+    return /^https?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0)(:\d+)?$/i.test(origin);
+  }
   return allowedOrigins.includes(origin);
 }
 

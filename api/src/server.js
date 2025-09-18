@@ -4,7 +4,7 @@ const { handle: jwksHandler } = require("./routes/jwks");
 const { handle: healthHandler } = require("./routes/health");
 const { handle: openapiHandler } = require("./routes/openapi");
 const { handle: metricsHandler } = require("./routes/metrics");
-const { createRateLimiter, toPosInt } = require("./plugins/ratelimit");
+const { createCompositeRateLimiter, toPosInt } = require("./plugins/ratelimit");
 const { createCorsMiddleware } = require("./plugins/cors");
 const { setupGlobalErrorHandlers, createErrorMiddleware, asyncHandler } = require("./middleware/errorHandler");
 const { securityHeaders } = require("./plugins/security");
@@ -12,10 +12,7 @@ const { attach } = require("./plugins/requestId");
 const { emit } = require("./plugins/metrics");
 
 const port = process.env.PORT || 3000;
-const limiter = createRateLimiter({
-  max:  toPosInt(process.env.API_RATE_LIMIT_MAX, 120),
-  windowMs: toPosInt(process.env.API_RATE_LIMIT_WINDOW_MS, 60000)
-});
+const limiter = createCompositeRateLimiter({});
 const corsMiddleware = createCorsMiddleware();
 const errorMiddleware = createErrorMiddleware();
 
@@ -85,9 +82,15 @@ const server = http.createServer(async (req, res) => {
     return signHandler(req, res);
   }
 
-  // jwks (dev-only)
+  // jwks (public)
   if (req.method === "GET" && (url.pathname === "/jwks" || url.pathname === "/.well-known/jwks.json" || url.pathname === "/api/jwks" || url.pathname === "/api/.well-known/jwks.json")) {
     return jwksHandler(req, res);
+  }
+
+  // key rotation log
+  if (req.method === "GET" && url.pathname === "/trust/keys.jsonl") {
+    const { handle: keysHandler } = require("./routes/keys");
+    return keysHandler(req, res);
   }
 
   // openapi spec
@@ -130,7 +133,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   // Stripe webhook (no CORS, raw body)
-  if (req.method === "POST" && url.pathname === "/stripe-webhook") {
+  if (req.method === "POST" && (url.pathname === "/stripe-webhook" || url.pathname === "/api/stripe/webhook")) {
     const { handle: billingHandler } = require("./routes/billing");
     return billingHandler(req, res);
   }

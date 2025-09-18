@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Professional Trial — CertNode</title>
+  <title>Professional Access — CertNode</title>
   <style>
     :root {
       --bg: #fafbfc;
@@ -207,12 +207,12 @@
         <a href="/">CertNode</a>
       </div>
 
-      <h1>Start Professional Trial</h1>
-      <p class="subtitle">30-day free trial, then $200/month</p>
+      <h1>Request Professional Access</h1>
+      <p class="subtitle">Early access - $200/month when live</p>
 
       <div class="pricing-highlight">
         <div class="price">$200<span class="period">/month</span></div>
-        <div>after 30-day free trial</div>
+        <div>when service goes live</div>
       </div>
 
       <div class="features">
@@ -231,7 +231,7 @@
       </div>
 
       <div class="trial-notice">
-        <strong>Trial Terms:</strong> 30 days free, then automatically bills $200/month. Cancel anytime during trial with no charge.
+        <strong>Early Access:</strong> Get free access during development phase. Billing begins when service goes live with 30-day notice.
       </div>
 
       <form id="signupForm" onsubmit="submitSignup(event)">
@@ -289,7 +289,7 @@
           <textarea id="requirements" name="requirements" placeholder="Describe your integration needs, compliance requirements, or special requests..."></textarea>
         </div>
 
-        <button type="submit" class="submit-btn">Start 30-Day Free Trial</button>
+        <button type="submit" class="submit-btn">Request Early Access</button>
       </form>
 
       <div class="back-link">
@@ -307,7 +307,7 @@
 
       // Create email content
       const emailBody = `
-New CertNode Professional Plan Trial Request
+New CertNode Professional Plan Access Request
 
 Email: ${data.email}
 Name: ${data.name}
@@ -320,22 +320,22 @@ Preferred Subdomain: ${data.subdomain || 'Not specified'}
 Integration Requirements:
 ${data.requirements || 'None specified'}
 
-Trial Details:
+Access Details:
 - Plan: Professional ($200/month)
-- Trial: 30 days free
+- Early access during development phase
 - Includes: 500,000 receipts/month + priority support
 - Custom subdomain requested
 
-Please set up the trial account and send login credentials along with integration instructions.
+Please set up the early access account and send login credentials along with integration instructions.
       `.trim();
 
       // Open email client
-      const subject = 'Professional Plan Trial Request - ' + data.company;
+      const subject = 'Professional Plan Access Request - ' + data.company;
       const mailto = `mailto:contact@certnode.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
       window.location.href = mailto;
 
       // Show success message
-      alert('Thank you! Your trial request has been prepared. Please send the email to start your 30-day free trial.');
+      alert('Thank you! Your access request has been prepared. Please send the email to request early access.');
     }
   </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Starter Trial — CertNode</title>
+  <title>Starter Access — CertNode</title>
   <style>
     :root {
       --bg: #fafbfc;
@@ -185,12 +185,12 @@
         <a href="/">CertNode</a>
       </div>
 
-      <h1>Start Starter Trial</h1>
-      <p class="subtitle">14-day free trial, then $49/month</p>
+      <h1>Request Starter Access</h1>
+      <p class="subtitle">Early access - $49/month when live</p>
 
       <div class="pricing-highlight">
         <div class="price">$49<span class="period">/month</span></div>
-        <div>after 14-day free trial</div>
+        <div>when service goes live</div>
       </div>
 
       <div class="features">
@@ -206,7 +206,7 @@
       </div>
 
       <div class="trial-notice">
-        <strong>Trial Terms:</strong> 14 days free, then automatically bills $49/month. Cancel anytime during trial with no charge.
+        <strong>Early Access:</strong> Get free access during development phase. Billing begins when service goes live with 30-day notice.
       </div>
 
       <form id="signupForm" onsubmit="submitSignup(event)">
@@ -242,7 +242,7 @@
           </select>
         </div>
 
-        <button type="submit" class="submit-btn">Start 14-Day Free Trial</button>
+        <button type="submit" class="submit-btn">Request Early Access</button>
       </form>
 
       <div class="back-link">
@@ -260,7 +260,7 @@
 
       // Create email content
       const emailBody = `
-New CertNode Starter Plan Trial Request
+New CertNode Starter Plan Access Request
 
 Email: ${data.email}
 Name: ${data.name}
@@ -268,9 +268,9 @@ Company: ${data.company}
 Phone: ${data.phone || 'Not provided'}
 Use Case: ${data.useCase}
 
-Trial Details:
-- Plan: Starter ($49/month)
-- Trial: 14 days free
+Early Access Details:
+- Plan: Starter ($49/month when live)
+- Free during development phase
 - Includes: 50,000 receipts/month
 - Support: Email support
 
@@ -278,12 +278,12 @@ Please set up the trial account and send login credentials.
       `.trim();
 
       // Open email client
-      const subject = 'Starter Plan Trial Request - ' + data.company;
+      const subject = 'Starter Plan Access Request - ' + data.company;
       const mailto = `mailto:contact@certnode.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
       window.location.href = mailto;
 
       // Show success message
-      alert('Thank you! Your trial request has been prepared. Please send the email to start your 14-day free trial.');
+      alert('Thank you! Your access request has been prepared. Please send the email to request early access.');
     }
   </script>
 </body>

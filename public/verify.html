@@ -349,6 +349,21 @@
   <a href="#main" class="skip-link">Skip to main content</a>
   <main id="main" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
 
+    <!-- Sample Downloads Section -->
+    <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; text-align: center;">
+      <h2 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 1rem;">📄 Download Sample Files</h2>
+      <p style="color: var(--text-muted); margin-bottom: 2rem;">Get RFC-compliant test files to understand the CertNode standard format.</p>
+
+      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+        <button id="download-sample-receipt" style="background: var(--verified-green); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+          📄 Sample Receipt
+        </button>
+        <button id="download-sample-jwks" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+          🔑 Sample JWKS
+        </button>
+      </div>
+    </div>
+
     <!-- Live Demo Section -->
     <div style="background: linear-gradient(135deg, var(--verified-green) 0%, #047857 100%); border-radius: 12px; padding: 3rem 2rem; margin-bottom: 3rem; text-align: center; color: white; box-shadow: 0 8px 32px rgba(5, 150, 105, 0.2);">
       <h2 style="font-size: 2.5rem; margin-bottom: 1rem; font-weight: 700;">🚀 Try Live Demo</h2>
@@ -402,20 +417,47 @@
         </div>
       </div>
 
+      <!-- Parsed JOSE Sections -->
+      <div id="parsed-jose" style="display: none; margin-bottom: 2rem;">
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 2rem;">
+          <h3 style="margin-bottom: 2rem; color: var(--primary);">📋 Parsed JOSE Structure</h3>
+
+          <div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+            <!-- Protected Header -->
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h4 style="margin: 0; color: var(--text);">Protected Header (Base64url decoded)</h4>
+                <button onclick="copyToClipboard('parsed-header')" style="background: var(--verified-green); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 0.875rem; cursor: pointer;">📋 Copy</button>
+              </div>
+              <pre id="parsed-header" style="background: var(--bg); padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.875rem; overflow-x: auto; margin: 0;"></pre>
+            </div>
+
+            <!-- Payload JCS -->
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h4 style="margin: 0; color: var(--text);">Payload (RFC 8785 JCS Canonicalized)</h4>
+                <button onclick="copyToClipboard('parsed-payload')" style="background: var(--verified-green); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 0.875rem; cursor: pointer;">📋 Copy</button>
+              </div>
+              <pre id="parsed-payload" style="background: var(--bg); padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.875rem; overflow-x: auto; margin: 0;"></pre>
+            </div>
+
+            <!-- Signature -->
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h4 style="margin: 0; color: var(--text);">Signature (Base64url)</h4>
+                <button onclick="copyToClipboard('parsed-signature')" style="background: var(--verified-green); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 0.875rem; cursor: pointer;">📋 Copy</button>
+              </div>
+              <pre id="parsed-signature" style="background: var(--bg); padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.875rem; overflow-x: auto; margin: 0; word-break: break-all;"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Technical Results -->
       <div id="technical-results" style="display: none;">
         <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 2rem;">
-          <h3 style="margin-bottom: 1rem;">Technical Details</h3>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-            <div>
-              <h4 style="margin-bottom: 0.5rem;">Protected Header</h4>
-              <pre id="hdr" style="background: var(--bg); padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.875rem; overflow-x: auto;"></pre>
-            </div>
-            <div>
-              <h4 style="margin-bottom: 0.5rem;">Verification Result</h4>
-              <pre id="result" style="background: var(--bg); padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.875rem; overflow-x: auto;"></pre>
-            </div>
-          </div>
+          <h3 style="margin-bottom: 1rem;">Verification Result</h3>
+          <pre id="result" style="background: var(--bg); padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.875rem; overflow-x: auto;"></pre>
         </div>
       </div>
     </div>
@@ -437,6 +479,33 @@
 
   <!-- Business Demo Enhancement Script -->
   <script>
+    // Copy to clipboard utility
+    function copyToClipboard(elementId) {
+      const element = document.getElementById(elementId);
+      const text = element.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        // Show brief success feedback
+        const originalHTML = event.target.innerHTML;
+        event.target.innerHTML = '✅ Copied!';
+        setTimeout(() => {
+          event.target.innerHTML = originalHTML;
+        }, 1000);
+      });
+    }
+
+    // Download functionality
+    function downloadFile(content, filename, contentType = 'application/json') {
+      const blob = new Blob([content], { type: contentType });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }
+
     // Global sample data - loaded first!
     const sampleData = {
         financial: {
@@ -634,6 +703,40 @@
         });
       }
 
+      // Download sample files
+      $('#download-sample-receipt').addEventListener('click', () => {
+        const sampleReceipt = {
+          "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImRlbW8ta2V5In0",
+          "payload": {
+            "transaction_id": "TXN-2025-001234",
+            "amount": 45000.00,
+            "currency": "USD",
+            "account_from": "ACCT-****-1234",
+            "account_to": "ACCT-****-5678",
+            "timestamp": "2025-01-15T14:30:00Z",
+            "compliance_framework": "SOX_404",
+            "audit_trail": "Financial transaction record for SOX compliance"
+          },
+          "signature": "MEQCIBR5sT6wX9zY0bA1cD2eF3gH4iJ5kL6mNOPQRSTUVWXYZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRs",
+          "kid": "demo-key"
+        };
+        downloadFile(JSON.stringify(sampleReceipt, null, 2), 'certnode-sample-receipt.json');
+      });
+
+      $('#download-sample-jwks').addEventListener('click', () => {
+        const sampleJWKS = {
+          "keys": [{
+            "kty": "EC",
+            "crv": "P-256",
+            "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+            "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+            "kid": "demo-key",
+            "use": "sig"
+          }]
+        };
+        downloadFile(JSON.stringify(sampleJWKS, null, 2), 'certnode-sample-jwks.json');
+      });
+
       // Progressive disclosure
       $('#show-advanced').addEventListener('click', () => {
         const advanced = $('#advanced-section');
@@ -726,11 +829,27 @@
           return;
         }
 
+        // Show parsed JOSE sections immediately
+        $('#parsed-jose').style.display = 'block';
+
+        // Parse and display protected header
+        const header = decodeHeaderB64u(receipt.protected || '');
+        if (header) {
+          $('#parsed-header').textContent = JSON.stringify(header, null, 2);
+        }
+
+        // Display payload (JCS canonicalized)
+        if (receipt.payload) {
+          $('#parsed-payload').textContent = JSON.stringify(receipt.payload, null, 2);
+        }
+
+        // Display signature
+        if (receipt.signature) {
+          $('#parsed-signature').textContent = receipt.signature;
+        }
+
         // Show technical results section
         $('#technical-results').style.display = 'block';
-
-        const header = decodeHeaderB64u(receipt.protected || '');
-        if (header) $('#hdr').textContent = JSON.stringify(header, null, 2);
 
         try {
           if (!window.CertNode || !window.CertNode.verifyReceipt) {
@@ -764,9 +883,12 @@
         $('#receipt').value = '';
         $('#jwks').value = '';
         $('#result').textContent = '';
-        $('#hdr').textContent = '';
+        $('#parsed-header').textContent = '';
+        $('#parsed-payload').textContent = '';
+        $('#parsed-signature').textContent = '';
         $('#status').style.display = 'none';
         $('#technical-results').style.display = 'none';
+        $('#parsed-jose').style.display = 'none';
         setStatus(false, 'Fields cleared');
       });
 

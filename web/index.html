@@ -3,6 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Open standard for tamper-evident digital receipts. RFC-compliant cryptographic signatures using JWS detached signatures with ES256 or EdDSA. Universal receipt infrastructure for any JSON payload." />
+  <meta name="keywords" content="digital receipts, cryptographic signatures, JWS, ES256, EdDSA, tamper-evident, blockchain alternative, RFC compliance, JSON Web Signature" />
+  <meta property="og:title" content="CertNode — Universal Receipt Infrastructure" />
+  <meta property="og:description" content="Open standard for tamper-evident digital receipts using RFC-compliant cryptographic signatures." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://certnode.io/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="CertNode — Universal Receipt Infrastructure" />
+  <meta name="twitter:description" content="Open standard for tamper-evident digital receipts using RFC-compliant cryptographic signatures." />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
   <title>CertNode — Universal Receipt Infrastructure</title>
   <style>
@@ -650,12 +659,23 @@
   <section class="hero">
     <div class="container">
       <div class="hero-content">
-        <h1>Universal Receipt Infrastructure Standard</h1>
-        <p>CertNode is the universal standard for tamper-evident digital receipts. Like HTTPS for security or JSON for data exchange, CertNode aims to become the foundational infrastructure for global digital commerce integrity. Every transaction, API call, or digital event can have a mathematically verifiable receipt.</p>
+        <h1>Open Standard + Reference API</h1>
+        <p>CertNode is an open standard for tamper-evident digital receipts. Receipts use RFC 7515 JWS over RFC 8785 JCS with ES256. Any payload or header change invalidates verification under standard JOSE rules.</p>
 
-        <div class="flex justify-center mb-48">
-          <a href="#demo-section" onclick="document.getElementById('use-sample').click(); return false;" class="btn btn-primary btn-lg" style="margin-right: 16px;">Try Protocol Demo</a>
-          <a href="/openapi" class="btn btn-secondary btn-lg">View Technical Spec</a>
+        <div class="cta-buttons" style="margin: 48px 0;">
+          <a href="/verify" class="btn btn-primary btn-lg">Validate a Receipt</a>
+          <a href="/openapi" class="btn btn-secondary btn-lg">API Reference</a>
+          <a href="https://github.com/srbryant86/certnode" class="btn btn-secondary btn-lg" target="_blank">SDKs & Examples</a>
+        </div>
+
+        <!-- 3-Step Quickstart -->
+        <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 32px; margin: 48px auto; max-width: 600px; text-align: left;">
+          <h3 style="color: white; margin-bottom: 24px; text-align: center;">3-Step Quickstart</h3>
+          <ol style="color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.8;">
+            <li><code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">npm i @certnode/sdk</code></li>
+            <li>POST <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">/v1/sign</code> → get <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">receipt</code></li>
+            <li>Verify: <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">verifyReceipt({ receipt, jwks })</code></li>
+          </ol>
         </div>
 
         <!-- Technical Standards Elements -->

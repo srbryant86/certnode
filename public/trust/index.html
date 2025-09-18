@@ -428,10 +428,36 @@
                 </div>
             </div>
 
-            <h2 style="text-align: center; font-size: 36px; margin: 80px 0 40px 0;">Key Rotation Transparency</h2>
+            <h2 style="text-align: center; font-size: 36px; margin: 80px 0 40px 0;">Live Key Infrastructure</h2>
             <p style="text-align: center; color: var(--text-muted); max-width: 600px; margin: 0 auto 40px auto;">
-                All cryptographic key operations are logged for transparency. Historical records ensure receipt verification remains possible even after key rotation.
+                Verify our JWKS endpoint and rotation log in real-time. All cryptographic operations are transparent and machine-verifiable.
             </p>
+
+            <div class="content-grid" style="margin: 60px 0;">
+                <div class="trust-card">
+                    <h3>🔑 Live JWKS Endpoint</h3>
+                    <p><strong>Endpoint:</strong> <a href="/.well-known/jwks.json" target="_blank">/.well-known/jwks.json</a></p>
+                    <p><strong>Content-Type:</strong> application/jwk-set+json</p>
+                    <p><strong>Cache:</strong> 5 minutes</p>
+
+                    <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin: 20px 0;">
+                        <strong>Live JWKS Data:</strong>
+                        <pre id="jwks-pre" style="margin: 12px 0 0 0; font-size: 12px; color: #475569; overflow-x: auto;">Loading...</pre>
+                    </div>
+                </div>
+
+                <div class="trust-card">
+                    <h3>📝 Key Rotation Log</h3>
+                    <p><strong>Log:</strong> <a href="/trust/keys.jsonl" target="_blank">/trust/keys.jsonl</a></p>
+                    <p><strong>Format:</strong> Append-only JSONL</p>
+                    <p><strong>Cache:</strong> No caching (always fresh)</p>
+
+                    <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin: 20px 0;">
+                        <strong>Live Rotation Log:</strong>
+                        <pre id="log-pre" style="margin: 12px 0 0 0; font-size: 12px; color: #475569; white-space: pre-wrap;">Loading...</pre>
+                    </div>
+                </div>
+            </div>
 
             <table class="audit-table">
                 <thead>
@@ -469,5 +495,26 @@
             </div>
         </section>
     </div>
+
+    <script>
+        // Load live JWKS and rotation log
+        (async () => {
+            try {
+                // Fetch JWKS with cache reload
+                const jwksResponse = await fetch('/.well-known/jwks.json', { cache: 'reload' });
+                const jwks = await jwksResponse.json();
+                document.getElementById('jwks-pre').textContent = JSON.stringify(jwks, null, 2);
+
+                // Fetch rotation log with no-store
+                const logResponse = await fetch('/trust/keys.jsonl', { cache: 'no-store' });
+                const logText = await logResponse.text();
+                document.getElementById('log-pre').textContent = logText.trim();
+            } catch (error) {
+                console.error('Failed to load live key infrastructure:', error);
+                document.getElementById('jwks-pre').textContent = 'Error loading JWKS endpoint';
+                document.getElementById('log-pre').textContent = 'Error loading rotation log';
+            }
+        })();
+    </script>
 </body>
 </html>

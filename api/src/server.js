@@ -52,18 +52,18 @@ const server = http.createServer(async (req, res) => {
     return; // CORS middleware handled the request (preflight or blocked)
   }
 
-  // health
-  if (req.method === "GET" && (url.pathname === "/health" || url.pathname === "/v1/health")) {
+  // health (with /api prefix support for Vercel)
+  if (req.method === "GET" && (url.pathname === "/health" || url.pathname === "/v1/health" || url.pathname === "/api/health" || url.pathname === "/api/v1/health")) {
     return healthHandler(req, res);
   }
 
   // healthz
-  if (req.method === "GET" && url.pathname === "/healthz") {
+  if (req.method === "GET" && (url.pathname === "/healthz" || url.pathname === "/api/healthz")) {
     return healthHandler(req, res);
   }
 
   // /v1/sign with rate limit
-  if (req.method === "POST" && url.pathname === "/v1/sign") {
+  if (req.method === "POST" && (url.pathname === "/v1/sign" || url.pathname === "/api/v1/sign")) {
     const gate = limiter.allow(req);
     if (!gate.ok) {
       const retrySec = Math.ceil(gate.retryAfterMs/1000);
@@ -86,18 +86,18 @@ const server = http.createServer(async (req, res) => {
   }
 
   // jwks (dev-only)
-  if (req.method === "GET" && (url.pathname === "/jwks" || url.pathname === "/.well-known/jwks.json")) {
+  if (req.method === "GET" && (url.pathname === "/jwks" || url.pathname === "/.well-known/jwks.json" || url.pathname === "/api/jwks" || url.pathname === "/api/.well-known/jwks.json")) {
     return jwksHandler(req, res);
   }
 
   // openapi spec
-  if ((req.method === "GET" || req.method === "OPTIONS") && 
-      (url.pathname === "/openapi.json" || url.pathname === "/v1/openapi.json")) {
+  if ((req.method === "GET" || req.method === "OPTIONS") &&
+      (url.pathname === "/openapi.json" || url.pathname === "/v1/openapi.json" || url.pathname === "/api/openapi.json" || url.pathname === "/api/v1/openapi.json")) {
     return openapiHandler(req, res);
   }
 
   // /metrics (Prometheus)
-  if (req.method === "GET" && url.pathname === "/metrics") {
+  if (req.method === "GET" && (url.pathname === "/metrics" || url.pathname === "/api/metrics")) {
     return metricsHandler(req, res);
   }
 

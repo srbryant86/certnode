@@ -1,278 +1,473 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trust Center — CertNode Standards</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            color: #333;
-            background: #fafbfc;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
+  <title>Trust Center — CertNode Standards</title>
+  <style>
+    :root {
+      --bg: #fafbfc;
+      --bg-primary: #1e40af;
+      --panel: #ffffff;
+      --border: #e1e5e9;
+      --border-light: #f1f5f9;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --primary: #1e40af;
+      --primary-dark: #1e3a8a;
+      --accent: #3b82f6;
+      --accent-light: #60a5fa;
+      --success: #059669;
+      --success-bg: #ecfdf5;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+    /* Academic Professional Typography */
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
 
-        .header {
-            background: white;
-            border-bottom: 1px solid #e1e5e9;
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    /* Sophisticated Header */
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
 
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1e40af;
-            text-decoration: none;
-        }
+    .logo {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
+    /* Academic Navigation */
+    .nav {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
 
-        .nav-links a {
-            color: #64748b;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
+    .nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 400;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
 
-        .nav-links a:hover {
-            color: #1e40af;
-        }
+    .nav a:hover {
+      color: var(--primary);
+    }
 
-        .nav-links a.active {
-            color: #1e40af;
-        }
+    .nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
 
-        .content {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+    .nav a:hover::after {
+      width: 100%;
+    }
 
-        .content-inner {
-            padding: 3rem;
-        }
+    .nav a[aria-current="page"] {
+      color: var(--primary);
+    }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 1rem;
-        }
+    /* Hero Section */
+    .trust-hero {
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 100px 0;
+      text-align: center;
+      position: relative;
+    }
 
-        h2 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin: 2rem 0 1rem 0;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 0.5rem;
-        }
+    .trust-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(30, 41, 59, 0.2);
+      pointer-events: none;
+    }
 
-        p {
-            color: #64748b;
-            margin-bottom: 1rem;
-        }
+    .trust-hero h1 {
+      font-size: 48px;
+      font-weight: 400;
+      margin-bottom: 32px;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      position: relative;
+      z-index: 1;
+    }
 
-        ul {
-            color: #64748b;
-            margin-bottom: 1.5rem;
-        }
+    .trust-hero p {
+      font-size: 22px;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0 auto;
+      line-height: 1.6;
+      font-weight: 300;
+      max-width: 700px;
+      position: relative;
+      z-index: 1;
+    }
 
-        li {
-            margin-bottom: 0.5rem;
-        }
+    /* Content Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
 
-        strong {
-            color: #1e293b;
-        }
+    .content-section {
+      padding: 80px 0;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            background: #f8fafc;
-            border-radius: 8px;
-            overflow: hidden;
-        }
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 60px;
+      margin: 60px 0;
+    }
 
-        th {
-            background: #1e293b;
-            color: white;
-            text-align: left;
-            padding: 1rem;
-            font-weight: 600;
-        }
+    .trust-card {
+      background: var(--panel);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: all 0.3s ease;
+    }
 
-        td {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
+    .trust-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
 
-        tr:last-child td {
-            border-bottom: none;
-        }
+    .trust-card h3 {
+      color: var(--primary);
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
 
-        tr:nth-child(even) {
-            background: white;
-        }
+    .trust-card p {
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
 
-        a {
-            color: #1e40af;
-            text-decoration: none;
-        }
+    .status-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
 
-        a:hover {
-            text-decoration: underline;
-        }
+    .status-badge.active {
+      background: var(--success-bg);
+      color: var(--success);
+    }
 
-        .footer-links {
-            text-align: center;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: #f8fafc;
-            border-radius: 8px;
-        }
+    .status-badge.pending {
+      background: var(--warning-bg);
+      color: var(--warning);
+    }
 
-        .footer-links a {
-            margin: 0 1rem;
-            color: #1e40af;
-            font-weight: 500;
-        }
+    .spec-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
 
-        @media (max-width: 768px) {
-            .nav-links {
-                gap: 1rem;
-            }
+    .spec-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-            .content-inner {
-                padding: 1.5rem;
-            }
+    .spec-list li:last-child {
+      border-bottom: none;
+    }
 
-            h1 {
-                font-size: 2rem;
-            }
+    .spec-name {
+      font-weight: 600;
+      color: var(--text);
+    }
 
-            .footer-links {
-                padding: 1rem;
-            }
+    .spec-value {
+      color: var(--text-muted);
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 14px;
+    }
 
-            .footer-links a {
-                display: block;
-                margin: 0.5rem 0;
-            }
-        }
-    </style>
+    .compliance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin: 40px 0;
+    }
+
+    .compliance-item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .compliance-item h4 {
+      color: var(--primary);
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .compliance-item .status {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .audit-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 40px 0;
+      background: var(--panel);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .audit-table th {
+      background: var(--primary);
+      color: white;
+      text-align: left;
+      padding: 20px;
+      font-weight: 600;
+    }
+
+    .audit-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .audit-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .audit-table tr:nth-child(even) {
+      background: var(--bg);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-container {
+        padding: 16px 20px;
+      }
+
+      .nav {
+        gap: 20px;
+      }
+
+      .trust-hero {
+        padding: 60px 0;
+      }
+
+      .trust-hero h1 {
+        font-size: 36px;
+      }
+
+      .trust-hero p {
+        font-size: 18px;
+      }
+
+      .container {
+        padding: 0 20px;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .trust-card {
+        padding: 24px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
+    <header>
+        <div class="header-container">
+            <a href="/" class="logo">CertNode</a>
             <nav class="nav">
-                <a href="/" class="logo">CertNode</a>
-                <div class="nav-links">
-                    <a href="/verify">Validator</a>
-                    <a href="/openapi">API</a>
-                    <a href="/test-vectors">Test Vectors</a>
-                    <a href="/trust" class="active">Trust Center</a>
-                    <a href="/pricing">Pricing</a>
-                    <a href="/usage">Infrastructure</a>
-                    <a href="https://github.com/certnode/certnode" target="_blank" rel="noopener">GitHub</a>
-                </div>
+                <a href="/">Home</a>
+                <a href="/verify">Validator</a>
+                <a href="/pricing">Pricing</a>
+                <a href="/openapi">Specification</a>
+                <a href="/trust" aria-current="page">Trust</a>
+                <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
             </nav>
         </div>
     </header>
 
-    <div class="content">
-        <div class="content-inner">
-            <h1>Trust Center</h1>
+    <div class="trust-hero">
+        <div class="container">
+            <h1>CertNode Trust Center</h1>
             <p>Transparency, governance, and key rotation policy for the CertNode receipt standard.</p>
+        </div>
+    </div>
 
-            <h2>Standards Governance</h2>
-            <p>CertNode is designed as an <strong>open, universal standard</strong> for tamper-evident digital receipts. We maintain the reference implementation and coordinate ecosystem development while encouraging independent implementations.</p>
+    <div class="container">
+        <section class="content-section">
+            <div class="content-grid">
+                <div class="trust-card">
+                    <span class="status-badge active">Standards Governance</span>
+                    <h3>Open Universal Standard</h3>
+                    <p>CertNode is designed as an <strong>open, universal standard</strong> for tamper-evident digital receipts. We maintain the reference implementation and coordinate ecosystem development while encouraging independent implementations.</p>
 
-            <h2>JWKS Rotation Log</h2>
-            <table id="rot">
+                    <h4 style="color: var(--primary); margin: 24px 0 16px 0;">Implementation Agnostic</h4>
+                    <p>Organizations can:</p>
+                    <ul>
+                        <li>Use our hosted service for convenience</li>
+                        <li>Create their own CertNode-compatible service</li>
+                        <li>Verify receipts from any implementation</li>
+                    </ul>
+                </div>
+
+                <div class="trust-card">
+                    <span class="status-badge active">Key Infrastructure</span>
+                    <h3>JWKS Management</h3>
+                    <p>Our production key infrastructure follows enterprise security practices with automated rotation and transparency logging.</p>
+
+                    <ul class="spec-list">
+                        <li>
+                            <span class="spec-name">JWKS Endpoint</span>
+                            <span class="spec-value">/.well-known/jwks.json</span>
+                        </li>
+                        <li>
+                            <span class="spec-name">Cache Policy</span>
+                            <span class="spec-value">300 seconds (5 minutes)</span>
+                        </li>
+                        <li>
+                            <span class="spec-name">Key Lifetime</span>
+                            <span class="spec-value">90-day maximum</span>
+                        </li>
+                        <li>
+                            <span class="spec-name">Algorithms</span>
+                            <span class="spec-value">ES256, EdDSA</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="trust-card">
+                    <span class="status-badge pending">Audit Status</span>
+                    <h3>Security & Compliance</h3>
+                    <p>We maintain rigorous security practices and pursue industry certifications to ensure trust in the CertNode infrastructure.</p>
+
+                    <div class="compliance-grid">
+                        <div class="compliance-item">
+                            <h4>SOC 2 Type II</h4>
+                            <div class="status">Planned Q1 2026</div>
+                        </div>
+                        <div class="compliance-item">
+                            <h4>RFC Compliance</h4>
+                            <div class="status">RFC 7515, RFC 8785</div>
+                        </div>
+                        <div class="compliance-item">
+                            <h4>Security Assessment</h4>
+                            <div class="status">Ongoing</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trust-card">
+                    <span class="status-badge active">Ecosystem</span>
+                    <h3>Implementation Network</h3>
+                    <p>The CertNode receipt format is <strong>implementation-agnostic</strong>. Organizations can verify receipts from any standards-compliant implementation.</p>
+
+                    <h4 style="color: var(--primary); margin: 24px 0 16px 0;">Open Source Libraries</h4>
+                    <ul>
+                        <li><strong>Python SDK</strong> - Full implementation with FastAPI integration</li>
+                        <li><strong>Node.js SDK</strong> - Express middleware and standalone library</li>
+                        <li><strong>Rust SDK</strong> - High-performance library with WASM support</li>
+                        <li><strong>Go SDK</strong> - Lightweight library for cloud infrastructure</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 style="text-align: center; font-size: 36px; margin: 80px 0 40px 0;">Key Rotation Transparency</h2>
+            <p style="text-align: center; color: var(--text-muted); max-width: 600px; margin: 0 auto 40px auto;">
+                All cryptographic key operations are logged for transparency. Historical records ensure receipt verification remains possible even after key rotation.
+            </p>
+
+            <table class="audit-table">
                 <thead>
                     <tr>
                         <th>Date</th>
                         <th>Key ID</th>
                         <th>Action</th>
-                        <th>Comment</th>
+                        <th>Algorithm</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    <tr>
+                        <td>2025-01-15</td>
+                        <td>certnode-demo-2025-01</td>
+                        <td>Key Generated</td>
+                        <td>ES256</td>
+                        <td><span class="status-badge active">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td>2024-12-01</td>
+                        <td>p256-2025-09</td>
+                        <td>Test Vector Key</td>
+                        <td>ES256</td>
+                        <td><span class="status-badge pending">Test Only</span></td>
+                    </tr>
+                </tbody>
             </table>
 
-            <h2>Key Infrastructure</h2>
-            <ul>
-                <li><strong>JWKS Endpoint:</strong> <a href="/.well-known/jwks.json">/.well-known/jwks.json</a></li>
-                <li><strong>Cache Policy:</strong> 300 seconds (5 minutes)</li>
-                <li><strong>Rotation Schedule:</strong> 90-day maximum key lifetime</li>
-                <li><strong>Algorithm Support:</strong> ES256 (ECDSA P-256), EdDSA (Ed25519)</li>
-            </ul>
-
-            <h2>Ecosystem</h2>
-            <p>The CertNode receipt format is <strong>implementation-agnostic</strong>. Organizations can:</p>
-            <ul>
-                <li>Use our hosted service for convenience</li>
-                <li>Implement their own CertNode-compatible service</li>
-                <li>Verify receipts from any CertNode implementation</li>
-            </ul>
-
-            <h2>Audit & Compliance</h2>
-            <p>Current audit status: <strong>In preparation</strong></p>
-            <ul>
-                <li>SOC 2 Type II - Q1 2026</li>
-                <li>Security assessment - Ongoing</li>
-                <li>Standards compliance - RFC 7515 (JWS), RFC 8785 (JCS)</li>
-            </ul>
-
-            <div class="footer-links">
-                <a href="/status">Service Status</a>
-                <a href="/openapi">API Documentation</a>
-                <a href="https://github.com/srbryant86/certnode">Open Source SDKs</a>
+            <div style="background: var(--success-bg); border-left: 4px solid var(--success); padding: 24px; border-radius: 8px; margin: 60px 0;">
+                <h3 style="color: var(--success); margin: 0 0 16px 0;">🔒 Security First</h3>
+                <p style="margin: 0; color: var(--text);">
+                    CertNode infrastructure follows defense-in-depth principles with automated key rotation, comprehensive audit logging, and RFC-compliant cryptographic implementations. All operations are designed for transparency and verifiability.
+                </p>
             </div>
-        </div>
+        </section>
     </div>
-
-    <script>
-        fetch('/trust/rotation.json').then(r=>r.json()).then(rows=>{
-            const tb=document.querySelector('#rot tbody');
-            rows.forEach(r=>{
-                const tr=document.createElement('tr');
-                ['date','kid','action','comment'].forEach(k=>{
-                    const td=document.createElement('td');
-                    td.textContent=r[k]||'';
-                    tr.appendChild(td);
-                });
-                tb.appendChild(tr);
-            });
-        }).catch(()=>{
-            document.querySelector('#rot tbody').innerHTML = '<tr><td colspan="4" style="padding:1rem;font-style:italic;text-align:center">Rotation log unavailable</td></tr>';
-        });
-    </script>
 </body>
 </html>

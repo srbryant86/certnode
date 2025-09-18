@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Professional Trial — CertNode</title>
+  <style>
+    :root {
+      --bg: #fafbfc;
+      --bg-primary: #1e40af;
+      --panel: #ffffff;
+      --border: #e1e5e9;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --primary: #1e40af;
+      --primary-dark: #1e3a8a;
+      --accent: #3b82f6;
+      --accent-bg: #eff6ff;
+    }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 80px auto;
+      padding: 0 20px;
+    }
+
+    .signup-card {
+      background: var(--panel);
+      border-radius: 16px;
+      border: 2px solid var(--primary);
+      padding: 48px;
+      box-shadow: 0 8px 32px rgba(30, 64, 175, 0.15);
+      position: relative;
+    }
+
+    .signup-card::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: white;
+      padding: 8px 24px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo a {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--text);
+      margin-bottom: 12px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      font-size: 18px;
+    }
+
+    .pricing-highlight {
+      background: var(--accent-bg);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 32px 0;
+      text-align: center;
+      border: 1px solid var(--primary);
+    }
+
+    .pricing-highlight .price {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .pricing-highlight .period {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+
+    .submit-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .features {
+      background: var(--accent-bg);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 32px 0;
+      border: 1px solid var(--primary);
+    }
+
+    .features h3 {
+      color: var(--primary);
+      margin: 0 0 16px 0;
+      font-size: 18px;
+    }
+
+    .features ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text);
+    }
+
+    .features li {
+      margin-bottom: 8px;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 32px;
+    }
+
+    .back-link a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .back-link a:hover {
+      color: var(--primary);
+    }
+
+    .trial-notice {
+      background: #fffbeb;
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 24px 0;
+      color: #92400e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="signup-card">
+      <div class="logo">
+        <a href="/">CertNode</a>
+      </div>
+
+      <h1>Start Professional Trial</h1>
+      <p class="subtitle">30-day free trial, then $200/month</p>
+
+      <div class="pricing-highlight">
+        <div class="price">$200<span class="period">/month</span></div>
+        <div>after 30-day free trial</div>
+      </div>
+
+      <div class="features">
+        <h3>💼 Professional Plan Includes</h3>
+        <ul>
+          <li>500,000 receipts/month</li>
+          <li>$0.001 per additional receipt</li>
+          <li>Priority email support</li>
+          <li>Custom subdomain (receipts.yourcompany.com)</li>
+          <li>Advanced analytics & audit trails</li>
+          <li>Enhanced SLA (99.9% uptime)</li>
+          <li>Integration assistance (5 hours included)</li>
+          <li>White-label receipt viewer</li>
+          <li>Full source code access</li>
+        </ul>
+      </div>
+
+      <div class="trial-notice">
+        <strong>Trial Terms:</strong> 30 days free, then automatically bills $200/month. Cancel anytime during trial with no charge.
+      </div>
+
+      <form id="signupForm" onsubmit="submitSignup(event)">
+        <div class="form-group">
+          <label for="email">Work Email Address *</label>
+          <input type="email" id="email" name="email" required placeholder="you@company.com">
+        </div>
+
+        <div class="form-group">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" required placeholder="John Smith">
+        </div>
+
+        <div class="form-group">
+          <label for="company">Company Name *</label>
+          <input type="text" id="company" name="company" required placeholder="Acme Corp">
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number *</label>
+          <input type="tel" id="phone" name="phone" required placeholder="+1 (555) 123-4567">
+        </div>
+
+        <div class="form-group">
+          <label for="volume">Expected Monthly Volume *</label>
+          <select id="volume" name="volume" required>
+            <option value="">Select expected volume</option>
+            <option value="50k-100k">50K - 100K receipts/month</option>
+            <option value="100k-250k">100K - 250K receipts/month</option>
+            <option value="250k-500k">250K - 500K receipts/month</option>
+            <option value="500k+">500K+ receipts/month</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="useCase">Primary Use Case *</label>
+          <select id="useCase" name="useCase" required>
+            <option value="">Select primary use case</option>
+            <option value="api">API Receipt Generation</option>
+            <option value="ecommerce">E-commerce Platform</option>
+            <option value="financial">Financial Services</option>
+            <option value="saas">SaaS Application</option>
+            <option value="marketplace">Marketplace</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="subdomain">Preferred Subdomain</label>
+          <input type="text" id="subdomain" name="subdomain" placeholder="yourcompany (for receipts.yourcompany.com)">
+        </div>
+
+        <div class="form-group">
+          <label for="requirements">Integration Requirements</label>
+          <textarea id="requirements" name="requirements" placeholder="Describe your integration needs, compliance requirements, or special requests..."></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Start 30-Day Free Trial</button>
+      </form>
+
+      <div class="back-link">
+        <a href="/pricing">← Back to Pricing</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function submitSignup(event) {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData);
+
+      // Create email content
+      const emailBody = `
+New CertNode Professional Plan Trial Request
+
+Email: ${data.email}
+Name: ${data.name}
+Company: ${data.company}
+Phone: ${data.phone}
+Expected Volume: ${data.volume}
+Use Case: ${data.useCase}
+Preferred Subdomain: ${data.subdomain || 'Not specified'}
+
+Integration Requirements:
+${data.requirements || 'None specified'}
+
+Trial Details:
+- Plan: Professional ($200/month)
+- Trial: 30 days free
+- Includes: 500,000 receipts/month + priority support
+- Custom subdomain requested
+
+Please set up the trial account and send login credentials along with integration instructions.
+      `.trim();
+
+      // Open email client
+      const subject = 'Professional Plan Trial Request - ' + data.company;
+      const mailto = `mailto:contact@certnode.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+      window.location.href = mailto;
+
+      // Show success message
+      alert('Thank you! Your trial request has been prepared. Please send the email to start your 30-day free trial.');
+    }
+  </script>
+</body>
+</html>

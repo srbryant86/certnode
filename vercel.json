@@ -56,6 +56,9 @@
     { "source": "/openapi", "destination": "/public/openapi.html" },
     { "source": "/pricing", "destination": "/web/pricing.html" },
     { "source": "/test-vectors", "destination": "/public/test-vectors/index.html" },
+    { "source": "/signup/developer", "destination": "/public/signup/developer.html" },
+    { "source": "/signup/starter", "destination": "/public/signup/starter.html" },
+    { "source": "/signup/professional", "destination": "/public/signup/professional.html" },
     { "source": "/", "destination": "/web/index.html" }
   ]
 }

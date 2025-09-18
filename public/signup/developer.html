@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Developer Signup — CertNode</title>
+  <style>
+    :root {
+      --bg: #fafbfc;
+      --bg-primary: #1e40af;
+      --panel: #ffffff;
+      --border: #e1e5e9;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --primary: #1e40af;
+      --primary-dark: #1e3a8a;
+      --success: #059669;
+      --success-bg: #ecfdf5;
+    }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 80px auto;
+      padding: 0 20px;
+    }
+
+    .signup-card {
+      background: var(--panel);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 48px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo a {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--text);
+      margin-bottom: 12px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      font-size: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+
+    .submit-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .features {
+      background: var(--success-bg);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 32px 0;
+    }
+
+    .features h3 {
+      color: var(--success);
+      margin: 0 0 16px 0;
+      font-size: 18px;
+    }
+
+    .features ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text);
+    }
+
+    .features li {
+      margin-bottom: 8px;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 32px;
+    }
+
+    .back-link a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .back-link a:hover {
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="signup-card">
+      <div class="logo">
+        <a href="/">CertNode</a>
+      </div>
+
+      <h1>Get Started Free</h1>
+      <p class="subtitle">Create your developer account and start generating receipts in minutes</p>
+
+      <div class="features">
+        <h3>✅ Developer Plan Includes</h3>
+        <ul>
+          <li>5,000 receipts/month</li>
+          <li>Open-source SDKs (Python, Node.js, Rust, Go)</li>
+          <li>Community support</li>
+          <li>Basic analytics</li>
+          <li>Standard SLA (99.5% uptime)</li>
+        </ul>
+      </div>
+
+      <form id="signupForm" onsubmit="submitSignup(event)">
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" required placeholder="you@company.com">
+        </div>
+
+        <div class="form-group">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" required placeholder="John Smith">
+        </div>
+
+        <div class="form-group">
+          <label for="company">Company/Organization</label>
+          <input type="text" id="company" name="company" placeholder="Acme Corp">
+        </div>
+
+        <div class="form-group">
+          <label for="useCase">Primary Use Case</label>
+          <select id="useCase" name="useCase">
+            <option value="">Select use case (optional)</option>
+            <option value="api">API Receipt Generation</option>
+            <option value="ecommerce">E-commerce</option>
+            <option value="financial">Financial Services</option>
+            <option value="testing">Testing/Evaluation</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <button type="submit" class="submit-btn">Create Free Account</button>
+      </form>
+
+      <div class="back-link">
+        <a href="/pricing">← Back to Pricing</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function submitSignup(event) {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData);
+
+      // Create email content
+      const emailBody = `
+New CertNode Developer Account Request
+
+Email: ${data.email}
+Name: ${data.name}
+Company: ${data.company || 'Not specified'}
+Use Case: ${data.useCase || 'Not specified'}
+
+Please create a free developer account for this user.
+
+Account Details:
+- Plan: Developer (Free)
+- Includes: 5,000 receipts/month
+- Support: Community
+      `.trim();
+
+      // Open email client
+      const subject = 'Developer Account Request - ' + data.name;
+      const mailto = `mailto:contact@certnode.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+      window.location.href = mailto;
+
+      // Show success message
+      alert('Thank you! Your account request has been prepared. Please send the email to complete your signup.');
+    }
+  </script>
+</body>
+</html>

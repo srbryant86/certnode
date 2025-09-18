@@ -1,563 +1,345 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-  <title>Implementation Guide — CertNode</title>
-  <style>
-    :root {
-      /* Enterprise Professional Variables */
-      --bg: #fafbfc;
-      --bg-primary: #1e40af;
-      --panel: #ffffff;
-      --border: #e1e5e9;
-      --border-light: #f1f5f9;
-      --text: #1e293b;
-      --text-muted: #64748b;
-      --text-light: #94a3b8;
-      --primary: #1e40af;
-      --primary-dark: #1e3a8a;
-      --accent: #3b82f6;
-      --accent-light: #60a5fa;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing — CertNode Standards</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .pricing-hero {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
 
-      /* Cryptographic Identity Colors */
-      --crypto-gold: #f59e0b;
-      --security-teal: #0891b2;
-      --warning-amber: #d97706;
-      --verified-green: #059669;
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
 
-      /* Compliance Framework Colors */
-      --sox-blue: #1e40af;
-      --hipaa-green: #059669;
-      --pci-red: #dc2626;
-      --gdpr-purple: #7c3aed;
-      --fedramp-orange: #ea580c;
-    }
+        .pricing-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 40px;
+            position: relative;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
 
-    body {
-      font-family: 'Georgia', 'Times New Roman', serif;
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      letter-spacing: -0.01em;
-    }
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
 
-    header {
-      background: var(--panel);
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
+        .pricing-card.featured {
+            border-color: #3b82f6;
+            transform: scale(1.05);
+        }
 
-    .header-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .pricing-card.featured .badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #3b82f6;
+            color: white;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
 
-    .logo {
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--primary);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
+        .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
 
-    .nav {
-      display: flex;
-      gap: 40px;
-      align-items: center;
-    }
+        .plan-price {
+            font-size: 48px;
+            font-weight: 800;
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
 
-    .nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 400;
-      font-size: 15px;
-      transition: all 0.2s ease;
-      position: relative;
-    }
+        .plan-price .period {
+            font-size: 16px;
+            color: #64748b;
+            font-weight: 400;
+        }
 
-    .nav a:hover {
-      color: var(--primary);
-    }
+        .plan-description {
+            color: #64748b;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
 
-    .nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--primary);
-      transition: width 0.3s ease;
-    }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+        }
 
-    .nav a:hover::after {
-      width: 100%;
-    }
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+        }
 
-    .pricing-hero {
-      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      padding: 100px 0;
-      text-align: center;
-      position: relative;
-    }
+        .feature-list li:before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 10px;
+        }
 
-    .pricing-hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(30, 41, 59, 0.2);
-      pointer-events: none;
-    }
+        .cta-button {
+            width: 100%;
+            padding: 16px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
 
-    /* Cryptographic Pattern Overlay */
-    .pricing-hero::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 2px,
-        rgba(255,255,255,0.05) 2px,
-        rgba(255,255,255,0.05) 4px
-      );
-      pointer-events: none;
-      z-index: 0;
-    }
+        .cta-button:hover {
+            background: #2563eb;
+        }
 
-    .pricing-hero h1 {
-      font-size: 48px;
-      font-weight: 400;
-      margin-bottom: 32px;
-      line-height: 1.3;
-      letter-spacing: -0.02em;
-      position: relative;
-      z-index: 1;
-    }
+        .cta-button.secondary {
+            background: transparent;
+            color: #3b82f6;
+            border: 2px solid #3b82f6;
+        }
 
-    .pricing-hero p {
-      font-size: 22px;
-      color: rgba(255, 255, 255, 0.9);
-      margin: 0 auto;
-      line-height: 1.6;
-      font-weight: 300;
-      max-width: 700px;
-      position: relative;
-      z-index: 1;
-    }
+        .cta-button.secondary:hover {
+            background: #3b82f6;
+            color: white;
+        }
 
-    .pricing-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 4rem 2rem;
-    }
+        .enterprise-section {
+            background: #f8fafc;
+            padding: 80px 0;
+            text-align: center;
+        }
 
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      margin-bottom: 4rem;
-    }
+        .enterprise-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-    .pricing-card {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 1rem;
-      padding: 2rem;
-      position: relative;
-      transition: all 0.3s ease;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      align-items: center;
-      text-align: center;
-    }
+        .faq-section {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
 
-    .pricing-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    }
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 24px 0;
+        }
 
-    .pricing-card.featured {
-      border-color: var(--primary);
-      position: relative;
-      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    }
+        .faq-question {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
 
-    .pricing-card.featured::before {
-      content: "Recommended";
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--primary);
-      color: white;
-      padding: 0.5rem 1.5rem;
-      font-size: 0.875rem;
-      font-weight: 400;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 8px rgba(71, 85, 105, 0.2);
-    }
-
-    .plan-tier {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 0.5rem;
-    }
-
-    .plan-price {
-      font-size: 3rem;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 0.5rem;
-      line-height: 1;
-    }
-
-    .plan-price .currency {
-      font-size: 1.5rem;
-      color: #64748b;
-    }
-
-    .plan-price .period {
-      font-size: 1rem;
-      color: #64748b;
-      font-weight: 500;
-    }
-
-    .plan-subtitle {
-      color: #64748b;
-      margin-bottom: 2rem;
-      font-size: 1.125rem;
-    }
-
-    .plan-features {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 2rem;
-      flex-grow: 1;
-    }
-
-    .plan-features li {
-      padding: 0.75rem 0;
-      border-bottom: 1px solid #f1f5f9;
-      display: flex;
-      align-items: center;
-      color: #374151;
-    }
-
-    .plan-features li:last-child {
-      border-bottom: none;
-    }
-
-    .plan-features .check {
-      margin-right: 0.75rem;
-      color: #16a34a;
-      font-weight: 600;
-      font-size: 1.125rem;
-    }
-
-    .plan-button {
-      width: 100%;
-      padding: 1rem 1.5rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.75rem;
-      background: #f8fafc;
-      color: #374151;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      display: block;
-      text-align: center;
-    }
-
-    .plan-button.primary {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: white;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-    }
-
-    .plan-button:hover {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
-    }
-
-    .plan-button.primary:hover {
-      background: #1d4ed8;
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
-    }
-
-    .enterprise-section {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 1rem;
-      padding: 3rem;
-      text-align: center;
-      margin: 3rem 0;
-    }
-
-    .enterprise-section h3 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 1rem;
-    }
-
-    .enterprise-section p {
-      color: #64748b;
-      font-size: 1.125rem;
-      margin-bottom: 2rem;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .faq-section {
-      margin: 4rem 0;
-    }
-
-    .faq-section h2 {
-      text-align: center;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 3rem;
-    }
-
-    .faq-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: 2rem;
-    }
-
-    .faq-item {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.75rem;
-      padding: 1.5rem;
-    }
-
-    .faq-question {
-      font-weight: 600;
-      font-size: 1.125rem;
-      color: #1e293b;
-      margin-bottom: 0.75rem;
-    }
-
-    .faq-answer {
-      color: #64748b;
-      line-height: 1.6;
-    }
-
-    footer {
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
-      padding: 2rem 0;
-      text-align: center;
-      margin-top: 4rem;
-    }
-
-    @media (max-width: 768px) {
-      .pricing-hero h1 {
-        font-size: 2rem;
-      }
-
-      .pricing-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .faq-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+        .faq-answer {
+            color: #64748b;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="header-container">
-      <a href="/" class="logo">CertNode</a>
-      <nav class="nav">
-        <a href="/">Home</a>
-        <a href="/verify">Validator</a>
-        <a href="/pricing" aria-current="page">Implementation</a>
-        <a href="/openapi">Specification</a>
-        <a href="/trust">Trust</a>
-        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
-      </nav>
-    </div>
-  </header>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="/" class="logo">CertNode</a>
+                <div class="nav-links">
+                    <a href="/verify">Validator</a>
+                    <a href="/openapi">API</a>
+                    <a href="/test-vectors">Test Vectors</a>
+                    <a href="/trust">Trust Center</a>
+                    <a href="/pricing" class="active">Pricing</a>
+                    <a href="/usage">Infrastructure</a>
+                    <a href="https://github.com/certnode/certnode" target="_blank" rel="noopener">GitHub</a>
+                </div>
+            </nav>
+        </div>
+    </header>
 
-  <div class="pricing-hero">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-      <h1>Implementation Guide</h1>
-      <p>Technical documentation for implementing CertNode-compatible systems. Build tamper-evident digital records using open cryptographic standards with reference implementations and SDKs.</p>
-    </div>
-  </div>
-
-  <div class="pricing-container">
-
-    <!-- Quick Start Section -->
-    <div style="text-align: center; margin-bottom: 4rem; padding: 2rem 0; background: var(--panel); border-radius: 12px; border: 1px solid var(--border);">
-      <p style="color: var(--text-muted); margin-bottom: 2rem;">Get started with CertNode in your preferred environment</p>
-
-      <!-- Implementation Options -->
-      <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
-        <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: white; border: 2px solid var(--primary); border-radius: 8px;">
-          <div style="width: 24px; height: 24px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">JS</div>
-          <span style="font-weight: 600; color: var(--primary); font-size: 14px;">Node.js SDK</span>
+    <section class="pricing-hero">
+        <div class="container">
+            <h1>CertNode Infrastructure Hosting</h1>
+            <p style="font-size: 20px; margin-top: 20px; opacity: 0.9;">The CertNode standard is free and open. Our production infrastructure makes it easy to deploy.</p>
+            <p style="font-size: 16px; margin-top: 10px; opacity: 0.7;">Use our hosted service or deploy the open-source implementation yourself.</p>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: white; border: 2px solid var(--verified-green); border-radius: 8px;">
-          <div style="width: 24px; height: 24px; background: var(--verified-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">🌐</div>
-          <span style="font-weight: 600; color: var(--verified-green); font-size: 14px;">Browser WebCrypto</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: white; border: 2px solid var(--crypto-gold); border-radius: 8px;">
-          <div style="width: 24px; height: 24px; background: var(--crypto-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">🔗</div>
-          <span style="font-weight: 600; color: var(--crypto-gold); font-size: 14px;">REST API</span>
-        </div>
-      </div>
-
-      <!-- Implementation Benefits -->
-      <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; font-size: 14px; color: var(--text-muted);">
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="color: var(--verified-green);">✓</span> Open source MIT license
-        </div>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="color: var(--verified-green);">✓</span> RFC-compliant standards
-        </div>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="color: var(--verified-green);">✓</span> Zero vendor lock-in
-        </div>
-      </div>
-    </div>
+    </section>
 
     <div class="pricing-grid">
-      <div class="pricing-card" style="border-top: 4px solid var(--primary);">
-        <h3 class="plan-tier">🔧 Quick Start</h3>
-        <div class="plan-price" style="font-size: 2rem; color: var(--primary);">
-          <span style="font-size: 1rem;">npm install</span>
+        <!-- Developer Tier -->
+        <div class="pricing-card">
+            <div class="plan-name">Developer</div>
+            <div class="plan-price">Free</div>
+            <div class="plan-description">Perfect for testing and small projects</div>
+            <ul class="feature-list">
+                <li>10,000 receipts/month on our infrastructure</li>
+                <li>Open-source SDKs (Python, Node.js, Rust, Go)</li>
+                <li>Community support</li>
+                <li>Hosted JWKS endpoint</li>
+                <li>Basic analytics dashboard</li>
+                <li>Standard SLA (99.5% uptime)</li>
+                <li>Can switch to self-hosted anytime</li>
+            </ul>
+            <a href="mailto:contact@certnode.io?subject=Developer%20Plan%20Signup" class="cta-button secondary">Get Started Free</a>
         </div>
-        <p class="plan-subtitle">Get started with the Node.js SDK in minutes</p>
 
-        <ul class="plan-features">
-          <li><span class="check">•</span> <code>npm install @certnode/sdk</code></li>
-          <li><span class="check">•</span> Zero dependencies - uses Node crypto</li>
-          <li><span class="check">•</span> TypeScript definitions included</li>
-          <li><span class="check">•</span> Complete examples and docs</li>
-          <li><span class="check">•</span> MIT licensed - use anywhere</li>
-          <li><span class="check">•</span> Works offline after installation</li>
-          <li><span class="check">•</span> Compatible with any Node.js app</li>
-        </ul>
-
-        <a href="https://github.com/srbryant86/certnode/tree/main/sdk/node" class="plan-button">View Node.js Docs</a>
-      </div>
-
-      <div class="pricing-card featured" style="border-top: 4px solid var(--verified-green);">
-        <h3 class="plan-tier">🌐 Browser Integration</h3>
-        <div class="plan-price" style="font-size: 2rem; color: var(--verified-green);">
-          <span style="font-size: 1rem;">WebCrypto</span>
+        <!-- Professional Tier -->
+        <div class="pricing-card featured">
+            <div class="badge">Most Popular</div>
+            <div class="plan-name">Professional</div>
+            <div class="plan-price">$200<span class="period">/month</span></div>
+            <div class="plan-description">For growing businesses with compliance needs</div>
+            <ul class="feature-list">
+                <li>500,000 receipts/month on our infrastructure</li>
+                <li>$0.001 per additional receipt</li>
+                <li>Priority email support</li>
+                <li>Custom subdomain (receipts.yourcompany.com)</li>
+                <li>Advanced analytics & audit trails</li>
+                <li>Enhanced SLA (99.9% uptime)</li>
+                <li>Integration assistance (5 hours included)</li>
+                <li>White-label receipt viewer</li>
+                <li>Full source code access (deploy anywhere)</li>
+            </ul>
+            <a href="mailto:contact@certnode.io?subject=Professional%20Plan%20Signup" class="cta-button">Start 30-Day Trial</a>
         </div>
-        <p class="plan-subtitle">Client-side verification without external dependencies</p>
 
-        <ul class="plan-features">
-          <li><span class="check">•</span> Built-in browser WebCrypto API</li>
-          <li><span class="check">•</span> No server required for verification</li>
-          <li><span class="check">•</span> ECDSA P-256 signature validation</li>
-          <li><span class="check">•</span> JSON canonicalization support</li>
-          <li><span class="check">•</span> Works in all modern browsers</li>
-          <li><span class="check">•</span> Privacy-preserving offline validation</li>
-          <li><span class="check">•</span> Perfect for client-side apps</li>
-        </ul>
-
-        <a href="/validator" class="plan-button primary">Try Live Demo</a>
-      </div>
-
-      <div class="pricing-card" style="border-top: 4px solid var(--crypto-gold);">
-        <h3 class="plan-tier">🔗 REST API</h3>
-        <div class="plan-price" style="font-size: 2rem; color: var(--crypto-gold);">
-          <span style="font-size: 1rem;">HTTPS</span>
+        <!-- Enterprise Tier -->
+        <div class="pricing-card">
+            <div class="plan-name">Enterprise</div>
+            <div class="plan-price">Custom</div>
+            <div class="plan-description">For large-scale implementations and compliance</div>
+            <ul class="feature-list">
+                <li>Unlimited receipts</li>
+                <li>On-premise deployment options</li>
+                <li>Dedicated account manager</li>
+                <li>Custom integration development</li>
+                <li>Premium SLA (99.99% uptime)</li>
+                <li>24/7 phone support</li>
+                <li>Volume discounts available</li>
+                <li>Compliance certification assistance</li>
+            </ul>
+            <a href="mailto:contact@certnode.io?subject=Enterprise%20Plan%20Discussion" class="cta-button secondary">Contact Sales</a>
         </div>
-        <p class="plan-subtitle">Reference implementation for any programming language</p>
-
-        <ul class="plan-features">
-          <li><span class="check">•</span> Language-agnostic HTTP interface</li>
-          <li><span class="check">•</span> OpenAPI 3.1 specification</li>
-          <li><span class="check">•</span> Managed cryptographic signing</li>
-          <li><span class="check">•</span> Production-ready infrastructure</li>
-          <li><span class="check">•</span> JWKS key distribution</li>
-          <li><span class="check">•</span> Example in Python, Go, Java</li>
-          <li><span class="check">•</span> Perfect for legacy systems</li>
-        </ul>
-
-        <a href="/specification" class="plan-button">View API Docs</a>
-      </div>
     </div>
 
-    <div class="enterprise-section">
-      <h3>📚 Additional Resources</h3>
-      <p>Complete implementation guides, examples, and community resources to help you integrate CertNode into your systems.</p>
-      <a href="https://github.com/srbryant86/certnode" class="plan-button primary">View on GitHub</a>
-    </div>
+    <section class="enterprise-section">
+        <div class="enterprise-content">
+            <h2 style="font-size: 36px; margin-bottom: 24px; color: #1e293b;">Enterprise Solutions</h2>
+            <p style="font-size: 18px; color: #64748b; margin-bottom: 40px;">
+                Need on-premise deployment, custom integrations, or volume pricing?
+                Our enterprise team specializes in large-scale CertNode implementations.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin: 40px 0;">
+                <div>
+                    <h3 style="color: #1e293b; margin-bottom: 16px;">On-Premise Licensing</h3>
+                    <p style="color: #64748b;">Deploy CertNode infrastructure in your own data center with full source code access.</p>
+                </div>
+                <div>
+                    <h3 style="color: #1e293b; margin-bottom: 16px;">Custom Integration</h3>
+                    <p style="color: #64748b;">Our team builds and maintains custom integrations for your existing systems.</p>
+                </div>
+                <div>
+                    <h3 style="color: #1e293b; margin-bottom: 16px;">Compliance Support</h3>
+                    <p style="color: #64748b;">Get help meeting SOC 2, HIPAA, PCI-DSS, and other regulatory requirements.</p>
+                </div>
+            </div>
+            <a href="mailto:contact@certnode.io?subject=Enterprise%20Solutions%20Inquiry" class="cta-button" style="max-width: 300px; margin: 0 auto;">Schedule Enterprise Demo</a>
+        </div>
+    </section>
 
-    <div class="faq-section">
-      <h2>Technical Specifications</h2>
+    <section class="faq-section">
+        <h2 style="text-align: center; font-size: 36px; margin-bottom: 60px; color: #1e293b;">Frequently Asked Questions</h2>
 
-      <div class="faq-grid">
         <div class="faq-item">
-          <h3 class="faq-question">What cryptographic standards does CertNode use?</h3>
-          <p class="faq-answer">CertNode implements RFC 7515 (JSON Web Signature) with ECDSA P-256 digital signatures, RFC 8785 (JSON Canonicalization Scheme) for consistent hashing, and RFC 7517 (JSON Web Key) for public key distribution.</p>
+            <div class="faq-question">How does usage-based pricing work?</div>
+            <div class="faq-answer">You pay a base monthly fee plus $0.001 per receipt above your plan's included amount. For example, if you're on Professional and generate 600,000 receipts, you pay $200 + (100,000 × $0.001) = $300 total.</div>
         </div>
 
         <div class="faq-item">
-          <h3 class="faq-question">How do I verify a CertNode receipt?</h3>
-          <p class="faq-answer">Use any of our SDKs or the WebCrypto API to verify receipts. The process involves validating the JWS signature against the published JWKS using standard ECDSA P-256 verification.</p>
+            <div class="faq-question">Can I change plans anytime?</div>
+            <div class="faq-answer">Yes, you can upgrade or downgrade your plan at any time. Changes take effect at the start of your next billing cycle.</div>
         </div>
 
         <div class="faq-item">
-          <h3 class="faq-question">Can I implement CertNode without external dependencies?</h3>
-          <p class="faq-answer">Yes! CertNode is an open standard. You can implement it using any cryptographic library that supports ECDSA P-256 and JSON canonicalization. Our SDKs are reference implementations.</p>
+            <div class="faq-question">What's included in enterprise support?</div>
+            <div class="faq-answer">Enterprise customers get a dedicated account manager, 24/7 phone support, custom SLAs, priority feature requests, and assistance with compliance requirements.</div>
         </div>
 
         <div class="faq-item">
-          <h3 class="faq-question">Is CertNode compatible with existing systems?</h3>
-          <p class="faq-answer">Absolutely. CertNode is designed for integration - use our REST API, SDKs, or implement the standard directly. Works with any programming language and existing infrastructure.</p>
+            <div class="faq-question">Do you offer volume discounts?</div>
+            <div class="faq-answer">Yes, enterprise customers with high volume requirements can receive custom pricing with significant discounts. Contact our sales team for a quote.</div>
         </div>
 
         <div class="faq-item">
-          <h3 class="faq-question">What programming languages are supported?</h3>
-          <p class="faq-answer">CertNode SDKs are available for Node.js and browsers. The standard can be implemented in any language with ECDSA P-256 support including Python, Go, Java, C#, and more.</p>
+            <div class="faq-question">What happens if I exceed my plan limits?</div>
+            <div class="faq-answer">Your service continues uninterrupted. You'll be charged for overage at $0.001 per receipt. We'll notify you when you approach your limits so you can upgrade if needed.</div>
         </div>
 
         <div class="faq-item">
-          <h3 class="faq-question">How do I get started with implementation?</h3>
-          <p class="faq-answer">Start with our Node.js SDK for quick prototyping, try the browser demo to understand verification, then review the full technical specification for production implementation.</p>
+            <div class="faq-question">Is there a setup fee?</div>
+            <div class="faq-answer">No setup fees for Developer and Professional plans. Enterprise customers may have implementation fees depending on custom requirements, but these are discussed upfront.</div>
         </div>
-      </div>
-    </div>
-  </div>
+    </section>
 
-  <footer>
-    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-      <p style="color: #64748b; margin: 0;">© 2025 CertNode — Open standard for cryptographic digital evidence</p>
-    </div>
-  </footer>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Standards</h3>
+                <a href="/standards">CertNode RFC</a>
+                <a href="/openapi">API Documentation</a>
+                <a href="/trust/governance">Governance</a>
+            </div>
+            <div class="footer-section">
+                <h3>Developers</h3>
+                <a href="https://github.com/certnode/certnode">SDKs</a>
+                <a href="/showcase">Examples</a>
+                <a href="/pricing">Pricing</a>
+            </div>
+            <div class="footer-section">
+                <h3>Enterprise</h3>
+                <a href="mailto:contact@certnode.io">Contact Sales</a>
+                <a href="/trust">Security</a>
+                <a href="/trust/governance">Compliance</a>
+            </div>
+            <div class="footer-section">
+                <h3>Community</h3>
+                <a href="mailto:contact@certnode.io">Support</a>
+                <a href="mailto:standards@certnode.io">Standards Discussion</a>
+                <a href="mailto:security@certnode.io">Security</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 CertNode Standards Committee. Universal standard for tamper-evident digital receipts.</p>
+        </div>
+    </footer>
 </body>
 </html>

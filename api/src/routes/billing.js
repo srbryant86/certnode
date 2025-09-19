@@ -89,13 +89,6 @@ async function handle(req, res) {
         return res.end(JSON.stringify({ error: 'client_error', message: 'tier not configured (missing Stripe price id or Payment Link URL)' }));
       }
 
-      // At this point we will use Stripe checkout and require email
-      if (!email) {
-        const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
-        res.writeHead(400, headers);
-        return res.end(JSON.stringify({ error: 'client_error', message: 'email is required' }));
-      }
-
       const baseUrl = req.headers.host.includes('localhost')
         ? 'http://localhost:3000'
         : `https://${req.headers.host}`;
@@ -103,12 +96,7 @@ async function handle(req, res) {
       const successUrl = `${baseUrl}/account?session_id={CHECKOUT_SESSION_ID}`;
       const cancelUrl = `${baseUrl}/pricing`;
 
-      const checkout = await billing.createCheckoutSession(
-        email,
-        tierConfig.stripe_price_id,
-        successUrl,
-        cancelUrl
-      );
+      const checkout = await billing.createCheckoutSession(email, tierConfig.stripe_price_id, successUrl, cancelUrl);
 
       const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
       res.writeHead(200, headers);

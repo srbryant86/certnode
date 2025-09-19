@@ -137,40 +137,43 @@ function canMakeRequest(customer, usage) {
 async function createCheckoutSession(email, priceId, successUrl, cancelUrl) {
   const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-  // Create or get customer
-  let customer;
-  try {
-    const customers = await stripe.customers.list({ email, limit: 1 });
-    if (customers.data.length > 0) {
-      customer = customers.data[0];
-    } else {
-      customer = await stripe.customers.create({ email });
+  // If email provided, try to attach to existing customer for better continuity.
+  // Otherwise let Checkout collect email and create the customer implicitly.
+  let session;
+  if (email) {
+    try {
+      let customer;
+      const found = await stripe.customers.list({ email, limit: 1 });
+      if (found.data.length > 0) {
+        customer = found.data[0];
+      } else {
+        customer = await stripe.customers.create({ email });
+      }
+      session = await stripe.checkout.sessions.create({
+        customer: customer.id,
+        mode: 'subscription',
+        payment_method_types: ['card'],
+        line_items: [{ price: priceId, quantity: 1 }],
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        metadata: { customer_email: email }
+      });
+      return { checkout_url: session.url, session_id: session.id, customer_id: customer.id };
+    } catch (e) {
+      // Fall through to anonymous session
+      console.warn('Checkout with email failed, falling back to anonymous session:', e.message);
     }
-  } catch (e) {
-    throw new Error('Failed to create/find customer: ' + e.message);
   }
 
-  // Create checkout session
-  const session = await stripe.checkout.sessions.create({
-    customer: customer.id,
+  // Anonymous session - Stripe will collect email and create a Customer
+  session = await stripe.checkout.sessions.create({
     mode: 'subscription',
     payment_method_types: ['card'],
-    line_items: [{
-      price: priceId,
-      quantity: 1,
-    }],
+    line_items: [{ price: priceId, quantity: 1 }],
     success_url: successUrl,
-    cancel_url: cancelUrl,
-    metadata: {
-      customer_email: email
-    }
+    cancel_url: cancelUrl
   });
-
-  return {
-    checkout_url: session.url,
-    session_id: session.id,
-    customer_id: customer.id
-  };
+  return { checkout_url: session.url, session_id: session.id };
 }
 
 /**

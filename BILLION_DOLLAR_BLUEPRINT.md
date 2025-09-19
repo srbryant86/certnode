@@ -28,6 +28,7 @@
 - [x] Completed item - Free tier unified at 5,000/month (env + copy)
 - [ ] 🚨 CURRENT PRIORITY: Security (Week 1): HMAC API key validation, composite rate limiting, strict CORS, enhanced security headers
 - [x] Completed item - Checkout Sessions enabled with Stripe price IDs (Starter/Pro); success redirects to /account
+- [x] Completed item - Introduced Business plan ($499/mo, 2M receipts) in pricing and billing config
 - [ ] Next item - Performance (Week 2): static caching + gzip, externalize inline CSS
 - [ ] 🚨 CURRENT PRIORITY: Set Payment Link env vars on Vercel and redeploy; wire CTAs
 - [ ] Next item - Unify JWKS source across API/site; minimal account handoff after checkout

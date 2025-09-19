@@ -33,8 +33,8 @@ const PRICING_TIERS = {
   },
   business: {
     name: 'Business',
-    monthly_limit: 50000,
-    price: 9900, // $99.00 in cents
+    monthly_limit: 2000000, // 2,000,000 receipts/month included
+    price: 49900, // $499.00 in cents
     stripe_price_id: process.env.STRIPE_BUSINESS_PRICE_ID
   },
   enterprise: {

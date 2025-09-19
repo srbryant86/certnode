@@ -382,6 +382,9 @@
       margin: 0 0 48px;
       line-height: 1.6;
       font-weight: 300;
+      max-width: 70ch;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     /* Social Proof Section */

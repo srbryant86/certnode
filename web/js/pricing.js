@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function(){
       }
       const originalText = btn.textContent;
       btn.disabled = true;
-      btn.textContent = 'Redirecting…';
+      btn.textContent = 'Redirecting…¦';
       try{
         const res = await fetch('/api/create-checkout', {
           method: 'POST',
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function(){
           throw new Error('No checkout URL returned');
         }
       } catch(e){
-        showPricingError('Checkout error: '+(e && e.message || 'unexpected'));
+        (typeof showToast==='function'? showToast('Checkout failed: '+((e&&e.message)||'unexpected'),'error') : showPricingError('Checkout error: '+((e&&e.message)||'unexpected')));
         btn.disabled = false;
         btn.textContent = originalText;
       }

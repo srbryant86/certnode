@@ -26,7 +26,7 @@ const PRICING_TIERS = {
     stripe_price_id: process.env.STRIPE_STARTER_PRICE_ID
   },
   pro: {
-    name: 'Pro',
+    name: 'Professional',
     monthly_limit: 500000,
     price: 19900, // $199.00 in cents
     stripe_price_id: process.env.STRIPE_PRO_PRICE_ID

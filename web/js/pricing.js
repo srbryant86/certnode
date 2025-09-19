@@ -18,8 +18,11 @@ document.addEventListener('DOMContentLoaded', function(){
           throw new Error('No checkout URL returned');
         }
       } catch(e){
+        const errorMsg = 'Checkout failed: ' + ((e && e.message) || 'unexpected');
         if (typeof showToast === 'function') {
-          showToast('Checkout failed: ' + ((e && e.message) || 'unexpected'), 'error');
+          showToast(errorMsg, 'error');
+        } else {
+          alert(errorMsg);
         }
         btn.disabled = false;
         btn.textContent = originalText;

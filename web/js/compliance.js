@@ -8,7 +8,11 @@
     const industry=$('#industry').value; const companySize=$('#company-size').value; const revenue=$('#annual-revenue').value; const dataVolume=parseInt($('#data-volume').value)||0; const currentCost=parseInt($('#current-audit-cost').value)||0; const complianceStaff=parseFloat($('#compliance-staff').value)||0;
     const regs=[]; ['sox','hipaa','gdpr','pci','iso','other-reg'].forEach(id=>{ const el=$('#'+id); if(el && el.checked) regs.push(id); });
     if(!industry||!companySize||!revenue||regs.length===0){
-      if (typeof showToast === 'function') showToast('Please fill in all required fields', 'error');
+      if (typeof showToast === 'function') {
+        showToast('Please fill in all required fields', 'error');
+      } else {
+        alert('Please fill in all required fields');
+      }
       return;
     }
     let baseCost=getBaseCostByRevenue(revenue);

@@ -4,7 +4,11 @@
                    {
                        "src":  "api/src/index.js",
                        "use":  "@vercel/node"
-                   },
+    },
+    {
+      "source": "/web/(.*)\\.html",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" } ]
+    },
                    {
                        "src":  "web/**",
                        "use":  "@vercel/static"

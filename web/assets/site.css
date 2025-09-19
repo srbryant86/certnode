@@ -116,11 +116,13 @@
 
     /* Enhanced keyboard focus */
     .nav a:focus-visible {
-      background-color: var(--primary);
-      color: #ffffff;
-      border-radius: 4px;
-      outline: none;
-      padding: 4px 6px;
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+    .nav a:active,
+    .nav a[aria-current="page"] {
+      color: var(--primary);
+      background: transparent;
     }
 
     /* Enterprise Layout */

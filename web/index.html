@@ -57,7 +57,7 @@
           <h3 style="color: white; margin-bottom: 24px; text-align: center;">3-Step Quickstart</h3>
           <ol style="color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.8;">
             <li><code class="code-snippet" lang="en">npm i @certnode/sdk</code></li>
-                        <li>POST <code class="code-snippet" lang="en">/v1/sign</code> — get <code class="code-snippet" lang="en">receipt</code></li>
+                        <li>POST <code class="code-snippet" lang="en">/v1/sign</code>  get <code class="code-snippet" lang="en">receipt</code></li>
             <li>Verify: <code class="code-snippet" lang="en">verifyReceipt({ receipt, jwks })</code></li>
           </ol>
         </div>
@@ -65,13 +65,13 @@
         <!-- Technical Standards Elements -->
         <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 32px; font-size: 14px; color: rgba(255,255,255,0.8);">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: var(--crypto-gold);">✓</span> RFC 7515 JWS compliant
+            <span style="color: var(--crypto-gold);">&#10003;</span> RFC 7515 JWS compliant
           </div>
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: var(--crypto-gold);">✓</span> Open source verification
+            <span style="color: var(--crypto-gold);">&#10003;</span> Open source verification
           </div>
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: var(--crypto-gold);">✓</span> Multiple implementations
+            <span style="color: var(--crypto-gold);">&#10003;</span> Multiple implementations
           </div>
         </div>
 
@@ -116,7 +116,7 @@
               <h3 style="margin: 0; color: var(--crypto-gold);">Cryptographic Signing</h3>
             </div>
             <div id="signing-animation" style="text-align: center; padding: 40px;">
-              <div style="font-size: 48px; color: var(--crypto-gold); margin-bottom: 16px;">Ã°Å¸â€â€™</div>
+              <div style="font-size: 48px; color: var(--crypto-gold); margin-bottom: 16px;"></div>
               <p>Generating ECDSA P-256 signature...</p>
               <div style="width: 100%; background: var(--border-light); border-radius: 4px; height: 8px; margin: 16px 0;">
                 <div id="progress-bar" style="width: 0%; background: var(--crypto-gold); height: 100%; border-radius: 4px; transition: width 2s ease;"></div>
@@ -124,7 +124,7 @@
             </div>
             <div id="signature-result" style="display: none;">
               <div style="background: var(--success-bg); border: 1px solid var(--success-border); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-                <strong style="color: var(--success);">Ã¢Å“â€œ Document Signed Successfully</strong>
+                <strong style="color: var(--success);">Document Signed Successfully</strong>
                 <p style="margin: 8px 0 0 0; font-size: 14px; color: var(--text-muted);">SHA-256 Hash: <code>a1b2c3d4e5f6...</code></p>
               </div>
               <button id="proceed-tamper" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; width: 100%;">Test Tamper Detection</button>
@@ -146,7 +146,7 @@ Date: 2025-01-15</textarea>
 
             <div id="tamper-result" style="display: none; margin-top: 16px;">
               <div style="background: var(--error-bg); border: 1px solid var(--error-border); border-radius: 8px; padding: 16px;">
-                <strong style="color: var(--error);">Ã¢Å¡Â Ã¯Â¸Â TAMPER DETECTED</strong>
+                <strong style="color: var(--error);"> TAMPER DETECTED</strong>
                 <p style="margin: 8px 0 0 0; font-size: 14px;">Document has been modified since signing. Hash mismatch detected.</p>
               </div>
             </div>
@@ -198,7 +198,7 @@ Date: 2025-01-15</textarea>
           <div style="color: var(--verified-green); margin-bottom: 16px; font-weight: bold;">Browser Crypto</div>
           <p style="margin-bottom: 20px; font-style: italic;">WebCrypto API implementation for client-side verification. No external dependencies required.</p>
           <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 40px; height: 40px; background: var(--verified-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">Ã°Å¸Å’Â</div>
+            <div style="width: 40px; height: 40px; background: var(--verified-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;"></div>
             <div>
               <div style="font-weight: 600;">WebCrypto</div>
               <div style="font-size: 14px; color: var(--text-muted);">Built-in browser support</div>
@@ -209,10 +209,10 @@ Date: 2025-01-15</textarea>
 
       <!-- Use Cases -->
       <div style="display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; color: var(--text-muted); font-size: 14px; font-weight: 500;">
-        <div>Ã°Å¸â€œÅ  Audit Trails</div>
-        <div>Ã°Å¸â€â€™ Document Integrity</div>
-        <div>Ã¢Å¡â€“Ã¯Â¸Â Legal Evidence</div>
-        <div>Ã°Å¸â€â€” Supply Chain</div>
+        <div>Audit Trails</div>
+        <div>Document Integrity</div>
+        <div>Legal Evidence</div>
+        <div>Supply Chain</div>
       </div>
     </div>
   </section>
@@ -257,17 +257,17 @@ Date: 2025-01-15</textarea>
 
       <div class="grid grid-3">
         <div class="feature">
-          <div class="feature-icon">Ã°Å¸â€â€™</div>
+          <div class="feature-icon">CN</div>
           <h3 class="text-2xl">RFC-Compliant Cryptography</h3>
           <p>Every CertNode receipt uses RFC 7515 JWS with ECDSA P-256 signatures and RFC 8785 JSON Canonicalization. Built for interoperability - any implementation that follows the standard can generate and verify receipts.</p>
         </div>
         <div class="feature">
-          <div class="feature-icon">Ã°Å¸â€œâ€¹</div>
+          <div class="feature-icon">CN</div>
           <h3 class="text-2xl">Cross-Platform Verification</h3>
           <p>Verify signatures in any environment - browser WebCrypto, Node.js, CLI tools, or custom implementations. No vendor lock-in, just standard cryptographic operations.</p>
         </div>
         <div class="feature">
-          <div class="feature-icon">Ã¢Å¡Â Ã¯Â¸Â</div>
+          <div class="feature-icon">CN</div>
           <h3 class="text-2xl">Tamper Detection</h3>
           <p>Receipts use RFC 7515 JWS over RFC 8785 JCS with ES256. Any payload or header change invalidates verification under standard JOSE rules.</p>
         </div>
@@ -425,7 +425,7 @@ Date: 2025-01-15</textarea>
       </div>
 
       <div class="text-center" style="padding-top: 32px; border-top: 1px solid var(--border);">
-        <p class="text-sm text-muted">Ã‚Â© 2025 CertNode. Universal receipt infrastructure standard. All rights reserved.</p>
+        <p class="text-sm text-muted">&copy; 2025 CertNode. Universal receipt infrastructure standard. All rights reserved.</p>
       </div>
     </div>
   </footer>

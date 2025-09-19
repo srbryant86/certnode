@@ -11,7 +11,8 @@ STRIPE_PUBLISHABLE_KEY=pk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_... (created after setting up webhook)
 
 # Required Stripe Price IDs (create these in Stripe Dashboard)
-STRIPE_PRO_PRICE_ID=price_... (for $29/month Pro plan)
+STRIPE_STARTER_PRICE_ID=price_... (for $49/month Starter plan)
+STRIPE_PRO_PRICE_ID=price_... (for $200/month Pro plan)
 STRIPE_BUSINESS_PRICE_ID=price_... (for $99/month Business plan)
 ```
 
@@ -20,9 +21,15 @@ STRIPE_BUSINESS_PRICE_ID=price_... (for $99/month Business plan)
 ### 1. Create Stripe Products & Prices
 Go to https://dashboard.stripe.com/products and create:
 
+**Starter Plan:**
+- Product name: "CertNode Starter"
+- Price: $49.00 USD
+- Billing: Recurring monthly
+- Copy the Price ID to `STRIPE_STARTER_PRICE_ID`
+
 **Pro Plan:**
 - Product name: "CertNode Pro"
-- Price: $29.00 USD
+- Price: $200.00 USD
 - Billing: Recurring monthly
 - Copy the Price ID to `STRIPE_PRO_PRICE_ID`
 
@@ -49,6 +56,7 @@ Go to https://dashboard.stripe.com/products and create:
 vercel env add STRIPE_SECRET_KEY
 vercel env add STRIPE_PUBLISHABLE_KEY
 vercel env add STRIPE_WEBHOOK_SECRET
+vercel env add STRIPE_STARTER_PRICE_ID
 vercel env add STRIPE_PRO_PRICE_ID
 vercel env add STRIPE_BUSINESS_PRICE_ID
 ```

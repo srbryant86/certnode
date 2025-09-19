@@ -54,14 +54,13 @@ async function handle(req, res) {
     ...(req && req.id ? { 'X-Request-Id': req.id } : {})
   });
   const withBodyReqId = (obj) => (req && req.id ? { ...obj, request_id: req.id } : obj);
+  const { sendError } = require('../middleware/errorHandler');
 
   if (process.env.NODE_ENV === 'production') {
-    const headers = withReqId({ 'Content-Type':'application/json' });
-    return res.writeHead(404, headers).end(JSON.stringify(withBodyReqId({ error:'not_found' })));
+    return sendError(res, req, 404, 'not_found', 'endpoint not available in production');
   }
   if (req.method !== 'POST') {
-    const headers = withReqId({ 'Content-Type':'application/json' });
-    return res.writeHead(405, headers).end(JSON.stringify(withBodyReqId({ error:'method_not_allowed' })));
+    return sendError(res, req, 405, 'method_not_allowed', 'Only POST is allowed');
   }
   let body = '';
   req.on('data', c => body += c);
@@ -73,9 +72,7 @@ async function handle(req, res) {
       res.writeHead(200, headers);
       res.end(JSON.stringify(out));
     } catch (e) {
-      const headers = withReqId({ 'Content-Type':'application/json' });
-      res.writeHead(400, headers);
-      res.end(JSON.stringify(withBodyReqId({ error:'invalid_json', message: 'Invalid JSON in request body' })));
+      return sendError(res, req, 400, 'invalid_json', 'Invalid JSON in request body');
     }
   });
 }

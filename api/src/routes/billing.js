@@ -125,12 +125,8 @@ async function handle(req, res) {
       const customer = billing.getCustomerByApiKey(apiKey);
 
       if (!customer) {
-        const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
-        res.writeHead(401, headers);
-        return res.end(JSON.stringify({
-          error: 'unauthorized',
-          message: 'Valid API key required'
-        }));
+        const { sendError } = require('../middleware/errorHandler');
+        return sendError(res, req, 401, 'unauthorized', 'Valid API key required');
       }
 
       const tier = billing.getCustomerTier(customer);
@@ -164,9 +160,8 @@ async function handle(req, res) {
           req.body = Buffer.concat(chunks);
           return billing.handleStripeWebhook(req, res);
         } catch (e) {
-          const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
-          res.writeHead(400, headers);
-          return res.end(JSON.stringify({ error: 'client_error', message: 'invalid webhook payload' }));
+          const { sendError } = require('../middleware/errorHandler');
+          return sendError(res, req, 400, 'client_error', 'invalid webhook payload');
         }
       });
       return; // do not fall through

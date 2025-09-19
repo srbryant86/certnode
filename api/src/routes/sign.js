@@ -92,12 +92,7 @@ async function handle(req, res) {
   } catch (e) {
     // Special-case TSA strict requirement to ensure standardized error body
     if (e && (e.code === 'tsa_unavailable' || (e.statusCode === 503 && String(e.message||'').toLowerCase().includes('timestamp authority')))) {
-      const headers = { "Content-Type": "application/json" };
-      if (req && req.id) headers['X-Request-Id'] = req.id;
-      res.writeHead(503, headers);
-      const body = { error: 'tsa_unavailable', message: e.message || 'timestamp authority unavailable' };
-      if (req && req.id) body.request_id = req.id;
-      return res.end(JSON.stringify(body));
+      return require('../middleware/errorHandler').sendError(res, req, 503, 'tsa_unavailable', e.message || 'timestamp authority unavailable');
     }
     if (typeof res.handleError === 'function') {
       return res.handleError(e);

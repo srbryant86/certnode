@@ -109,12 +109,8 @@ function enforceUsageLimits(req, res) {
   if (apiKey && apiKey.includes('.')) {
     const valid = validateApiKey(apiKey);
     if (!valid) {
-      const headers = { 'Content-Type': 'application/json' };
-      if (req && req.id) headers['X-Request-Id'] = req.id;
-      res.writeHead(401, headers);
-      const body = { error: 'unauthorized', message: 'Invalid API key' };
-      if (req && req.id) body.request_id = req.id;
-      return res.end(JSON.stringify(body));
+      const { sendError } = require('../middleware/errorHandler');
+      return sendError(res, req, 401, 'unauthorized', 'Invalid API key');
     }
     // use HMAC keyId as identity (namespaced)
     const keyId = apiKey.split('.')[0];
@@ -189,7 +185,8 @@ function enforceUsageLimits(req, res) {
         pricing_url: `https://${req.headers.host}/pricing`,
         contact_url: `https://${req.headers.host}/#contact-sales`
       },
-      retry_after_seconds: getSecondsUntilNextMonth()
+      retry_after_seconds: getSecondsUntilNextMonth(),
+      timestamp: new Date().toISOString()
     };
 
     if (req && req.id) body.request_id = req.id;

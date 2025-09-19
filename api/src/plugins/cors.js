@@ -45,8 +45,8 @@ function handlePreflight(req, res, allowedOrigins) {
   const isAllowed = setCorsHeaders(req, res, origin, allowedOrigins);
   
   if (!isAllowed && origin) {
-    res.writeHead(403, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify({ error: 'origin_not_allowed' }));
+    const { sendError } = require('../middleware/errorHandler');
+    return sendError(res, req, 403, 'origin_not_allowed', 'Origin not allowed');
   }
   
   res.writeHead(204);
@@ -63,8 +63,8 @@ function applyCors(req, res, allowedOrigins) {
   const isAllowed = setCorsHeaders(req, res, origin, allowedOrigins);
   
   if (origin && !isAllowed) {
-    res.writeHead(403, { 'Content-Type': 'application/json' });
-    return res.end(JSON.stringify({ error: 'origin_not_allowed' }));
+    const { sendError } = require('../middleware/errorHandler');
+    return sendError(res, req, 403, 'origin_not_allowed', 'Origin not allowed');
   }
   
   return null; // Continue processing

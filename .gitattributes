@@ -1,3 +1,21 @@
+# Ensure line endings and encoding consistency
+* text=auto eol=lf
+
+# Explicitly handle text files with UTF-8 encoding
+*.json text working-tree-encoding=UTF-8
+*.html text working-tree-encoding=UTF-8
+*.js text eol=lf working-tree-encoding=UTF-8
+*.css text working-tree-encoding=UTF-8
+*.md text working-tree-encoding=UTF-8
+*.txt text working-tree-encoding=UTF-8
 *.sh text eol=lf
 *.tf text eol=lf
-*.js text eol=lf
+
+# Binary files (don't mess with these)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary

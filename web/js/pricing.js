@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function(){
       }
       const originalText = btn.textContent;
       btn.disabled = true;
-      btn.textContent = 'Redirectingâ€¦Â¦';
+      btn.textContent = 'Redirecting...';
       try{
         let res = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tier }) }); if (!res.ok) { res = await fetch('/api/create-checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tier }) }); }
         const data = await res.json().catch(()=>({}));
@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', function(){
           throw new Error('No checkout URL returned');
         }
       } catch(e){
-        alert('Checkout failed: ' + ((e && e.message) || 'unexpected')); if (typeof showToast==='function') { showToast('Checkout failed: ' + ((e&&e.message)||'unexpected'),'error'); }
+        if (typeof showToast === 'function') {
+          showToast('Checkout failed: ' + ((e && e.message) || 'unexpected'), 'error');
+        }
         btn.disabled = false;
         btn.textContent = originalText;
       }

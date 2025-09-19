@@ -7,7 +7,10 @@
   async function calculateRisk(){
     const industry=$('#industry').value; const companySize=$('#company-size').value; const revenue=$('#annual-revenue').value; const dataVolume=parseInt($('#data-volume').value)||0; const currentCost=parseInt($('#current-audit-cost').value)||0; const complianceStaff=parseFloat($('#compliance-staff').value)||0;
     const regs=[]; ['sox','hipaa','gdpr','pci','iso','other-reg'].forEach(id=>{ const el=$('#'+id); if(el && el.checked) regs.push(id); });
-    if(!industry||!companySize||!revenue||regs.length===0){ alert('Please fill in all required fields'); return; }
+    if(!industry||!companySize||!revenue||regs.length===0){
+      if (typeof showToast === 'function') showToast('Please fill in all required fields', 'error');
+      return;
+    }
     let baseCost=getBaseCostByRevenue(revenue);
     const industryMultipliers={financial:2.5, healthcare:2.2, technology:1.8, manufacturing:1.5, retail:1.4, government:3.0, other:1.0};
     const sizeMultipliers={startup:0.3, small:0.6, medium:1.0, large:1.8};

@@ -20,7 +20,33 @@
   <link rel="canonical" href="https://certnode.io/">
   <link rel="stylesheet" href="/web/assets/site.css">
   <script src="/web/js/perf.js" defer></script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CertNode","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform"}</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "CertNode",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Cross-platform",
+    "description": "Open standard for tamper-evident digital receipts using RFC-compliant cryptographic signatures",
+    "url": "https://certnode.io",
+    "downloadUrl": "https://www.npmjs.com/package/@certnode/sdk",
+    "softwareVersion": "1.0",
+    "programmingLanguage": ["JavaScript", "Python", "Go", "Rust"],
+    "applicationSubCategory": "Cryptographic Infrastructure",
+    "creator": {
+      "@type": "Organization",
+      "name": "CertNode",
+      "url": "https://certnode.io"
+    },
+    "license": "MIT",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "description": "Free tier available"
+    }
+  }
+  </script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -35,6 +61,7 @@
         <a href="/pricing">Pricing</a>
         <a href="https://github.com/srbryant86/certnode" target="_blank" rel="noopener">GitHub</a>
       </nav>
+        <a href="/#" id="manage-billing" style="display:none">Manage Billing</a>
     </div>
   </header>
 
@@ -66,17 +93,17 @@
         <h2 id="features-heading" class="text-4xl mb-16" style="text-align:center;">Why CertNode</h2>
         <div class="grid grid-3">
           <div class="feature">
-            <div class="feature-icon">CN</div>
+            <div class="feature-icon">📋</div>
             <h3 class="text-2xl">Standards-Based</h3>
             <p>RFC 7515 JWS and RFC 8785 JCS for interoperable signatures and canonicalization. Works with any compliant implementation.</p>
           </div>
           <div class="feature">
-            <div class="feature-icon">CN</div>
+            <div class="feature-icon">🔒</div>
             <h3 class="text-2xl">Offline Verification</h3>
             <p>Verify using published JWKS &mdash; no vendor callback required. Ideal for regulated, air-gapped, or cost-sensitive environments.</p>
           </div>
           <div class="feature">
-            <div class="feature-icon">CN</div>
+            <div class="feature-icon">🌐</div>
             <h3 class="text-2xl">Cross-Platform</h3>
             <p>Browser WebCrypto, Node.js, CLI, or your own stack. Reference SDKs and test vectors help you adopt quickly.</p>
           </div>
@@ -162,5 +189,6 @@ const { ok } = await verifyReceipt({ receipt, jwks })</code></pre>
   </footer>
 
   <script src="/web/js/copy.js" defer></script>
+  <script src="/web/js/auth-ui.js" defer></script>
 </body>
 </html>

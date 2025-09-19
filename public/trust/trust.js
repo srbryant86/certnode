@@ -36,6 +36,11 @@ async function loadTrust(){
     var jwks = await r.json();
     setText('jwks-pre', JSON.stringify(jwks, null, 2) + '\n\nContent-Type: '+ct);
     renderJwksSummary(jwks);
+  try {
+    var first = (jwks.keys||[])[0]||{};
+    var meta = document.getElementById("jwks-meta");
+    if (meta) meta.textContent = "Current key: " + (first.kid||"—") + " • " + (first.alg||"-") + " • " + (first.crv||"-");
+  } catch(_){}
   }catch(e){ setText('jwks-pre', 'ERROR: '+ (e && e.message || 'failed')); }
 
   try{

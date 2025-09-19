@@ -1,0 +1,15 @@
+name: Accessibility checks
+on: [push]
+jobs:
+  a11y:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check homepage
+        run: npx --yes pa11y https://certnode.io/ --threshold 10 || true
+      - name: Check validator
+        run: npx --yes pa11y https://certnode.io/verify --threshold 10 || true
+      - name: Check spec
+        run: npx --yes pa11y https://certnode.io/openapi --threshold 10 || true
+      - name: Check trust
+        run: npx --yes pa11y https://certnode.io/trust --threshold 10 || true
+

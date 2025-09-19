@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -52,7 +52,8 @@
         <span class="badge">Key Infrastructure</span>
         <h3>Canonical JWKS</h3>
         <p><strong>Endpoint:</strong> <a href="/.well-known/jwks.json" target="_blank">/.well-known/jwks.json</a></p>
-        <p><strong>Content-Type:</strong> application/jwk-set+json â€¢ <strong>Cache:</strong> 300s</p>
+        <p><strong>Content-Type:</strong> application/jwk-set+json • <strong>Cache:</strong> 300s</p>
+        <p id="jwks-meta" style="font-size:12px; color:#64748b;">Current key: —</p>
         <pre id="jwks-pre" aria-live="polite">Loading...</pre>
         <div id="jwks-summary" style="margin-top:12px;">
           <table style="width:100%; border-collapse: collapse; font-size: 13px;">
@@ -71,7 +72,7 @@
       <div class="card">
         <span class="badge">Rotation Log</span>
         <h3>Transparency</h3>
-        <p><strong>Log:</strong> <a href="/trust/keys.jsonl" target="_blank">/trust/keys.jsonl</a> â€¢ <strong>Cache:</strong> no-store</p>
+        <p><strong>Log:</strong> <a href="/trust/keys.jsonl" target="_blank">/trust/keys.jsonl</a> • <strong>Cache:</strong> no-store</p>
         <pre id="log-pre" aria-live="polite">Loading...</pre>
         <p id="rotation-meta" style="font-size:12px; color:var(--text-muted); margin-top:8px;"></p>
       </div>
@@ -87,3 +88,4 @@
   </main>
 </body>
 </html>
+

@@ -136,27 +136,29 @@ function canMakeRequest(customer, usage) {
  */
 async function createCheckoutSession(email, priceId, successUrl, cancelUrl) {
   const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+  const cleanPriceId = String(priceId || '').trim();
+  const cleanEmail = email ? String(email).trim() : '';
 
   // If email provided, try to attach to existing customer for better continuity.
   // Otherwise let Checkout collect email and create the customer implicitly.
   let session;
-  if (email) {
+  if (cleanEmail) {
     try {
       let customer;
-      const found = await stripe.customers.list({ email, limit: 1 });
+      const found = await stripe.customers.list({ email: cleanEmail, limit: 1 });
       if (found.data.length > 0) {
         customer = found.data[0];
       } else {
-        customer = await stripe.customers.create({ email });
+        customer = await stripe.customers.create({ email: cleanEmail });
       }
       session = await stripe.checkout.sessions.create({
         customer: customer.id,
         mode: 'subscription',
         payment_method_types: ['card'],
-        line_items: [{ price: priceId, quantity: 1 }],
+        line_items: [{ price: cleanPriceId, quantity: 1 }],
         success_url: successUrl,
         cancel_url: cancelUrl,
-        metadata: { customer_email: email }
+        metadata: { customer_email: cleanEmail }
       });
       return { checkout_url: session.url, session_id: session.id, customer_id: customer.id };
     } catch (e) {
@@ -169,7 +171,7 @@ async function createCheckoutSession(email, priceId, successUrl, cancelUrl) {
   session = await stripe.checkout.sessions.create({
     mode: 'subscription',
     payment_method_types: ['card'],
-    line_items: [{ price: priceId, quantity: 1 }],
+    line_items: [{ price: cleanPriceId, quantity: 1 }],
     success_url: successUrl,
     cancel_url: cancelUrl
   });

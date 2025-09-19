@@ -49,12 +49,7 @@ async function signPayload(payload, headers = {}) {
 
 async function handle(req, res) {
   if (req.method !== "POST"){
-    const headers = { "Content-Type": "application/json" };
-    if (req && req.id) headers['X-Request-Id'] = req.id;
-    const body = { error: "method_not_allowed" };
-    if (req && req.id) body.request_id = req.id;
-    res.writeHead(405, headers);
-    return res.end(JSON.stringify(body));
+    return require('../middleware/errorHandler').sendError(res, req, 405, 'method_not_allowed', 'Only POST is allowed');
   }
 
   // Enforce usage limits for free tier
@@ -108,14 +103,8 @@ async function handle(req, res) {
       return res.handleError(e);
     }
     const code = e.statusCode || 500;
-    const headers = { "Content-Type": "application/json" };
-    if (req && req.id) headers['X-Request-Id'] = req.id;
-    res.writeHead(code, headers);
-    const body = { error: e.code || 'error', message: e.message || 'error' };
-    if (req && req.id) body.request_id = req.id;
-    res.end(JSON.stringify(body));
+    return require('../middleware/errorHandler').sendError(res, req, code, e.code || 'error', e.message || 'error');
   }
 }
 
 module.exports = { signPayload, handle };
-

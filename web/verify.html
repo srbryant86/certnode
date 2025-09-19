@@ -1,329 +1,100 @@
 <!doctype html>
-<html lang=â€”enâ€”>
+<html lang="en">
 <head>
-  <meta charset=â€”utf-8â€” />
-  <meta name=â€”viewportâ€” content=â€”width=device-width, initial-scale=1â€” />
-  <meta http-equiv=â€”Content-Security-Policyâ€” content=â€”default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'â€” />
-  <title>CertNode â€” Receipt Validator</title>
-  <!-- Updated for modern styling -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
+  <title>CertNode — Receipt Validator</title>
+  <link rel="stylesheet" href="/web/assets/site.css">
   <style>
-    :root {
-      --bg: #fafbfc;
-      --bg-primary: #1e40af;
-      --panel: #ffffff;
-      --border: #e1e5e9;
-      --border-light: #f1f5f9;
-      --text: #1e293b;
-      --text-muted: #64748b;
-      --text-light: #94a3b8;
-      --primary: #1e40af;
-      --primary-dark: #1e3a8a;
-      --accent: #3b82f6;
-      --accent-light: #60a5fa;
-
-      /* Cryptographic Identity Colors */
-      --crypto-gold: #f59e0b;
-      --security-teal: #0891b2;
-      --warning-amber: #d97706;
-      --verified-green: #059669;
-      --accent: #6366f1;
-    }
-
-    body {
-      font-family: 'Georgia', 'Times New Roman', serif;
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      letter-spacing: -0.01em;
-    }
-
-    header {
-      background: var(--panel);
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
-
-    .header-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--primary);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-
-    .nav {
-      display: flex;
-      gap: 40px;
-      align-items: center;
-    }
-
-    .nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 400;
-      font-size: 15px;
-      transition: all 0.2s ease;
-      position: relative;
-    }
-
-    .nav a:hover {
-      color: var(--primary);
-    }
-
-    .nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--primary);
-      transition: width 0.3s ease;
-    }
-
-    .nav a:hover::after {
-      width: 100%;
-    }
-
-    .verify-hero {
-      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      padding: 100px 0;
-      text-align: center;
-      position: relative;
-    }
-
-    .verify-hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(30, 41, 59, 0.2);
-      pointer-events: none;
-    }
-
-    /* Cryptographic Pattern Overlay */
-    .verify-hero::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 2px,
-        rgba(255,255,255,0.05) 2px,
-        rgba(255,255,255,0.05) 4px
-      );
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* Pulse animation for verify button */
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-
-    .verify-hero h1 {
-      font-size: 48px;
-      font-weight: 400;
-      margin-bottom: 32px;
-      line-height: 1.3;
-      letter-spacing: -0.02em;
-      position: relative;
-      z-index: 1;
-    }
-
-    .verify-hero p {
-      font-size: 22px;
-      color: rgba(255, 255, 255, 0.9);
-      margin: 0 auto;
-      line-height: 1.6;
-      font-weight: 300;
-      max-width: 700px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .technical-panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 32px;
-      margin-bottom: 32px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-
-    .technical-panel h2 {
-      color: var(--text);
-      font-size: 24px;
-      font-weight: 500;
-      margin-bottom: 16px;
-      font-family: 'Georgia', serif;
-    }
-
-    .status-success { background: #ecfdf5; border-color: #a7f3d0; color: #059669; }
-    .status-error { background: #fef2f2; border-color: #fecaca; color: #dc2626; }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-      border: 1px solid var(--primary);
-      padding: 12px 24px;
-      border-radius: 6px;
-      font-weight: 400;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: 'Georgia', serif;
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-dark);
-      border-color: var(--primary-dark);
-    }
-
-    .btn-secondary {
-      background: var(--bg);
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      padding: 12px 24px;
-      border-radius: 6px;
-      font-weight: 400;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: 'Georgia', serif;
-    }
-
-    .btn-secondary:hover {
-      background: var(--border-light);
-      color: var(--text);
-    }
-
-    .row {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .toolbar {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .justify-end {
-      justify-content: flex-end;
-    }
-
-    .dropzone {
-      border: 2px dashed var(--border);
-      padding: 2rem;
-      text-align: center;
-      border-radius: 0.5rem;
-      background: var(--bg);
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: 'Georgia', serif;
-    }
-
-    .dropzone:hover {
-      border-color: var(--primary);
-      background: var(--border-light);
-    }
-
-    textarea, input[type=â€”textâ€”], input[type=â€”urlâ€”], input[type=â€”fileâ€”] {
-      width: 100%;
-      padding: 1rem;
-      border: 1px solid var(--border);
-      border-radius: 0.5rem;
-      background: var(--panel);
-      color: var(--text);
-      font-family: 'Monaco', 'Courier New', monospace;
-      font-size: 0.875rem;
-    }
-
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    .status {
-      padding: 1rem;
-      border-radius: 0.5rem;
-      margin-bottom: 1rem;
-      font-weight: 500;
-      display: none;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .skip-link {
-      position: absolute;
-      left: -10000px;
-      top: auto;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-    }
-
-    .skip-link:focus {
-      position: static;
-      width: auto;
-      height: auto;
-    }
-
-    footer {
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      padding: 2rem 0;
-      text-align: center;
-      margin-top: 3rem;
-    }
-
-    footer p {
-      color: var(--text-muted);
-      margin: 0;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-
-    footer a {
-      color: var(--primary);
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
+    .btn-primary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    #status:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
   </style>
-  <script src=â€”/web/js/verify-page.jsâ€” defer></script>
-  <script src="/web/js/verify-helper.js" defer></script>\n  <script src="/web/js/verify.js" defer></script>\n  <script src="/web/js/verify-page.js" defer></script>\n</body>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <header>
+    <div class="header-container">
+      <a href="/" class="logo">CertNode</a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/verify" aria-current="page">Validator</a>
+        <a href="/openapi">Specification</a>
+        <a href="/trust">Trust</a>
+        <a href="/pricing">Pricing</a>
+        <a href="https://github.com/srbryant86/certnode" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="verify-hero">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+        <h1>Receipt Validator</h1>
+        <p>Paste or drop a receipt and a JWKS to verify authenticity with WebCrypto (ES256 over JWS/JCS).</p>
+      </div>
+    </section>
+
+    <div class="container" style="padding: 2rem 0;">
+      <div id="status" class="status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
+
+      <section class="technical-panel">
+        <h2>Inputs</h2>
+        <div class="grid-2">
+          <div>
+            <label for="receipt" class="stat-label">Receipt (JSON)</label>
+            <div id="receipt-drop" class="dropzone" tabindex="0" aria-label="Drop receipt file or click to choose">Drop file or click to choose</div>
+            <input id="receipt-file" type="file" accept=".json,.txt" style="display:none" />
+            <div class="toolbar">
+              <button id="receipt-sample" class="btn-secondary" type="button">Load sample</button>
+              <button id="receipt-format" class="btn-secondary" type="button">Format</button>
+              <button id="receipt-minify" class="btn-secondary" type="button">Minify</button>
+            </div>
+            <textarea id="receipt" aria-label="Receipt JSON"></textarea>
+          </div>
+          <div>
+            <label for="jwks" class="stat-label">JWKS (JSON)</label>
+            <div class="row">
+              <input id="jwks-url" type="url" placeholder="https://example.com/.well-known/jwks.json" aria-label="JWKS URL" />
+              <button id="fetch-jwks" class="btn-secondary" type="button">Fetch JWKS</button>
+            </div>
+            <div id="jwks-drop" class="dropzone" tabindex="0" aria-label="Drop JWKS file or click to choose">Drop file or click to choose</div>
+            <input id="jwks-file" type="file" accept=".json,.txt" style="display:none" />
+            <div class="toolbar">
+              <button id="jwks-format" class="btn-secondary" type="button">Format</button>
+              <button id="jwks-minify" class="btn-secondary" type="button">Minify</button>
+            </div>
+            <textarea id="jwks" aria-label="JWKS JSON"></textarea>
+          </div>
+        </div>
+        <div class="row justify-end">
+          <button id="clear" class="btn-secondary" type="button">Clear</button>
+          <button id="verify" class="btn-primary" type="button">Verify</button>
+        </div>
+      </section>
+
+      <section class="technical-panel" id="technical-results" style="display:none">
+        <h2>Results</h2>
+        <div class="row">
+          <button id="copy-hdr" class="btn-secondary" type="button">Copy Header JSON</button>
+          <button id="copy-result" class="btn-secondary" type="button">Copy Result JSON</button>
+        </div>
+        <h3>Protected Header</h3>
+        <pre id="hdr"></pre>
+        <h3>Verification Result</h3>
+        <pre id="result"></pre>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <p>&copy; 2025 CertNode — Universal receipt infrastructure standard.</p>
+    </div>
+  </footer>
+
+  <script src="/web/js/verify-helper.js" defer></script>
+  <script src="/web/js/verify.js" defer></script>
+  <script src="/web/js/verify-page.js" defer></script>
+</body>
 </html>

@@ -1,273 +1,108 @@
 ﻿{
-    "version":  2,
-    "builds":  [
-                   {
-                       "src":  "api/src/index.js",
-                       "use":  "@vercel/node"
+  "version": 2,
+  "builds": [
+    { "src": "api/src/index.js", "use": "@vercel/node" },
+    { "src": "web/**", "use": "@vercel/static" },
+    { "src": "public/**", "use": "@vercel/static" }
+  ],
+  "headers": [
+    {
+      "source": "/",
+      "headers": [
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'sha256-NMHKIaaHpHSEwYLo18ITbJj1OQR1P2JxSB0wixVYiDg='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://api.certnode.io; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self' https:; base-uri 'self'; frame-ancestors 'none'" }
+      ]
     },
     {
       "source": "/web/(.*)\\.html",
       "headers": [ { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" } ]
     },
-                   {
-                       "src":  "web/**",
-                       "use":  "@vercel/static"
-                   },
-                   {
-                       "src":  "public/**",
-                       "use":  "@vercel/static"
-                   }
-               ],
-    "headers":  [
-                    {
-                        "source":  "/",
-                        "headers":  [
-                                        {
-                                            "key":  "Content-Security-Policy",
-                                            "value":  "default-src \u0027self\u0027; script-src \u0027self\u0027 \u0027sha256-NMHKIaaHpHSEwYLo18ITbJj1OQR1P2JxSB0wixVYiDg=\u0027; style-src \u0027self\u0027 \u0027unsafe-inline\u0027; img-src \u0027self\u0027 data: https:; connect-src \u0027self\u0027 https://api.certnode.io; font-src \u0027self\u0027; object-src \u0027none\u0027; base-uri \u0027self\u0027; frame-ancestors \u0027none\u0027"
-                                        }
-                                    ]
-                    },
-                    {
-                        "source":  "/(.*)",
-                        "headers":  [
-                                        {
-                                            "key":  "Strict-Transport-Security",
-                                            "value":  "max-age=63072000; includeSubDomains; preload"
-                                        },
-                                        {
-                                            "key":  "X-Content-Type-Options",
-                                            "value":  "nosniff"
-                                        },
-                                        {
-                                            "key":  "Referrer-Policy",
-                                            "value":  "no-referrer"
-                                        },
-                                        {
-                                            "key":  "Permissions-Policy",
-                                            "value":  "camera=(), microphone=(), geolocation=()"
-                                        },
-                                        {
-                                            "key":  "Content-Security-Policy",
-                                            "value":  "default-src \u0027self\u0027; script-src \u0027self\u0027 https://unpkg.com; style-src \u0027self\u0027 \u0027unsafe-inline\u0027 https:; img-src \u0027self\u0027 data: https:; connect-src \u0027self\u0027 https:; base-uri \u0027self\u0027; frame-ancestors \u0027none\u0027"
-                                        }
-                                    ]
-                    },
-                    {
-                        "source":  "/web/(.*)\\.css",
-                        "headers":  [
-                                        {
-                                            "key":  "Cache-Control",
-                                            "value":  "public, max-age=31536000, immutable"
-                                        }
-                                    ]
-                    },
-                    {
-                        "source":  "/web/(.*)\\.js",
-                        "headers":  [
-                                        {
-                                            "key":  "Cache-Control",
-                                            "value":  "public, max-age=31536000, immutable"
-                                        }
-                                    ]
-                    },
-                    {
-                        "source":  "/web/assets/(.*)",
-                        "headers":  [
-                                        {
-                                            "key":  "Cache-Control",
-                                            "value":  "public, max-age=31536000, immutable"
-                                        }
-                                    ]
-                    },
-                    {
-                        "source":  "/public/(.*)\\.css",
-                        "headers":  [
-                                        {
-                                            "key":  "Cache-Control",
-                                            "value":  "public, max-age=31536000, immutable"
-                                        }
-                                    ]
-                    },
-                    {
-                        "source":  "/public/(.*)\\.js",
-                        "headers":  [
-                                        {
-                                            "key":  "Cache-Control",
-                                            "value":  "public, max-age=31536000, immutable"
-                                        }
-                                    ]
-                    },
-                    {
-                        "source":  "/public/(.*)\\.html",
-                        "headers":  [
-                                        {
-                                            "key":  "Cache-Control",
-                                            "value":  "public, max-age=3600"
-                                        }
-                                    ]
-                    },
-                    {
-                        "source":  "/.well-known/jwks.json",
-                        "headers":  [
-                                        {
-                                            "key":  "Content-Type",
-                                            "value":  "application/jwk-set+json"
-                                        },
-                                        {
-                                            "key":  "Cache-Control",
-                                            "value":  "public, max-age=300, immutable"
-                                        },
-                                        {
-                                            "key":  "Access-Control-Allow-Origin",
-                                            "value":  "*"
-                                        }
-                                    ]
-                    },
-                    {
-                        "source":  "/openapi.json",
-                        "headers":  [
-                                        {
-                                            "key":  "Content-Type",
-                                            "value":  "application/json"
-                                        },
-                                        {
-                                            "key":  "Cache-Control",
-                                            "value":  "public, max-age=86400"
-                                        },
-                                        {
-                                            "key":  "Access-Control-Allow-Origin",
-                                            "value":  "*"
-                                        }
-                                    ]
-                    },
-                    {
-                        "source":  "/trust/keys.jsonl",
-                        "headers":  [
-                                        {
-                                            "key":  "Content-Type",
-                                            "value":  "application/json"
-                                        },
-                                        {
-                                            "key":  "Cache-Control",
-                                            "value":  "no-store"
-                                        },
-                                        {
-                                            "key":  "Access-Control-Allow-Origin",
-                                            "value":  "*"
-                                        }
-                                    ]
-                    },
-                    {
-                        "source":  "/vendor/(.*)",
-                        "headers":  [
-                                        {
-                                            "key":  "Cache-Control",
-                                            "value":  "public, max-age=31536000, immutable"
-                                        }
-                                    ]
-                    }
-                ],
-    "rewrites":  [
-                     {
-                         "source":  "/public/openapi.html",
-                         "destination":  "/web/openapi.html"
-                     },
-                     {
-                         "source":  "/public/verify.html",
-                         "destination":  "/web/verify.html"
-                     },
-                     {
-                         "source":  "/public/pricing/index.html",
-                         "destination":  "/web/pricing.html"
-                     },
-                     {
-                         "source":  "/public/trust/index.html",
-                         "destination":  "/web/trust.html"
-                     },
-                     {
-                         "source":  "/openapi.json",
-                         "destination":  "/public/openapi.json"
-                     },
-                     {
-                         "source":  "/.well-known/jwks.json",
-                         "destination":  "/public/.well-known/jwks.json"
-                     },
-                     {
-                         "source":  "/trust/keys.jsonl",
-                         "destination":  "/public/trust/keys.jsonl"
-                     },
-                     {
-                         "source":  "/api/(.*)",
-                         "destination":  "/api/src/index.js"
-                     },
-                     {
-                         "source":  "/trust",
-                         "destination":  "/public/trust/index.fixed.html"
-                     },
-                     {
-                         "source":  "/status",
-                         "destination":  "/public/status/index.html"
-                     },
-                     {
-                         "source":  "/usage",
-                         "destination":  "/public/usage/index.html"
-                     },
-                     {
-                         "source":  "/showcase",
-                         "destination":  "/public/showcase/index.html"
-                     },
-                     {
-                         "source":  "/trust/governance",
-                         "destination":  "/public/trust/governance.html"
-                     },
-                     {
-                         "source":  "/validator",
-                         "destination":  "/web/verify.html"
-                     },
-                     {
-                         "source":  "/verify",
-                         "destination":  "/web/verify.html"
-                     },
-                     {
-                         "source":  "/implementation",
-                         "destination":  "/web/pricing.html"
-                     },
-                     {
-                         "source":  "/specification",
-                         "destination":  "/web/openapi.html"
-                     },
-                     {
-                         "source":  "/openapi",
-                         "destination":  "/web/openapi.html"
-                     },
-                     {
-                         "source":  "/pricing",
-                         "destination":  "/web/pricing.html"
-                     },
-                     {
-                         "source":  "/test-vectors",
-                         "destination":  "/public/test-vectors/index.html"
-                     },
-                     {
-                         "source":  "/signup/developer",
-                         "destination":  "/public/signup/developer.html"
-                     },
-                     {
-                         "source":  "/signup/starter",
-                         "destination":  "/public/signup/starter.html"
-                     },
-                     {
-                         "source":  "/signup/professional",
-                         "destination":  "/public/signup/professional.html"
-                     },
-                     {
-                         "source":  "/trust/keys.jsonl",
-                         "destination":  "/public/trust/keys.jsonl"
-                     },
-                     {
-                         "source":  "/",
-                         "destination":  "/web/index.html"
-                     }
-                 ]
+    {
+      "source": "/web/(.*)\\.css",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/web/(.*)\\.js",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/web/assets/(.*)",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/public/(.*)\\.css",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/public/(.*)\\.js",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/public/(.*)\\.html",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=3600" } ]
+    },
+    {
+      "source": "/.well-known/jwks.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/jwk-set+json" },
+        { "key": "Cache-Control", "value": "public, max-age=300, immutable" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
+    {
+      "source": "/openapi.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
+    {
+      "source": "/trust/keys.jsonl",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" },
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
+    {
+      "source": "/vendor/(.*)",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/public/openapi.html", "destination": "/web/openapi.html" },
+    { "source": "/public/verify.html", "destination": "/web/verify.html" },
+    { "source": "/public/pricing/index.html", "destination": "/web/pricing.html" },
+    { "source": "/public/trust/index.html", "destination": "/web/trust.html" },
+    { "source": "/openapi.json", "destination": "/public/openapi.json" },
+    { "source": "/.well-known/jwks.json", "destination": "/public/.well-known/jwks.json" },
+    { "source": "/trust/keys.jsonl", "destination": "/public/trust/keys.jsonl" },
+    { "source": "/api/(.*)", "destination": "/api/src/index.js" },
+    { "source": "/trust", "destination": "/public/trust/index.fixed.html" },
+    { "source": "/status", "destination": "/public/status/index.html" },
+    { "source": "/usage", "destination": "/public/usage/index.html" },
+    { "source": "/showcase", "destination": "/public/showcase/index.html" },
+    { "source": "/trust/governance", "destination": "/public/trust/governance.html" },
+    { "source": "/validator", "destination": "/web/verify.html" },
+    { "source": "/verify", "destination": "/web/verify.html" },
+    { "source": "/implementation", "destination": "/web/pricing.html" },
+    { "source": "/specification", "destination": "/web/openapi.html" },
+    { "source": "/openapi", "destination": "/web/openapi.html" },
+    { "source": "/pricing", "destination": "/web/pricing.html" },
+    { "source": "/test-vectors", "destination": "/public/test-vectors/index.html" },
+    { "source": "/signup/developer", "destination": "/public/signup/developer.html" },
+    { "source": "/signup/starter", "destination": "/public/signup/starter.html" },
+    { "source": "/signup/professional", "destination": "/public/signup/professional.html" },
+    { "source": "/", "destination": "/web/index.html" }
+  ]
 }

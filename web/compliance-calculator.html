@@ -475,7 +475,7 @@
         </div>
       </div>
 
-      <button onclick="calculateRisk()" class="button" style="width: 100%; background: var(--primary); color: white; font-size: 1.125rem; padding: 1.25rem; border-radius: 0.75rem; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s; box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3);">
+      <button id="calculate-risk" class="button" style="width: 100%; background: var(--primary); color: white; font-size: 1.125rem; padding: 1.25rem; border-radius: 0.75rem; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s; box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3);">
 Calculate Risk Assessment
       </button>
     </div>
@@ -519,7 +519,7 @@ Calculate Risk Assessment
       <div class="cta-section">
         <h3>Technical Infrastructure Assessment</h3>
         <p>CertNode provides cryptographic compliance infrastructure with 95% risk mitigation through verifiable audit trails and automated regulatory documentation.</p>
-        <a href="#" onclick="requestEnterpriseDemo()" class="button">Request Technical Consultation</a>
+        <a href="#" id="request-enterprise-demo" class="button">Request Technical Consultation</a>
         <a href="/pricing" class="button">View Technical Access Tiers</a>
       </div>
     </div>
@@ -545,141 +545,6 @@ Calculate Risk Assessment
     </div>
   </footer>
 
-  <script>
-    function calculateRisk() {
-      const industry = document.getElementById('industry').value;
-      const companySize = document.getElementById('company-size').value;
-      const revenue = document.getElementById('annual-revenue').value;
-      const dataVolume = parseInt(document.getElementById('data-volume').value) || 0;
-      const currentCost = parseInt(document.getElementById('current-audit-cost').value) || 0;
-      const complianceStaff = parseFloat(document.getElementById('compliance-staff').value) || 0;
-
-      // Get selected regulations
-      const regulations = [];
-      ['sox', 'hipaa', 'gdpr', 'pci', 'iso', 'other-reg'].forEach(reg => {
-        if (document.getElementById(reg).checked) {
-          regulations.push(reg);
-        }
-      });
-
-      if (!industry || !companySize || !revenue || regulations.length === 0) {
-        alert('Please fill in all required fields');
-        return;
-      }
-
-      // Calculate failure cost based on multiple factors
-      let baseCost = getBaseCostByRevenue(revenue);
-
-      // Industry multipliers
-      const industryMultipliers = {
-        financial: 2.5,
-        healthcare: 2.2,
-        technology: 1.8,
-        manufacturing: 1.5,
-        retail: 1.4,
-        government: 3.0,
-        other: 1.0
-      };
-
-      // Company size multipliers
-      const sizeMultipliers = {
-        startup: 0.3,
-        small: 0.6,
-        medium: 1.0,
-        large: 1.8
-      };
-
-      // Regulation penalty multipliers
-      const regMultipliers = {
-        sox: 25000000,    // SOX violations average $25M
-        hipaa: 15000000,  // HIPAA violations average $15M
-        gdpr: 20000000,   // GDPR fines can be massive
-        pci: 5000000,     // PCI violations average $5M
-        iso: 2000000,     // ISO failures average $2M
-        'other-reg': 3000000
-      };
-
-      // Calculate total failure cost
-      let regulationPenalties = 0;
-      regulations.forEach(reg => {
-        regulationPenalties += regMultipliers[reg] || 0;
-      });
-
-      const industryMultiplier = industryMultipliers[industry] || 1;
-      const sizeMultiplier = sizeMultipliers[companySize] || 1;
-
-      // Base cost + regulation penalties, adjusted by industry and size
-      const totalFailureCost = (baseCost + regulationPenalties) * industryMultiplier * sizeMultiplier;
-
-      // Current annual compliance spend
-      const staffCost = complianceStaff * 150000; // Average compliance professional salary
-      const totalCurrentSpend = currentCost + staffCost;
-
-      // CertNode mitigates 95% of compliance failure risk
-      const protectedValue = totalFailureCost * 0.95;
-      const certNodeCost = 25000; // Annual technical infrastructure cost
-
-      // Risk coverage ratio calculation
-      const roiRatio = Math.round(protectedValue / certNodeCost);
-
-      // Display results
-      document.getElementById('failure-cost').textContent = formatCurrency(totalFailureCost);
-      document.getElementById('current-spend').textContent = formatCurrency(totalCurrentSpend);
-      document.getElementById('protected-value').textContent = formatCurrency(protectedValue);
-      document.getElementById('roi-ratio').textContent = `${roiRatio}:1`;
-
-      document.getElementById('results').style.display = 'block';
-      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-
-      // Track the calculation for lead scoring
-      trackCalculation({
-        industry,
-        companySize,
-        revenue,
-        regulations,
-        failureCost: totalFailureCost,
-        currentSpend: totalCurrentSpend,
-        roiRatio
-      });
-    }
-
-    function getBaseCostByRevenue(revenue) {
-      const revenueCosts = {
-        'under-10m': 500000,
-        '10m-100m': 2000000,
-        '100m-1b': 10000000,
-        'over-1b': 50000000
-      };
-      return revenueCosts[revenue] || 1000000;
-    }
-
-    function formatCurrency(amount) {
-      return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }).format(amount);
-    }
-
-    function trackCalculation(data) {
-      // Send calculation data to analytics
-      fetch('/api/track-lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'compliance-calculation',
-          ...data,
-          timestamp: new Date().toISOString(),
-          page: 'compliance-calculator'
-        })
-      }).catch(() => {}); // Don't break UX if tracking fails
-    }
-
-    function requestEnterpriseDemo() {
-      // Redirect to homepage with enterprise contact
-      window.location.href = '/#enterprise-contact';
-    }
-  </script>
+  <script src="/web/js/compliance.js" defer></script>
 </body>
 </html>

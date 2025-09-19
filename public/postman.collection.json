@@ -1,0 +1,30 @@
+﻿{
+  "info": {
+    "name": "CertNode API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection for CertNode reference API."
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] } },
+      "response": []
+    },
+    {
+      "name": "Sign Receipt",
+      "request": {
+        "method": "POST",
+        "header": [ {"key":"Content-Type","value":"application/json"} ],
+        "url": { "raw": "{{baseUrl}}/v1/sign", "host": ["{{baseUrl}}"], "path": ["v1","sign"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"payload\": { \"hello\": \"world\" },\n  \"headers\": { \"tsr\": false }\n}"
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.certnode.io" }
+  ]
+}

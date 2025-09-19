@@ -1,203 +1,33 @@
-<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CertNode Test Vectors - Standards Compliance Testing</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 2rem;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 2rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 12px;
-        }
-
-        .test-vector {
-            border: 1px solid #e1e5e9;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            background: #f8f9fa;
-        }
-
-        .test-vector h3 {
-            margin-top: 0;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .status.pass { background: #d4edda; color: #155724; }
-        .status.fail { background: #f8d7da; color: #721c24; }
-
-        .files {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-
-        .file-link {
-            display: block;
-            padding: 0.75rem;
-            background: white;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            text-decoration: none;
-            color: #495057;
-            transition: all 0.2s;
-        }
-
-        .file-link:hover {
-            background: #e9ecef;
-            transform: translateY(-1px);
-        }
-
-        .description {
-            color: #6c757d;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .standards-notice {
-            background: #e7f3ff;
-            border-left: 4px solid #0066cc;
-            padding: 1rem;
-            margin: 2rem 0;
-            border-radius: 0 6px 6px 0;
-        }
-
-        code {
-            background: #f1f3f4;
-            padding: 0.2rem 0.4rem;
-            border-radius: 3px;
-            font-family: 'SFMono-Regular', Consolas, monospace;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CertNode Test Vectors</title>
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; padding: 2rem; color: #1e293b; background: #fafbfc; }
+    h1 { margin-top: 0; }
+    .card { background: #fff; border: 1px solid #e1e5e9; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+    code { background: #f8fafc; padding: 2px 6px; border-radius: 4px; }
+    a { color: #1e40af; }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <h1>CertNode Test Vectors</h1>
-        <p>Comprehensive test cases for RFC-compliant CertNode receipt verification</p>
-        <p><strong>Standards:</strong> RFC 7515 (JWS), RFC 8785 (JCS), RFC 7517 (JWKS)</p>
-    </div>
-
-    <div class="standards-notice">
-        <h3>🎯 Standards Compliance Testing</h3>
-        <p>These test vectors validate CertNode implementation compliance with established cryptographic standards. Use these test cases to ensure your CertNode integration properly handles both valid receipts and common error conditions.</p>
-        <p><strong>Usage:</strong> Each test vector contains the input files (<code>receipt.json</code>, <code>payload.json</code>, <code>jwks.json</code>) and expected behavior (<code>expected.json</code>). Cross-implementation compatibility is the goal.</p>
-    </div>
-
-    <div class="test-vector">
-        <h3>
-            Valid Receipt
-            <span class="status pass">Should Pass</span>
-        </h3>
-        <div class="description">
-            Standard valid CertNode receipt with proper signature and matching JWKS key. This baseline test validates the core verification workflow.
-        </div>
-        <div class="files">
-            <a href="/test-vectors/valid/receipt.json" class="file-link">📄 receipt.json</a>
-            <a href="/test-vectors/valid/payload.json" class="file-link">📝 payload.json</a>
-            <a href="/test-vectors/valid/jwks.json" class="file-link">🔑 jwks.json</a>
-            <a href="/test-vectors/valid/expected.json" class="file-link">✅ expected.json</a>
-        </div>
-    </div>
-
-    <div class="test-vector">
-        <h3>
-            Wrong Key ID
-            <span class="status fail">Should Fail</span>
-        </h3>
-        <div class="description">
-            Receipt references a key ID that doesn't exist in the JWKS. Tests key lookup and error handling for missing keys.
-        </div>
-        <div class="files">
-            <a href="/test-vectors/wrong-kid/receipt.json" class="file-link">📄 receipt.json</a>
-            <a href="/test-vectors/wrong-kid/payload.json" class="file-link">📝 payload.json</a>
-            <a href="/test-vectors/wrong-kid/jwks.json" class="file-link">🔑 jwks.json</a>
-            <a href="/test-vectors/wrong-kid/expected.json" class="file-link">❌ expected.json</a>
-        </div>
-    </div>
-
-    <div class="test-vector">
-        <h3>
-            Tampered Payload
-            <span class="status fail">Should Fail</span>
-        </h3>
-        <div class="description">
-            Payload has been modified after receipt creation. Tests tamper detection and signature verification failure handling.
-        </div>
-        <div class="files">
-            <a href="/test-vectors/tampered-payload/receipt.json" class="file-link">📄 receipt.json</a>
-            <a href="/test-vectors/tampered-payload/payload.json" class="file-link">📝 payload.json</a>
-            <a href="/test-vectors/tampered-payload/jwks.json" class="file-link">🔑 jwks.json</a>
-            <a href="/test-vectors/tampered-payload/expected.json" class="file-link">❌ expected.json</a>
-        </div>
-    </div>
-
-    <div class="test-vector">
-        <h3>
-            Wrong Algorithm
-            <span class="status fail">Should Fail</span>
-        </h3>
-        <div class="description">
-            Protected header specifies RS256 but JWKS key is configured for ES256. Tests algorithm validation and mismatch detection.
-        </div>
-        <div class="files">
-            <a href="/test-vectors/wrong-alg/receipt.json" class="file-link">📄 receipt.json</a>
-            <a href="/test-vectors/wrong-alg/payload.json" class="file-link">📝 payload.json</a>
-            <a href="/test-vectors/wrong-alg/jwks.json" class="file-link">🔑 jwks.json</a>
-            <a href="/test-vectors/wrong-alg/expected.json" class="file-link">❌ expected.json</a>
-        </div>
-    </div>
-
-    <div class="test-vector">
-        <h3>
-            Malformed Receipt
-            <span class="status fail">Should Fail</span>
-        </h3>
-        <div class="description">
-            Receipt contains invalid base64 encoding and malformed signature. Tests parsing error handling and input validation.
-        </div>
-        <div class="files">
-            <a href="/test-vectors/malformed/receipt.json" class="file-link">📄 receipt.json</a>
-            <a href="/test-vectors/malformed/payload.json" class="file-link">📝 payload.json</a>
-            <a href="/test-vectors/malformed/jwks.json" class="file-link">🔑 jwks.json</a>
-            <a href="/test-vectors/malformed/expected.json" class="file-link">❌ expected.json</a>
-        </div>
-    </div>
-
-    <div class="standards-notice">
-        <h3>🚀 Implementation Guidelines</h3>
-        <p><strong>For Standards Compliance:</strong> Your CertNode implementation should pass the "Valid Receipt" test and fail all error condition tests with appropriate error messages as specified in each <code>expected.json</code> file.</p>
-        <p><strong>Cross-Platform Testing:</strong> These test vectors work across all CertNode SDKs (Python, Go, Rust, JavaScript) and can be used to validate any RFC-compliant implementation.</p>
-        <p><strong>Contribute:</strong> Missing a test case? <a href="https://github.com/certnode/certnode">Submit an issue</a> or contribute additional test vectors to improve standards compliance across the ecosystem.</p>
-    </div>
-
-    <footer style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e1e5e9; color: #6c757d;">
-        <p>CertNode Test Vectors • Standards-Compliant Receipt Infrastructure</p>
-        <p><a href="/">← Back to CertNode</a> | <a href="/trust/">Trust Center</a> | <a href="/.well-known/jwks.json">JWKS Endpoint</a></p>
-    </footer>
+  <h1>CertNode Test Vectors</h1>
+  <p>Use these standard vectors for cross-language verification of JWS/JCS receipts.</p>
+  <div class="card">
+    <h2>JWKS Sets</h2>
+    <ul>
+      <li><a href="/public/test-vectors/valid/jwks.json">valid/jwks.json</a></li>
+      <li><a href="/public/test-vectors/wrong-kid/jwks.json">wrong-kid/jwks.json</a></li>
+      <li><a href="/public/test-vectors/wrong-alg/jwks.json">wrong-alg/jwks.json</a></li>
+      <li><a href="/public/test-vectors/tampered-payload/jwks.json">tampered-payload/jwks.json</a></li>
+      <li><a href="/public/test-vectors/malformed/jwks.json">malformed/jwks.json</a></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h2>OpenAPI</h2>
+    <p>Import the <a href="/openapi.json">OpenAPI JSON</a> or use the <a href="/openapi">Spec Viewer</a>.</p>
+  </div>
 </body>
 </html>

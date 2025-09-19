@@ -179,8 +179,28 @@ const server = http.createServer(async (req, res) => {
       if (ext === ".svg") contentType = "image/svg+xml";
 
       try {
-        const content = fs.readFileSync(filePath);
-        res.writeHead(200, { "Content-Type": contentType });
+        let content = fs.readFileSync(filePath);
+        const headers = { "Content-Type": contentType };
+        // Simple caching strategy for local/static serve
+        const cacheMap = {
+          ".css": "public, max-age=31536000, immutable",
+          ".js":  "public, max-age=31536000, immutable",
+          ".png": "public, max-age=31536000, immutable",
+          ".jpg": "public, max-age=31536000, immutable",
+          ".jpeg":"public, max-age=31536000, immutable",
+          ".svg": "public, max-age=31536000, immutable",
+          ".html":"public, max-age=3600"
+        };
+        if (cacheMap[ext]) headers['Cache-Control'] = cacheMap[ext];
+        // Gzip compression for text assets when accepted
+        const ae = String(req.headers['accept-encoding']||'');
+        const isText = /^(text\/|application\/(javascript|json|xml))/.test(headers['Content-Type']);
+        if (ae.includes('gzip') && isText) {
+          const zlib = require('zlib');
+          content = zlib.gzipSync(content);
+          headers['Content-Encoding'] = 'gzip';
+        }
+        res.writeHead(200, headers);
         return res.end(content);
       } catch (e) {
         // Fall through to 404

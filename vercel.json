@@ -28,6 +28,30 @@
       ]
     },
     {
+      "source": "/web/(.*)\\.css",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/web/(.*)\\.js",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/web/assets/(.*)",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/public/(.*)\\.css",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/public/(.*)\\.js",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/public/(.*)\\.html",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=3600" } ]
+    },
+    {
       "source": "/.well-known/jwks.json",
       "headers": [
         { "key": "Content-Type", "value": "application/jwk-set+json" },

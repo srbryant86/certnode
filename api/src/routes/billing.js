@@ -88,11 +88,15 @@ async function handle(req, res) {
       const successUrl = `${baseUrl}/account?session_id={CHECKOUT_SESSION_ID}`;
       const cancelUrl = `${baseUrl}/pricing`;
 
-      const checkout = await billing.createCheckoutSession(email, tierConfig.stripe_price_id, successUrl, cancelUrl);
-
-      const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
-      res.writeHead(200, headers);
-      return res.end(JSON.stringify(checkout));
+      try {
+        const checkout = await billing.createCheckoutSession(email, tierConfig.stripe_price_id, successUrl, cancelUrl);
+        const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
+        res.writeHead(200, headers);
+        return res.end(JSON.stringify(checkout));
+      } catch (e) {
+        console.error('Stripe checkout error:', e && e.message ? e.message : e);
+        return sendError(res, req, 400, 'stripe_error', e && e.message ? e.message : 'Stripe error');
+      }
     }
 
     // POST /api/create-portal - Create customer portal session

@@ -30,6 +30,8 @@
 - [x] Completed item - Checkout Sessions enabled with Stripe price IDs (Starter/Pro); success redirects to /account
 - [x] Completed item - Introduced Business plan ($499/mo, 2M receipts) in pricing and billing config
 - [x] Completed item - Pricing terminology aligned: “Professional” (UI/API)
+- [x] Completed item - Audit progress document added at docs/AUDIT_PROGRESS.md
+- [ ] 🚨 CURRENT PRIORITY: Encoding normalization → CSS extraction → Full API error model standardization (OpenAPI)
 - [ ] Next item - Performance (Week 2): static caching + gzip, externalize inline CSS
 - [ ] 🚨 CURRENT PRIORITY: Set Payment Link env vars on Vercel and redeploy; wire CTAs
 - [ ] Next item - Unify JWKS source across API/site; minimal account handoff after checkout

@@ -3,6 +3,7 @@
 // OpenAPI 3.1 specification serving endpoint
 const fs = require('fs');
 const path = require('path');
+const { sendError } = require('../middleware/errorHandler');
 
 // Cache the OpenAPI spec in memory
 let cachedSpec = null;
@@ -48,14 +49,7 @@ function handle(req, res) {
       loadOpenAPISpec();
     }
     
-    if (!cachedSpec) {
-      const headers = { 'Content-Type': 'application/json' };
-      if (req && req.id) headers['X-Request-Id'] = req.id;
-      const body = { error: 'spec_unavailable', message: 'OpenAPI specification could not be loaded' };
-      if (req && req.id) body.request_id = req.id;
-      res.writeHead(503, headers);
-      return res.end(JSON.stringify(body));
-    }
+    if (!cachedSpec) return sendError(res, req, 503, 'spec_unavailable', 'OpenAPI specification could not be loaded');
     
     // Add cache headers
     const maxAge = isDevelopment ? 300 : 3600; // 5 min dev, 1 hour prod
@@ -68,31 +62,16 @@ function handle(req, res) {
     };
     
     // Handle CORS preflight
-    if (req.method === 'OPTIONS') {
-      res.writeHead(200, headers);
-      return res.end();
-    }
+    if (req.method === 'OPTIONS') { res.writeHead(200, headers); return res.end(); }
     
-    if (req.method !== 'GET') {
-      const headers = { 'Content-Type': 'application/json' };
-      if (req && req.id) headers['X-Request-Id'] = req.id;
-      const body = { error: 'method_not_allowed', message: 'Only GET and OPTIONS methods are supported' };
-      if (req && req.id) body.request_id = req.id;
-      res.writeHead(405, headers);
-      return res.end(JSON.stringify(body));
-    }
+    if (req.method !== 'GET') return sendError(res, req, 405, 'method_not_allowed', 'Only GET and OPTIONS are supported');
     
     res.writeHead(200, headers);
     res.end(JSON.stringify(cachedSpec, null, 2));
     
   } catch (error) {
     console.error('Error serving OpenAPI spec:', error);
-    const headers = { 'Content-Type': 'application/json' };
-    if (req && req.id) headers['X-Request-Id'] = req.id;
-    const body = { error: 'internal_error', message: 'Failed to serve OpenAPI specification' };
-    if (req && req.id) body.request_id = req.id;
-    res.writeHead(500, headers);
-    res.end(JSON.stringify(body));
+    return sendError(res, req, 500, 'internal_error', 'Failed to serve OpenAPI specification');
   }
 }
 

@@ -1,14 +1,8 @@
 const { getCircuitState, getLastKmsError } = require('../aws/kms');
+const { sendError } = require('../middleware/errorHandler');
 
 function handle(req, res) {
-  if (req.method !== 'GET') {
-    const headers = { 'Content-Type': 'application/json' };
-    if (req && req.id) headers['X-Request-Id'] = req.id;
-    const body = { error: 'method_not_allowed' };
-    if (req && req.id) body.request_id = req.id;
-    res.writeHead(405, headers);
-    return res.end(JSON.stringify(body));
-  }
+  if (req.method !== 'GET') return sendError(res, req, 405, 'method_not_allowed', 'Only GET is allowed');
   
   const uptime_s = Math.floor(process.uptime());
   const mode = process.env.KMS_MODE || 'local';

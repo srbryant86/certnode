@@ -467,7 +467,7 @@
                     <li>Basic analytics</li>
                     <li>Standard SLA (99.5% uptime)</li>
                 </ul>
-                <button onclick="startCheckout('developer')" class="cta-button secondary">Get Started Free</button>
+                <button class="cta-button secondary" data-tier="developer">Get Started Free</button>
             </div>
 
             <div class="pricing-card">
@@ -482,7 +482,7 @@
                     <li>Enhanced SLA (99.7% uptime)</li>
                     <li>Custom subdomain</li>
                 </ul>
-                <button onclick="startCheckout('starter')" class="cta-button secondary">Subscribe</button>
+                <button class="cta-button secondary" data-tier="starter">Subscribe</button>
                 <p style="margin-top:8px; color: var(--text-muted); font-size: 12px;">Secure checkout by Stripe</p>
             </div>
 
@@ -501,7 +501,7 @@
                     <li>White-label receipt viewer</li>
                     <li>Full source code access</li>
                 </ul>
-                <button onclick="startCheckout('pro')" class="cta-button">Subscribe</button>
+                <button class="cta-button" data-tier="pro">Subscribe</button>
                 <p style="margin-top:8px; color: var(--text-muted); font-size: 12px;">Secure checkout by Stripe</p>
             </div>
 
@@ -518,7 +518,7 @@
                     <li>Enhanced SLA (99.9% uptime)</li>
                     <li>Integration assistance (10 hours included)</li>
                 </ul>
-                <button onclick="startCheckout('business')" class="cta-button secondary">Subscribe</button>
+                <button class="cta-button secondary" data-tier="business">Subscribe</button>
                 <p style="margin-top:8px; color: var(--text-muted); font-size: 12px;">Secure checkout by Stripe</p>
             </div>
 
@@ -537,7 +537,7 @@
                     <li>Volume discounts available</li>
                     <li>Compliance certification assistance</li>
                 </ul>
-                <button onclick="showEnterpriseForm()" class="cta-button secondary">Contact Sales</button>
+                <button id="contact-sales-btn" class="cta-button secondary">Contact Sales</button>
             </div>
         </div>
     </div>
@@ -545,11 +545,11 @@
     <!-- Enterprise Contact Form Modal -->
     <div id="enterpriseModal" class="modal" style="display: none;">
         <div class="modal-content">
-            <span class="close" onclick="closeEnterpriseForm()">&times;</span>
+            <span class="close" id="enterpriseModalClose">&times;</span>
             <h2>Enterprise Solutions Consultation</h2>
             <p>Tell us about your requirements and we'll design a custom CertNode implementation for your organization.</p>
 
-            <form id="enterpriseForm" onsubmit="submitEnterpriseForm(event)">
+            <form id="enterpriseForm">
                 <div class="form-group">
                     <label for="monthly-volume">Estimated monthly receipts (above 2,000,000) *</label>
                     <input type="number" id="monthly-volume" name="monthly_volume" min="2000001" step="100000" placeholder="e.g., 3000000" required>
@@ -629,6 +629,7 @@
                 </div>
 
                 <button type="submit" class="cta-button">Request Enterprise Consultation</button>
+                <div id="enterprise-status" class="status" style="display:none; margin-top:12px;"></div>
                 <p style="margin-top: 8px; color: var(--text-muted);">Quotes delivered same day (pilot).</p>
             </form>
         </div>
@@ -815,8 +816,7 @@ Please schedule an enterprise consultation to discuss CertNode implementation fo
                 closeEnterpriseForm();
             }
         });
-    </script>
+  </script>
+  <script src="/web/js/pricing.js" defer></script>
 </body>
 </html>
-
-

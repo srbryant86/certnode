@@ -21,26 +21,9 @@
     pre{white-space:pre-wrap; font-size:12px; color:#475569; overflow-x:auto; background:#f8fafc; border-radius:8px; padding:16px}
     .badge{display:inline-block; padding:6px 12px; border-radius:12px; background:#ecfdf5; color:var(--success); font-weight:600; font-size:12px}
   </style>
-  <script>
-  // Small helper to set text content
-  function show(id, text){ var el = document.getElementById(id); if (el) el.textContent = text; }
-  async function loadTrust(){
-    try{
-      const r = await fetch('/.well-known/jwks.json', { cache:'reload' });
-      if(!r.ok) throw new Error('JWKS HTTP '+r.status);
-      const jwks = await r.json();
-      show('jwks-pre', JSON.stringify(jwks, null, 2));
-    }catch(e){ show('jwks-pre', 'ERROR: '+ (e && e.message || 'failed')); }
-    try{
-      const r2 = await fetch('/trust/keys.jsonl', { cache:'no-store' });
-      if(!r2.ok) throw new Error('LOG HTTP '+r2.status);
-      const txt = (await r2.text()).trim();
-      show('log-pre', txt || '(empty)');
-    }catch(e){ show('log-pre', 'ERROR: '+ (e && e.message || 'failed')); }
-  }
-  </script>
+  <script src="/public/trust/trust.js" defer></script>
 </head>
-<body onload="loadTrust()">
+<body>
   <header>
     <div class="header-container">
       <a href="/" class="logo">CertNode</a>
@@ -69,12 +52,26 @@
         <p><strong>Endpoint:</strong> <a href="/.well-known/jwks.json" target="_blank">/.well-known/jwks.json</a></p>
         <p><strong>Content-Type:</strong> application/jwk-set+json • <strong>Cache:</strong> 300s</p>
         <pre id="jwks-pre">Loading...</pre>
+        <div id="jwks-summary" style="margin-top:12px;">
+          <table style="width:100%; border-collapse: collapse; font-size: 13px;">
+            <thead>
+              <tr style="text-align:left; border-bottom:1px solid var(--border);">
+                <th style="padding:6px;">kid</th>
+                <th style="padding:6px;">crv</th>
+                <th style="padding:6px;">alg</th>
+                <th style="padding:6px;">use</th>
+              </tr>
+            </thead>
+            <tbody id="jwks-table"></tbody>
+          </table>
+        </div>
       </div>
       <div class="card">
         <span class="badge">Rotation Log</span>
         <h3>Transparency</h3>
         <p><strong>Log:</strong> <a href="/trust/keys.jsonl" target="_blank">/trust/keys.jsonl</a> • <strong>Cache:</strong> no-store</p>
         <pre id="log-pre">Loading...</pre>
+        <p id="rotation-meta" style="font-size:12px; color:var(--text-muted); margin-top:8px;"></p>
       </div>
     </div>
     <div class="card">
@@ -88,4 +85,3 @@
   </main>
 </body>
 </html>
-

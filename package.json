@@ -1,23 +1,27 @@
-{
-  "name": "certnode-root",
-  "private": true,
-  "version": "0.0.0",
-  "description": "Root scripts for CertNode development",
-  "engines": { "node": ">=20.0.0" },
-  "dependencies": {
-    "stripe": "^13.5.0"
-  },
-  "scripts": {
-    "start": "node api/src/index.js",
-    "test:fast": "node tools/test-fast.js",
-    "bench": "node tools/benchmark.js",
-    "openapi:check": "node tools/check-openapi.js",
-    "sdk:pack": "npm --prefix sdk/node pack && npm --prefix sdk/web pack",
-    "build:web-sdk": "node tools/build-web-sdk.js",
-    "size:web-sdk": "node tools/size-web-sdk.js",
-    "example:sign": "node examples/node-sign.js --payload '{\"hello\":\"world\",\"n\":42}'",
-    "example:verify": "node examples/node-verify.js --receipt examples/receipt.example.json --jwks examples/jwks.example.json",
-    "docs:update": "node scripts/audit-roadmap.js && node scripts/audit-tasks.js",
-    "tsa:canary": "node tools/tsa-canary.js"
-  }
+﻿{
+    "name":  "certnode-root",
+    "private":  true,
+    "version":  "0.0.0",
+    "description":  "Root scripts for CertNode development",
+    "engines":  {
+                    "node":  "\u003e=20.0.0"
+                },
+    "dependencies":  {
+                         "stripe":  "^13.5.0"
+                     },
+    "scripts":  {
+                    "start":  "node api/src/index.js",
+                    "test:fast":  "node tools/test-fast.js",
+                    "bench":  "node tools/benchmark.js",
+                    "openapi:check":  "node tools/check-openapi.js",
+                    "ci:conflicts":  "node tools/check-conflicts.js",
+                    "ci:smoke":  "node tools/smoke-endpoints.js",
+                    "sdk:pack":  "npm --prefix sdk/node pack \u0026\u0026 npm --prefix sdk/web pack",
+                    "build:web-sdk":  "node tools/build-web-sdk.js",
+                    "size:web-sdk":  "node tools/size-web-sdk.js",
+                    "example:sign":  "node examples/node-sign.js --payload \u0027{\"hello\":\"world\",\"n\":42}\u0027",
+                    "example:verify":  "node examples/node-verify.js --receipt examples/receipt.example.json --jwks examples/jwks.example.json",
+                    "docs:update":  "node scripts/audit-roadmap.js \u0026\u0026 node scripts/audit-tasks.js",
+                    "tsa:canary":  "node tools/tsa-canary.js"
+                }
 }

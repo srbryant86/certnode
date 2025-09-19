@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "description": "Root scripts for CertNode development",
   "engines": { "node": ">=20.0.0" },
+  "dependencies": {
+    "stripe": "^13.5.0"
+  },
   "scripts": {
     "start": "node api/src/index.js",
     "test:fast": "node tools/test-fast.js",

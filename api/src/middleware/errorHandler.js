@@ -145,6 +145,24 @@ module.exports = {
   setupGlobalErrorHandlers,
   asyncHandler,
   createErrorMiddleware,
-  logError
+  logError,
+  buildError: (code, message, req) => ({
+    error: String(code || 'error'),
+    message: message || 'error',
+    ...(req && req.id ? { request_id: req.id } : {}),
+    timestamp: new Date().toISOString()
+  }),
+  sendError: (res, req, status, code, message) => {
+    const body = {
+      error: String(code || 'error'),
+      message: message || 'error',
+      ...(req && req.id ? { request_id: req.id } : {}),
+      timestamp: new Date().toISOString()
+    };
+    const headers = { 'Content-Type': 'application/json' };
+    if (req && req.id) headers['X-Request-Id'] = req.id;
+    if (!res.headersSent) res.writeHead(status || 400, headers);
+    res.end(JSON.stringify(body));
+  }
 };
 //---------------------------------------------------------------------

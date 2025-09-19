@@ -212,7 +212,7 @@ const server = http.createServer(async (req, res) => {
   {
     const headers = { "Content-Type": "application/json" };
     if (req && req.id) headers['X-Request-Id'] = req.id;
-    const body = { error: "not_found" };
+    const body = { error: "not_found", message: 'route not found', timestamp: new Date().toISOString() };
     if (req && req.id) body.request_id = req.id;
     res.writeHead(404, headers);
     res.end(JSON.stringify(body));

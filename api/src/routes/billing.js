@@ -27,6 +27,7 @@ async function handle(req, res) {
     'Access-Control-Expose-Headers': 'X-RateLimit-Limit, X-RateLimit-Remaining, X-Usage-Limit, X-Usage-Used, X-Usage-Remaining, X-Request-Id, Retry-After',
     'Access-Control-Max-Age': '86400'
   };
+  const { sendError } = require('../middleware/errorHandler');
 
   if (req.method === 'OPTIONS') {
     res.writeHead(200, corsHeaders);
@@ -47,7 +48,6 @@ async function handle(req, res) {
         })),
         currency: 'USD'
       };
-
       res.writeHead(200, headers);
       return res.end(JSON.stringify(body, null, 2));
     }
@@ -58,9 +58,7 @@ async function handle(req, res) {
       const { email, tier } = raw || {};
 
       if (!tier) {
-        const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
-        res.writeHead(400, headers);
-        return res.end(JSON.stringify({ error: 'client_error', message: 'tier is required' }));
+        return sendError(res, req, 400, 'client_error', 'tier is required');
       }
 
       const tierConfig = billing.PRICING_TIERS[tier];
@@ -72,11 +70,7 @@ async function handle(req, res) {
         'business': process.env.BUSINESS_PAYMENT_LINK_URL
       };
       const paymentLink = linkEnvMap[tier];
-      if (!tierConfig) {
-        const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
-        res.writeHead(400, headers);
-        return res.end(JSON.stringify({ error: 'client_error', message: 'invalid tier' }));
-      }
+      if (!tierConfig) return sendError(res, req, 400, 'client_error', 'invalid tier');
       // If a Payment Link is configured for this tier (and no price id), allow missing email
       if (!tierConfig.stripe_price_id && paymentLink) {
         const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
@@ -84,9 +78,7 @@ async function handle(req, res) {
         return res.end(JSON.stringify({ checkout_url: paymentLink, session_id: null, customer_id: null }));
       }
       if (!tierConfig.stripe_price_id && !paymentLink) {
-        const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
-        res.writeHead(400, headers);
-        return res.end(JSON.stringify({ error: 'client_error', message: 'tier not configured (missing Stripe price id or Payment Link URL)' }));
+        return sendError(res, req, 400, 'client_error', 'tier not configured (missing Stripe price id or Payment Link URL)');
       }
 
       const baseUrl = req.headers.host.includes('localhost')
@@ -108,14 +100,7 @@ async function handle(req, res) {
       const apiKey = req.headers.authorization?.replace('Bearer ', '');
       const customer = billing.getCustomerByApiKey(apiKey);
 
-      if (!customer) {
-        const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
-        res.writeHead(401, headers);
-        return res.end(JSON.stringify({
-          error: 'unauthorized',
-          message: 'Valid API key required'
-        }));
-      }
+      if (!customer) return sendError(res, req, 401, 'unauthorized', 'Valid API key required');
 
       const baseUrl = req.headers.host.includes('localhost')
         ? 'http://localhost:3000'
@@ -184,22 +169,12 @@ async function handle(req, res) {
     }
 
     // 404 Not Found
-    const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
-    res.writeHead(404, headers);
-    return res.end(JSON.stringify({
-      error: 'not_found',
-      message: 'Billing endpoint not found'
-    }));
+    return sendError(res, req, 404, 'not_found', 'Billing endpoint not found');
 
   } catch (e) {
     console.error('Billing error:', e);
 
-    const headers = { ...corsHeaders, 'Content-Type': 'application/json' };
-    res.writeHead(500, headers);
-    return res.end(JSON.stringify({
-      error: 'server_error',
-      message: 'Internal billing error'
-    }));
+    return sendError(res, req, 500, 'server_error', 'Internal billing error');
   }
 }
 

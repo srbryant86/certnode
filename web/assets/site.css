@@ -464,19 +464,34 @@
     .feature {
       text-align: center;
       padding: 32px 24px;
+      transition: all 0.3s ease;
+      border-radius: 12px;
+    }
+
+    .feature:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(30, 64, 175, 0.1);
+      background: rgba(255, 255, 255, 0.5);
     }
 
     .feature-icon {
-      width: 64px;
-      height: 64px;
-      background: var(--primary);
-      border-radius: 12px;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 20px;
+      margin: 0 auto 24px;
       color: white;
-      font-size: 24px;
+      font-size: 32px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(30, 64, 175, 0.2);
+    }
+
+    .feature:hover .feature-icon {
+      transform: scale(1.1);
+      box-shadow: 0 8px 32px rgba(30, 64, 175, 0.3);
     }
 
     .feature h3 {

@@ -628,7 +628,7 @@
 
                 <div class="form-group">
                   <div id="estimate-box" class="status" style="border:1px solid var(--border); padding:12px; border-radius:8px;">
-                    <strong>Estimated monthly price:</strong> <span id="est-price">ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</span>
+                    <strong>Estimated monthly price:</strong> <span id="est-price">—</span>
                   </div>
                 </div>
                 <div class="form-group">
@@ -754,7 +754,7 @@
             const managed = !!document.getElementById('opt-managed-jwks')?.checked;
             const el = document.getElementById('est-price');
             if (!el) return;
-            if (!vol || vol < 100000) { el.textContent = 'ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â'; return; }
+            if (!vol || vol < 100000) { el.textContent = '—'; return; }
             el.textContent = `$${computeEstimate(vol, { priority, managed }).toLocaleString()}/month`;
         }
 
@@ -884,3 +884,4 @@ Please schedule an enterprise consultation to discuss CertNode implementation fo
   <script src="/web/js/toast.js" defer></script>`n  `n  <script src="/web/js/auth-ui.js" defer></script>
 </body>
 </html>
+

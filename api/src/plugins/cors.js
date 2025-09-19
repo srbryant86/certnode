@@ -13,8 +13,18 @@ function isOriginAllowed(origin, allowedOrigins) {
   return allowedOrigins.includes(origin);
 }
 
-function setCorsHeaders(res, origin, allowedOrigins) {
-  const isAllowed = isOriginAllowed(origin, allowedOrigins);
+function setCorsHeaders(req, res, origin, allowedOrigins) {
+  // Allow same-origin by default when no explicit allowlist is configured
+  let sameOriginAllowed = false;
+  if (origin && (!allowedOrigins || allowedOrigins.length === 0)) {
+    try {
+      const oHost = new URL(origin).host;
+      const reqHost = String(req.headers.host || '').toLowerCase();
+      sameOriginAllowed = oHost.toLowerCase() === reqHost && !!reqHost;
+    } catch {}
+  }
+
+  const isAllowed = isOriginAllowed(origin, allowedOrigins) || sameOriginAllowed;
   
   if (isAllowed) {
     res.setHeader('Access-Control-Allow-Origin', origin);
@@ -32,7 +42,7 @@ function setCorsHeaders(res, origin, allowedOrigins) {
 
 function handlePreflight(req, res, allowedOrigins) {
   const origin = req.headers.origin;
-  const isAllowed = setCorsHeaders(res, origin, allowedOrigins);
+  const isAllowed = setCorsHeaders(req, res, origin, allowedOrigins);
   
   if (!isAllowed && origin) {
     res.writeHead(403, { 'Content-Type': 'application/json' });
@@ -50,7 +60,7 @@ function applyCors(req, res, allowedOrigins) {
     return handlePreflight(req, res, allowedOrigins);
   }
   
-  const isAllowed = setCorsHeaders(res, origin, allowedOrigins);
+  const isAllowed = setCorsHeaders(req, res, origin, allowedOrigins);
   
   if (origin && !isAllowed) {
     res.writeHead(403, { 'Content-Type': 'application/json' });

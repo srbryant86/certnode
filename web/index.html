@@ -23,418 +23,143 @@
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
-  <!-- Enterprise Professional Header -->
   <header>
     <div class="header-container">
       <a href="/" class="logo">CertNode</a>
-      <nav class="nav">
+      <nav class="nav" aria-label="Primary">
         <a href="/">Home</a>
         <a href="/verify">Validator</a>
-        <a href="/pricing">Pricing</a>
         <a href="/openapi">Specification</a>
         <a href="/trust">Trust</a>
-        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
+        <a href="/pricing">Pricing</a>
+        <a href="https://github.com/srbryant86/certnode" target="_blank" rel="noopener">GitHub</a>
       </nav>
     </div>
   </header>
 
-  <!-- Enterprise Hero Section -->
   <main id="main-content" role="main">
-  <article class="hero" role="banner">
-    <div class="container">
-      <div class="hero-content">
-        <h1>Open Standard + Reference API</h1>
-        <p>CertNode is an open standard for tamper-evident digital receipts. Receipts use RFC 7515 JWS over RFC 8785 JCS with ES256. Any payload or header change invalidates verification under standard JOSE rules.</p>
-
-        <div class="cta-buttons" style="margin: 48px 0;">
-          <a href="/verify" class="btn btn-primary btn-lg">Validate a Receipt</a>
-          <a href="/openapi" class="btn btn-secondary btn-lg">API Reference</a>
-          <a href="https://github.com/srbryant86/certnode" class="btn btn-secondary btn-lg" target="_blank">SDKs & Examples</a>
-        </div>
-
-        <!-- 3-Step Quickstart -->
-        <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 32px; margin: 48px auto; max-width: 600px; text-align: left;">
-          <h3 style="color: white; margin-bottom: 24px; text-align: center;">3-Step Quickstart</h3>
-          <ol style="color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.8;">
-            <li><code class="code-snippet" lang="en">npm i @certnode/sdk</code></li>
-                        <li>POST <code class="code-snippet" lang="en">/v1/sign</code>  get <code class="code-snippet" lang="en">receipt</code></li>
-            <li>Verify: <code class="code-snippet" lang="en">verifyReceipt({ receipt, jwks })</code></li>
-          </ol>
-        </div>
-
-        <!-- Technical Standards Elements -->
-        <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 32px; font-size: 14px; color: rgba(255,255,255,0.8);">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: var(--crypto-gold);">&#10003;</span> RFC 7515 JWS compliant
+    <article class="hero" role="banner">
+      <div class="container">
+        <div class="hero-content">
+          <h1>Open Standard for Tamper-Evident Receipts</h1>
+          <p>CertNode defines a simple, interoperable way to attach cryptographic receipts to any JSON payload. Receipts follow RFC 7515 (JWS) over RFC 8785 (JCS) with ES256, so verification is standard and offline.</p>
+          <div class="cta-buttons" style="margin: 32px 0 0 0;">
+            <a href="/verify" class="btn btn-primary btn-lg">Validate a Receipt</a>
+            <a href="/openapi" class="btn btn-secondary btn-lg">API Reference</a>
+            <a href="https://github.com/srbryant86/certnode" class="btn btn-secondary btn-lg" target="_blank" rel="noopener">SDKs & Examples</a>
           </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: var(--crypto-gold);">&#10003;</span> Open source verification
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: var(--crypto-gold);">&#10003;</span> Multiple implementations
+          <div style="background: rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; margin: 32px auto 0; max-width: 640px; text-align: left;">
+            <h3 style="color: white; margin: 0 0 12px; text-align: center;">Quickstart</h3>
+            <ol style="color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.8; margin: 0; padding-left: 18px;">
+              <li><code class="code-snippet" lang="en">npm i @certnode/sdk</code></li>
+              <li>POST <code class="code-snippet" lang="en">/v1/sign</code> &mdash; get <code class="code-snippet" lang="en">receipt</code></li>
+              <li>Verify: <code class="code-snippet" lang="en">verifyReceipt({ receipt, jwks })</code></li>
+            </ol>
           </div>
         </div>
+      </div>
+    </article>
 
+    <section class="section" aria-labelledby="features-heading">
+      <div class="container">
+        <h2 id="features-heading" class="text-4xl mb-16" style="text-align:center;">Why CertNode</h2>
+        <div class="grid grid-3">
+          <div class="feature">
+            <div class="feature-icon">CN</div>
+            <h3 class="text-2xl">Standards-Based</h3>
+            <p>RFC 7515 JWS and RFC 8785 JCS for interoperable signatures and canonicalization. Works with any compliant implementation.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">CN</div>
+            <h3 class="text-2xl">Offline Verification</h3>
+            <p>Verify using published JWKS &mdash; no vendor callback required. Ideal for regulated, air-gapped, or cost-sensitive environments.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">CN</div>
+            <h3 class="text-2xl">Cross-Platform</h3>
+            <p>Browser WebCrypto, Node.js, CLI, or your own stack. Reference SDKs and test vectors help you adopt quickly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="dev-heading" style="background: var(--panel); border-top: 1px solid var(--border);">
+      <div class="container">
+        <h2 id="dev-heading" class="text-4xl mb-16" style="text-align:center;">For Developers</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 class="text-2xl">Node.js</h3>
+            <p class="text-muted">Sign and verify receipts programmatically</p>
+            <pre style="background:#0b1220; color:#d1d5db; padding:16px; border-radius:8px; overflow:auto; font-size: 13px;"><code>// install
+npm i @certnode/sdk
+
+// sign
+const { sign } = require('@certnode/sdk')
+const { receipt } = await sign({ payload: { hello: 'world' } })
+
+// verify
+const { ok } = await verifyReceipt({ receipt, jwks })</code></pre>
+          </div>
+          <div class="card">
+            <h3 class="text-2xl">Spec & Test Vectors</h3>
+            <ul>
+              <li><a href="/openapi">Specification Viewer</a> &mdash; explore the API</li>
+              <li><a href="/openapi.json">Download OpenAPI JSON</a></li>
+              <li><a href="/test-vectors">Test Vectors</a> &mdash; cross-language fixtures</li>
+              <li><a href="/postman.collection.json">Postman Collection</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container">
+        <h2 class="text-4xl mb-16">Start Verifying in Minutes</h2>
+        <p class="text-xl mb-32">Use the validator to try a receipt, read the spec, or integrate an SDK.</p>
         <div class="flex justify-center">
-          <div class="compliance-badge" style="border-left: 3px solid var(--sox-blue);">RFC 7515 JWS</div>
-          <div class="compliance-badge" style="border-left: 3px solid var(--crypto-gold);">ECDSA P-256</div>
-          <div class="compliance-badge" style="border-left: 3px solid var(--gdpr-purple);">RFC 8785 JCS</div>
+          <a class="btn btn-white btn-lg" href="/verify">Open Validator</a>
+          <a class="btn btn-secondary btn-lg" href="/openapi">View Spec</a>
         </div>
       </div>
-    </div>
-  </article>
-
-  <!-- Interactive Demo Section -->
-  <section class="demo-section" aria-labelledby="demo-heading" style="padding: 80px 0; background: var(--panel); border-top: 1px solid var(--border);">
-    <div class="container">
-      <div class="text-center mb-48">
-        <h2 id="demo-heading" class="text-4xl mb-16" style="color: var(--primary);">See Tamper Detection in Action</h2>
-        <p class="text-xl text-muted">Upload a document, watch it get cryptographically signed, then try to alter it</p>
-      </div>
-
-      <div class="demo-container" style="max-width: 800px; margin: 0 auto;">
-        <div class="demo-card" style="background: white; border: 2px solid var(--border); border-radius: 12px; padding: 48px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
-
-          <!-- Step 1: Upload -->
-          <div class="demo-step" id="step1">
-            <div style="display: flex; align-items: center; margin-bottom: 24px;">
-              <div style="width: 32px; height: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 16px;">1</div>
-              <h3 style="margin: 0; color: var(--primary);">Upload Sample Document</h3>
-            </div>
-            <div style="border: 2px dashed var(--border); border-radius: 8px; padding: 40px; text-align: center; margin-bottom: 24px;">
-              <input type="file" id="demo-file" accept=".txt,.pdf,.json" style="display: none;">
-              <button id="choose-file-btn" style="background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer;">Choose File</button>
-              <p style="margin: 16px 0 0 0; color: var(--text-muted); font-size: 14px;">Or use our sample data</p>
-            </div>
-            <button id="use-sample" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; width: 100%;">Try with Sample Data</button>
-          </div>
-
-          <!-- Step 2: Sign -->
-          <div class="demo-step" id="step2" style="display: none;">
-            <div style="display: flex; align-items: center; margin-bottom: 24px;">
-              <div style="width: 32px; height: 32px; background: var(--crypto-gold); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 16px;">2</div>
-              <h3 style="margin: 0; color: var(--crypto-gold);">Cryptographic Signing</h3>
-            </div>
-            <div id="signing-animation" style="text-align: center; padding: 40px;">
-              <div style="font-size: 48px; color: var(--crypto-gold); margin-bottom: 16px;"></div>
-              <p>Generating ECDSA P-256 signature...</p>
-              <div style="width: 100%; background: var(--border-light); border-radius: 4px; height: 8px; margin: 16px 0;">
-                <div id="progress-bar" style="width: 0%; background: var(--crypto-gold); height: 100%; border-radius: 4px; transition: width 2s ease;"></div>
-              </div>
-            </div>
-            <div id="signature-result" style="display: none;">
-              <div style="background: var(--success-bg); border: 1px solid var(--success-border); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-                <strong style="color: var(--success);">Document Signed Successfully</strong>
-                <p style="margin: 8px 0 0 0; font-size: 14px; color: var(--text-muted);">SHA-256 Hash: <code>a1b2c3d4e5f6...</code></p>
-              </div>
-              <button id="proceed-tamper" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; width: 100%;">Test Tamper Detection</button>
-            </div>
-          </div>
-
-          <!-- Step 3: Tamper Test -->
-          <div class="demo-step" id="step3" style="display: none;">
-            <div style="display: flex; align-items: center; margin-bottom: 24px;">
-              <div style="width: 32px; height: 32px; background: var(--error); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 16px;">3</div>
-              <h3 style="margin: 0; color: var(--error);">Tamper Detection Test</h3>
-            </div>
-            <p style="margin-bottom: 16px;">Try modifying the document content:</p>
-            <textarea id="document-content" style="width: 100%; height: 120px; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-family: monospace;">Sample financial transaction record:
-Transaction ID: TXN-001
-Amount: $10,000.00
-Date: 2025-01-15</textarea>
-            <button id="verify-integrity" style="background: var(--error); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; width: 100%; margin-top: 16px;">Verify Integrity</button>
-
-            <div id="tamper-result" style="display: none; margin-top: 16px;">
-              <div style="background: var(--error-bg); border: 1px solid var(--error-border); border-radius: 8px; padding: 16px;">
-                <strong style="color: var(--error);"> TAMPER DETECTED</strong>
-                <p style="margin: 8px 0 0 0; font-size: 14px;">Document has been modified since signing. Hash mismatch detected.</p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Technical Standards Section -->
-  <section class="technical-standards" style="padding: 60px 0; background: var(--bg);">
-    <div class="container text-center">
-      <p class="text-sm text-muted mb-32">Built on established cryptographic standards</p>
-
-      <!-- RFC Standards -->
-      <div style="margin-bottom: 48px;">
-        <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 32px;">
-          <div style="background: white; border: 2px solid var(--primary); border-radius: 8px; padding: 16px 24px; display: flex; align-items: center; gap: 12px;">
-            <div style="width: 32px; height: 32px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">RFC</div>
-            <span style="font-weight: 600; color: var(--primary);">RFC 7515 JWS</span>
-          </div>
-          <div style="background: white; border: 2px solid var(--verified-green); border-radius: 8px; padding: 16px 24px; display: flex; align-items: center; gap: 12px;">
-            <div style="width: 32px; height: 32px; background: var(--verified-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">P256</div>
-            <span style="font-weight: 600; color: var(--verified-green);">ECDSA P-256</span>
-          </div>
-          <div style="background: white; border: 2px solid var(--security-teal); border-radius: 8px; padding: 16px 24px; display: flex; align-items: center; gap: 12px;">
-            <div style="width: 32px; height: 32px; background: var(--security-teal); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">JCS</div>
-            <span style="font-weight: 600; color: var(--security-teal);">RFC 8785 JCS</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Implementation Examples -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; max-width: 1000px; margin: 0 auto 48px;">
-        <div style="background: white; border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-          <div style="color: var(--primary); margin-bottom: 16px; font-weight: bold;">Node.js SDK</div>
-          <p style="margin-bottom: 20px; font-style: italic;">Complete implementation with zero dependencies. Uses Node.js crypto module for ECDSA verification.</p>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">JS</div>
-            <div>
-              <div style="font-weight: 600;">@certnode/sdk</div>
-              <div style="font-size: 14px; color: var(--text-muted);">npm install @certnode/sdk</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="background: white; border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-          <div style="color: var(--verified-green); margin-bottom: 16px; font-weight: bold;">Browser Crypto</div>
-          <p style="margin-bottom: 20px; font-style: italic;">WebCrypto API implementation for client-side verification. No external dependencies required.</p>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 40px; height: 40px; background: var(--verified-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;"></div>
-            <div>
-              <div style="font-weight: 600;">WebCrypto</div>
-              <div style="font-size: 14px; color: var(--text-muted);">Built-in browser support</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Use Cases -->
-      <div style="display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; color: var(--text-muted); font-size: 14px; font-weight: 500;">
-        <div>Audit Trails</div>
-        <div>Document Integrity</div>
-        <div>Legal Evidence</div>
-        <div>Supply Chain</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Research Metrics Section -->
-  <section class="research-metrics">
-    <div class="container">
-      <div class="text-center mb-48">
-        <h2 class="text-4xl mb-16">Standards Compliance</h2>
-        <p class="text-xl text-muted">Built on proven RFC standards - the cryptographic foundation for universal receipt infrastructure</p>
-      </div>
-      <div class="grid grid-3 text-center">
-        <div class="metric-card">
-          <div class="metric-number">RFC</div>
-          <h3 class="text-2xl mb-16">Tamper Detection</h3>
-          <p class="text-muted">ES256 signatures follow RFC 7515 standard for cryptographic verification</p>
-          <cite class="metric-source">ECDSA P-256 Cryptography</cite>
-        </div>
-        <div class="metric-card">
-          <div class="metric-number">JCS</div>
-          <h3 class="text-2xl mb-16">Canonicalization</h3>
-          <p class="text-muted">RFC 8785 JSON Canonicalization ensures consistent verification</p>
-          <cite class="metric-source">Digital Signature Standard</cite>
-        </div>
-        <div class="metric-card">
-          <div class="metric-number">JWS</div>
-          <h3 class="text-2xl mb-16">Format Standard</h3>
-          <p class="text-muted">JSON Web Signatures provide industry-standard interoperability</p>
-          <cite class="metric-source">RFC 7515 Standard</cite>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Enterprise Features Section -->
-  <section class="section">
-    <div class="container">
-      <div class="text-center mb-48">
-        <h2 class="text-4xl mb-16">Technical Implementation Features</h2>
-        <p class="text-xl text-muted">Build systems with cryptographically verifiable document integrity</p>
-      </div>
-
-      <div class="grid grid-3">
-        <div class="feature">
-          <div class="feature-icon">CN</div>
-          <h3 class="text-2xl">RFC-Compliant Cryptography</h3>
-          <p>Every CertNode receipt uses RFC 7515 JWS with ECDSA P-256 signatures and RFC 8785 JSON Canonicalization. Built for interoperability - any implementation that follows the standard can generate and verify receipts.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">CN</div>
-          <h3 class="text-2xl">Cross-Platform Verification</h3>
-          <p>Verify signatures in any environment - browser WebCrypto, Node.js, CLI tools, or custom implementations. No vendor lock-in, just standard cryptographic operations.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">CN</div>
-          <h3 class="text-2xl">Tamper Detection</h3>
-          <p>Receipts use RFC 7515 JWS over RFC 8785 JCS with ES256. Any payload or header change invalidates verification under standard JOSE rules.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Enterprise Use Cases -->
-  <section class="section-sm" style="background: var(--panel);">
-    <div class="container">
-      <div class="text-center mb-48">
-        <h2 class="text-4xl mb-16">Implementation Examples</h2>
-        <p class="text-xl text-muted">Build interoperable systems with cryptographic document integrity</p>
-      </div>
-
-      <div class="grid grid-2">
-        <div class="card">
-          <h3 class="text-2xl mb-16 text-trust">Document Management Systems</h3>
-          <p class="mb-16">Add tamper-evident signatures to file uploads, contracts, and records. Users can verify document authenticity offline using open source tools.</p>
-          <div class="trust-badge">Zero Vendor Lock-in</div>
-        </div>
-        <div class="card">
-          <h3 class="text-2xl mb-16 text-trust">Audit Trail Infrastructure</h3>
-          <p class="mb-16">Generate cryptographic receipts for database operations, API calls, and system events. Build compliance systems with mathematical proof of integrity.</p>
-          <div class="trust-badge">Standards-Based</div>
-        </div>
-        <div class="card">
-          <h3 class="text-2xl mb-16 text-trust">Legal Tech Platforms</h3>
-          <p class="mb-16">Implement chain-of-custody tracking for digital evidence. Court-admissible proof of document authenticity using established cryptographic standards.</p>
-          <div class="trust-badge">RFC Compliant</div>
-        </div>
-        <div class="card">
-          <h3 class="text-2xl mb-16 text-trust">Open Source Integration</h3>
-          <p class="mb-16">Implement the CertNode standard in any language, any platform. Open source libraries (Python, Go, Rust, JavaScript) make integration simple. Build the future of digital receipts.</p>
-          <div class="trust-badge">Developer Friendly</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Enterprise CTA Section -->
-  <section class="cta-section">
-    <div class="container">
-      <h2 class="text-4xl mb-16">Implementation & Access</h2>
-      <p class="text-xl mb-32">Research-grade cryptographic compliance infrastructure for regulated environments</p>
-
-      <div class="flex justify-center">
-        <a href="#" id="request-implementation" class="btn btn-white btn-lg">Request Implementation Guide</a>
-        <a href="/compliance-calculator" class="btn btn-secondary btn-lg" style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3);">Technical Assessment</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Research Access Form -->
-  <section id="enterprise-demo-form" class="section" style="display: none; background: var(--bg); border-top: 1px solid var(--border);">
-    <div class="container">
-      <div style="max-width: 800px; margin: 0 auto; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 48px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-        <div class="text-center mb-40">
-          <h2 style="font-size: 32px; font-weight: 400; color: var(--text); margin-bottom: 16px; letter-spacing: -0.02em;">Research Platform Access Request</h2>
-          <p style="color: var(--text-muted); font-size: 18px; line-height: 1.6; max-width: 600px; margin: 0 auto;">Submit your research requirements for technical consultation on cryptographic compliance infrastructure implementation.</p>
-        </div>
-
-        <form id="demo-form" style="font-family: 'Georgia', serif;">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
-            <div>
-              <label for="demo-company" style="display: block; font-weight: 500; color: var(--text); margin-bottom: 8px; font-size: 15px;">Institution/Organization *</label>
-              <input type="text" id="demo-company" required style="width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); font-size: 15px; font-family: 'Georgia', serif;" />
-            </div>
-            <div>
-              <label for="demo-email" style="display: block; font-weight: 500; color: var(--text); margin-bottom: 8px; font-size: 15px;">Research Contact Email *</label>
-              <input type="email" id="demo-email" required style="width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); font-size: 15px; font-family: 'Georgia', serif;" />
-            </div>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
-            <div>
-              <label for="compliance-type" style="display: block; font-weight: 500; color: var(--text); margin-bottom: 8px; font-size: 15px;">Primary Regulatory Framework *</label>
-              <select id="compliance-type" required style="width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); font-size: 15px; font-family: 'Georgia', serif;">
-                <option value="">Select regulatory framework</option>
-                <option value="financial">Financial Services</option>
-                <option value="healthcare">Healthcare Systems</option>
-                <option value="gdpr">GDPR - Data Privacy</option>
-                <option value="pci">PCI DSS - Payment Processing</option>
-                <option value="audit">General Audit Requirements</option>
-                <option value="research">Academic Research</option>
-                <option value="other">Other Regulatory</option>
-              </select>
-            </div>
-            <div>
-              <label for="research-scope" style="display: block; font-weight: 500; color: var(--text); margin-bottom: 8px; font-size: 15px;">Research Scope</label>
-              <select id="research-scope" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); font-size: 15px; font-family: 'Georgia', serif;">
-                <option value="">Select scope</option>
-                <option value="pilot">Pilot Study</option>
-                <option value="proof-concept">Proof of Concept</option>
-                <option value="production">Production Implementation</option>
-                <option value="academic">Academic Research</option>
-              </select>
-            </div>
-          </div>
-
-          <div style="margin-bottom: 32px;">
-            <label for="research-description" style="display: block; font-weight: 500; color: var(--text); margin-bottom: 8px; font-size: 15px;">Research Requirements</label>
-            <textarea id="research-description" rows="4" placeholder="Describe your research objectives, technical requirements, and any specific compliance challenges..." style="width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); font-size: 15px; font-family: 'Georgia', serif; resize: vertical;"></textarea>
-          </div>
-
-          <div style="display: flex; gap: 16px; justify-content: center;">
-            <button type="submit" id="submit-demo" style="background: var(--primary); color: white; border: none; padding: 14px 32px; border-radius: 6px; font-weight: 500; font-size: 16px; cursor: pointer; font-family: 'Georgia', serif; transition: all 0.2s;">Submit Request</button>
-            <button type="button" id="cancel-demo-form" style="background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); padding: 14px 32px; border-radius: 6px; font-weight: 500; font-size: 16px; cursor: pointer; font-family: 'Georgia', serif; transition: all 0.2s;">Cancel</button>
-          </div>
-
-          <div id="demo-form-status" class="alert hidden mt-24" aria-live="polite"></div>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- Live region for connection status -->
-  <div id="live-region" class="sr-only" aria-live="polite"></div>
-
+    </section>
   </main>
 
-  <!-- Enterprise Footer -->
   <footer>
     <div class="container">
       <div class="grid grid-4 mb-32">
         <div>
           <h4 class="font-semibold mb-16">CertNode</h4>
-          <p class="text-sm text-muted">Research-grade cryptographic compliance infrastructure for regulated environments.</p>
+          <p class="text-sm text-muted">Universal receipt infrastructure standard.</p>
         </div>
         <div>
-          <h4 class="font-semibold mb-16">Solutions</h4>
+          <h4 class="font-semibold mb-16">Develop</h4>
           <ul style="list-style: none; padding: 0;">
-            <li class="mb-8"><a href="/compliance-calculator" class="text-sm text-muted">ROI Calculator</a></li>
-            <li class="mb-8"><a href="/verify" class="text-sm text-muted">Validator</a></li>
-            <li class="mb-8"><a href="/pricing" class="text-sm text-muted">Implementation</a></li>
+            <li class="mb-8"><a href="/openapi">Specification</a></li>
+            <li class="mb-8"><a href="/postman.collection.json">Postman</a></li>
+            <li class="mb-8"><a href="/test-vectors">Test Vectors</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="font-semibold mb-16">Compliance</h4>
+          <h4 class="font-semibold mb-16">Trust</h4>
           <ul style="list-style: none; padding: 0;">
-            <li class="mb-8"><span class="text-sm text-muted">Financial Services</span></li>
-            <li class="mb-8"><span class="text-sm text-muted">Healthcare Systems</span></li>
-            <li class="mb-8"><span class="text-sm text-muted">GDPR Article 32</span></li>
-            <li class="mb-8"><span class="text-sm text-muted">PCI DSS</span></li>
+            <li class="mb-8"><a href="/.well-known/jwks.json">JWKS</a></li>
+            <li class="mb-8"><a href="/trust/keys.jsonl">Rotation Log</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="font-semibold mb-16">Enterprise Support</h4>
+          <h4 class="font-semibold mb-16">Community</h4>
           <ul style="list-style: none; padding: 0;">
-            <li class="mb-8"><span class="text-sm text-muted">Priority compliance support</span></li>
-            <li class="mb-8"><span class="text-sm text-muted">Dedicated Success Manager</span></li>
-            <li class="mb-8"><span class="text-sm text-muted">Custom Integration</span></li>
+            <li class="mb-8"><a href="https://github.com/srbryant86/certnode" target="_blank" rel="noopener">GitHub</a></li>
           </ul>
         </div>
       </div>
-
       <div class="text-center" style="padding-top: 32px; border-top: 1px solid var(--border);">
-        <p class="text-sm text-muted">&copy; 2025 CertNode. Universal receipt infrastructure standard. All rights reserved.</p>
+        <p class="text-sm text-muted">&copy; 2025 CertNode. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
-  <script src="js/lead-capture.js"></script>
-  <script src="/web/js/enhanced-demo.js" defer></script>
-
-  
   <script src="/web/js/copy.js" defer></script>
 </body>
 </html>
-

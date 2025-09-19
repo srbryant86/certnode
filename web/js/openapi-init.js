@@ -1,23 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
-  if (typeof SwaggerUIBundle === 'function') {
-    window.ui = SwaggerUIBundle({
-      url: '/openapi.json',
-      dom_id: '#swagger-ui',
-      deepLinking: true,
-      presets: [
-        SwaggerUIBundle.presets.apis,
-        SwaggerUIBundle.presets.standalone
-      ],
-      plugins: [ SwaggerUIBundle.plugins.DownloadUrl ],
-      layout: 'BaseLayout',
-      defaultModelsExpandDepth: 2,
-      defaultModelExpandDepth: 2,
-      docExpansion: 'list',
-      filter: true,
-      showRequestHeaders: true,
-      showCommonExtensions: true,
-      tryItOutEnabled: true
-    });
+  // Simple fallback for when external API viewer isn't available
+  const swaggerContainer = document.getElementById('swagger-ui');
+  if (swaggerContainer && !window.SwaggerUIBundle) {
+    swaggerContainer.innerHTML = `
+      <div style="text-align: center; padding: 40px; background: var(--panel); border-radius: 8px; border: 1px solid var(--border);">
+        <h3 style="color: var(--primary); margin-bottom: 16px;">API Specification</h3>
+        <p style="margin-bottom: 20px; color: var(--text-muted);">Interactive API documentation is temporarily unavailable.</p>
+        <a href="/openapi.json" style="color: var(--primary); text-decoration: none; font-weight: 600;">Download OpenAPI JSON →</a>
+      </div>`;
   }
 
   const tabOverview = document.getElementById('tab-overview');

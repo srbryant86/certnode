@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-  <title>Trust Center — CertNode Standards</title>
+  <title>Trust Center â€” CertNode Standards</title>
   <style>
     :root { --bg:#fafbfc; --panel:#fff; --border:#e1e5e9; --text:#1e293b; --text-muted:#64748b; --primary:#1e40af; --success:#059669; }
     body{font-family: Georgia, 'Times New Roman', serif; margin:0; padding:0; background:var(--bg); color:var(--text); line-height:1.7}
@@ -52,7 +52,8 @@
         <span class="badge">Key Infrastructure</span>
         <h3>Canonical JWKS</h3>
         <p><strong>Endpoint:</strong> <a href="/.well-known/jwks.json" target="_blank">/.well-known/jwks.json</a></p>
-        <p><strong>Content-Type:</strong> application/jwk-set+json â€¢ <strong>Cache:</strong> 300s</p>
+        <p><strong>Content-Type:</strong> application/jwk-set+json • <strong>Cache:</strong> 300s</p>
+        <p id="jwks-meta" style="font-size:12px; color:#64748b;">Current key: —</p>
         <pre id="jwks-pre" aria-live="polite">Loading...</pre>
         <div id="jwks-summary" style="margin-top:12px;">
           <table style="width:100%; border-collapse: collapse; font-size: 13px;">
@@ -71,7 +72,7 @@
       <div class="card">
         <span class="badge">Rotation Log</span>
         <h3>Transparency</h3>
-        <p><strong>Log:</strong> <a href="/trust/keys.jsonl" target="_blank">/trust/keys.jsonl</a> â€¢ <strong>Cache:</strong> no-store</p>
+        <p><strong>Log:</strong> <a href="/trust/keys.jsonl" target="_blank">/trust/keys.jsonl</a> Ã¢â‚¬Â¢ <strong>Cache:</strong> no-store</p>
         <pre id="log-pre" aria-live="polite">Loading...</pre>
         <p id="rotation-meta" style="font-size:12px; color:var(--text-muted); margin-top:8px;"></p>
       </div>

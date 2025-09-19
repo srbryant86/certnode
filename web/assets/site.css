@@ -54,6 +54,9 @@
       font-size: 16px;
       letter-spacing: -0.01em;
     }
+    /* Readability: limit long text width */
+    .container p,
+    .container li { max-width: 70ch; }
 
     /* Sophisticated Header */
     header {
@@ -130,6 +133,20 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 24px;
+    }
+    /* Panels & code blocks (unified) */
+    .technical-panel,
+    .panel,
+    .card {
+      border-radius: 12px;
+      box-shadow: var(--shadow, 0 1px 3px rgba(0,0,0,0.08));
+    }
+    pre {
+      background:#0b1220;
+      color:#d1d5db;
+      border-radius:8px;
+      padding:16px;
+      overflow:auto;
     }
 
     .section {
@@ -385,6 +402,10 @@
       max-width: 70ch;
       margin-left: auto;
       margin-right: auto;
+    }
+    /* Mobile tap targets */
+    @media (hover: none) and (pointer: coarse) {
+      .nav a { min-height: 48px; padding: 12px 16px; }
     }
 
     /* Social Proof Section */

@@ -61,6 +61,29 @@ vercel env add STRIPE_PRO_PRICE_ID
 vercel env add STRIPE_BUSINESS_PRICE_ID
 ```
 
+### 5. Branding: Show "CertNode" on Checkout
+
+Stripe Checkout displays your account’s business name from Dashboard settings. Update both Test and Live modes:
+
+1) Dashboard → Settings → Branding
+- Business name: CertNode
+- Accent color: #1e40af (optional)
+- Logo/Icon: upload CertNode assets
+
+2) Dashboard → Settings → Public business information
+- Public business name: CertNode
+- Support email/phone/URL: support@certnode.io, https://certnode.io
+
+3) Customer Portal & Hosted Invoices
+- In Branding, also enable the same settings for Customer Portal and Hosted Invoices
+
+4) Statement descriptor (bank statement)
+- Settings → Branding → Statement descriptor: CERTNODE (uppercase, <= 22 chars, no special chars)
+
+Notes:
+- Payment Links and Checkout inherit the account branding automatically; there is no per-session API to override the header business name.
+- Ensure you apply these in both Test and Live mode toggles in the Stripe Dashboard.
+
 ### 4. Deploy Updated Code
 The billing system is ready! After adding the environment variables, redeploy:
 

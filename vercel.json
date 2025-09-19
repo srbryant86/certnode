@@ -16,6 +16,14 @@
   ],
   "headers": [
     {
+      "source": "/",
+      "headers": [
+        { "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-NMHKIaaHpHSEwYLo18ITbJj1OQR1P2JxSB0wixVYiDg='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://api.certnode.io; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },

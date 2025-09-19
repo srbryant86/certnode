@@ -1,4 +1,4 @@
-﻿# ðŸŽ¯ **The Billion Dollar CertNode Blueprint**
+# ðŸŽ¯ **The Billion Dollar CertNode Blueprint**
 
 *Strategic roadmap for building CertNode into a billion-dollar receipt infrastructure empire*
 
@@ -18,6 +18,11 @@
 
 ### **Month 1-2: Foundation & Launch**
 
+#### Roadmap Update (Sept 2025)
+
+- [x] Completed item - Semantic HTML landmarks, progressive demo JS, JSON-LD schema, CSP tightened on /, Core Web Vitals logging, a11y focus styles, mobile haptics
+- [ ] 🚨 CURRENT PRIORITY: Remove inline handlers across all pages to enforce strict CSP globally
+- [ ] Next item - Unify schema/vitals + add connection status UX sitewide
 #### Roadmap Update (Sept 2025)
 
 - [x] Completed item - Encoding normalization across public routes (/verify, /openapi, /pricing, /trust) with UTF-8 stubs/rewrites

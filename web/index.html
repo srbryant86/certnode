@@ -1,8 +1,11 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1e40af" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preload" href="/web/assets/site.css" as="style">
   <meta name="description" content="Open standard for tamper-evident digital receipts. RFC-compliant cryptographic signatures using JWS detached signatures with ES256 or EdDSA. Universal receipt infrastructure for any JSON payload." />
   <meta name="keywords" content="digital receipts, cryptographic signatures, JWS, ES256, EdDSA, tamper-evident, blockchain alternative, RFC compliance, JSON Web Signature" />
   <meta property="og:title" content="CertNode — Universal Receipt Infrastructure" />
@@ -12,11 +15,14 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="CertNode — Universal Receipt Infrastructure" />
   <meta name="twitter:description" content="Open standard for tamper-evident digital receipts using RFC-compliant cryptographic signatures." />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-  <title>CertNode — Universal Receipt Infrastructure</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-NMHKIaaHpHSEwYLo18ITbJj1OQR1P2JxSB0wixVYiDg='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://api.certnode.io; object-src 'none'; base-uri 'self'; frame-ancestors 'none'" />
+  <title>CertNode - Universal Receipt Infrastructure</title>
   <link rel="stylesheet" href="/web/assets/site.css">
+  <script src="/web/js/perf.js" defer></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CertNode","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform"}</script>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <!-- Enterprise Professional Header -->
   <header>
     <div class="header-container">
@@ -33,7 +39,8 @@
   </header>
 
   <!-- Enterprise Hero Section -->
-  <section class="hero">
+  <main id="main-content" role="main">
+  <article class="hero" role="banner">
     <div class="container">
       <div class="hero-content">
         <h1>Open Standard + Reference API</h1>
@@ -49,9 +56,9 @@
         <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 32px; margin: 48px auto; max-width: 600px; text-align: left;">
           <h3 style="color: white; margin-bottom: 24px; text-align: center;">3-Step Quickstart</h3>
           <ol style="color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.8;">
-            <li><code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">npm i @certnode/sdk</code></li>
-            <li>POST <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">/v1/sign</code> â†’ get <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">receipt</code></li>
-            <li>Verify: <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">verifyReceipt({ receipt, jwks })</code></li>
+            <li><code class="code-snippet" lang="en">npm i @certnode/sdk</code></li>
+            <li>POST <code class="code-snippet" lang="en">/v1/sign</code> â†’ get <code class="code-snippet" lang="en">receipt</code></li>
+            <li>Verify: <code class="code-snippet" lang="en">verifyReceipt({ receipt, jwks })</code></li>
           </ol>
         </div>
 
@@ -75,13 +82,13 @@
         </div>
       </div>
     </div>
-  </section>
+  </article>
 
   <!-- Interactive Demo Section -->
-  <section class="demo-section" style="padding: 80px 0; background: var(--panel); border-top: 1px solid var(--border);">
+  <section class="demo-section" aria-labelledby="demo-heading" style="padding: 80px 0; background: var(--panel); border-top: 1px solid var(--border);">
     <div class="container">
       <div class="text-center mb-48">
-        <h2 class="text-4xl mb-16" style="color: var(--primary);">See Tamper Detection in Action</h2>
+        <h2 id="demo-heading" class="text-4xl mb-16" style="color: var(--primary);">See Tamper Detection in Action</h2>
         <p class="text-xl text-muted">Upload a document, watch it get cryptographically signed, then try to alter it</p>
       </div>
 
@@ -96,7 +103,7 @@
             </div>
             <div style="border: 2px dashed var(--border); border-radius: 8px; padding: 40px; text-align: center; margin-bottom: 24px;">
               <input type="file" id="demo-file" accept=".txt,.pdf,.json" style="display: none;">
-              <button onclick="document.getElementById('demo-file').click()" style="background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer;">Choose File</button>
+              <button id="choose-file-btn" style="background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer;">Choose File</button>
               <p style="margin: 16px 0 0 0; color: var(--text-muted); font-size: 14px;">Or use our sample data</p>
             </div>
             <button id="use-sample" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; width: 100%;">Try with Sample Data</button>
@@ -308,7 +315,7 @@ Date: 2025-01-15</textarea>
       <p class="text-xl mb-32">Research-grade cryptographic compliance infrastructure for regulated environments</p>
 
       <div class="flex justify-center">
-        <a href="#" onclick="showEnterpriseForm()" class="btn btn-white btn-lg">Request Implementation Guide</a>
+        <a href="#" id="request-implementation" class="btn btn-white btn-lg">Request Implementation Guide</a>
         <a href="/compliance-calculator" class="btn btn-secondary btn-lg" style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3);">Technical Assessment</a>
       </div>
     </div>
@@ -377,6 +384,11 @@ Date: 2025-01-15</textarea>
     </div>
   </section>
 
+  <!-- Live region for connection status -->
+  <div id="live-region" class="sr-only" aria-live="polite"></div>
+
+  </main>
+
   <!-- Enterprise Footer -->
   <footer>
     <div class="container">
@@ -419,87 +431,8 @@ Date: 2025-01-15</textarea>
   </footer>
 
   <script src="js/lead-capture.js"></script>
+  <script src="/web/js/enhanced-demo.js" defer></script>
 
-  <!-- Interactive Demo JavaScript -->
-  <script>
-    // Demo functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const useSampleBtn = document.getElementById('use-sample');
-      const proceedTamperBtn = document.getElementById('proceed-tamper');
-      const verifyIntegrityBtn = document.getElementById('verify-integrity');
-      const documentContent = document.getElementById('document-content');
-
-      let originalContent = documentContent.value;
-
-      useSampleBtn.addEventListener('click', function() {
-        // Show step 2 (signing)
-        document.getElementById('step1').style.display = 'none';
-        document.getElementById('step2').style.display = 'block';
-
-        // Animate progress bar
-        setTimeout(() => {
-          document.getElementById('progress-bar').style.width = '100%';
-        }, 100);
-
-        // Show signature result after animation
-        setTimeout(() => {
-          document.getElementById('signing-animation').style.display = 'none';
-          document.getElementById('signature-result').style.display = 'block';
-        }, 2500);
-      });
-
-      proceedTamperBtn.addEventListener('click', function() {
-        // Show step 3 (tamper test)
-        document.getElementById('step2').style.display = 'none';
-        document.getElementById('step3').style.display = 'block';
-      });
-
-      verifyIntegrityBtn.addEventListener('click', function() {
-        const currentContent = documentContent.value;
-        const tamperResult = document.getElementById('tamper-result');
-
-        if (currentContent !== originalContent) {
-          tamperResult.style.display = 'block';
-          tamperResult.innerHTML = `
-            <div style="background: var(--error-bg); border: 1px solid var(--error-border); border-radius: 8px; padding: 16px;">
-              <strong style="color: var(--error);">âš ï¸ TAMPER DETECTED</strong>
-              <p style="margin: 8px 0 0 0; font-size: 14px;">Document has been modified since signing. Hash mismatch detected.</p>
-              <p style="margin: 8px 0 0 0; font-size: 12px; font-family: monospace; color: var(--text-muted);">
-                Original Hash: a1b2c3d4e5f6...<br>
-                Current Hash: x9y8z7w6v5u4...
-              </p>
-            </div>
-          `;
-        } else {
-          tamperResult.style.display = 'block';
-          tamperResult.innerHTML = `
-            <div style="background: var(--success-bg); border: 1px solid var(--success-border); border-radius: 8px; padding: 16px;">
-              <strong style="color: var(--success);">âœ“ INTEGRITY VERIFIED</strong>
-              <p style="margin: 8px 0 0 0; font-size: 14px;">Document has not been modified since signing.</p>
-            </div>
-          `;
-        }
-      });
-
-      // Monitor document changes for real-time feedback
-      documentContent.addEventListener('input', function() {
-        const currentContent = documentContent.value;
-        if (currentContent !== originalContent) {
-          documentContent.style.borderColor = 'var(--warning)';
-          documentContent.style.background = 'var(--warning-bg)';
-        } else {
-          documentContent.style.borderColor = 'var(--border)';
-          documentContent.style.background = 'white';
-        }
-      });
-
-      // Add demo section ID for smooth scrolling
-      document.querySelector('.demo-section').id = 'demo-section';
-    });
-  </script>
+  
 </body>
 </html>
-
-
-
-

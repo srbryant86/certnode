@@ -52,8 +52,8 @@ async function handle(req, res) {
       return res.end(JSON.stringify(body, null, 2));
     }
 
-    // POST /api/create-checkout - Create Stripe checkout session (or return Payment Link if configured)
-    if (req.method === 'POST' && pathname === '/api/create-checkout') {
+    // POST /api/checkout and /api/create-checkout - Create Stripe checkout session (or return Payment Link if configured)
+    if (req.method === 'POST' && (pathname === '/api/create-checkout' || pathname === '/api/checkout')) {
       const raw = await readJsonLimited(req, { limitBytes: 1024 });
       const { email, tier } = raw || {};
 
@@ -99,8 +99,8 @@ async function handle(req, res) {
       }
     }
 
-    // POST /api/create-portal - Create customer portal session
-    if (req.method === 'POST' && pathname === '/api/create-portal') {
+    // POST /api/portal and /api/create-portal - Create customer portal session
+    if (req.method === 'POST' && (pathname === '/api/create-portal' || pathname === '/api/portal')) {
       const apiKey = req.headers.authorization?.replace('Bearer ', '');
       const customer = billing.getCustomerByApiKey(apiKey);
 

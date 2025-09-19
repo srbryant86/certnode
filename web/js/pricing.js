@@ -9,22 +9,16 @@ document.addEventListener('DOMContentLoaded', function(){
       }
       const originalText = btn.textContent;
       btn.disabled = true;
-      btn.textContent = 'Redirecting…¦';
+      btn.textContent = 'Redirectingâ€¦Â¦';
       try{
-        const res = await fetch('/api/create-checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ tier })
-        });
+        let res = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tier }) }); if (!res.ok) { res = await fetch('/api/create-checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tier }) }); }
         const data = await res.json().catch(()=>({}));
         if (!res.ok) throw new Error((data && (data.message||data.error)) || ('HTTP '+res.status));
-        if (data && data.checkout_url) {
-          window.location.href = data.checkout_url;
-        } else {
+        const url = data && (data.checkout_url || data.url); if (url) { window.location.href = url; } else {
           throw new Error('No checkout URL returned');
         }
       } catch(e){
-        (typeof showToast==='function'? showToast('Checkout failed: '+((e&&e.message)||'unexpected'),'error') : showPricingError('Checkout error: '+((e&&e.message)||'unexpected')));
+        alert('Checkout failed: ' + ((e && e.message) || 'unexpected')); if (typeof showToast==='function') { showToast('Checkout failed: ' + ((e&&e.message)||'unexpected'),'error'); }
         btn.disabled = false;
         btn.textContent = originalText;
       }

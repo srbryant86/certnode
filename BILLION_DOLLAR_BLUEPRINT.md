@@ -1,8 +1,8 @@
-# ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ **The Billion Dollar CertNode Blueprint**
+# ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ **The Billion Dollar CertNode Blueprint**
 
 *Strategic roadmap for building CertNode into a billion-dollar receipt infrastructure empire*
 
-## ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ **STRATEGIC CONTEXT UPDATE (Sept 2025)**
+## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ **STRATEGIC CONTEXT UPDATE (Sept 2025)**
 
 **HYBRID EXECUTION APPROACH CONFIRMED:**
 - **Foundation:** Professional infrastructure (Trust center, JWKS rotation, enterprise security)
@@ -14,25 +14,25 @@
 
 **CURRENT STATUS:** Executing enterprise-grade infrastructure foundation while maintaining standards positioning for long-term dominance.
 
-## ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ **Phase 1: Prove the Standard Works (0-6 months)**
+## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ **Phase 1: Prove the Standard Works (0-6 months)**
 
 ### **Month 1-2: Foundation & Launch**
 
 #### Roadmap Update (Sept 2025)
 
 - [x] Completed item - Semantic HTML landmarks, progressive demo JS, JSON-LD schema, CSP tightened on /, Core Web Vitals logging, a11y focus styles, mobile haptics
-- [ ] Ã°Å¸Å¡Â¨ CURRENT PRIORITY: Remove inline handlers across all pages to enforce strict CSP globally
+- [ ] ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Â¨ CURRENT PRIORITY: Remove inline handlers across all pages to enforce strict CSP globally
 - [x] Completed item - Trust Center: externalized JS, JWKS/log rendering with explicit errors, added key summary and last rotation
 - [x] Completed item - OpenAPI: confirmed /openapi.json and visible download link in viewer
 - [x] Completed item - Pricing: buttons now call /api/create-checkout or redirect appropriately; enterprise lead form posts to /api/leads
 - [x] Completed item - CI guards: conflict marker check + endpoint smoke tests (HOST override)
-- [ ] ðŸš¨ CURRENT PRIORITY: Remove inline handlers on pricing/openapi/trust pages and enforce strict CSP sitewide
+- [ ] Ã°Å¸Å¡Â¨ CURRENT PRIORITY: Remove inline handlers on pricing/openapi/trust pages and enforce strict CSP sitewide
 - [ ] Next item - Add copy buttons to quickstarts, Postman collection link, and surface test vectors on site
 - [ ] Next item - Unify schema/vitals + add connection status UX sitewide
 #### Roadmap Update (Sept 2025)
 
 - [x] Completed item - Encoding normalization across public routes (/verify, /openapi, /pricing, /trust) with UTF-8 stubs/rewrites
-- [ ] Ã°Å¸Å¡Â¨ CURRENT PRIORITY: Extract homepage CSS to web/assets with long-lived caching
+- [ ] ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Â¨ CURRENT PRIORITY: Extract homepage CSS to web/assets with long-lived caching
 - [ ] Next item - Standardize error shape across API routes and sync OpenAPI examples
 
 - [x] Completed item - Payment Link fallback in `/api/create-checkout` to enable sales without secrets
@@ -42,14 +42,14 @@
 - [x] Completed item - Vercel rewrites: canonical Trust page mapped to cleaned file; Payment Links set across all envs
 - [x] Completed item - Pricing copy polish: replaced "Direct founder support" with "Priority support"
 - [x] Completed item - Free tier unified at 5,000/month (env + copy)
-- [ ] ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Â¨ CURRENT PRIORITY: Security (Week 1): HMAC API key validation, composite rate limiting, strict CORS, enhanced security headers
+- [ ] ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¨ CURRENT PRIORITY: Security (Week 1): HMAC API key validation, composite rate limiting, strict CORS, enhanced security headers
 - [x] Completed item - Checkout Sessions enabled with Stripe price IDs (Starter/Pro); success redirects to /account
 - [x] Completed item - Introduced Business plan ($499/mo, 2M receipts) in pricing and billing config
-- [x] Completed item - Pricing terminology aligned: ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œProfessionalÃƒÂ¢Ã¢â€šÂ¬Ã‚Â (UI/API)
+- [x] Completed item - Pricing terminology aligned: ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ProfessionalÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â (UI/API)
 - [x] Completed item - Audit progress document added at docs/AUDIT_PROGRESS.md
-- [ ] ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Â¨ CURRENT PRIORITY: Encoding normalization ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ CSS extraction ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Full API error model standardization (OpenAPI)
+- [ ] ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¨ CURRENT PRIORITY: Encoding normalization ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ CSS extraction ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Full API error model standardization (OpenAPI)
 - [ ] Next item - Performance (Week 2): static caching + gzip, externalize inline CSS
-- [ ] ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Â¨ CURRENT PRIORITY: Set Payment Link env vars on Vercel and redeploy; wire CTAs
+- [ ] ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¨ CURRENT PRIORITY: Set Payment Link env vars on Vercel and redeploy; wire CTAs
 - [ ] Next item - Unify JWKS source across API/site; minimal account handoff after checkout
 - [ ] Next item - Fix visible title encoding artifacts across web pages (index, trust, verify, openapi, pricing)
 
@@ -57,7 +57,7 @@
 - [x] **Complete SDKs** - Python, Go, Rust with comprehensive examples
 - [x] **Billion-dollar roadmap** documented and committed
 - [x] **Agent operating protocols** - AGENTS.md ensures consistent strategic execution
-- [x] **ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Â¨ COMPLETED: Enterprise-grade site infrastructure**
+- [x] **ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¨ COMPLETED: Enterprise-grade site infrastructure**
   - [x] Professional JWKS endpoint with rotation logging
   - [x] Trust center with transparency and governance signals
   - [x] Status page with infrastructure metrics
@@ -73,10 +73,10 @@
 - [x] **Create receipt viewer** - public tool to verify any CertNode receipt
 - [x] **Open source examples** for common use cases (e-commerce, APIs, IoT)
 
-#### **Market Validation** - ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ IN PROGRESS
+#### **Market Validation** - ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ IN PROGRESS
 - [x] **Target 50 early adopters** - fintech startups, crypto projects, API companies
-  - ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ **Batch 1 Outreach Created** - 6 personalized emails to Stripe, Coinbase, Plaid, Square, Shopify, Twilio
-  - ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ **Launch Week:** Sept 17, 2025 - Ready to send first batch
+  - ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ **Batch 1 Outreach Created** - 6 personalized emails to Stripe, Coinbase, Plaid, Square, Shopify, Twilio
+  - ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ **Launch Week:** Sept 17, 2025 - Ready to send first batch
 - [x] **Infrastructure pricing model** - Usage-based for scale, not SaaS tiers
 - [x] **Build showcase** - public gallery of companies using CertNode receipts
 - [x] **Developer community** - Discord, GitHub discussions, Stack Overflow presence
@@ -124,7 +124,7 @@
 
 ---
 
-## ÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â **Phase 2: Make it Inevitable (6-18 months)**
+## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â **Phase 2: Make it Inevitable (6-18 months)**
 
 ### **Month 7-12: Standards Evolution**
 
@@ -168,7 +168,7 @@
 
 ---
 
-## ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â‚¬Â  **Phase 3: Own the Infrastructure (18-36 months)**
+## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â  **Phase 3: Own the Infrastructure (18-36 months)**
 
 ### **Month 19-30: Infrastructure Empire**
 
@@ -206,7 +206,7 @@
 
 ---
 
-## ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â° **Revenue Trajectory**
+## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â° **Revenue Trajectory**
 
 ### **Year 1: $1M ARR**
 - 1,000 paying customers
@@ -230,7 +230,7 @@
 
 ---
 
-## ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ **Success Metrics by Phase**
+## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ **Success Metrics by Phase**
 
 ### **Phase 1 Success:**
 - CertNode receipts are recognized as "the way" to do tamper-evident receipts
@@ -249,7 +249,7 @@
 
 ---
 
-## ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  **Market Opportunity**
+## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â  **Market Opportunity**
 
 ### **Total Addressable Market**
 - **E-commerce transactions:** $6 trillion globally
@@ -270,7 +270,7 @@
 
 ---
 
-## ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ **Core Value Proposition**
+## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ **Core Value Proposition**
 
 **"Every digital transaction deserves a tamper-evident receipt"**
 
@@ -281,7 +281,7 @@
 
 ---
 
-## ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ **Why This Will Win**
+## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ **Why This Will Win**
 
 ### **Technical Advantages**
 - **RFC-compliant implementation** - Built on proven cryptographic standards
@@ -303,7 +303,7 @@
 
 ---
 
-## ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¹ **Immediate Next Steps**
+## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ **Immediate Next Steps**
 
 ### **Week 1-2**
 1. **Publish SDKs** to package managers
@@ -325,7 +325,7 @@
 
 ---
 
-## ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯ **Mission Statement**
+## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ **Mission Statement**
 
 *To make every digital transaction verifiable, permanent, and trustworthy through universal adoption of tamper-evident receipts, ultimately creating the foundational infrastructure for global digital commerce.*
 
@@ -337,7 +337,8 @@
 **Timeline:** 36 months to exit
 **Status:** Ready to execute Phase 1
 
-ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ **Let's build the future of digital receipts!**
+ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ **Let's build the future of digital receipts!**
 
 - [x] Completed item - Stripe Checkout branding documented to show CertNode (Dashboard > Settings > Branding/Public info/Descriptor)
 - [ ] Next item - Optional: add Stripe API branding verifier script for CI reminder
+- [x] Completed item - Added Stripe branding verifier script (npm run stripe:branding:check)

@@ -16,6 +16,7 @@
                     "openapi:check":  "node tools/check-openapi.js",
                     "ci:conflicts":  "node tools/check-conflicts.js",
                     "ci:smoke":  "node tools/smoke-endpoints.js",
+                    "stripe:branding:check": "node tools/stripe-branding-check.js",
                     "sdk:pack":  "npm --prefix sdk/node pack \u0026\u0026 npm --prefix sdk/web pack",
                     "build:web-sdk":  "node tools/build-web-sdk.js",
                     "size:web-sdk":  "node tools/size-web-sdk.js",

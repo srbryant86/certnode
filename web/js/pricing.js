@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function(){
         window.location.href = '/signup/developer';
         return;
       }
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Redirecting…';
       try{
         const res = await fetch('/api/create-checkout', {
           method: 'POST',
@@ -22,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function(){
         }
       } catch(e){
         showPricingError('Checkout error: '+(e && e.message || 'unexpected'));
+        btn.disabled = false;
+        btn.textContent = originalText;
       }
     });
   });
@@ -78,4 +83,3 @@ function showPricingError(msg){
   }
   div.textContent = msg;
 }
-

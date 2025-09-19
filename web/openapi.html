@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-    <title>Technical Specification — CertNode Standard</title>
+    <title>Technical Specification â€” CertNode Standard</title>
     <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
     <style>
         :root {
@@ -186,10 +186,10 @@
         <div style="border-bottom: 2px solid var(--border); margin-bottom: 2rem;">
             <nav style="display: flex; gap: 0;">
                 <button id="tab-overview" style="padding: 1rem 2rem; border: none; background: var(--primary); color: white; cursor: pointer; border-radius: 8px 8px 0 0; font-weight: 600;">
-                    📋 Protocol Overview
+                    ðŸ“‹ Protocol Overview
                 </button>
                 <button id="tab-api" style="padding: 1rem 2rem; border: none; background: var(--panel); color: var(--text-muted); cursor: pointer; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: 4px;">
-                    🔌 API Reference
+                    ðŸ”Œ API Reference
                 </button>
             </nav>
         </div>
@@ -202,7 +202,7 @@
             <p style="margin-bottom: 1rem;">CertNode defines an open, cryptographic standard for creating tamper-evident digital receipts. Like HTTPS for security or JSON for data exchange, CertNode aims to become the universal infrastructure for digital commerce integrity. Every transaction, API call, or digital event can have a mathematically verifiable receipt.</p>
 
             <div style="background: linear-gradient(135deg, #e7f3ff 0%, #f0f9ff 100%); border-left: 4px solid var(--primary); padding: 1rem; border-radius: 6px; margin: 1.5rem 0;">
-                <h4 style="margin: 0 0 0.5rem 0; color: var(--primary);">🎯 Vision: Infrastructure, Not Service</h4>
+                <h4 style="margin: 0 0 0.5rem 0; color: var(--primary);">ðŸŽ¯ Vision: Infrastructure, Not Service</h4>
                 <p style="margin: 0; color: var(--text);">CertNode is designed as a protocol standard, not a proprietary service. Like TCP/IP or HTTP, it's meant to be implemented by anyone, anywhere, creating a global ecosystem of interoperable receipt infrastructure.</p>
             </div>
 
@@ -232,7 +232,7 @@
             </ul>
 
             <div style="background: linear-gradient(135deg, #f0fdf4 0%, #f7fee7 100%); border-left: 4px solid var(--verified-green); padding: 1rem; border-radius: 6px; margin: 1.5rem 0;">
-                <h4 style="margin: 0 0 0.5rem 0; color: var(--verified-green);">🚀 Join the Ecosystem</h4>
+                <h4 style="margin: 0 0 0.5rem 0; color: var(--verified-green);">ðŸš€ Join the Ecosystem</h4>
                 <p style="margin: 0; color: var(--text);">Start with the managed service below for rapid prototyping, then implement the standard directly using open source libraries for production. The goal: every platform, every language, every use case can generate and verify CertNode receipts.</p>
             </div>
         </div>
@@ -244,7 +244,7 @@
             <p style="margin-bottom: 1rem;">The following API provides a managed CertNode signing service for rapid prototyping and development. This reference implementation demonstrates the standard in action and allows you to start generating receipts immediately.</p>
 
             <div style="background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%); border-left: 4px solid var(--warning-amber); padding: 1rem; border-radius: 6px; margin: 1rem 0;">
-                <h4 style="margin: 0 0 0.5rem 0; color: var(--warning-amber);">⚡ For Production: Use Your Own Keys</h4>
+                <h4 style="margin: 0 0 0.5rem 0; color: var(--warning-amber);">âš¡ For Production: Use Your Own Keys</h4>
                 <p style="margin: 0; color: var(--text);">While this managed service is perfect for prototyping, production applications should implement the CertNode standard using the open source libraries to maintain full control over cryptographic keys and infrastructure.</p>
             </div>
 
@@ -262,69 +262,9 @@
         </div>
     </div>
     
-    <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
-    <script>
-        window.ui = SwaggerUIBundle({
-            url: '/openapi.json',
-            dom_id: '#swagger-ui',
-            deepLinking: true,
-            presets: [
-                SwaggerUIBundle.presets.apis,
-                SwaggerUIBundle.presets.standalone
-            ],
-            plugins: [
-                SwaggerUIBundle.plugins.DownloadUrl
-            ],
-            layout: "BaseLayout",
-            defaultModelsExpandDepth: 2,
-            defaultModelExpandDepth: 2,
-            docExpansion: "list",
-            filter: true,
-            showRequestHeaders: true,
-            showCommonExtensions: true,
-            tryItOutEnabled: true
-        });
-
-        // Tab switching functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabOverview = document.getElementById('tab-overview');
-            const tabApi = document.getElementById('tab-api');
-            const contentOverview = document.getElementById('content-overview');
-            const contentApi = document.getElementById('content-api');
-
-            function showOverview() {
-                tabOverview.style.background = 'var(--primary)';
-                tabOverview.style.color = 'white';
-                tabApi.style.background = 'var(--panel)';
-                tabApi.style.color = 'var(--text-muted)';
-                contentOverview.style.display = 'block';
-                contentApi.style.display = 'none';
-            }
-
-            function showApi() {
-                tabApi.style.background = 'var(--primary)';
-                tabApi.style.color = 'white';
-                tabOverview.style.background = 'var(--panel)';
-                tabOverview.style.color = 'var(--text-muted)';
-                contentOverview.style.display = 'none';
-                contentApi.style.display = 'block';
-
-                // Force Swagger UI to re-render when tab becomes visible
-                if (window.ui) {
-                    setTimeout(() => {
-                        window.ui.getSystem().layoutActions.updateLayout("BaseLayout");
-                    }, 100);
-                }
-            }
-
-            tabOverview.addEventListener('click', showOverview);
-            tabApi.addEventListener('click', showApi);
-
-            // Show overview by default
-            showOverview();
-
-            console.log('API page tabs initialized');
-        });
-    </script>
+    <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js" defer></script>
+    <script src="/web/js/openapi-init.js" defer></script>
+  <script src="/web/js/copy.js" defer></script>
 </body>
 </html>
+

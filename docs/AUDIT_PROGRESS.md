@@ -54,9 +54,11 @@ Stripe Checkout Status
   - CR/LF in price IDs — trimmed in code before Checkout
 
 Current Priority (Next 48 hours)
-- Encoding normalization: clean remaining non‑UTF‑8 artifacts on public pages (surgical edits, no content changes)
 - CSS extraction: move large inline CSS to `web/assets`, leverage caching, keep styles consistent
 - Error model: standardize across all API routes; update OpenAPI examples and tests
+
+Recent Progress
+- Encoding normalization: public pages routed to clean UTF-8 web versions via `vercel.json`; added stub for `/public/verify.html`; normalized `/verify` title rendering (no copy changes)
 
 Success Metrics
 - Security: priority‑1 items closed; 9.5+/10 across audits
@@ -70,4 +72,3 @@ Appendix — What’s Shipped (High Level)
 - Perf: cache headers, dev gzip; Vercel header rules for assets
 - Stripe: Sessions for all paid tiers, `/account` thank‑you + quick start
 - CI: conflict guard + smoke endpoints
-

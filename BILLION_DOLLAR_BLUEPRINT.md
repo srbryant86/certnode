@@ -1,8 +1,8 @@
-# 🎯 **The Billion Dollar CertNode Blueprint**
+﻿# ðŸŽ¯ **The Billion Dollar CertNode Blueprint**
 
 *Strategic roadmap for building CertNode into a billion-dollar receipt infrastructure empire*
 
-## 🎯 **STRATEGIC CONTEXT UPDATE (Sept 2025)**
+## ðŸŽ¯ **STRATEGIC CONTEXT UPDATE (Sept 2025)**
 
 **HYBRID EXECUTION APPROACH CONFIRMED:**
 - **Foundation:** Professional infrastructure (Trust center, JWKS rotation, enterprise security)
@@ -14,11 +14,16 @@
 
 **CURRENT STATUS:** Executing enterprise-grade infrastructure foundation while maintaining standards positioning for long-term dominance.
 
-## 🚀 **Phase 1: Prove the Standard Works (0-6 months)**
+## ðŸš€ **Phase 1: Prove the Standard Works (0-6 months)**
 
 ### **Month 1-2: Foundation & Launch**
 
 #### Roadmap Update (Sept 2025)
+
+- [x] Completed item - Encoding normalization across public routes (/verify, /openapi, /pricing, /trust) with UTF-8 stubs/rewrites
+- [ ] 🚨 CURRENT PRIORITY: Extract homepage CSS to web/assets with long-lived caching
+- [ ] Next item - Standardize error shape across API routes and sync OpenAPI examples
+
 - [x] Completed item - Payment Link fallback in `/api/create-checkout` to enable sales without secrets
 - [x] Completed item - Stripe webhook raw-body handling and CORS exposed headers for usage/rate metrics
 - [x] Completed item - Pricing page hero copy: added Stripe checkout and 4-hour key delivery notice (pilot)
@@ -26,14 +31,14 @@
 - [x] Completed item - Vercel rewrites: canonical Trust page mapped to cleaned file; Payment Links set across all envs
 - [x] Completed item - Pricing copy polish: replaced "Direct founder support" with "Priority support"
 - [x] Completed item - Free tier unified at 5,000/month (env + copy)
-- [ ] 🚨 CURRENT PRIORITY: Security (Week 1): HMAC API key validation, composite rate limiting, strict CORS, enhanced security headers
+- [ ] ðŸš¨ CURRENT PRIORITY: Security (Week 1): HMAC API key validation, composite rate limiting, strict CORS, enhanced security headers
 - [x] Completed item - Checkout Sessions enabled with Stripe price IDs (Starter/Pro); success redirects to /account
 - [x] Completed item - Introduced Business plan ($499/mo, 2M receipts) in pricing and billing config
-- [x] Completed item - Pricing terminology aligned: “Professional” (UI/API)
+- [x] Completed item - Pricing terminology aligned: â€œProfessionalâ€ (UI/API)
 - [x] Completed item - Audit progress document added at docs/AUDIT_PROGRESS.md
-- [ ] 🚨 CURRENT PRIORITY: Encoding normalization → CSS extraction → Full API error model standardization (OpenAPI)
+- [ ] ðŸš¨ CURRENT PRIORITY: Encoding normalization â†’ CSS extraction â†’ Full API error model standardization (OpenAPI)
 - [ ] Next item - Performance (Week 2): static caching + gzip, externalize inline CSS
-- [ ] 🚨 CURRENT PRIORITY: Set Payment Link env vars on Vercel and redeploy; wire CTAs
+- [ ] ðŸš¨ CURRENT PRIORITY: Set Payment Link env vars on Vercel and redeploy; wire CTAs
 - [ ] Next item - Unify JWKS source across API/site; minimal account handoff after checkout
 - [ ] Next item - Fix visible title encoding artifacts across web pages (index, trust, verify, openapi, pricing)
 
@@ -41,7 +46,7 @@
 - [x] **Complete SDKs** - Python, Go, Rust with comprehensive examples
 - [x] **Billion-dollar roadmap** documented and committed
 - [x] **Agent operating protocols** - AGENTS.md ensures consistent strategic execution
-- [x] **🚨 COMPLETED: Enterprise-grade site infrastructure**
+- [x] **ðŸš¨ COMPLETED: Enterprise-grade site infrastructure**
   - [x] Professional JWKS endpoint with rotation logging
   - [x] Trust center with transparency and governance signals
   - [x] Status page with infrastructure metrics
@@ -57,10 +62,10 @@
 - [x] **Create receipt viewer** - public tool to verify any CertNode receipt
 - [x] **Open source examples** for common use cases (e-commerce, APIs, IoT)
 
-#### **Market Validation** - ✅ IN PROGRESS
+#### **Market Validation** - âœ… IN PROGRESS
 - [x] **Target 50 early adopters** - fintech startups, crypto projects, API companies
-  - ✅ **Batch 1 Outreach Created** - 6 personalized emails to Stripe, Coinbase, Plaid, Square, Shopify, Twilio
-  - 🎯 **Launch Week:** Sept 17, 2025 - Ready to send first batch
+  - âœ… **Batch 1 Outreach Created** - 6 personalized emails to Stripe, Coinbase, Plaid, Square, Shopify, Twilio
+  - ðŸŽ¯ **Launch Week:** Sept 17, 2025 - Ready to send first batch
 - [x] **Infrastructure pricing model** - Usage-based for scale, not SaaS tiers
 - [x] **Build showcase** - public gallery of companies using CertNode receipts
 - [x] **Developer community** - Discord, GitHub discussions, Stack Overflow presence
@@ -108,7 +113,7 @@
 
 ---
 
-## 🌍 **Phase 2: Make it Inevitable (6-18 months)**
+## ðŸŒ **Phase 2: Make it Inevitable (6-18 months)**
 
 ### **Month 7-12: Standards Evolution**
 
@@ -152,7 +157,7 @@
 
 ---
 
-## 🏆 **Phase 3: Own the Infrastructure (18-36 months)**
+## ðŸ† **Phase 3: Own the Infrastructure (18-36 months)**
 
 ### **Month 19-30: Infrastructure Empire**
 
@@ -190,7 +195,7 @@
 
 ---
 
-## 💰 **Revenue Trajectory**
+## ðŸ’° **Revenue Trajectory**
 
 ### **Year 1: $1M ARR**
 - 1,000 paying customers
@@ -214,7 +219,7 @@
 
 ---
 
-## 🎯 **Success Metrics by Phase**
+## ðŸŽ¯ **Success Metrics by Phase**
 
 ### **Phase 1 Success:**
 - CertNode receipts are recognized as "the way" to do tamper-evident receipts
@@ -233,7 +238,7 @@
 
 ---
 
-## 📊 **Market Opportunity**
+## ðŸ“Š **Market Opportunity**
 
 ### **Total Addressable Market**
 - **E-commerce transactions:** $6 trillion globally
@@ -254,7 +259,7 @@
 
 ---
 
-## 🎯 **Core Value Proposition**
+## ðŸŽ¯ **Core Value Proposition**
 
 **"Every digital transaction deserves a tamper-evident receipt"**
 
@@ -265,7 +270,7 @@
 
 ---
 
-## 🚀 **Why This Will Win**
+## ðŸš€ **Why This Will Win**
 
 ### **Technical Advantages**
 - **RFC-compliant implementation** - Built on proven cryptographic standards
@@ -287,7 +292,7 @@
 
 ---
 
-## 📋 **Immediate Next Steps**
+## ðŸ“‹ **Immediate Next Steps**
 
 ### **Week 1-2**
 1. **Publish SDKs** to package managers
@@ -309,7 +314,7 @@
 
 ---
 
-## 🎯 **Mission Statement**
+## ðŸŽ¯ **Mission Statement**
 
 *To make every digital transaction verifiable, permanent, and trustworthy through universal adoption of tamper-evident receipts, ultimately creating the foundational infrastructure for global digital commerce.*
 
@@ -321,4 +326,5 @@
 **Timeline:** 36 months to exit
 **Status:** Ready to execute Phase 1
 
-🚀 **Let's build the future of digital receipts!**
+ðŸš€ **Let's build the future of digital receipts!**
+

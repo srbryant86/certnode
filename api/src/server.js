@@ -74,7 +74,7 @@ const server = http.createServer(async (req, res) => {
       if (req && req.id) headers['X-Request-Id'] = req.id;
       res.writeHead(429, headers);
       emit('rate_limit_triggered', 1, { path: url.pathname, capacity: limiter.capacity, remaining: gate.remaining, request_id: req.id });
-      const body = { error: "rate_limited", retry_after_ms: gate.retryAfterMs };
+      const body = { error: "rate_limited", message: 'rate limited', retry_after_ms: gate.retryAfterMs, timestamp: new Date().toISOString() };
       if (req && req.id) body.request_id = req.id;
       return res.end(JSON.stringify(body));
     }
@@ -159,7 +159,8 @@ const server = http.createServer(async (req, res) => {
     } else if (url.pathname === "/pitch") {
       filePath = path.join(process.cwd(), "web", "pitch.html");
     } else if (url.pathname.startsWith("/web/")) {
-      filePath = path.join(process.cwd(), url.pathname);
+      const rel = url.pathname.replace(/^\/+/, '');
+      filePath = path.join(process.cwd(), rel);
     } else if (url.pathname.startsWith("/assets/")) {
       filePath = path.join(process.cwd(), "web", "assets", path.basename(url.pathname));
     } else if (url.pathname.startsWith("/css/")) {
@@ -212,8 +213,7 @@ const server = http.createServer(async (req, res) => {
   {
     const headers = { "Content-Type": "application/json" };
     if (req && req.id) headers['X-Request-Id'] = req.id;
-    const body = { error: "not_found", message: 'route not found', timestamp: new Date().toISOString() };
-    if (req && req.id) body.request_id = req.id;
+    const body = { error: "not_found", message: 'route not found', timestamp: new Date().toISOString(), ...(req && req.id ? { request_id: req.id } : {}) };
     res.writeHead(404, headers);
     res.end(JSON.stringify(body));
   }
@@ -226,8 +226,11 @@ const server = http.createServer(async (req, res) => {
     } else {
       console.error('Unhandled server error:', error);
       if (!res.headersSent) {
-        res.writeHead(500, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ error: "internal_error" }));
+        const headers = { "Content-Type": "application/json" };
+        if (req && req.id) headers['X-Request-Id'] = req.id;
+        const body = { error: 'internal_error', message: 'Internal server error', timestamp: new Date().toISOString(), ...(req && req.id ? { request_id: req.id } : {}) };
+        res.writeHead(500, headers);
+        res.end(JSON.stringify(body));
       }
     }
   }

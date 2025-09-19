@@ -4,12 +4,8 @@ const { emit } = require('../plugins/metrics');
 
 async function handle(req, res) {
   if (req.method !== 'POST') {
-    const headers = { 'Content-Type': 'application/json' };
-    if (req && req.id) headers['X-Request-Id'] = req.id;
-    res.writeHead(405, headers);
-    const body = { error: 'method_not_allowed' };
-    if (req && req.id) body.request_id = req.id;
-    return res.end(JSON.stringify(body));
+    const { sendError } = require('../middleware/errorHandler');
+    return sendError(res, req, 405, 'method_not_allowed', 'Only POST is allowed');
   }
 
   try {
@@ -49,17 +45,9 @@ async function handle(req, res) {
     }));
 
   } catch (e) {
-    // Error response
+    const { sendError } = require('../middleware/errorHandler');
     const code = e.statusCode || 400;
-    const headers = { 'Content-Type': 'application/json' };
-    if (req && req.id) headers['X-Request-Id'] = req.id;
-    res.writeHead(code, headers);
-    const body = {
-      error: e.code || 'invalid_request',
-      message: e.message || 'Invalid lead data'
-    };
-    if (req && req.id) body.request_id = req.id;
-    res.end(JSON.stringify(body));
+    return sendError(res, req, code, e.code || 'invalid_request', e.message || 'Invalid lead data');
   }
 }
 

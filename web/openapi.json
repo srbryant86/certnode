@@ -1,472 +1,546 @@
-{
-  "openapi": "3.1.0",
-  "info": {
-    "title": "CertNode Standard API",
-    "version": "1.1.0",
-    "description": "Open standard for tamper-evident digital receipts. This reference implementation generates RFC-compliant cryptographic receipts using JWS detached signatures with ES256 (ECDSA P-256) or EdDSA (Ed25519) and JSON Canonicalization Scheme (RFC 8785). CertNode aims to become the universal standard for digital receipt infrastructure - like HTTPS for security or JSON for data exchange.",
-    "contact": {
-      "name": "CertNode Standard Committee",
-      "url": "https://certnode.io/trust",
-      "email": "standards@certnode.io"
-    },
-    "license": {
-      "name": "MIT",
-      "url": "https://github.com/srbryant86/certnode/blob/main/LICENSE"
-    }
-  },
-  "servers": [
-    {
-      "url": "https://api.certnode.io",
-      "description": "Reference implementation - managed signing service for rapid prototyping"
-    },
-    {
-      "url": "http://localhost:3000",
-      "description": "Local development environment - run your own CertNode instance"
-    }
-  ],
-  "externalDocs": {
-    "description": "CertNode Standard Documentation & Open Source Libraries",
-    "url": "https://github.com/certnode/certnode"
-  },
-  "paths": {
-    "/health": {
-      "get": {
-        "summary": "Health check",
-        "description": "Returns server health status",
-        "operationId": "getHealth",
-        "tags": ["Health"],
-        "responses": {
-          "200": {
-            "description": "Server is healthy",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
+﻿{
+    "openapi":  "3.1.0",
+    "info":  {
+                 "title":  "CertNode Standard API",
+                 "version":  "1.1.0",
+                 "description":  "Open standard for tamper-evident digital receipts. This reference implementation generates RFC-compliant cryptographic receipts using JWS detached signatures with ES256 (ECDSA P-256) or EdDSA (Ed25519) and JSON Canonicalization Scheme (RFC 8785). CertNode aims to become the universal standard for digital receipt infrastructure - like HTTPS for security or JSON for data exchange.",
+                 "contact":  {
+                                 "name":  "CertNode Standard Committee",
+                                 "url":  "https://certnode.io/trust",
+                                 "email":  "standards@certnode.io"
+                             },
+                 "license":  {
+                                 "name":  "MIT",
+                                 "url":  "https://github.com/srbryant86/certnode/blob/main/LICENSE"
+                             }
+             },
+    "servers":  [
+                    {
+                        "url":  "https://api.certnode.io",
+                        "description":  "Reference implementation - managed signing service for rapid prototyping"
+                    },
+                    {
+                        "url":  "http://localhost:3000",
+                        "description":  "Local development environment - run your own CertNode instance"
                     }
-                  },
-                  "required": ["ok"]
-                }
-              }
-            }
-          },
-          "405": {
-            "description": "Method not allowed",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "examples": {
-                  "methodNotAllowed": {
-                    "value": { "error": "method_not_allowed", "request_id": "req_abc" }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "examples": {
-                  "internalError": {
-                    "value": { "error": "internal_error", "message": "unexpected failure", "request_id": "req_abc" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/healthz": {
-      "get": {
-        "summary": "Health check (alias)",
-        "description": "Alias of /health for health probes",
-        "operationId": "getHealthAlias",
-        "tags": ["Health"],
-        "responses": {
-          "200": {
-            "description": "Server is healthy",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": { "type": "boolean", "example": true }
-                  },
-                  "required": ["ok"]
-                }
-              }
-            }
-          },
-          "405": {
-            "description": "Method not allowed",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "examples": {
-                  "methodNotAllowed": {
-                    "value": { "error": "method_not_allowed", "request_id": "req_abc" }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "examples": {
-                  "internalError": {
-                    "value": { "error": "internal_error", "message": "unexpected failure", "request_id": "req_abc" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/sign": {
-      "post": {
-        "summary": "Generate tamper-evident receipt (reference implementation)",
-        "description": "Creates a cryptographically signed receipt for any JSON payload using the CertNode standard. This managed service provides ES256 signatures with RFC 8785 JCS canonicalization. For production use, consider implementing the open standard directly using CertNode libraries for full control over your cryptographic keys.",
-        "operationId": "signPayload",
-        "tags": ["Signing"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "payload": {
-                    "description": "JSON payload to sign (will be canonicalized using RFC 8785 JCS)"
-                  },
-                  "headers": {
-                    "type": "object",
-                    "description": "Optional signing headers",
-                    "properties": {
-                      "kid": {
-                        "$ref": "#/components/schemas/JwkThumbprint",
-                        "description": "RFC7638 JWK thumbprint (optional; computed if absent)"
-                      },
-                      "alg": {
-                        "type": "string",
-                        "enum": ["ES256", "EdDSA"],
-                        "description": "Signature algorithm to use (optional; defaults to ES256)",
-                        "example": "ES256"
-                      },
-                      "tsr": {
-                        "type": "boolean",
-                        "description": "Request RFC3161 timestamp token (optional)",
-                        "example": true
-                      },
-                      "require_tsr": {
-                        "type": "boolean",
-                        "description": "If true, fail with 503 if TSA is unavailable",
-                        "example": false
-                      }
-                    }
-                  }
-                },
-                "required": ["payload"]
-              },
-              "examples": {
-                "basic": {
-                  "summary": "Basic payload signing",
-                  "value": {
-                    "payload": {
-                      "hello": "world"
-                    }
-                  }
-                },
-                "withHeaders": {
-                  "summary": "Signing with optional headers",
-                  "value": {
-                    "payload": {
-                      "document": "contract_v1.2",
-                      "timestamp": "2024-01-01T00:00:00Z"
-                    },
-                    "headers": {
-                      "tsr": true
-                    }
-                  }
-                },
-                "withEdDSA": {
-                  "summary": "Using EdDSA algorithm for deterministic signatures",
-                  "value": {
-                    "payload": {
-                      "transaction_id": "TXN-123456",
-                      "amount": 45000,
-                      "currency": "USD"
-                    },
-                    "headers": {
-                      "alg": "EdDSA"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "405": {
-            "description": "Method not allowed",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "examples": {
-                  "methodNotAllowed": {
-                    "value": { "error": "method_not_allowed", "request_id": "req_abc" }
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Successfully created tamper-evident receipt",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "protected": {
-                      "$ref": "#/components/schemas/Base64Url",
-                      "description": "Base64url encoded JWS protected header containing alg (ES256 or EdDSA), kid, and typ fields"
-                    },
-                    "signature": {
-                      "$ref": "#/components/schemas/Base64Url",
-                      "description": "Base64url encoded cryptographic signature (ES256 in JOSE format r||s, or EdDSA in native format)"
-                    },
-                    "payload": {
-                      "description": "Original payload (unchanged)"
-                    },
-                    "kid": {
-                      "$ref": "#/components/schemas/JwkThumbprint",
-                      "description": "RFC7638 JWK thumbprint used for signing"
-                    },
-                    "payload_jcs_sha256": {
-                      "$ref": "#/components/schemas/Base64Url",
-                      "description": "Base64url encoded SHA-256 hash of RFC 8785 JCS canonicalized payload"
-                    },
-                    "receipt_id": {
-                      "$ref": "#/components/schemas/Base64Url",
-                      "description": "Base64url encoded SHA-256 hash of the complete JWS (protected.payload.signature)"
-                    },
-                    "tsr": {
-                      "$ref": "#/components/schemas/Base64Url",
-                      "description": "Base64url encoded RFC3161 timestamp token in DER format (optional)"
-                    }
-                  },
-                  "required": [
-                    "protected",
-                    "signature", 
-                    "payload",
-                    "kid",
-                    "payload_jcs_sha256",
-                    "receipt_id"
-                  ]
-                },
-                "examples": {
-                  "sample": {
-                    "summary": "Sample receipt response",
-                    "value": {
-                      "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6Ii0tLSJ9",
-                      "signature": "MEUCIQD7X8wZ9fEa1J2mK3N-oqL4d5mF2pQ8tR6sU7vY9wX0ZgIgK1-M2nP3qR4sT5uV6wX7yZ8aB9cD0eF1gH2iJ3kL4mN",
-                      "payload": {
-                        "hello": "world"
-                      },
-                      "kid": "abc123",
-                      "payload_jcs_sha256": "3q2+7wEB4+bUvr3TF1JNdH1XQF8t0sT5qR6uY7vZ8aB",
-                      "receipt_id": "Z1X2c3V4b5N6m7L8k9J0i1H2g3F4e5D6c7B8a9Z0y1X"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request - invalid payload or headers",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ValidationError" },
-                "examples": {
-                  "missingPayload": {
-                    "summary": "Missing payload",
-                    "value": { "error": "missing_payload", "message": "payload is required" }
-                  },
-                  "invalidHeaders": {
-                    "summary": "Invalid headers",
-                    "value": { "error": "invalid_headers", "message": "headers.tsr must be boolean" }
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Rate limit exceeded - too many requests",
-            "headers": {
-              "Retry-After": {
-                "description": "Seconds to wait before retrying",
-                "schema": { "type": "integer", "example": 60 }
-              },
-              "X-RateLimit-Limit": {
-                "description": "Request limit per window (signing: 100/min, verification: 1000/min)",
-                "schema": { "type": "integer", "example": 100 }
-              },
-              "X-RateLimit-Remaining": {
-                "description": "Remaining requests in current window",
-                "schema": { "type": "integer", "example": 0 }
-              },
-              "X-RateLimit-Reset": {
-                "description": "Unix timestamp when the rate limit resets",
-                "schema": { "type": "integer", "example": 1640995200 }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/RateLimitError" },
-                "examples": {
-                  "rateLimited": {
-                    "summary": "Rate limited",
-                    "value": { "error": "rate_limited", "retry_after_ms": 1500, "request_id": "req_123" }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "examples": {
-                  "internalError": {
-                    "summary": "Generic failure",
-                    "value": { "error": "internal_error", "message": "unexpected failure", "request_id": "req_abc" }
-                  }
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Timestamp authority unavailable (when headers.require_tsr is true)",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "examples": {
-                  "tsaUnavailable": {
-                    "summary": "TSA unavailable",
-                    "value": { "error": "tsa_unavailable", "message": "timestamp authority unavailable", "request_id": "req_123" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "object",
-            "properties": {
-              "code": {
-                "type": "string",
-                "enum": [
-                  "invalid_json",
-                  "unsupported_algorithm",
-                  "missing_key",
-                  "invalid_signature",
-                  "canonicalization_error",
-                  "missing_required_field",
-                  "invalid_header",
-                  "rate_limit_exceeded",
-                  "key_expired",
-                  "malformed_receipt",
-                  "method_not_allowed",
-                  "internal_error",
-                  "tsa_unavailable"
                 ],
-                "description": "Standardized error code for programmatic handling"
+    "externalDocs":  {
+                         "description":  "CertNode Standard Documentation \u0026 Open Source Libraries",
+                         "url":  "https://github.com/certnode/certnode"
+                     },
+    "paths":  {
+                  "/health":  {
+                                  "get":  {
+                                              "summary":  "Health check",
+                                              "description":  "Returns server health status",
+                                              "operationId":  "getHealth",
+                                              "tags":  [
+                                                           "Health"
+                                                       ],
+                                              "responses":  {
+                                                                "200":  {
+                                                                            "description":  "Server is healthy",
+                                                                            "content":  {
+                                                                                            "application/json":  {
+                                                                                                                     "schema":  {
+                                                                                                                                    "type":  "object",
+                                                                                                                                    "properties":  {
+                                                                                                                                                       "ok":  {
+                                                                                                                                                                  "type":  "boolean",
+                                                                                                                                                                  "example":  true
+                                                                                                                                                              }
+                                                                                                                                                   },
+                                                                                                                                    "required":  [
+                                                                                                                                                     "ok"
+                                                                                                                                                 ]
+                                                                                                                                }
+                                                                                                                 }
+                                                                                        }
+                                                                        },
+                                                                "405":  {
+                                                                            "description":  "Method not allowed",
+                                                                            "content":  {
+                                                                                            "application/json":  {
+                                                                                                                     "schema":  {
+                                                                                                                                    "$ref":  "#/components/schemas/ErrorResponse"
+                                                                                                                                },
+                                                                                                                     "examples":  {
+                                                                                                                                      "methodNotAllowed":  {
+                                                                                                                                                               "value":  { "error": "method_not_allowed", "message": "method not allowed", "request_id": "req_abc", "timestamp": "2025-01-01T00:00:00Z" }
+                                                                                                                                                           }
+                                                                                                                                  }
+                                                                                                                 }
+                                                                                        }
+                                                                        },
+                                                                "500":  {
+                                                                            "description":  "Internal server error",
+                                                                            "content":  {
+                                                                                            "application/json":  {
+                                                                                                                     "schema":  {
+                                                                                                                                    "$ref":  "#/components/schemas/ErrorResponse"
+                                                                                                                                },
+                                                                                                                     "examples":  {
+                                                                                                                                      "internalError":  {
+                                                                                                                                                            "value":  { "error": "internal_error", "message": "unexpected failure", "request_id": "req_abc", "timestamp": "2025-01-01T00:00:00Z" }
+                                                                                                                                                        }
+                                                                                                                                  }
+                                                                                                                 }
+                                                                                        }
+                                                                        }
+                                                            }
+                                          }
+                              },
+                  "/healthz":  {
+                                   "get":  {
+                                               "summary":  "Health check (alias)",
+                                               "description":  "Alias of /health for health probes",
+                                               "operationId":  "getHealthAlias",
+                                               "tags":  [
+                                                            "Health"
+                                                        ],
+                                               "responses":  {
+                                                                 "200":  {
+                                                                             "description":  "Server is healthy",
+                                                                             "content":  {
+                                                                                             "application/json":  {
+                                                                                                                      "schema":  {
+                                                                                                                                     "type":  "object",
+                                                                                                                                     "properties":  {
+                                                                                                                                                        "ok":  {
+                                                                                                                                                                   "type":  "boolean",
+                                                                                                                                                                   "example":  true
+                                                                                                                                                               }
+                                                                                                                                                    },
+                                                                                                                                     "required":  [
+                                                                                                                                                      "ok"
+                                                                                                                                                  ]
+                                                                                                                                 }
+                                                                                                                  }
+                                                                                         }
+                                                                         },
+                                                                 "405":  {
+                                                                             "description":  "Method not allowed",
+                                                                             "content":  {
+                                                                                             "application/json":  {
+                                                                                                                      "schema":  {
+                                                                                                                                     "$ref":  "#/components/schemas/ErrorResponse"
+                                                                                                                                 },
+                                                                                                                      "examples":  {
+                                                                                                                                       "methodNotAllowed":  {
+                                                                                                                                                                "value":  { "error": "method_not_allowed", "message": "method not allowed", "request_id": "req_abc", "timestamp": "2025-01-01T00:00:00Z" }
+                                                                                                                                                            }
+                                                                                                                                   }
+                                                                                                                  }
+                                                                                         }
+                                                                         },
+                                                                 "500":  {
+                                                                             "description":  "Internal server error",
+                                                                             "content":  {
+                                                                                             "application/json":  {
+                                                                                                                      "schema":  {
+                                                                                                                                     "$ref":  "#/components/schemas/ErrorResponse"
+                                                                                                                                 },
+                                                                                                                      "examples":  {
+                                                                                                                                       "internalError":  {
+                                                                                                                                                             "value":  { "error": "internal_error", "message": "unexpected failure", "request_id": "req_abc", "timestamp": "2025-01-01T00:00:00Z" }
+                                                                                                                                                         }
+                                                                                                                                   }
+                                                                                                                  }
+                                                                                         }
+                                                                         }
+                                                             }
+                                           }
+                               },
+                  "/v1/sign":  {
+                                   "post":  {
+                                                "summary":  "Generate tamper-evident receipt (reference implementation)",
+                                                "description":  "Creates a cryptographically signed receipt for any JSON payload using the CertNode standard. This managed service provides ES256 signatures with RFC 8785 JCS canonicalization. For production use, consider implementing the open standard directly using CertNode libraries for full control over your cryptographic keys.",
+                                                "operationId":  "signPayload",
+                                                "tags":  [
+                                                             "Signing"
+                                                         ],
+                                                "requestBody":  {
+                                                                    "required":  true,
+                                                                    "content":  {
+                                                                                    "application/json":  {
+                                                                                                             "schema":  {
+                                                                                                                            "type":  "object",
+                                                                                                                            "properties":  {
+                                                                                                                                               "payload":  {
+                                                                                                                                                               "description":  "JSON payload to sign (will be canonicalized using RFC 8785 JCS)"
+                                                                                                                                                           },
+                                                                                                                                               "headers":  {
+                                                                                                                                                               "type":  "object",
+                                                                                                                                                               "description":  "Optional signing headers",
+                                                                                                                                                               "properties":  {
+                                                                                                                                                                                  "kid":  {
+                                                                                                                                                                                              "$ref":  "#/components/schemas/JwkThumbprint",
+                                                                                                                                                                                              "description":  "RFC7638 JWK thumbprint (optional; computed if absent)"
+                                                                                                                                                                                          },
+                                                                                                                                                                                  "alg":  {
+                                                                                                                                                                                              "type":  "string",
+                                                                                                                                                                                              "enum":  [
+                                                                                                                                                                                                           "ES256",
+                                                                                                                                                                                                           "EdDSA"
+                                                                                                                                                                                                       ],
+                                                                                                                                                                                              "description":  "Signature algorithm to use (optional; defaults to ES256)",
+                                                                                                                                                                                              "example":  "ES256"
+                                                                                                                                                                                          },
+                                                                                                                                                                                  "tsr":  {
+                                                                                                                                                                                              "type":  "boolean",
+                                                                                                                                                                                              "description":  "Request RFC3161 timestamp token (optional)",
+                                                                                                                                                                                              "example":  true
+                                                                                                                                                                                          },
+                                                                                                                                                                                  "require_tsr":  {
+                                                                                                                                                                                                      "type":  "boolean",
+                                                                                                                                                                                                      "description":  "If true, fail with 503 if TSA is unavailable",
+                                                                                                                                                                                                      "example":  false
+                                                                                                                                                                                                  }
+                                                                                                                                                                              }
+                                                                                                                                                           }
+                                                                                                                                           },
+                                                                                                                            "required":  [
+                                                                                                                                             "payload"
+                                                                                                                                         ]
+                                                                                                                        },
+                                                                                                             "examples":  {
+                                                                                                                              "basic":  {
+                                                                                                                                            "summary":  "Basic payload signing",
+                                                                                                                                            "value":  {
+                                                                                                                                                          "payload":  {
+                                                                                                                                                                          "hello":  "world"
+                                                                                                                                                                      }
+                                                                                                                                                      }
+                                                                                                                                        },
+                                                                                                                              "withHeaders":  {
+                                                                                                                                                  "summary":  "Signing with optional headers",
+                                                                                                                                                  "value":  {
+                                                                                                                                                                "payload":  {
+                                                                                                                                                                                "document":  "contract_v1.2",
+                                                                                                                                                                                "timestamp":  "2024-01-01T00:00:00Z"
+                                                                                                                                                                            },
+                                                                                                                                                                "headers":  {
+                                                                                                                                                                                "tsr":  true
+                                                                                                                                                                            }
+                                                                                                                                                            }
+                                                                                                                                              },
+                                                                                                                              "withEdDSA":  {
+                                                                                                                                                "summary":  "Using EdDSA algorithm for deterministic signatures",
+                                                                                                                                                "value":  {
+                                                                                                                                                              "payload":  {
+                                                                                                                                                                              "transaction_id":  "TXN-123456",
+                                                                                                                                                                              "amount":  45000,
+                                                                                                                                                                              "currency":  "USD"
+                                                                                                                                                                          },
+                                                                                                                                                              "headers":  {
+                                                                                                                                                                              "alg":  "EdDSA"
+                                                                                                                                                                          }
+                                                                                                                                                          }
+                                                                                                                                            }
+                                                                                                                          }
+                                                                                                         }
+                                                                                }
+                                                                },
+                                                "responses":  {
+                                                                  "405":  {
+                                                                              "description":  "Method not allowed",
+                                                                              "content":  {
+                                                                                              "application/json":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "$ref":  "#/components/schemas/ErrorResponse"
+                                                                                                                                  },
+                                                                                                                       "examples":  {
+                                                                                                                                        "methodNotAllowed":  {
+                                                                                                                                                                 "value":  { "error": "method_not_allowed", "message": "method not allowed", "request_id": "req_abc", "timestamp": "2025-01-01T00:00:00Z" }
+                                                                                                                                                             }
+                                                                                                                                    }
+                                                                                                                   }
+                                                                                          }
+                                                                          },
+                                                                  "200":  {
+                                                                              "description":  "Successfully created tamper-evident receipt",
+                                                                              "content":  {
+                                                                                              "application/json":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "type":  "object",
+                                                                                                                                      "properties":  {
+                                                                                                                                                         "protected":  {
+                                                                                                                                                                           "$ref":  "#/components/schemas/Base64Url",
+                                                                                                                                                                           "description":  "Base64url encoded JWS protected header containing alg (ES256 or EdDSA), kid, and typ fields"
+                                                                                                                                                                       },
+                                                                                                                                                         "signature":  {
+                                                                                                                                                                           "$ref":  "#/components/schemas/Base64Url",
+                                                                                                                                                                           "description":  "Base64url encoded cryptographic signature (ES256 in JOSE format r||s, or EdDSA in native format)"
+                                                                                                                                                                       },
+                                                                                                                                                         "payload":  {
+                                                                                                                                                                         "description":  "Original payload (unchanged)"
+                                                                                                                                                                     },
+                                                                                                                                                         "kid":  {
+                                                                                                                                                                     "$ref":  "#/components/schemas/JwkThumbprint",
+                                                                                                                                                                     "description":  "RFC7638 JWK thumbprint used for signing"
+                                                                                                                                                                 },
+                                                                                                                                                         "payload_jcs_sha256":  {
+                                                                                                                                                                                    "$ref":  "#/components/schemas/Base64Url",
+                                                                                                                                                                                    "description":  "Base64url encoded SHA-256 hash of RFC 8785 JCS canonicalized payload"
+                                                                                                                                                                                },
+                                                                                                                                                         "receipt_id":  {
+                                                                                                                                                                            "$ref":  "#/components/schemas/Base64Url",
+                                                                                                                                                                            "description":  "Base64url encoded SHA-256 hash of the complete JWS (protected.payload.signature)"
+                                                                                                                                                                        },
+                                                                                                                                                         "tsr":  {
+                                                                                                                                                                     "$ref":  "#/components/schemas/Base64Url",
+                                                                                                                                                                     "description":  "Base64url encoded RFC3161 timestamp token in DER format (optional)"
+                                                                                                                                                                 }
+                                                                                                                                                     },
+                                                                                                                                      "required":  [
+                                                                                                                                                       "protected",
+                                                                                                                                                       "signature",
+                                                                                                                                                       "payload",
+                                                                                                                                                       "kid",
+                                                                                                                                                       "payload_jcs_sha256",
+                                                                                                                                                       "receipt_id"
+                                                                                                                                                   ]
+                                                                                                                                  },
+                                                                                                                       "examples":  {
+                                                                                                                                        "sample":  {
+                                                                                                                                                       "summary":  "Sample receipt response",
+                                                                                                                                                       "value":  {
+                                                                                                                                                                     "protected":  "eyJhbGciOiJFUzI1NiIsImtpZCI6Ii0tLSJ9",
+                                                                                                                                                                     "signature":  "MEUCIQD7X8wZ9fEa1J2mK3N-oqL4d5mF2pQ8tR6sU7vY9wX0ZgIgK1-M2nP3qR4sT5uV6wX7yZ8aB9cD0eF1gH2iJ3kL4mN",
+                                                                                                                                                                     "payload":  {
+                                                                                                                                                                                     "hello":  "world"
+                                                                                                                                                                                 },
+                                                                                                                                                                     "kid":  "abc123",
+                                                                                                                                                                     "payload_jcs_sha256":  "3q2+7wEB4+bUvr3TF1JNdH1XQF8t0sT5qR6uY7vZ8aB",
+                                                                                                                                                                     "receipt_id":  "Z1X2c3V4b5N6m7L8k9J0i1H2g3F4e5D6c7B8a9Z0y1X"
+                                                                                                                                                                 }
+                                                                                                                                                   }
+                                                                                                                                    }
+                                                                                                                   }
+                                                                                          }
+                                                                          },
+                                                                  "400":  {
+                                                                              "description":  "Bad request - invalid payload or headers",
+                                                                              "content":  {
+                                                                                              "application/json":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "$ref":  "#/components/schemas/ValidationError"
+                                                                                                                                  },
+                                                                                                                       "examples":  {
+                                                                                                                                        "missingPayload":  {
+                                                                                                                                                               "summary":  "Missing payload",
+                                                                                                                                                               "value":  {
+                                                                                                                                                                             "error":  "missing_payload",
+                                                                                                                                                                             "message":  "payload is required"
+                                                                                                                                                                         }
+                                                                                                                                                           },
+                                                                                                                                        "invalidHeaders":  {
+                                                                                                                                                               "summary":  "Invalid headers",
+                                                                                                                                                               "value":  {
+                                                                                                                                                                             "error":  "invalid_headers",
+                                                                                                                                                                             "message":  "headers.tsr must be boolean"
+                                                                                                                                                                         }
+                                                                                                                                                           }
+                                                                                                                                    }
+                                                                                                                   }
+                                                                                          }
+                                                                          },
+                                                                  "429":  {
+                                                                              "description":  "Rate limit exceeded - too many requests",
+                                                                              "headers":  {
+                                                                                              "Retry-After":  {
+                                                                                                                  "description":  "Seconds to wait before retrying",
+                                                                                                                  "schema":  {
+                                                                                                                                 "type":  "integer",
+                                                                                                                                 "example":  60
+                                                                                                                             }
+                                                                                                              },
+                                                                                              "X-RateLimit-Limit":  {
+                                                                                                                        "description":  "Request limit per window (signing: 100/min, verification: 1000/min)",
+                                                                                                                        "schema":  {
+                                                                                                                                       "type":  "integer",
+                                                                                                                                       "example":  100
+                                                                                                                                   }
+                                                                                                                    },
+                                                                                              "X-RateLimit-Remaining":  {
+                                                                                                                            "description":  "Remaining requests in current window",
+                                                                                                                            "schema":  {
+                                                                                                                                           "type":  "integer",
+                                                                                                                                           "example":  0
+                                                                                                                                       }
+                                                                                                                        },
+                                                                                              "X-RateLimit-Reset":  {
+                                                                                                                        "description":  "Unix timestamp when the rate limit resets",
+                                                                                                                        "schema":  {
+                                                                                                                                       "type":  "integer",
+                                                                                                                                       "example":  1640995200
+                                                                                                                                   }
+                                                                                                                    }
+                                                                                          },
+                                                                              "content":  {
+                                                                                              "application/json":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "$ref":  "#/components/schemas/RateLimitError"
+                                                                                                                                  },
+                                                                                                                       "examples":  {
+                                                                                                                                        "rateLimited":  {
+                                                                                                                                                            "summary":  "Rate limited",
+                                                                                                                                                            "value":  { "error": "rate_limited", "message": "rate limited", "retry_after_ms": 1500, "request_id": "req_123", "timestamp": "2025-01-01T00:00:00Z" }
+                                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                   }
+                                                                                          }
+                                                                          },
+                                                                  "500":  {
+                                                                              "description":  "Internal server error",
+                                                                              "content":  {
+                                                                                              "application/json":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "$ref":  "#/components/schemas/ErrorResponse"
+                                                                                                                                  },
+                                                                                                                       "examples":  {
+                                                                                                                                        "internalError":  {
+                                                                                                                                                              "summary":  "Generic failure",
+                                                                                                                                                              "value":  { "error": "internal_error", "message": "unexpected failure", "request_id": "req_abc", "timestamp": "2025-01-01T00:00:00Z" }
+                                                                                                                                                          }
+                                                                                                                                    }
+                                                                                                                   }
+                                                                                          }
+                                                                          },
+                                                                  "503":  {
+                                                                              "description":  "Timestamp authority unavailable (when headers.require_tsr is true)",
+                                                                              "content":  {
+                                                                                              "application/json":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "$ref":  "#/components/schemas/ErrorResponse"
+                                                                                                                                  },
+                                                                                                                       "examples":  {
+                                                                                                                                        "tsaUnavailable":  {
+                                                                                                                                                               "summary":  "TSA unavailable",
+                                                                                                                                                               "value":  { "error": "tsa_unavailable", "message": "timestamp authority unavailable", "request_id": "req_123", "timestamp": "2025-01-01T00:00:00Z" }
+                                                                                                                                                           }
+                                                                                                                                    }
+                                                                                                                   }
+                                                                                          }
+                                                                          }
+                                                              }
+                                            }
+                               }
               },
-              "message": {
-                "type": "string",
-                "description": "Human-readable error description"
-              },
-              "request_id": {
-                "type": "string",
-                "description": "Unique request identifier for correlation"
-              },
-              "hint": {
-                "type": "string",
-                "description": "Optional suggestion for resolution"
-              }
-            },
-            "required": ["code", "message"]
-          }
-        },
-        "required": ["error"],
-        "examples": [
-          {
-            "error": {
-              "code": "unsupported_algorithm",
-              "message": "Algorithm not supported: RS256",
-              "request_id": "req_abc123",
-              "hint": "Use ES256 or EdDSA algorithms"
-            }
-          }
-        ]
-      },
-      "ValidationError": {
-        "allOf": [ { "$ref": "#/components/schemas/ErrorResponse" } ],
-        "description": "Validation failure: invalid payload or headers",
-        "examples": [
-          { "error": "missing_payload", "message": "payload is required" },
-          { "error": "invalid_headers", "message": "headers.tsr must be boolean" },
-          { "error": "payload_too_large", "message": "payload exceeds hard limit" }
-        ]
-      },
-      "RateLimitError": {
-        "allOf": [ { "$ref": "#/components/schemas/ErrorResponse" } ],
-        "description": "Rate limit exceeded",
-        "properties": {
-          "retry_after_ms": { "type": "integer" }
-        },
-        "required": [ "error", "retry_after_ms" ]
-      },
-      "JwkThumbprint": {
-        "type": "string",
-        "pattern": "^[A-Za-z0-9_-]{43}$",
-        "description": "RFC7638 JWK thumbprint - base64url encoded SHA-256 hash",
-        "example": "YRU7hT6Br3XlaljIJw4h8eh-E8BgFNqRtiTQDYMkwGk"
-      },
-      "Base64Url": {
-        "type": "string",
-        "pattern": "^[A-Za-z0-9_-]+$",
-        "description": "Base64url encoded data (RFC 4648 Section 5)",
-        "example": "eyJhbGciOiJFUzI1NiJ9"
-      }
-    }
-  },
-  "tags": [
-    {
-      "name": "Health",
-      "description": "Health check endpoints for service monitoring"
-    },
-    {
-      "name": "Signing",
-      "description": "CertNode standard receipt generation - reference implementation for rapid prototyping. For production, use open source CertNode libraries to maintain full control over your cryptographic infrastructure."
-    }
-  ]
+    "components":  {
+                       "schemas":  {
+                                       "ErrorResponse":  {
+                                                             "type":  "object",
+                                                             "properties":  {
+                                                                                "error":  {
+                                                                                              "enum":  [
+                                                                                                           "invalid_json",
+                                                                                                           "unsupported_algorithm",
+                                                                                                           "missing_key",
+                                                                                                           "invalid_signature",
+                                                                                                           "canonicalization_error",
+                                                                                                           "missing_required_field",
+                                                                                                           "invalid_header",
+                                                                                                           "rate_limited",
+                                                                                                           "method_not_allowed",
+                                                                                                           "internal_error",
+                                                                                                           "tsa_unavailable",
+                                                                                                           "unauthorized",
+                                                                                                           "not_found"
+                                                                                                       ],
+                                                                                              "description":  "Standardized error code for programmatic handling",
+                                                                                              "type":  "string"
+                                                                                          },
+                                                                                "message":  {
+                                                                                                "type":  "string",
+                                                                                                "description":  "Human-readable error description"
+                                                                                            },
+                                                                                "request_id":  {
+                                                                                                   "type":  "string",
+                                                                                                   "description":  "Unique request identifier for correlation"
+                                                                                               },
+                                                                                "timestamp":  {
+                                                                                                  "format":  "date-time",
+                                                                                                  "description":  "ISO8601 timestamp of error",
+                                                                                                  "type":  "string"
+                                                                                              }
+                                                                            },
+                                                             "required":  [
+                                                                              "error",
+                                                                              "message",
+                                                                              "timestamp"
+                                                                          ],
+                                                             "examples":  [
+                                                                              {
+                                                                                  "request_id":  "req_abc123",
+                                                                                  "error":  "unsupported_algorithm",
+                                                                                  "timestamp":  "2025-01-01T00:00:00Z",
+                                                                                  "message":  "Algorithm not supported: RS256"
+                                                                              }
+                                                                          ]
+                                                         },
+                                       "ValidationError":  {
+                                                               "allOf":  [
+                                                                             {
+                                                                                 "$ref":  "#/components/schemas/ErrorResponse"
+                                                                             }
+                                                                         ],
+                                                               "description":  "Validation failure: invalid payload or headers",
+                                                               "examples":  [
+                                                                                {
+                                                                                    "error":  "missing_payload",
+                                                                                    "message":  "payload is required"
+                                                                                },
+                                                                                {
+                                                                                    "error":  "invalid_headers",
+                                                                                    "message":  "headers.tsr must be boolean"
+                                                                                },
+                                                                                {
+                                                                                    "error":  "payload_too_large",
+                                                                                    "message":  "payload exceeds hard limit"
+                                                                                }
+                                                                            ]
+                                                           },
+                                       "RateLimitError":  {
+                                                              "allOf":  [
+                                                                            {
+                                                                                "$ref":  "#/components/schemas/ErrorResponse"
+                                                                            }
+                                                                        ],
+                                                              "description":  "Rate limit exceeded",
+                                                              "properties":  {
+                                                                                 "retry_after_ms":  {
+                                                                                                        "type":  "integer"
+                                                                                                    }
+                                                                             },
+                                                              "required":  [
+                                                                               "error",
+                                                                               "retry_after_ms"
+                                                                           ]
+                                                          },
+                                       "JwkThumbprint":  {
+                                                             "type":  "string",
+                                                             "pattern":  "^[A-Za-z0-9_-]{43}$",
+                                                             "description":  "RFC7638 JWK thumbprint - base64url encoded SHA-256 hash",
+                                                             "example":  "YRU7hT6Br3XlaljIJw4h8eh-E8BgFNqRtiTQDYMkwGk"
+                                                         },
+                                       "Base64Url":  {
+                                                         "type":  "string",
+                                                         "pattern":  "^[A-Za-z0-9_-]+$",
+                                                         "description":  "Base64url encoded data (RFC 4648 Section 5)",
+                                                         "example":  "eyJhbGciOiJFUzI1NiJ9"
+                                                     }
+                                   }
+                   },
+    "tags":  [
+                 {
+                     "name":  "Health",
+                     "description":  "Health check endpoints for service monitoring"
+                 },
+                 {
+                     "name":  "Signing",
+                     "description":  "CertNode standard receipt generation - reference implementation for rapid prototyping. For production, use open source CertNode libraries to maintain full control over your cryptographic infrastructure."
+                 }
+             ]
 }
+

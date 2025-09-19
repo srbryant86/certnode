@@ -1,643 +1,20 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Open standard for tamper-evident digital receipts. RFC-compliant cryptographic signatures using JWS detached signatures with ES256 or EdDSA. Universal receipt infrastructure for any JSON payload." />
   <meta name="keywords" content="digital receipts, cryptographic signatures, JWS, ES256, EdDSA, tamper-evident, blockchain alternative, RFC compliance, JSON Web Signature" />
-  <meta property="og:title" content="CertNode � Universal Receipt Infrastructure" />
+  <meta property="og:title" content="CertNode — Universal Receipt Infrastructure" />
   <meta property="og:description" content="Open standard for tamper-evident digital receipts using RFC-compliant cryptographic signatures." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://certnode.io/" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="CertNode � Universal Receipt Infrastructure" />
+  <meta name="twitter:title" content="CertNode — Universal Receipt Infrastructure" />
   <meta name="twitter:description" content="Open standard for tamper-evident digital receipts using RFC-compliant cryptographic signatures." />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-  <title>CertNode � Universal Receipt Infrastructure</title>
-  <style>
-    :root {
-      --bg: #fafbfc;
-      --bg-primary: #1e40af;
-      --panel: #ffffff;
-      --border: #e1e5e9;
-      --border-light: #f1f5f9;
-      --text: #1e293b;
-      --text-muted: #64748b;
-      --text-light: #94a3b8;
-      --primary: #1e40af;
-      --primary-dark: #1e3a8a;
-      --accent: #3b82f6;
-      --accent-light: #60a5fa;
-
-      /* Cryptographic Identity Colors */
-      --crypto-gold: #f59e0b;
-      --security-teal: #0891b2;
-      --warning-amber: #d97706;
-      --verified-green: #059669;
-
-      /* Academic Status Colors */
-      --success: #059669;
-      --success-bg: #ecfdf5;
-      --success-border: #a7f3d0;
-      --warning: #d97706;
-      --warning-bg: #fffbeb;
-      --warning-border: #fed7aa;
-      --error: #dc2626;
-      --error-bg: #fef2f2;
-      --error-border: #fecaca;
-
-      /* Compliance Framework Colors */
-      --sox-blue: #1e40af;
-      --hipaa-green: #059669;
-      --pci-red: #dc2626;
-      --gdpr-purple: #7c3aed;
-      --fedramp-orange: #ea580c;
-
-      /* Academic Trust Elements */
-      --trust-navy: #1e293b;
-      --trust-blue: var(--primary);
-      --trust-indigo: #4338ca;
-    }
-
-    /* Academic Professional Typography */
-    body {
-      font-family: 'Georgia', 'Times New Roman', serif;
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      font-size: 16px;
-      letter-spacing: -0.01em;
-    }
-
-    /* Sophisticated Header */
-    header {
-      background: var(--panel);
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
-
-    .header-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--primary);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-
-    /* Academic Navigation */
-    .nav {
-      display: flex;
-      gap: 40px;
-      align-items: center;
-    }
-
-    .nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 400;
-      font-size: 15px;
-      transition: all 0.2s ease;
-      position: relative;
-    }
-
-    .nav a:hover {
-      color: var(--primary);
-    }
-
-    .nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--primary);
-      transition: width 0.3s ease;
-    }
-
-    .nav a:hover::after {
-      width: 100%;
-    }
-
-    /* Enterprise Layout */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    .section {
-      padding: 80px 0;
-    }
-
-    .section-sm {
-      padding: 60px 0;
-    }
-
-    /* Professional Cards */
-    .card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 32px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    /* Professional Grid System */
-    .grid {
-      display: grid;
-      gap: 32px;
-    }
-
-    .grid-2 {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .grid-3 {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .grid-4 {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    @media (max-width: 768px) {
-      .grid-2,
-      .grid-3,
-      .grid-4 {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .flex {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .flex-col {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .justify-center { justify-content: center; }
-    .justify-between { justify-content: space-between; }
-    .text-center { text-align: center; }
-    /* Enterprise Typography Scale */
-    .text-6xl { font-size: 64px; line-height: 1.1; font-weight: 800; }
-    .text-5xl { font-size: 48px; line-height: 1.1; font-weight: 700; }
-    .text-4xl { font-size: 36px; line-height: 1.2; font-weight: 700; }
-    .text-3xl { font-size: 30px; line-height: 1.2; font-weight: 600; }
-    .text-2xl { font-size: 24px; line-height: 1.3; font-weight: 600; }
-    .text-xl { font-size: 20px; line-height: 1.4; font-weight: 500; }
-    .text-lg { font-size: 18px; line-height: 1.5; font-weight: 400; }
-    .text-base { font-size: 16px; line-height: 1.5; font-weight: 400; }
-    .text-sm { font-size: 14px; line-height: 1.5; font-weight: 400; }
-
-    .font-bold { font-weight: 700; }
-    .font-semibold { font-weight: 600; }
-    .font-medium { font-weight: 500; }
-
-    /* Professional Colors */
-    .text-primary { color: var(--primary); }
-    .text-muted { color: var(--muted); }
-    .text-success { color: var(--success); }
-    .text-trust { color: var(--trust-blue); }
-
-    /* Enterprise Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 16px;
-      text-decoration: none;
-      transition: all 0.2s;
-      cursor: pointer;
-      border: 2px solid transparent;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-dark);
-      border-color: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,102,204,0.3);
-    }
-
-    .btn-secondary {
-      background: white;
-      color: var(--primary);
-      border-color: var(--border);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--primary);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    .btn-lg {
-      padding: 16px 32px;
-      font-size: 18px;
-    }
-
-    /* Professional Forms */
-    input, select, textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      background: white;
-      color: var(--text);
-      font-size: 16px;
-      transition: border-color 0.2s;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
-    }
-    /* Enterprise Trust Badges */
-    .trust-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: var(--success-bg);
-      border: 1px solid var(--success-border);
-      border-radius: 20px;
-      color: var(--success);
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .compliance-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--trust-blue);
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    /* Professional Stats */
-    .stat {
-      text-align: center;
-      padding: 24px;
-    }
-
-    .stat-number {
-      font-size: 48px;
-      font-weight: 800;
-      color: var(--primary);
-      line-height: 1;
-    }
-
-    .stat-label {
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 500;
-      margin-top: 8px;
-    }
-    /* Academic Hero Section */
-    .hero {
-      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      padding: 100px 0;
-      text-align: center;
-      position: relative;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(30, 41, 59, 0.2);
-      pointer-events: none;
-    }
-
-    /* Cryptographic Pattern Overlay */
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 2px,
-        rgba(255,255,255,0.05) 2px,
-        rgba(255,255,255,0.05) 4px
-      );
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .hero-content {
-      max-width: 900px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero h1 {
-      margin: 0 0 32px;
-      color: white;
-      font-size: 48px;
-      font-weight: 400;
-      line-height: 1.3;
-      letter-spacing: -0.02em;
-    }
-
-    .hero p {
-      font-size: 22px;
-      color: rgba(255, 255, 255, 0.9);
-      margin: 0 0 48px;
-      line-height: 1.6;
-      font-weight: 300;
-    }
-
-    /* Social Proof Section */
-    .social-proof {
-      background: white;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 40px 0;
-    }
-
-    .customer-logos {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 48px;
-      flex-wrap: wrap;
-      opacity: 0.6;
-    }
-
-    .customer-logo {
-      height: 32px;
-      filter: grayscale(100%);
-      transition: filter 0.2s;
-    }
-
-    .customer-logo:hover {
-      filter: grayscale(0%);
-    }
-    /* Professional Status Messages */
-    .alert {
-      padding: 16px 20px;
-      border-radius: 8px;
-      font-weight: 500;
-      border-left: 4px solid;
-    }
-
-    .alert-success {
-      background: var(--success-bg);
-      color: var(--success);
-      border-left-color: var(--success);
-    }
-
-    .alert-error {
-      background: var(--error-bg);
-      color: var(--error);
-      border-left-color: var(--error);
-    }
-
-    .alert-warning {
-      background: var(--warning-bg);
-      color: var(--warning);
-      border-left-color: var(--warning);
-    }
-
-    /* Enterprise Feature Grid */
-    .feature {
-      text-align: center;
-      padding: 32px 24px;
-    }
-
-    .feature-icon {
-      width: 64px;
-      height: 64px;
-      background: var(--primary);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      color: white;
-      font-size: 24px;
-    }
-
-    .feature h3 {
-      margin: 0 0 12px;
-      color: var(--text);
-    }
-
-    .feature p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-    /* Enterprise Footer */
-    footer {
-      background: var(--panel);
-      border-top: 1px solid var(--border);
-      padding: 40px 0;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    /* Utility Classes */
-    .mb-8 { margin-bottom: 8px; }
-    .mb-16 { margin-bottom: 16px; }
-    .mb-24 { margin-bottom: 24px; }
-    .mb-32 { margin-bottom: 32px; }
-    .mb-48 { margin-bottom: 48px; }
-
-    .mt-8 { margin-top: 8px; }
-    .mt-16 { margin-top: 16px; }
-    .mt-24 { margin-top: 24px; }
-    .mt-32 { margin-top: 32px; }
-
-    .hidden { display: none; }
-    .block { display: block; }
-    .inline-block { display: inline-block; }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .hero {
-        padding: 80px 0;
-      }
-
-      .text-6xl { font-size: 48px; }
-      .text-5xl { font-size: 36px; }
-      .text-4xl { font-size: 28px; }
-
-      .section {
-        padding: 60px 0;
-      }
-
-      .btn-lg {
-        padding: 14px 24px;
-        font-size: 16px;
-      }
-    }
-    /* Enterprise CTA Section */
-    .cta-section {
-      background: var(--primary);
-      color: white;
-      padding: 80px 0;
-      text-align: center;
-    }
-
-    .cta-section h2 {
-      color: white;
-      margin: 0 0 16px;
-    }
-
-    .cta-section p {
-      color: rgba(255,255,255,0.9);
-      margin: 0 0 32px;
-    }
-
-    .btn-white {
-      background: white;
-      color: var(--primary);
-      border-color: white;
-    }
-
-    .btn-white:hover {
-      background: rgba(255,255,255,0.95);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(255,255,255,0.3);
-    }
-    /* Professional Risk/Value Section */
-    .research-metrics {
-      background: var(--panel);
-      padding: 80px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .metric-card {
-      background: var(--bg);
-      border: 1px solid var(--border-light);
-      border-radius: 8px;
-      padding: 40px 24px;
-      margin: 0 12px;
-      transition: all 0.3s ease;
-    }
-
-    .metric-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(30, 41, 59, 0.08);
-    }
-
-    .metric-number {
-      font-size: 64px;
-      font-weight: 300;
-      color: var(--primary);
-      line-height: 1;
-      margin-bottom: 24px;
-      font-family: 'Georgia', serif;
-    }
-
-    .metric-source {
-      display: block;
-      font-size: 13px;
-      color: var(--text-light);
-      font-style: italic;
-      margin-top: 16px;
-      border-top: 1px solid var(--border-light);
-      padding-top: 12px;
-    }
-
-    .value-section {
-      background: linear-gradient(135deg, #f0fff4 0%, #dcfce7 100%);
-      padding: 60px 0;
-      text-align: center;
-    }
-
-    .value-number {
-      font-size: 72px;
-      font-weight: 900;
-      color: var(--success);
-      line-height: 1;
-      margin-bottom: 16px;
-    }
-    /* Skip link */
-    .skip-link { position: absolute; left: -999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
-    .skip-link:focus { left: 8px; top: 8px; width: auto; height: auto; padding: 8px 12px; background: var(--accent); color: var(--text); border: 1px solid var(--accent-border); border-radius: 6px; z-index: 1000; }
-
-    /* Academic Button Styling */
-    .cta-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary {
-      background: var(--primary);
-      border: 1px solid var(--primary);
-      color: white;
-      font-weight: 400;
-      letter-spacing: 0.02em;
-    }
-    .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.3);
-      color: rgba(255,255,255,0.9);
-      font-weight: 400;
-      letter-spacing: 0.02em;
-    }
-    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
-    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; padding: 40px 20px; }
-    .feature { text-align: center; }
-    .feature h3 { color: var(--text); margin: 0 0 8px; }
-    .feature p { color: var(--muted); margin: 0; }
-
-    /* Form Styling */
-    .contact-form { max-width: 600px; margin: 40px auto; padding: 32px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; }
-    .contact-form h2 { margin: 0 0 24px; text-align: center; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; margin-bottom: 4px; font-weight: 500; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-    @media (max-width: 768px) {
-      main { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 36px; }
-      .cta-buttons { flex-direction: column; align-items: center; }
-      .form-row { grid-template-columns: 1fr; }
-    }
-  </style>
+  <title>CertNode — Universal Receipt Infrastructure</title>
+  <link rel="stylesheet" href="/web/assets/site.css">
 </head>
 <body>
   <!-- Enterprise Professional Header -->
@@ -673,7 +50,7 @@
           <h3 style="color: white; margin-bottom: 24px; text-align: center;">3-Step Quickstart</h3>
           <ol style="color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.8;">
             <li><code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">npm i @certnode/sdk</code></li>
-            <li>POST <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">/v1/sign</code> → get <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">receipt</code></li>
+            <li>POST <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">/v1/sign</code> â†’ get <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">receipt</code></li>
             <li>Verify: <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">verifyReceipt({ receipt, jwks })</code></li>
           </ol>
         </div>
@@ -681,13 +58,13 @@
         <!-- Technical Standards Elements -->
         <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 32px; font-size: 14px; color: rgba(255,255,255,0.8);">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: var(--crypto-gold);">✓</span> RFC 7515 JWS compliant
+            <span style="color: var(--crypto-gold);">âœ“</span> RFC 7515 JWS compliant
           </div>
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: var(--crypto-gold);">✓</span> Open source verification
+            <span style="color: var(--crypto-gold);">âœ“</span> Open source verification
           </div>
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="color: var(--crypto-gold);">✓</span> Multiple implementations
+            <span style="color: var(--crypto-gold);">âœ“</span> Multiple implementations
           </div>
         </div>
 
@@ -732,7 +109,7 @@
               <h3 style="margin: 0; color: var(--crypto-gold);">Cryptographic Signing</h3>
             </div>
             <div id="signing-animation" style="text-align: center; padding: 40px;">
-              <div style="font-size: 48px; color: var(--crypto-gold); margin-bottom: 16px;">🔒</div>
+              <div style="font-size: 48px; color: var(--crypto-gold); margin-bottom: 16px;">ðŸ”’</div>
               <p>Generating ECDSA P-256 signature...</p>
               <div style="width: 100%; background: var(--border-light); border-radius: 4px; height: 8px; margin: 16px 0;">
                 <div id="progress-bar" style="width: 0%; background: var(--crypto-gold); height: 100%; border-radius: 4px; transition: width 2s ease;"></div>
@@ -740,7 +117,7 @@
             </div>
             <div id="signature-result" style="display: none;">
               <div style="background: var(--success-bg); border: 1px solid var(--success-border); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-                <strong style="color: var(--success);">✓ Document Signed Successfully</strong>
+                <strong style="color: var(--success);">âœ“ Document Signed Successfully</strong>
                 <p style="margin: 8px 0 0 0; font-size: 14px; color: var(--text-muted);">SHA-256 Hash: <code>a1b2c3d4e5f6...</code></p>
               </div>
               <button id="proceed-tamper" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 500; cursor: pointer; width: 100%;">Test Tamper Detection</button>
@@ -762,7 +139,7 @@ Date: 2025-01-15</textarea>
 
             <div id="tamper-result" style="display: none; margin-top: 16px;">
               <div style="background: var(--error-bg); border: 1px solid var(--error-border); border-radius: 8px; padding: 16px;">
-                <strong style="color: var(--error);">⚠️ TAMPER DETECTED</strong>
+                <strong style="color: var(--error);">âš ï¸ TAMPER DETECTED</strong>
                 <p style="margin: 8px 0 0 0; font-size: 14px;">Document has been modified since signing. Hash mismatch detected.</p>
               </div>
             </div>
@@ -814,7 +191,7 @@ Date: 2025-01-15</textarea>
           <div style="color: var(--verified-green); margin-bottom: 16px; font-weight: bold;">Browser Crypto</div>
           <p style="margin-bottom: 20px; font-style: italic;">WebCrypto API implementation for client-side verification. No external dependencies required.</p>
           <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 40px; height: 40px; background: var(--verified-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">🌐</div>
+            <div style="width: 40px; height: 40px; background: var(--verified-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">ðŸŒ</div>
             <div>
               <div style="font-weight: 600;">WebCrypto</div>
               <div style="font-size: 14px; color: var(--text-muted);">Built-in browser support</div>
@@ -825,10 +202,10 @@ Date: 2025-01-15</textarea>
 
       <!-- Use Cases -->
       <div style="display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; color: var(--text-muted); font-size: 14px; font-weight: 500;">
-        <div>📊 Audit Trails</div>
-        <div>🔒 Document Integrity</div>
-        <div>⚖️ Legal Evidence</div>
-        <div>🔗 Supply Chain</div>
+        <div>ðŸ“Š Audit Trails</div>
+        <div>ðŸ”’ Document Integrity</div>
+        <div>âš–ï¸ Legal Evidence</div>
+        <div>ðŸ”— Supply Chain</div>
       </div>
     </div>
   </section>
@@ -873,17 +250,17 @@ Date: 2025-01-15</textarea>
 
       <div class="grid grid-3">
         <div class="feature">
-          <div class="feature-icon">🔒</div>
+          <div class="feature-icon">ðŸ”’</div>
           <h3 class="text-2xl">RFC-Compliant Cryptography</h3>
           <p>Every CertNode receipt uses RFC 7515 JWS with ECDSA P-256 signatures and RFC 8785 JSON Canonicalization. Built for interoperability - any implementation that follows the standard can generate and verify receipts.</p>
         </div>
         <div class="feature">
-          <div class="feature-icon">📋</div>
+          <div class="feature-icon">ðŸ“‹</div>
           <h3 class="text-2xl">Cross-Platform Verification</h3>
           <p>Verify signatures in any environment - browser WebCrypto, Node.js, CLI tools, or custom implementations. No vendor lock-in, just standard cryptographic operations.</p>
         </div>
         <div class="feature">
-          <div class="feature-icon">⚠️</div>
+          <div class="feature-icon">âš ï¸</div>
           <h3 class="text-2xl">Tamper Detection</h3>
           <p>Receipts use RFC 7515 JWS over RFC 8785 JCS with ES256. Any payload or header change invalidates verification under standard JOSE rules.</p>
         </div>
@@ -1036,7 +413,7 @@ Date: 2025-01-15</textarea>
       </div>
 
       <div class="text-center" style="padding-top: 32px; border-top: 1px solid var(--border);">
-        <p class="text-sm text-muted">© 2025 CertNode. Universal receipt infrastructure standard. All rights reserved.</p>
+        <p class="text-sm text-muted">Â© 2025 CertNode. Universal receipt infrastructure standard. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -1085,7 +462,7 @@ Date: 2025-01-15</textarea>
           tamperResult.style.display = 'block';
           tamperResult.innerHTML = `
             <div style="background: var(--error-bg); border: 1px solid var(--error-border); border-radius: 8px; padding: 16px;">
-              <strong style="color: var(--error);">⚠️ TAMPER DETECTED</strong>
+              <strong style="color: var(--error);">âš ï¸ TAMPER DETECTED</strong>
               <p style="margin: 8px 0 0 0; font-size: 14px;">Document has been modified since signing. Hash mismatch detected.</p>
               <p style="margin: 8px 0 0 0; font-size: 12px; font-family: monospace; color: var(--text-muted);">
                 Original Hash: a1b2c3d4e5f6...<br>
@@ -1097,7 +474,7 @@ Date: 2025-01-15</textarea>
           tamperResult.style.display = 'block';
           tamperResult.innerHTML = `
             <div style="background: var(--success-bg); border: 1px solid var(--success-border); border-radius: 8px; padding: 16px;">
-              <strong style="color: var(--success);">✓ INTEGRITY VERIFIED</strong>
+              <strong style="color: var(--success);">âœ“ INTEGRITY VERIFIED</strong>
               <p style="margin: 8px 0 0 0; font-size: 14px;">Document has not been modified since signing.</p>
             </div>
           `;
@@ -1122,6 +499,7 @@ Date: 2025-01-15</textarea>
   </script>
 </body>
 </html>
+
 
 
 

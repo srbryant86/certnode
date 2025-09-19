@@ -81,6 +81,10 @@
     }
   ],
   "rewrites": [
+    { "source": "/public/openapi.html", "destination": "/web/openapi.html" },
+    { "source": "/public/verify.html", "destination": "/web/verify.html" },
+    { "source": "/public/pricing/index.html", "destination": "/web/pricing.html" },
+    { "source": "/public/trust/index.html", "destination": "/web/trust.html" },
     { "source": "/openapi.json", "destination": "/public/openapi.json" },
     { "source": "/.well-known/jwks.json", "destination": "/public/.well-known/jwks.json" },
     { "source": "/trust/keys.jsonl", "destination": "/public/trust/keys.jsonl" },

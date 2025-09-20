@@ -320,16 +320,8 @@
         const receipt = JSON.parse(receiptText);
         const jwks = JSON.parse(jwksText);
 
-        // Call the actual verification API
-        const response = await fetch('/api/verify', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ receipt, jwks })
-        });
-
-        const result = await response.json();
+        // Use client-side verification from verify.js
+        const result = await CertNode.verifyReceipt(receipt, jwks);
 
         if (result.valid) {
           showResult(true, 'Receipt is valid and authentic!', result);
@@ -381,5 +373,8 @@
       }
     });
   </script>
+
+  <!-- Include verification library -->
+  <script src="/web/js/verify.js"></script>
 </body>
 </html>

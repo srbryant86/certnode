@@ -17,12 +17,18 @@ document.addEventListener('DOMContentLoaded', () => {
       ...data
     };
 
-    // Send to backend for revenue tracking
-    fetch('/api/track-lead', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(event)
-    }).catch(() => {}); // Don't break UX if tracking fails
+    // Send to backend for revenue tracking (with graceful fallback)
+    if (typeof fetch !== 'undefined') {
+      fetch('/api/track-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(event)
+      }).catch(() => {
+        // Graceful fallback - store locally for future sync
+        console.log('Lead tracking endpoint unavailable, event logged locally:', event);
+        localStorage.setItem('pending_lead_' + Date.now(), JSON.stringify(event));
+      });
+    }
 
     console.log('Lead Event:', event);
   }
@@ -77,12 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
       // Track the lead submission
       trackEvent('lead_submitted', leadData);
 
-      // For now, just log it (later: integrate with CRM/email)
-      console.log('New Lead:', leadData);
+      // Store lead data locally for now (works without backend)
+      localStorage.setItem('lead_' + Date.now(), JSON.stringify(leadData));
+      console.log('New Lead stored locally:', leadData);
 
-      // Show success message
+      // Show success message with fallback information
       statusDiv.className = 'status ok';
-      statusDiv.textContent = 'Thank you! We\'ll contact you within 24 hours.';
+      statusDiv.innerHTML = 'Thank you! Your information has been saved.<br><small>We\'ll contact you at: ' + leadData.email + '</small>';
 
       // Calculate potential deal value based on company size
       let potentialValue = 0;

@@ -183,25 +183,31 @@ async function verifyReceipt() {
 
     // Handle demo data specially to show expected outcomes
     if (receipt.signature && receipt.signature.includes('DEMO_')) {
-      const isValid = receipt.signature.includes('VALID');
+      const isValid = receipt.signature.includes('DEMO_VALID') && !receipt.signature.includes('DEMO_INVALID');
       console.log('Demo signature detected:', receipt.signature);
       console.log('Is valid?', isValid);
 
       if (isValid) {
-        showResult(true, 'Demo: Receipt Verification Successful! ✓', {
-          status: 'VALID - Signature verification passed',
-          algorithm: 'ES256 (ECDSA with P-256)',
-          kid: receipt.kid,
-          verification: 'Cryptographic signature matches the payload',
-          note: 'This demonstrates successful receipt verification'
+        showResult(true, 'Receipt is authentic and valid', {
+          summary: 'This receipt has not been tampered with',
+          verified: 'Digital signature is valid',
+          technical_details: {
+            algorithm: 'ES256 (ECDSA with P-256)',
+            key_id: receipt.kid,
+            status: 'Cryptographic verification passed'
+          },
+          note: 'Demo: This shows how valid receipts are verified'
         });
       } else {
-        showResult(false, 'Demo: Tampered Receipt Detected! ✗', {
-          status: 'INVALID - Signature verification failed',
-          reason: 'Payload was modified after signing',
-          detection: 'Cryptographic mismatch between signature and content',
-          security: 'Tampering prevents undetected data modification',
-          note: 'This demonstrates how CertNode catches fraud'
+        showResult(false, 'Receipt has been tampered with', {
+          summary: 'This receipt was modified after it was signed',
+          detected: 'Digital signature does not match the content',
+          security_benefit: 'Tampering was caught and prevented fraud',
+          technical_details: {
+            issue: 'Signature verification failed',
+            reason: 'Payload modification detected'
+          },
+          note: 'Demo: This shows how CertNode catches tampering'
         });
       }
       return;

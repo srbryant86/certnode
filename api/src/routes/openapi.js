@@ -10,7 +10,8 @@ let cachedSpec = null;
 let specLoadTime = null;
 
 function loadOpenAPISpec() {
-  const specPath = path.join(__dirname, '../../../web/openapi.json');
+  // Use the canonical public spec path to avoid drift with site viewer
+  const specPath = path.join(__dirname, '../../../public/openapi.json');
   
   try {
     const specContent = fs.readFileSync(specPath, 'utf8');

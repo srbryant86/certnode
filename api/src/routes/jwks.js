@@ -8,7 +8,7 @@ async function handle(req, res) {
   try {
     const jwks = loadLocalJwks();
     res.writeHead(200, { 
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/jwk-set+json',
       'Cache-Control': 'public, max-age=300'
     });
     res.end(JSON.stringify(jwks));

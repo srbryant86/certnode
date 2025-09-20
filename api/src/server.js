@@ -149,7 +149,7 @@ const server = http.createServer(async (req, res) => {
     } else if (url.pathname === "/verify") {
       filePath = path.join(process.cwd(), "web", "verify.html");
     } else if (url.pathname === "/openapi") {
-      filePath = path.join(process.cwd(), "web", "openapi.html");
+      filePath = path.join(process.cwd(), "public", "openapi.html");
     } else if (url.pathname === "/pricing") {
       filePath = path.join(process.cwd(), "web", "pricing.html");
     } else if (url.pathname === "/account") {
@@ -158,6 +158,14 @@ const server = http.createServer(async (req, res) => {
       filePath = path.join(process.cwd(), "web", "compliance-calculator.html");
     } else if (url.pathname === "/pitch") {
       filePath = path.join(process.cwd(), "web", "pitch.html");
+    } else if (url.pathname === "/trust") {
+      filePath = path.join(process.cwd(), "public", "trust", "index.html");
+    } else if (url.pathname === "/status") {
+      filePath = path.join(process.cwd(), "public", "status", "index.html");
+    } else if (url.pathname === "/usage") {
+      filePath = path.join(process.cwd(), "public", "usage", "index.html");
+    } else if (url.pathname === "/test-vectors") {
+      filePath = path.join(process.cwd(), "public", "test-vectors", "index.html");
     } else if (url.pathname.startsWith("/web/")) {
       const rel = url.pathname.replace(/^\/+/, '');
       filePath = path.join(process.cwd(), rel);

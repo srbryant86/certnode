@@ -1,4 +1,4 @@
-﻿name: CI
+name: CI
 
 on:
   pull_request:
@@ -21,9 +21,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Fast tests
         run: node tools/test-fast.js
-
-      - name: OpenAPI check
-        run: node tools/check-openapi.js
+      - name: Encoding & assets hygiene
+        run: node tools/check-encoding.js
 
       - name: Docs gate (PR only)
         if: github.event_name == 'pull_request'

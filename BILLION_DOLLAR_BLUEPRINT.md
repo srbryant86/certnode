@@ -357,3 +357,9 @@
 - [x] Completed item - Homepage redesigned: clearer hero, Quickstart, and developer sections (ASCII-safe, CSP-compatible)
 - [ ] 🚨 CURRENT PRIORITY: Deploy updated site and verify no-cache headers; then add SLA disclosure and header portal link
 - [ ] Next item - Surface SDK READMEs and code copy buttons on API page
+
+---
+Roadmap Update (Sep 2025)
+- [x] Completed item - Fixed Node SDK EdDSA verification; added EdDSA tests; set JWKS Content-Type to application/jwk-set+json; unified OpenAPI serving; improved local parity
+- [ ] ?? CURRENT PRIORITY: Enforce strict CSP sitewide (hash/nonce), remove inline scripts and any external CDNs
+- [ ] Next item - Repo-wide UTF-8 BOM removal and restoration of strategic docs to pristine encoding

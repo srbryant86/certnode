@@ -4,7 +4,7 @@ Strategic roadmap for building CertNode into a billion-dollar receipt infrastruc
 
 ## Session Roadmap Update
 
-- [x] Completed item — Node SDK EdDSA verification updated to use `crypto.verify('ed25519', ...)`; tests added
+- [x] Completed item — Specification page fixed (ES module script) and pricing fonts unified via shared CSS- [x] Completed item — Node SDK EdDSA verification updated to use `crypto.verify('ed25519', ...)`; tests added
 - [x] Completed item — JWKS endpoint returns `application/jwk-set+json` with `Cache-Control: public, max-age=300`
 - [x] Completed item — `/openapi` served via local Scalar viewer with `public/openapi.json` as the single source of truth
 - [x] Completed item — Encoding/asset hygiene check wired into CI and git hooks

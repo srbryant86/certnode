@@ -104,6 +104,7 @@
     { "source": "/signup/developer", "destination": "/public/signup/developer.html" },
     { "source": "/signup/starter", "destination": "/public/signup/starter.html" },
     { "source": "/signup/professional", "destination": "/public/signup/professional.html" },
+    { "source": "/dashboard", "destination": "/web/dashboard.html" },
     { "source": "/", "destination": "/web/index.html" }
   ]
 }

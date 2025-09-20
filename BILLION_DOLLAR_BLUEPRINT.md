@@ -1,40 +1,41 @@
-# The Billionâ€‘Dollar CertNode Blueprint
+# The Billion-Dollar CertNode Blueprint
 
-Strategic roadmap for building CertNode into a billionâ€‘dollar receipt infrastructure empire.
+Strategic roadmap for building CertNode into a billion-dollar receipt infrastructure empire.
 
 ## Session Roadmap Update
 
-- [x] Completed item â€” Node SDK EdDSA verification updated to use `crypto.verify('ed25519', ...)`; tests added
-- [x] Completed item â€” JWKS endpoint returns `application/jwk-set+json` with `Cache-Control: public, max-age=300`
-- [x] Completed item â€” `/openapi` served via local Scalar viewer with `public/openapi.json` as the single source of truth
-- [x] Completed item â€” Encoding/asset hygiene check wired into CI and git hooks
-- [ ] CURRENT PRIORITY â€” Consolidate CSP in `vercel.json`; minimize inline scripts; ensure no external CDNs
-- [ ] Next item â€” Trust Center polish (governance transparency) and publish rotation schedule
+- [x] Completed item — Node SDK EdDSA verification updated to use `crypto.verify('ed25519', ...)`; tests added
+- [x] Completed item — JWKS endpoint returns `application/jwk-set+json` with `Cache-Control: public, max-age=300`
+- [x] Completed item — `/openapi` served via local Scalar viewer with `public/openapi.json` as the single source of truth
+- [x] Completed item — Encoding/asset hygiene check wired into CI and git hooks
+- [x] Completed item — Site polish: system font stack, removed Google Fonts preconnect, cleaned titles and footers
+- [ ] CURRENT PRIORITY — Consolidate CSP in `vercel.json`; minimize inline scripts; ensure no external CDNs
+- [ ] Next item — Trust Center polish (governance transparency) and publish rotation schedule
 
 ## Vision & Positioning
-- Vision: Universal receipt protocol â€” open standard, not SaaS.
+- Vision: Universal receipt protocol — open standard, not SaaS.
 - Positioning: Protocol owner building an ecosystem; infrastructure mindset.
-- Phase: 1 (0â€“6 months) â€” Prove the standard works.
+- Phase: 1 (0–6 months) — Prove the standard works.
 
 ## Strategic Pillars
-- Standardsâ€‘first (JWS, JCS, JWKS) and ecosystem enablement.
+- Standards-first (JWS, JCS, JWKS) and ecosystem enablement.
 - Enterprise credibility: trust center, JWKS rotation, security headers, governance.
-- Developerâ€‘first: SDKs, examples, validator, OpenAPI, public test vectors.
+- Developer-first: SDKs, examples, validator, OpenAPI, public test vectors.
 - Usage metering: foundational limits, metrics, billing primitives.
 
 ## Roadmap Status (Sep 2025)
-- [x] Completed â€” Node SDK EdDSA verification fix + tests
-- [x] Completed â€” JWKS endpoint Contentâ€‘Type: application/jwkâ€‘set+json
-- [x] Completed â€” Unified OpenAPI serving (local + prod) using local Scalar
-- [x] Completed â€” Encoding/asset hygiene checks added to CI
+- [x] Completed — Node SDK EdDSA verification fix + tests
+- [x] Completed — JWKS endpoint Content-Type: application/jwk-set+json
+- [x] Completed — Unified OpenAPI serving (local + prod) using local Scalar
+- [x] Completed — Encoding/asset hygiene checks added to CI
 - [ ] CURRENT PRIORITY: Consolidate CSP in vercel.json; remove inline scripts via hashes/nonces; eliminate external CDNs
-- [ ] Next item â€” Repoâ€‘wide UTFâ€‘8 normalization and restoration of longâ€‘form strategic docs; confirm pa11y/axe thresholds
+- [ ] Next item — Repo-wide UTF-8 normalization and restoration of long-form strategic docs; confirm pa11y/axe thresholds
 
 ## Immediate Objectives
-1) Professional site infrastructure â€” strict security headers + CSP
-2) Standards governance signals â€” transparent rotation log + trust docs
-3) Developer experience â€” quickstarts, validator polish, crossâ€‘language vectors
-4) Metering foundations â€” usage, limits, and observability
+1) Professional site infrastructure — strict security headers + CSP
+2) Standards governance signals — transparent rotation log + trust docs
+3) Developer experience — quickstarts, validator polish, cross-language vectors
+4) Metering foundations — usage, limits, and observability
 
 ## Success Metrics (Phase 1)
 - 1,000+ developers engaged
@@ -42,5 +43,4 @@ Strategic roadmap for building CertNode into a billionâ€‘dollar receipt infrastr
 - Enterprise credibility established
 - Revenue model validated
 
-Note: Document normalized to UTFâ€‘8 (no BOM). Previous encoding artifacts removed.
-
+Note: Document normalized to UTF-8 (no BOM). Previous encoding artifacts removed.

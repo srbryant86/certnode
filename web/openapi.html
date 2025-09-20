@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
     <title>Technical Specification — CertNode Standard</title>
+    <link rel="canonical" href="https://certnode.io/openapi">
     <style>
         :root {
             --bg: #fafbfc;
@@ -29,11 +30,13 @@
 
         body {
             margin: 0;
-            font-family: 'Georgia', 'Times New Roman', serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
             background: var(--bg);
             color: var(--text);
             line-height: 1.7;
             letter-spacing: -0.01em;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         header {
@@ -155,6 +158,21 @@
         #swagger-ui {
             max-width: none;
             margin-top: 0;
+            min-height: 600px;
+        }
+
+        .loading-placeholder {
+            background: linear-gradient(90deg, #f0f2f5 25%, #e4e7ea 50%, #f0f2f5 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+            height: 20px;
+            margin: 8px 0;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
     </style>
 </head>
@@ -164,7 +182,7 @@
             <a href="/" class="logo">CertNode</a>
             <nav class="nav">
                 <a href="/">Home</a>
-                <a href="/verify">Try Demo</a>
+                <a href="/verify">Validator</a>
                 <a href="/pricing">Pricing</a>
                 <a href="/openapi" aria-current="page">Specification</a>
                 <a href="/trust">Trust</a>
@@ -258,12 +276,46 @@
                 <a href="/openapi.json" style="color: var(--primary); margin-right: 12px;">Download JSON</a>
               </div>
             </div>
-            <div id="swagger-ui"></div>
+            <div id="swagger-ui">
+                <div class="loading-placeholder"></div>
+                <div class="loading-placeholder" style="width: 60%;"></div>
+                <div class="loading-placeholder"></div>
+                <div class="loading-placeholder" style="width: 80%;"></div>
+            </div>
         </div>
     </div>
-    
+
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.3/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.3/swagger-ui-standalone-preset.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize SwaggerUI
+            const ui = SwaggerUIBundle({
+                url: '/openapi.json',
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout",
+                tryItOutEnabled: true,
+                requestInterceptor: (request) => {
+                    return request;
+                },
+                onComplete: () => {
+                    console.log('SwaggerUI loaded successfully');
+                }
+            });
+
+            window.ui = ui;
+        });
+    </script>
     <script src="/web/js/openapi-init.js" defer></script>
-  <script src="/web/js/copy.js" defer></script>
+    <script src="/web/js/copy.js" defer></script>
 </body>
 </html>
 

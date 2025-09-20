@@ -127,6 +127,63 @@ a {
   transition: all 0.2s ease;
 }
 
+/* Layout helpers */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-8); }
+.section { padding: var(--space-8) 0; }
+.section--hero { padding: var(--space-20) 0 var(--space-16); background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-600) 100%); color: var(--text-inverse); }
+.text-center { text-align: center; }
+.mb-0 { margin-bottom: 0; }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-8 { margin-bottom: var(--space-8); }
+.row { display: flex; gap: var(--space-3); align-items: center; }
+.row.justify-end { justify-content: flex-end; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); }
+@media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+
+/* Header */
+header { background: #fff; border-bottom: 1px solid var(--border-primary); position: sticky; top: 0; z-index: 40; }
+.header-container { display: flex; justify-content: space-between; align-items: center; padding: var(--space-4) 0; }
+.logo { font-weight: 700; color: var(--primary); text-decoration: none; letter-spacing: -0.02em; }
+.nav { display: flex; gap: var(--space-6); align-items: center; }
+.nav a { color: var(--text-tertiary); text-decoration: none; font-weight: 500; }
+.nav a:hover, .nav a[aria-current="page"] { color: var(--primary); }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); padding: 10px 16px; border: 1px solid var(--border-primary); background: #fff; color: var(--text-primary); text-decoration: none; cursor: pointer; transition: box-shadow .15s ease, transform .15s ease, background .15s ease; }
+.btn:hover { box-shadow: var(--shadow-sm); }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-600); }
+.btn-secondary { background: #fff; color: var(--primary); border-color: var(--primary-100); }
+.btn-lg { padding: 12px 18px; font-weight: 600; }
+.btn:focus-visible { outline: 2px solid var(--primary-light); outline-offset: 2px; }
+
+/* Cards and panels */
+.card { background: #fff; border: 1px solid var(--border-primary); border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-sm); }
+.technical-panel { background: #fff; border: 1px solid var(--border-primary); border-radius: var(--radius-lg); padding: var(--space-6); }
+.notice { border-left: 4px solid var(--primary); background: var(--primary-50); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: var(--space-6); }
+.notice--info { background: linear-gradient(135deg, #e7f3ff 0%, #f0f9ff 100%); }
+
+/* Forms */
+label.stat-label { display: block; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-2); }
+input[type="url"], input[type="text"], textarea { width: 100%; border: 1px solid var(--border-primary); border-radius: var(--radius-md); padding: 10px 12px; font: inherit; color: var(--text-primary); background: #fff; }
+textarea { min-height: 180px; resize: vertical; }
+input:focus, textarea:focus { outline: 2px solid var(--primary-100); border-color: var(--primary-600); }
+
+/* Dropzone */
+.dropzone { display: grid; place-items: center; min-height: 140px; border: 1.5px dashed var(--border-secondary); border-radius: var(--radius-md); background: var(--bg-secondary); color: var(--text-tertiary); cursor: pointer; }
+.dropzone:focus-visible { outline: 2px solid var(--primary-light); outline-offset: 2px; }
+
+/* Status area */
+#status { border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); background: var(--bg-tertiary); border: 1px solid var(--border-primary); min-height: 20px; }
+#status:focus { outline: 2px solid var(--primary-light); outline-offset: 2px; }
+
+/* Footer */
+footer { background: #0f172a; color: #cbd5e1; padding: var(--space-8) 0; }
+footer a { color: #93c5fd; }
+
 a:hover {
   color: var(--primary-dark);
   text-decoration: underline;

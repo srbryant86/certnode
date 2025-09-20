@@ -14,10 +14,7 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Receipt Validator � CertNode" />
   <meta name="twitter:description" content="Verify CertNode receipts quickly in the browser." />
-<style>
-    .btn-primary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    #status:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
-  </style>
+
 </head>
 <body>
   <a href="#main" class="skip-link">Skip to main content</a>
@@ -37,28 +34,28 @@
   </header>
 
   <main id="main">
-    <section class="verify-hero">
-      <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-        <h1>Receipt Validator</h1>
-        <p>Paste or drop a receipt and a JWKS to verify authenticity with WebCrypto (ES256 over JWS/JCS).</p>
-      </div>
-    </section>
+    <section class="section section--hero">
+  <div class="container text-center">
+    <h1 class="mb-2">Receipt Validator</h1>
+    <p class="mb-0" style="color: rgba(255,255,255,0.9)">Paste or drop a receipt and a JWKS to verify authenticity with WebCrypto (ES256/EdDSA over JWS/JCS).</p>
+  </div>
+</section>
 
-    <div class="container" style="padding: 2rem 0;">
+    <div class="container section">
       <div id="status" class="status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
 
       <!-- Instructions -->
-      <div style="background: linear-gradient(135deg, #e7f3ff 0%, #f0f9ff 100%); border-left: 4px solid var(--primary); padding: 24px; border-radius: 8px; margin-bottom: 32px;">
-        <h3 style="margin: 0 0 12px 0; color: var(--primary); font-size: 18px;">How to Use the Validator</h3>
-        <ol style="margin: 0; padding-left: 20px; color: var(--text); line-height: 1.6;">
-          <li>Load your receipt JSON file (contains protected, payload, signature, kid fields)</li>
-          <li>Load the corresponding JWKS file (contains the public key for verification)</li>
-          <li>Click "Verify Receipt" to validate the cryptographic signature</li>
-        </ol>
-        <p style="margin: 16px 0 0 0; color: var(--text-muted); font-size: 14px;">
-          <strong>Need test data?</strong> Use the "Load Sample" buttons below to try with example files.
-        </p>
-      </div>
+      <div class="notice notice--info mb-6">
+  <h3 class="mb-2" style="color: var(--primary); font-size: var(--font-size-xl);">How to Use the Validator</h3>
+  <ol class="mb-0" style="padding-left: 20px; color: var(--text-primary); line-height: 1.6;">
+    <li>Load your receipt JSON file (contains protected, payload, signature, kid fields)</li>
+    <li>Load the corresponding JWKS file (contains the public key for verification)</li>
+    <li>Click "Verify Receipt" to validate the cryptographic signature</li>
+  </ol>
+  <p class="mb-0" style="margin-top: var(--space-3); color: var(--text-tertiary); font-size: var(--font-size-sm);">
+    <strong>Need test data?</strong> Use the "Load Sample" buttons below to try with example files.
+  </p>
+</div>
 
       <section class="technical-panel">
         <h2>Inputs</h2>

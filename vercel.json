@@ -9,7 +9,7 @@
     {
       "source": "/",
       "headers": [
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'sha256-NMHKIaaHpHSEwYLo18ITbJj1OQR1P2JxSB0wixVYiDg='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://api.certnode.io; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'" }
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'sha256-NMHKIaaHpHSEwYLo18ITbJj1OQR1P2JxSB0wixVYiDg='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'" }
       ]
     },
     {
@@ -19,16 +19,10 @@
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self'; base-uri 'self'; frame-ancestors 'none'" }
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:; font-src 'self'; base-uri 'self'; frame-ancestors 'none'" }
       ]
     },
-    {
-      "source": "/verify",
-      "headers": [
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; connect-src 'self' https:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'" },
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
-      ]
-    },
+    
     {
       "source": "/web/(.*)\\.html",
       "headers": [ { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" } ]

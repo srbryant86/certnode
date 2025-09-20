@@ -57,14 +57,14 @@ function mockResponse() {
 
   // Test 3: setCorsHeaders
   const res1 = mockResponse();
-  const allowed1 = setCorsHeaders(res1, 'https://example.com', allowedOrigins);
+  const allowed1 = setCorsHeaders(mockRequest('GET',{ origin: 'https://example.com' }), res1, 'https://example.com', allowedOrigins);
   assert.strictEqual(allowed1, true);
   assert.strictEqual(res1.getHeaders()['Access-Control-Allow-Origin'], 'https://example.com');
   assert.strictEqual(res1.getHeaders()['Access-Control-Allow-Methods'], 'GET, POST, OPTIONS');
   assert.strictEqual(res1.getHeaders()['Vary'], 'Origin');
 
   const res2 = mockResponse();
-  const allowed2 = setCorsHeaders(res2, 'https://evil.com', allowedOrigins);
+  const allowed2 = setCorsHeaders(mockRequest('GET',{ origin: 'https://evil.com' }), res2, 'https://evil.com', allowedOrigins);
   assert.strictEqual(allowed2, false);
   assert.strictEqual(res2.getHeaders()['Access-Control-Allow-Origin'], undefined);
   console.log('✓ setCorsHeaders works correctly');

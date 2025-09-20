@@ -1,4 +1,4 @@
-﻿/* File: api/src/routes/verify.js
+/* File: api/src/routes/verify.js
    Dev-only HTTP route and pure verifier that checks a detached JWS using a JWKS.
    - ES256 only
    - JCS canonicalization must match the original sign input

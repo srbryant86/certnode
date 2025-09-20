@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
 echo "===> Terraform fmt/validate/tflint/tfsec"
 pushd infra/aws/terraform >/dev/null || exit 1

@@ -1,4 +1,4 @@
-﻿const assert = require("assert");
+const assert = require("assert");
 const { createRateLimiter } = require("../src/plugins/ratelimit");
 
 (function test_bucket_blocks_on_limit(){

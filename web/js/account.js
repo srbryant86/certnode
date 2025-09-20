@@ -1,4 +1,4 @@
-﻿document.addEventListener(''DOMContentLoaded'', function(){
+document.addEventListener(''DOMContentLoaded'', function(){
   let currentApiKey = null;
 
   const urlParams = new URLSearchParams(window.location.search);

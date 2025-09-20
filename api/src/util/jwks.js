@@ -1,4 +1,4 @@
-﻿/* File: api/src/util/jwks.js
+/* File: api/src/util/jwks.js
    Load a JWKS for verification:
    - Prefer DI via function argument in verify (tests use this path).
    - Otherwise: env JWKS_JSON, env JWKS_PATH, or local web/.well-known/certnode-jwks.json.

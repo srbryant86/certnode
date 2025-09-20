@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Stop'
 
 function Write-Step($msg){ Write-Host "[publish-web-sdk] $msg" }
 

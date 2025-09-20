@@ -1,4 +1,4 @@
-﻿/* File: api/src/aws/kms.js
+/* File: api/src/aws/kms.js
    KMS adapter with:
    - RAW ECDSA_SHA_256 signing (DER -> P1363 r||s)
    - Exponential backoff (full jitter) + max retries

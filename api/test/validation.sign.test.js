@@ -1,4 +1,4 @@
-﻿const assert = require("assert");
+const assert = require("assert");
 const { Readable } = require("stream");
 const { readJsonLimited, validateSignBody } = require("../src/plugins/validation");
 const { signPayload } = require("../src/routes/sign");

@@ -1,4 +1,4 @@
-﻿const assert = require("assert");
+const assert = require("assert");
 const { generateKeyPairSync, createSign, createPublicKey } = require("crypto");
 const { createKmsAdapter } = require("../src/aws/kms");
 

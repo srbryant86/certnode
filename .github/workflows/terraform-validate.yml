@@ -1,4 +1,4 @@
-﻿name: terraform-validate
+name: terraform-validate
 
 on:
   push:

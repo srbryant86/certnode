@@ -1,4 +1,4 @@
-﻿# Contribution Guidelines
+# Contribution Guidelines
 
 Task taxonomy and commit subjects
 - Use prefixed labels with IDs for traceability. See `docs/TASK_TAXONOMY.md`.

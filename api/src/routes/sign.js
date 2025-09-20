@@ -1,4 +1,4 @@
-﻿const { createHash } = require('crypto');
+const { createHash } = require('crypto');
 const signer = require('../crypto/signer');
 
 const { canonicalize } = require('../util/jcs');

@@ -1,4 +1,4 @@
-﻿/* File: api/src/crypto/signer.js
+/* File: api/src/crypto/signer.js
    Single signing surface:
    - SIGNING_MODE=kms  => AWS KMS RAW ECDSA_SHA_256 via adapter (retries + breaker)
      KMS_KEY_ID required

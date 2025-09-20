@@ -1,4 +1,4 @@
-﻿(function(){
+(function(){
   function showManageBilling(){
     var link = document.getElementById('manage-billing');
     if (!link) return;

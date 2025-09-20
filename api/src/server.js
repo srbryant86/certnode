@@ -1,4 +1,4 @@
-﻿const http = require("http");
+const http = require("http");
 const { handle: signHandler } = require("./routes/sign");
 const { handle: jwksHandler } = require("./routes/jwks");
 const { handle: healthHandler } = require("./routes/health");
@@ -167,6 +167,9 @@ const server = http.createServer(async (req, res) => {
     } else if (url.pathname === "/test-vectors") {
       filePath = path.join(process.cwd(), "public", "test-vectors", "index.html");
     } else if (url.pathname.startsWith("/web/")) {
+      const rel = url.pathname.replace(/^\/+/, '');
+      filePath = path.join(process.cwd(), rel);
+    } else if (url.pathname.startsWith("/public/")) {
       const rel = url.pathname.replace(/^\/+/, '');
       filePath = path.join(process.cwd(), rel);
     } else if (url.pathname.startsWith("/assets/")) {

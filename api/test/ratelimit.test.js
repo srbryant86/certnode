@@ -1,4 +1,4 @@
-﻿const assert = require("assert");
+const assert = require("assert");
 const { Readable } = require("stream");
 const { createRateLimiter } = require("../src/plugins/ratelimit");
 

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Ensure encoding/asset checks on push too
+echo "Running encoding and asset checks before push..."
+node tools/check-encoding.js
+

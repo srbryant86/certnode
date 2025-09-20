@@ -1,4 +1,4 @@
-﻿name: Release Web SDK
+name: Release Web SDK
 on:
   push:
     tags: [ 'sdk-web-v*' ]

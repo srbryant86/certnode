@@ -1,4 +1,4 @@
-﻿/* File: api/src/plugins/ratelimit.js
+/* File: api/src/plugins/ratelimit.js
    Token-bucket per-IP limiter for /v1/sign.
    - No external deps. Works behind ALB (uses X-Forwarded-For first).
    - Tunables (env):

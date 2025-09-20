@@ -9,7 +9,7 @@
     "dependencies":  {
                          "stripe":  "^13.5.0"
                      },
-    "scripts":  {
+  "scripts":  {
                     "start":  "node api/src/index.js",
                     "test:fast":  "node tools/test-fast.js",
                     "bench":  "node tools/benchmark.js",
@@ -23,6 +23,8 @@
                     "example:sign":  "node examples/node-sign.js --payload \u0027{\"hello\":\"world\",\"n\":42}\u0027",
                     "example:verify":  "node examples/node-verify.js --receipt examples/receipt.example.json --jwks examples/jwks.example.json",
                     "docs:update":  "node scripts/audit-roadmap.js \u0026\u0026 node scripts/audit-tasks.js",
-                    "tsa:canary":  "node tools/tsa-canary.js"
+                    "tsa:canary":  "node tools/tsa-canary.js",
+                    "prepare": "git config core.hooksPath .githooks",
+                    "lint:encoding": "node tools/check-encoding.js"
                 }
 }

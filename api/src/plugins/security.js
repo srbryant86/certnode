@@ -2,7 +2,10 @@ function securityHeaders(req,res){
   res.setHeader('X-Content-Type-Options','nosniff');
   res.setHeader('Referrer-Policy','strict-origin-when-cross-origin');
   res.setHeader('X-Frame-Options','SAMEORIGIN');
-  res.setHeader('X-XSS-Protection','1; mode=block');
+  // Legacy header disabled by default; enable only if explicitly requested
+  if (String(process.env.LEGACY_X_XSS_PROTECTION||'') === '1') {
+    res.setHeader('X-XSS-Protection','1; mode=block');
+  }
   res.setHeader('Permissions-Policy','camera=(), microphone=(), geolocation=()');
   // Apply a conservative CSP for API/JSON endpoints; static site CSP is handled by vercel.json
   try {

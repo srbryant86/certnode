@@ -1,4 +1,4 @@
-﻿{ "required": [
+{ "required": [
   "REPO_INDEX.md","README.md","LICENSE","CHANGELOG.md","CONTRIBUTING.md","CODE_OF_CONDUCT.md",
   "infra/aws/terraform/0-providers.tf","infra/aws/terraform/1-variables.tf","infra/aws/terraform/2-vpc.tf",
   "infra/aws/terraform/3-iam.tf","infra/aws/terraform/4-kms.tf","infra/aws/terraform/5-rds.tf",

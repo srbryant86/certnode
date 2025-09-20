@@ -1,4 +1,4 @@
-﻿document.addEventListener(''DOMContentLoaded'', function(){
+document.addEventListener(''DOMContentLoaded'', function(){
   const $ = (s) => document.querySelector(s);
   function formatCurrency(amount){ return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(amount); }
   function getBaseCostByRevenue(revenue){ const revenueCosts={ 'under-10m':500000,'10m-100m':2000000,'100m-1b':10000000,'over-1b':50000000 }; return revenueCosts[revenue]||1000000; }

@@ -218,8 +218,8 @@ async function verifyReceipt({ receipt, jwks }) {
       const spki = spkiFromEd25519Jwk(key);
       const publicKey = crypto.createPublicKey({ key: spki, format: 'der', type: 'spki' });
 
-      // For Ed25519, use one-shot verify with algorithm null
-      isValid = crypto.verify(null, Buffer.from(signingInput, 'utf8'), publicKey, signatureBuf);
+      // For Ed25519, use one-shot verify with explicit algorithm (Node 20+)
+      isValid = crypto.verify('ed25519', Buffer.from(signingInput, 'utf8'), publicKey, signatureBuf);
     }
     
     if (!isValid) {

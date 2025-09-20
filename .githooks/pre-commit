@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Fast repo hygiene checks before commit
+echo "Running encoding and asset checks..."
+node tools/check-encoding.js
+
+# Optional fast tests (skip if not present)
+if [ -f tools/test-fast.js ]; then
+  echo "Running fast tests..."
+  node tools/test-fast.js || { echo "Fast tests failed"; exit 1; }
+fi
+

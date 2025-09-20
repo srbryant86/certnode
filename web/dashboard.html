@@ -154,10 +154,30 @@
         </div>
     </header>
 
-    <main class="container">
+    <!-- Admin Authentication Modal -->
+    <div id="auth-modal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+        <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 400px; width: 90%;">
+            <h2 style="margin: 0 0 1rem 0; text-align: center;">Admin Access Required</h2>
+            <form id="auth-form">
+                <input type="password" id="admin-password" placeholder="Enter admin password"
+                       style="width: 100%; padding: 1rem; border: 1px solid #e1e5e9; border-radius: 8px; margin-bottom: 1rem; font-size: 1rem;">
+                <button type="submit" style="width: 100%; padding: 1rem; background: #3b82f6; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                    Access Dashboard
+                </button>
+            </form>
+            <div id="auth-error" style="color: #ef4444; margin-top: 1rem; text-align: center; display: none;">
+                Incorrect password. Please try again.
+            </div>
+        </div>
+    </div>
+
+    <main class="container" id="dashboard-content" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin: 2rem 0;">
             <h1>Analytics Dashboard</h1>
-            <button class="refresh-btn" onclick="loadDashboard()">Refresh Data</button>
+            <div>
+                <button class="refresh-btn" onclick="loadDashboard()">Refresh Data</button>
+                <button class="refresh-btn" onclick="logout()" style="background: #ef4444; margin-left: 0.5rem;">Logout</button>
+            </div>
         </div>
 
         <!-- Key Metrics -->
@@ -244,14 +264,95 @@
     <script>
         // Dashboard state
         let dashboardData = null;
+        let isAuthenticated = false;
+
+        // Admin authentication
+        const ADMIN_PASSWORD_HASH = 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'; // SHA-256 of 'hello'
+
+        // Check if already authenticated
+        function checkAuth() {
+            const token = localStorage.getItem('dashboard_auth');
+            if (token === ADMIN_PASSWORD_HASH) {
+                showDashboard();
+                return true;
+            }
+            return false;
+        }
+
+        // Hash password (simple SHA-256)
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hash = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Authenticate user
+        async function authenticate(password) {
+            const hash = await hashPassword(password);
+            if (hash === ADMIN_PASSWORD_HASH) {
+                localStorage.setItem('dashboard_auth', hash);
+                showDashboard();
+                return true;
+            }
+            return false;
+        }
+
+        // Show dashboard content
+        function showDashboard() {
+            document.getElementById('auth-modal').style.display = 'none';
+            document.getElementById('dashboard-content').style.display = 'block';
+            isAuthenticated = true;
+            loadDashboard();
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('dashboard_auth');
+            document.getElementById('auth-modal').style.display = 'flex';
+            document.getElementById('dashboard-content').style.display = 'none';
+            isAuthenticated = false;
+        }
+
+        // Handle auth form submission
+        document.getElementById('auth-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('admin-password').value;
+            const success = await authenticate(password);
+
+            if (!success) {
+                document.getElementById('auth-error').style.display = 'block';
+                document.getElementById('admin-password').value = '';
+            }
+        });
+
+        // Check auth on page load
+        window.addEventListener('load', () => {
+            if (!checkAuth()) {
+                document.getElementById('auth-modal').style.display = 'flex';
+            }
+        });
 
         // Load dashboard data
         async function loadDashboard() {
+            if (!isAuthenticated) return;
+
             const metricsGrid = document.getElementById('metrics-grid');
             metricsGrid.classList.add('loading');
 
             try {
-                const response = await fetch('/api/dashboard/metrics');
+                // Use admin token for API access
+                const adminToken = process.env.ADMIN_TOKEN || 'demo-admin-token-123';
+                const response = await fetch('/api/dashboard/metrics', {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
                 dashboardData = await response.json();
 
                 updateMetrics(dashboardData);
@@ -363,8 +464,23 @@
 
         // Export data
         async function exportData() {
+            if (!isAuthenticated) {
+                alert('Authentication required');
+                return;
+            }
+
             try {
-                const response = await fetch('/api/dashboard/export');
+                const adminToken = process.env.ADMIN_TOKEN || 'demo-admin-token-123';
+                const response = await fetch('/api/dashboard/export', {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
                 const blob = await response.blob();
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');

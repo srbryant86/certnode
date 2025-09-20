@@ -105,8 +105,17 @@ const server = http.createServer(async (req, res) => {
     return metricsHandler(req, res);
   }
 
-  // Dashboard API endpoints
+  // Dashboard API endpoints (admin only)
   if (url.pathname.startsWith("/api/dashboard/")) {
+    // Simple admin token check (in production, use proper JWT/OAuth)
+    const authHeader = req.headers.authorization;
+    const adminToken = process.env.ADMIN_TOKEN || 'demo-admin-token-123';
+
+    if (!authHeader || authHeader !== `Bearer ${adminToken}`) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: 'Unauthorized. Admin access required.' }));
+    }
+
     const { getDashboardMetrics, trackSubscriber, trackTrial } = require("./routes/dashboard");
 
     if (req.method === "GET" && url.pathname === "/api/dashboard/metrics") {

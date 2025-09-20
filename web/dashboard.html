@@ -281,11 +281,14 @@
 
         // Authenticate user
         function authenticate(password) {
+            console.log('Checking password:', password, 'against:', ADMIN_PASSWORD);
             if (password === ADMIN_PASSWORD) {
+                console.log('Authentication successful');
                 localStorage.setItem('dashboard_auth', 'authenticated');
                 showDashboard();
                 return true;
             }
+            console.log('Authentication failed');
             return false;
         }
 
@@ -308,8 +311,11 @@
         // Handle auth form submission
         document.getElementById('auth-form').addEventListener('submit', (e) => {
             e.preventDefault();
+            console.log('Form submitted');
             const password = document.getElementById('admin-password').value;
+            console.log('Password entered:', password);
             const success = authenticate(password);
+            console.log('Authentication result:', success);
 
             if (!success) {
                 document.getElementById('auth-error').style.display = 'block';
@@ -333,7 +339,7 @@
 
             try {
                 // Use admin token for API access
-                const adminToken = process.env.ADMIN_TOKEN || 'demo-admin-token-123';
+                const adminToken = 'demo-admin-token-123';
                 const response = await fetch('/api/dashboard/metrics', {
                     headers: {
                         'Authorization': `Bearer ${adminToken}`

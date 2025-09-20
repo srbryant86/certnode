@@ -419,7 +419,7 @@ header {
 
 /* Modern Hero Section */
 .hero {
-  background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-600) 50%, var(--primary-500) 100%);
+  background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-900) 100%);
   color: var(--text-inverse);
   padding: var(--space-24) 0;
   text-align: center;

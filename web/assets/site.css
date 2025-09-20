@@ -469,6 +469,7 @@ header {
   box-shadow: var(--shadow-lg);
   position: relative;
 }
+ .feature-icon svg { width: 36px; height: 36px; stroke: currentColor; }
 
 .feature:hover .feature-icon {
   transform: scale(1.1) rotate(5deg);

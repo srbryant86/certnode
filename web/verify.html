@@ -3,21 +3,196 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-  <title>Receipt Validator � CertNode</title>
+  <title>Receipt Validator - CertNode</title>
   <link rel="stylesheet" href="/web/assets/site.css">
-  <link rel="canonical" href="https://certnode.io/verify">
-    <meta property="og:title" content="Receipt Validator � CertNode" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://certnode.io/verify" />
-  <meta property="og:description" content="Verify CertNode receipts quickly in the browser." />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Receipt Validator � CertNode" />
-  <meta name="twitter:description" content="Verify CertNode receipts quickly in the browser." />
-
+  <style>
+    .validator-hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+    }
+    .validator-hero h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .validator-hero p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .validator-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .quick-start {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+    .quick-start h2 {
+      margin: 0 0 1rem 0;
+      font-size: 1.8rem;
+    }
+    .quick-start p {
+      margin: 0 0 1.5rem 0;
+      opacity: 0.9;
+    }
+    .demo-button {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 2px solid rgba(255,255,255,0.3);
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .demo-button:hover {
+      background: rgba(255,255,255,0.3);
+      border-color: rgba(255,255,255,0.5);
+    }
+    .validation-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .input-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border: 2px solid #e1e5e9;
+    }
+    .input-card h3 {
+      margin: 0 0 1rem 0;
+      color: #1e40af;
+      font-size: 1.3rem;
+    }
+    .input-card textarea {
+      width: 100%;
+      min-height: 200px;
+      border: 1px solid #e1e5e9;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.9rem;
+      resize: vertical;
+    }
+    .input-card textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .btn {
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      border: none;
+      font-size: 1rem;
+    }
+    .btn-primary {
+      background: #3b82f6;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: #3b82f6;
+      border: 2px solid #3b82f6;
+    }
+    .btn-secondary:hover {
+      background: #3b82f6;
+      color: white;
+    }
+    .result-area {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border: 2px solid #e1e5e9;
+      margin-top: 2rem;
+      display: none;
+    }
+    .result-success {
+      border-color: #10b981;
+    }
+    .result-error {
+      border-color: #ef4444;
+    }
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .result-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    .result-icon.success {
+      background: #10b981;
+      color: white;
+    }
+    .result-icon.error {
+      background: #ef4444;
+      color: white;
+    }
+    .result-message {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .result-details {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    .result-details pre {
+      margin: 0;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+    @media (max-width: 768px) {
+      .validation-area {
+        grid-template-columns: 1fr;
+      }
+      .actions {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
 </head>
 <body>
-  <a href="#main" class="skip-link">Skip to main content</a>
   <header>
     <div class="header-container">
       <a href="/" class="logo">CertNode</a>
@@ -28,93 +203,183 @@
         <a href="/trust">Trust</a>
         <a href="/pricing">Pricing</a>
         <a href="https://github.com/srbryant86/certnode" target="_blank" rel="noopener">GitHub</a>
-        <a href="/#" id="manage-billing" style="display:none">Manage Billing</a>
       </nav>
     </div>
   </header>
 
-  <main id="main">
-    <section class="section section--hero">
-  <div class="container text-center">
-    <h1 class="mb-2">Receipt Validator</h1>
-    <p class="mb-0" style="color: rgba(255,255,255,0.9)">Paste or drop a receipt and a JWKS to verify authenticity with WebCrypto (ES256/EdDSA over JWS/JCS).</p>
+  <div class="validator-hero">
+    <div class="validator-container">
+      <h1>Receipt Validator</h1>
+      <p>Verify the authenticity and integrity of CertNode receipts using cryptographic signatures. Upload your receipt and JWKS files or try with our sample data.</p>
+    </div>
   </div>
-</section>
 
-    <div class="container section">
-      <div id="status" class="status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
-
-      <!-- Instructions -->
-      <div class="notice notice--info mb-6">
-  <h3 class="mb-2" style="color: var(--primary); font-size: var(--font-size-xl);">How to Use the Validator</h3>
-  <ol class="mb-0" style="padding-left: 20px; color: var(--text-primary); line-height: 1.6;">
-    <li>Load your receipt JSON file (contains protected, payload, signature, kid fields)</li>
-    <li>Load the corresponding JWKS file (contains the public key for verification)</li>
-    <li>Click "Verify Receipt" to validate the cryptographic signature</li>
-  </ol>
-  <p class="mb-0" style="margin-top: var(--space-3); color: var(--text-tertiary); font-size: var(--font-size-sm);">
-    <strong>Need test data?</strong> Use the "Load Sample" buttons below to try with example files.
-  </p>
-</div>
-
-      <section class="technical-panel">
-        <h2>Inputs</h2>
-        <div class="grid-2">
-          <div>
-            <label for="receipt" class="stat-label">Receipt (JSON)</label>
-            <div id="receipt-drop" class="dropzone" tabindex="0" aria-label="Drop receipt file or click to choose">Drop file or click to choose</div>
-            <input id="receipt-file" type="file" accept=".json,.txt" style="display:none" />
-            <div class="toolbar">
-              <button id="receipt-sample" class="btn-secondary" type="button">Load sample</button>
-              <button id="receipt-format" class="btn-secondary" type="button">Format</button>
-              <button id="receipt-minify" class="btn-secondary" type="button">Minify</button>
-            </div>
-            <textarea id="receipt" aria-label="Receipt JSON"></textarea>
-          </div>
-          <div>
-            <label for="jwks" class="stat-label">JWKS (JSON)</label>
-            <div class="row">
-              <input id="jwks-url" type="url" placeholder="https://example.com/.well-known/jwks.json" aria-label="JWKS URL" />
-              <button id="fetch-jwks" class="btn-secondary" type="button">Fetch JWKS</button>
-            </div>
-            <div id="jwks-drop" class="dropzone" tabindex="0" aria-label="Drop JWKS file or click to choose">Drop file or click to choose</div>
-            <input id="jwks-file" type="file" accept=".json,.txt" style="display:none" />
-            <div class="toolbar">
-              <button id="jwks-format" class="btn-secondary" type="button">Format</button>
-              <button id="jwks-minify" class="btn-secondary" type="button">Minify</button>
-            </div>
-            <textarea id="jwks" aria-label="JWKS JSON"></textarea>
-          </div>
-        </div>
-        <div class="row justify-end">
-          <button id="clear" class="btn-secondary" type="button">Clear</button>
-          <button id="verify" class="btn-primary" type="button">Verify</button>
-        </div>
-      </section>
-
-      <section class="technical-panel" id="technical-results" style="display:none">
-        <h2>Results</h2>
-        <div class="row">
-          <button id="copy-hdr" class="btn-secondary" type="button">Copy Header JSON</button>
-          <button id="copy-result" class="btn-secondary" type="button">Copy Result JSON</button>
-        </div>
-        <h3>Protected Header</h3>
-        <pre id="hdr"></pre>
-        <h3>Verification Result</h3>
-        <pre id="result"></pre>
-      </section>
+  <div class="validator-container">
+    <div class="quick-start">
+      <h2>🚀 Try it Now</h2>
+      <p>New to CertNode? Start with our sample receipt to see how validation works</p>
+      <button class="demo-button" onclick="loadSampleData()">Load Sample Receipt & JWKS</button>
     </div>
-  </main>
 
-  <footer>
-    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-      <p>&copy; 2025 CertNode � Universal receipt infrastructure standard.</p>
+    <div class="validation-area">
+      <div class="input-card">
+        <h3>📄 Receipt JSON</h3>
+        <p style="color: #64748b; margin-bottom: 1rem; font-size: 0.9rem;">Paste your receipt JSON here, or use the sample data above</p>
+        <textarea id="receipt-input" placeholder='{"protected": "...", "payload": {...}, "signature": "...", "kid": "..."}'></textarea>
+        <div style="margin-top: 1rem;">
+          <button class="btn btn-secondary" onclick="formatJSON('receipt-input')" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Format JSON</button>
+        </div>
+      </div>
+
+      <div class="input-card">
+        <h3>🔑 JWKS JSON</h3>
+        <p style="color: #64748b; margin-bottom: 1rem; font-size: 0.9rem;">Paste the JWKS (public keys) for verification</p>
+        <textarea id="jwks-input" placeholder='{"keys": [{"kty": "EC", "crv": "P-256", "x": "...", "y": "...", "kid": "..."}]}'></textarea>
+        <div style="margin-top: 1rem;">
+          <button class="btn btn-secondary" onclick="formatJSON('jwks-input')" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Format JSON</button>
+        </div>
+      </div>
     </div>
-  </footer>
 
-  <script src="/web/js/verify-helper.js" defer></script>
-  <script src="/web/js/verify.js" defer></script>
-  <script src="/web/js/verify-page.js" defer></script>
-  <script src="/web/js/auth-ui.js" defer></script>
+    <div class="actions">
+      <button class="btn btn-primary" onclick="verifyReceipt()">✓ Verify Receipt</button>
+      <button class="btn btn-secondary" onclick="clearAll()">Clear All</button>
+    </div>
+
+    <div id="result-area" class="result-area">
+      <div class="result-header">
+        <div id="result-icon" class="result-icon"></div>
+        <div id="result-message" class="result-message"></div>
+      </div>
+      <div id="result-details" class="result-details" style="display: none;">
+        <pre id="result-text"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample data for easy testing
+    const sampleReceipt = {
+      "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImV4YW1wbGUta2lkIn0",
+      "payload": { "hello": "world", "n": 42 },
+      "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "kid": "example-kid",
+      "payload_jcs_sha256": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "receipt_id": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    };
+
+    const sampleJWKS = {
+      "keys": [
+        {
+          "kty": "EC",
+          "crv": "P-256",
+          "x": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "y": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "kid": "example-kid"
+        }
+      ]
+    };
+
+    function loadSampleData() {
+      document.getElementById('receipt-input').value = JSON.stringify(sampleReceipt, null, 2);
+      document.getElementById('jwks-input').value = JSON.stringify(sampleJWKS, null, 2);
+      showMessage('Sample data loaded! Click "Verify Receipt" to test validation.', 'info');
+    }
+
+    function formatJSON(textareaId) {
+      const textarea = document.getElementById(textareaId);
+      try {
+        const parsed = JSON.parse(textarea.value);
+        textarea.value = JSON.stringify(parsed, null, 2);
+      } catch (e) {
+        showMessage('Invalid JSON format', 'error');
+      }
+    }
+
+    function clearAll() {
+      document.getElementById('receipt-input').value = '';
+      document.getElementById('jwks-input').value = '';
+      document.getElementById('result-area').style.display = 'none';
+    }
+
+    function showMessage(message, type) {
+      // Simple toast message - could be enhanced
+      alert(message);
+    }
+
+    async function verifyReceipt() {
+      const receiptText = document.getElementById('receipt-input').value.trim();
+      const jwksText = document.getElementById('jwks-input').value.trim();
+
+      if (!receiptText || !jwksText) {
+        showResult(false, 'Please provide both receipt and JWKS data');
+        return;
+      }
+
+      try {
+        const receipt = JSON.parse(receiptText);
+        const jwks = JSON.parse(jwksText);
+
+        // Call the actual verification API
+        const response = await fetch('/api/verify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ receipt, jwks })
+        });
+
+        const result = await response.json();
+
+        if (result.valid) {
+          showResult(true, 'Receipt is valid and authentic!', result);
+        } else {
+          showResult(false, result.reason || 'Receipt validation failed', result);
+        }
+      } catch (error) {
+        showResult(false, 'Error: ' + error.message);
+      }
+    }
+
+    function showResult(success, message, details = null) {
+      const resultArea = document.getElementById('result-area');
+      const resultIcon = document.getElementById('result-icon');
+      const resultMessage = document.getElementById('result-message');
+      const resultDetails = document.getElementById('result-details');
+      const resultText = document.getElementById('result-text');
+
+      // Show the result area
+      resultArea.style.display = 'block';
+      resultArea.className = success ? 'result-area result-success' : 'result-area result-error';
+
+      // Set icon and message
+      resultIcon.className = success ? 'result-icon success' : 'result-icon error';
+      resultIcon.textContent = success ? '✓' : '✗';
+      resultMessage.textContent = message;
+
+      // Show details if available
+      if (details) {
+        resultDetails.style.display = 'block';
+        resultText.textContent = JSON.stringify(details, null, 2);
+      } else {
+        resultDetails.style.display = 'none';
+      }
+
+      // Scroll to result
+      resultArea.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Auto-load sample data on page load for first-time users
+    window.addEventListener('load', () => {
+      // Only load if both fields are empty
+      if (!document.getElementById('receipt-input').value && !document.getElementById('jwks-input').value) {
+        setTimeout(() => {
+          if (confirm('Would you like to load sample data to try the validator?')) {
+            loadSampleData();
+          }
+        }, 1000);
+      }
+    });
+  </script>
 </body>
 </html>

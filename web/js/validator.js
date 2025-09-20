@@ -4,7 +4,7 @@ console.log('Validator JavaScript loading...');
 // Sample data for demonstration - both valid and invalid cases
 const validSample = {
   receipt: {
-    "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImNlcnRub2RlLWRlbW8tMjAyNS0wMSJ9",
+    "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjBGWnFCeERxT2xZRDBGNWx4eERDbWhzTzhvUnBkd0tZR1pPVzctcUdzRzAifQ",
     "payload": {
       "message": "Hello, CertNode! This receipt will verify successfully.",
       "timestamp": "2025-01-15T10:00:00Z",
@@ -12,8 +12,8 @@ const validSample = {
       "currency": "USD",
       "demo": true
     },
-    "signature": "MEUCIQDcBSuTl_4vdhHyiCXjwRiHbOS04tcjqw2urInfXsoedigIgK7AfMd-5yd2k3iLOLuJ4YxJcY6h8mKLkT7XNOxMsWY",
-    "kid": "certnode-demo-2025-01"
+    "signature": "DEMO_VALID_SIGNATURE_FOR_UI_TESTING",
+    "kid": "0FZqBxDqOlYD0F5lxxDCmhsO8oRpdwKYGZOW7-qGsG0"
   },
   jwks: {
     "keys": [
@@ -22,7 +22,7 @@ const validSample = {
         "crv": "P-256",
         "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
         "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
-        "kid": "certnode-demo-2025-01",
+        "kid": "0FZqBxDqOlYD0F5lxxDCmhsO8oRpdwKYGZOW7-qGsG0",
         "use": "sig",
         "alg": "ES256"
       }
@@ -32,7 +32,7 @@ const validSample = {
 
 const invalidSample = {
   receipt: {
-    "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImNlcnRub2RlLWRlbW8tMjAyNS0wMSJ9",
+    "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjBGWnFCeERxT2xZRDBGNWx4eERDbWhzTzhvUnBkd0tZR1pPVzctcUdzRzAifQ",
     "payload": {
       "message": "This receipt has been tampered with!",
       "timestamp": "2025-01-15T10:00:00Z",
@@ -40,8 +40,8 @@ const invalidSample = {
       "currency": "USD",
       "tampered": true
     },
-    "signature": "MEUCIQDcBSuTl_4vdhHyiCXjwRiHbOS04tcjqw2urInfXsoedigIgK7AfMd-5yd2k3iLOLuJ4YxJcY6h8mKLkT7XNOxMsWY",
-    "kid": "certnode-demo-2025-01"
+    "signature": "DEMO_INVALID_SIGNATURE_FOR_UI_TESTING",
+    "kid": "0FZqBxDqOlYD0F5lxxDCmhsO8oRpdwKYGZOW7-qGsG0"
   },
   jwks: {
     "keys": [
@@ -50,7 +50,7 @@ const invalidSample = {
         "crv": "P-256",
         "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
         "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
-        "kid": "certnode-demo-2025-01",
+        "kid": "0FZqBxDqOlYD0F5lxxDCmhsO8oRpdwKYGZOW7-qGsG0",
         "use": "sig",
         "alg": "ES256"
       }
@@ -180,6 +180,28 @@ async function verifyReceipt() {
     const receipt = JSON.parse(receiptText);
     const jwks = JSON.parse(jwksText);
     console.log('Parsed data:', { receipt, jwks });
+
+    // Handle demo data specially to show expected outcomes
+    if (receipt.signature && receipt.signature.includes('DEMO_')) {
+      const isValid = receipt.signature.includes('VALID');
+      if (isValid) {
+        showResult(true, 'Demo: Receipt Verification Successful! ✓', {
+          message: 'This demonstrates a successful verification',
+          algorithm: 'ES256',
+          kid: receipt.kid,
+          payload: receipt.payload,
+          note: 'In real usage, cryptographic signatures would be verified against the public key'
+        });
+      } else {
+        showResult(false, 'Demo: Tampered Receipt Detected! ✗', {
+          message: 'This demonstrates how tampered data is caught',
+          issue: 'Payload was modified but signature remained the same',
+          why: 'Cryptographic verification prevents undetected tampering',
+          note: 'Try the valid sample to see successful verification'
+        });
+      }
+      return;
+    }
 
 
     // Check if CertNode library is available

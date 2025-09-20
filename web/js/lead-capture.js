@@ -10,12 +10,18 @@ function trackEvent(action, data = {}) {
       ...data
     };
 
-    // Send to backend for revenue tracking
-    fetch('/api/track-lead', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(event)
-    }).catch(() => {}); // Don't break UX if tracking fails
+    // Send to backend for revenue tracking (with graceful fallback)
+    if (typeof fetch !== 'undefined') {
+      fetch('/api/track-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(event)
+      }).catch(() => {
+        // Graceful fallback - store locally for future sync
+        console.log('Lead tracking endpoint unavailable, event logged locally:', event);
+        localStorage.setItem('pending_lead_' + Date.now(), JSON.stringify(event));
+      });
+    }
 
     console.log('Lead Event:', event);
   }

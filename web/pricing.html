@@ -3,24 +3,64 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="description" content="Transparent pricing for CertNode receipt infrastructure. Developer plans start free, Professional at $200/month. Enterprise solutions available.">
+  <link rel="canonical" href="https://certnode.io/pricing" />
+  <meta property="og:title" content="Pricing - CertNode Universal Receipt Infrastructure" />
+  <meta property="og:description" content="Transparent pricing for digital receipt infrastructure. Free developer tier, professional plans, and enterprise solutions." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://certnode.io/pricing" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="CertNode Pricing" />
+  <meta name="twitter:description" content="Transparent pricing for digital receipt infrastructure." />
   <link rel="stylesheet" href="/web/assets/site.css" />
-  
-  
-  <title>Pricing � CertNode</title>
+  <style>
+    /* Critical CSS for immediate visual improvement */
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; background: #fafbfc; }
+    .header { background: white; border-bottom: 1px solid #e1e5e9; padding: 1rem 0; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .nav { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.5rem; font-weight: 600; color: #1e40af; text-decoration: none; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { color: #64748b; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: #1e40af; }
+    .pricing-hero { background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); color: white; padding: 4rem 0; text-align: center; }
+    .pricing-hero h1 { font-size: 3rem; margin-bottom: 1rem; font-weight: 600; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin: 4rem auto; }
+    .pricing-card { background: white; border-radius: 12px; padding: 2.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border: 1px solid #e1e5e9; transition: transform 0.3s; }
+    .pricing-card:hover { transform: translateY(-5px); }
+    .plan-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: #1e293b; }
+    .plan-price { font-size: 3rem; font-weight: 800; color: #3b82f6; margin-bottom: 0.5rem; }
+    .plan-price .period { font-size: 1rem; color: #64748b; font-weight: 400; }
+    .plan-description { color: #64748b; margin-bottom: 2rem; }
+    .feature-list { list-style: none; padding: 0; margin: 0 0 2rem 0; }
+    .feature-list li { padding: 0.75rem 0; border-bottom: 1px solid #f1f5f9; }
+    .feature-list li:before { content: "✓"; color: #10b981; font-weight: bold; margin-right: 10px; }
+    .cta-button { width: 100%; padding: 1rem; background: #3b82f6; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; display: block; text-align: center; }
+    .cta-button.secondary { background: transparent; color: #3b82f6; border: 2px solid #3b82f6; }
+    .cta-button:hover { background: #2563eb; }
+  </style>
+
+  <title>Pricing - CertNode Universal Receipt Infrastructure</title>
   
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <a href="/" class="logo">CertNode</a>
+    <header class="header">
+        <div class="container">
             <nav class="nav">
-                <a href="/">Home</a>
-                <a href="/verify">Try Demo</a>
-                <a href="/pricing" aria-current="page">Pricing</a>
-                <a href="/openapi">Specification</a>
-                <a href="/trust">Trust</a>
-                <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
-                <a href="/#" id="manage-billing" style="display:none">Manage Billing</a>
+                <a href="/" class="logo">CertNode</a>
+                <div class="nav-links">
+                    <a href="/">Home</a>
+                    <a href="/verify">Try Demo</a>
+                    <a href="/pricing" aria-current="page">Pricing</a>
+                    <a href="/openapi">Specification</a>
+                    <a href="/trust">Trust</a>
+                    <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
+                </div>
             </nav>
         </div>
     </header>

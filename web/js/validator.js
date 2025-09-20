@@ -188,26 +188,19 @@ async function verifyReceipt() {
       console.log('Is valid?', isValid);
 
       if (isValid) {
-        showResult(true, 'Receipt is authentic and valid', {
-          summary: 'This receipt has not been tampered with',
-          verified: 'Digital signature is valid',
-          technical_details: {
-            algorithm: 'ES256 (ECDSA with P-256)',
-            key_id: receipt.kid,
-            status: 'Cryptographic verification passed'
-          },
-          note: 'Demo: This shows how valid receipts are verified'
+        showResult(true, 'VALID', {
+          explanation: 'This receipt is authentic and has not been tampered with.',
+          algorithm: 'ES256 (ECDSA with P-256)',
+          key_id: receipt.kid,
+          verified_at: new Date().toISOString(),
+          demo_note: 'This demonstrates successful verification'
         });
       } else {
-        showResult(false, 'Receipt has been tampered with', {
-          summary: 'This receipt was modified after it was signed',
-          detected: 'Digital signature does not match the content',
-          security_benefit: 'Tampering was caught and prevented fraud',
-          technical_details: {
-            issue: 'Signature verification failed',
-            reason: 'Payload modification detected'
-          },
-          note: 'Demo: This shows how CertNode catches tampering'
+        showResult(false, 'INVALID', {
+          explanation: 'This receipt has been modified after it was signed.',
+          issue: 'Digital signature does not match the content',
+          security: 'Tampering was detected and fraud was prevented',
+          demo_note: 'This demonstrates how CertNode catches tampering'
         });
       }
       return;
@@ -229,14 +222,18 @@ async function verifyReceipt() {
       console.log('Verification result:', result);
 
       if (result.ok === true) {
-        showResult(true, 'Receipt is valid and authentic!', {
-          status: 'Valid signature',
-          algorithm: 'ES256',
-          kid: receipt.kid,
-          payload: receipt.payload
+        showResult(true, 'VALID', {
+          explanation: 'This receipt is cryptographically valid and authentic.',
+          algorithm: 'ES256 (ECDSA with P-256)',
+          key_id: receipt.kid,
+          verified_at: new Date().toISOString(),
+          payload_verified: 'Digital signature matches the content'
         });
       } else {
-        showResult(false, 'Receipt validation failed', result);
+        showResult(false, 'INVALID', {
+          explanation: 'This receipt failed cryptographic verification.',
+          details: result
+        });
       }
     } catch (verifyError) {
       console.error('Verification failed:', verifyError);
@@ -277,15 +274,38 @@ function showResult(success, message, details = null) {
   resultArea.style.display = 'block';
   resultArea.className = success ? 'result-area result-success' : 'result-area result-error';
 
-  // Set icon and message
+  // Set icon and message - big, clear status
   resultIcon.className = success ? 'result-icon success' : 'result-icon error';
   resultIcon.textContent = success ? '✓' : '✗';
-  resultMessage.textContent = message;
+  resultMessage.innerHTML = `<strong>${message}</strong>`;
 
   // Show details if available
   if (details) {
     resultDetails.style.display = 'block';
-    resultText.textContent = JSON.stringify(details, null, 2);
+
+    // Format details nicely instead of raw JSON
+    let detailsHtml = '';
+    if (details.explanation) {
+      detailsHtml += `<p style="margin-bottom: 1rem; font-size: 1rem; color: #374151;">${details.explanation}</p>`;
+    }
+
+    // Create expandable technical details
+    detailsHtml += '<details style="margin-top: 1rem;"><summary style="cursor: pointer; font-weight: 600; color: #1f2937;">Technical Details</summary>';
+    detailsHtml += '<div style="margin-top: 0.5rem; padding: 1rem; background: #f9fafb; border-radius: 6px; font-family: monospace; font-size: 0.9rem;">';
+
+    Object.entries(details).forEach(([key, value]) => {
+      if (key !== 'explanation') {
+        const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        if (typeof value === 'object') {
+          detailsHtml += `<div><strong>${label}:</strong><pre style="margin: 0.5rem 0; white-space: pre-wrap;">${JSON.stringify(value, null, 2)}</pre></div>`;
+        } else {
+          detailsHtml += `<div style="margin-bottom: 0.5rem;"><strong>${label}:</strong> ${value}</div>`;
+        }
+      }
+    });
+
+    detailsHtml += '</div></details>';
+    resultText.innerHTML = detailsHtml;
   } else {
     resultDetails.style.display = 'none';
   }

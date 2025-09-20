@@ -189,18 +189,18 @@ async function verifyReceipt() {
 
       if (isValid) {
         showResult(true, 'VALID', {
-          explanation: 'This receipt is authentic and has not been tampered with.',
-          algorithm: 'ES256 (ECDSA with P-256)',
+          explanation: 'Receipt is authentic and unmodified.',
+          algorithm: 'ES256',
           key_id: receipt.kid,
           verified_at: new Date().toISOString(),
-          demo_note: 'This demonstrates successful verification'
+          status: 'Signature verification passed'
         });
       } else {
         showResult(false, 'INVALID', {
-          explanation: 'This receipt has been modified after it was signed.',
-          issue: 'Digital signature does not match the content',
-          security: 'Tampering was detected and fraud was prevented',
-          demo_note: 'This demonstrates how CertNode catches tampering'
+          explanation: 'Receipt has been tampered with.',
+          reason: 'Signature verification failed',
+          detected: 'Content modified after signing',
+          action: 'Transaction rejected for security'
         });
       }
       return;
@@ -223,15 +223,16 @@ async function verifyReceipt() {
 
       if (result.ok === true) {
         showResult(true, 'VALID', {
-          explanation: 'This receipt is cryptographically valid and authentic.',
-          algorithm: 'ES256 (ECDSA with P-256)',
+          explanation: 'Receipt is cryptographically authentic.',
+          algorithm: 'ES256',
           key_id: receipt.kid,
           verified_at: new Date().toISOString(),
-          payload_verified: 'Digital signature matches the content'
+          status: 'Cryptographic verification passed'
         });
       } else {
         showResult(false, 'INVALID', {
-          explanation: 'This receipt failed cryptographic verification.',
+          explanation: 'Receipt failed verification.',
+          error: result.error || 'Verification failed',
           details: result
         });
       }

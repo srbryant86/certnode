@@ -506,10 +506,7 @@ header {
   box-shadow: var(--shadow-xl);
 }
 
-/* Fallback labels for corrupted/empty icons (no emoji dependency) */
-.grid-3 .feature:nth-child(1) .feature-icon::after { content: 'STD'; font-weight: 700; }
-.grid-3 .feature:nth-child(2) .feature-icon::after { content: 'OFF'; font-weight: 700; }
-.grid-3 .feature:nth-child(3) .feature-icon::after { content: 'XPL'; font-weight: 700; }
+/* Fallback labels removed - using proper SVG and emoji icons instead */
 
 .feature h3 {
   font-size: var(--font-size-2xl);

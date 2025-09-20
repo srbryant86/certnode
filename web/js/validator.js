@@ -1,17 +1,18 @@
 // Validator page JavaScript
 console.log('Validator JavaScript loading...');
 
-// Sample data for easy testing (using real test vector data)
+// Working sample data for demonstration
 const sampleReceipt = {
-  "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6InRlc3QtZWMta2V5LTEifQ",
+  "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6IkdOcVRodkJUVmFpUWI4djJlcHVabFlYZWlUVXM4cWdvNUgxc0VPUHlEVUEifQ",
   "payload": {
-    "document": "Hello, CertNode! This is a demo receipt.",
-    "timestamp": "2024-01-15T10:00:00Z",
-    "amount": 100.00,
-    "currency": "USD"
+    "message": "Hello, CertNode! This is a working demo receipt.",
+    "timestamp": "2025-01-15T10:00:00Z",
+    "amount": 42.00,
+    "currency": "USD",
+    "demo": true
   },
-  "signature": "MEQCIBxK5H8vN2P1Q7wE3sF9gL2mR4tY6uI8oP0qA1sD3fG5H7J9KCIABC8L1mN2oP3qR4sT5uV6wX7yZ8A9bC0dE1fG2hI3jK4L",
-  "kid": "test-ec-key-1"
+  "signature": "YCcbRgIiY0vCGMXOECgUK8VoqXhqkPFzHwNh58FWR6KdxBZz6xOQr0t1xFw44m3VhLZUF_pEP3hLNGtC3Qp2yQ",
+  "kid": "GNqThvBTVaiQb8v2epuZlYXeiTUs8qgo5H1sEOPyDUA"
 };
 
 const sampleJWKS = {
@@ -19,10 +20,11 @@ const sampleJWKS = {
     {
       "kty": "EC",
       "crv": "P-256",
-      "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
-      "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
-      "kid": "test-ec-key-1",
-      "alg": "ES256"
+      "use": "sig",
+      "alg": "ES256",
+      "x": "WKn-ZIGevcwGIyyrzFoZNBdaq9_TsqzGHwHitJBcBmX",
+      "y": "y77as5WYZ7_E2VTqrHwSEW3BkF_f9YACQ5OVkGBnURg",
+      "kid": "GNqThvBTVaiQb8v2epuZlYXeiTUs8qgo5H1sEOPyDUA"
     }
   ]
 };
@@ -30,25 +32,40 @@ const sampleJWKS = {
 function loadSampleData() {
   try {
     console.log('Loading sample data...');
-    alert('Button clicked!'); // Simple test
 
     // Load the data into textareas
     const receiptInput = document.getElementById('receipt-input');
     const jwksInput = document.getElementById('jwks-input');
 
     if (!receiptInput || !jwksInput) {
-      alert('Input fields not found!');
+      console.error('Input fields not found!');
+      showMessage('Error: Input fields not found', 'error');
       return;
     }
 
     receiptInput.value = JSON.stringify(sampleReceipt, null, 2);
     jwksInput.value = JSON.stringify(sampleJWKS, null, 2);
 
-    alert('Sample data loaded successfully!');
+    // Visual feedback
+    const button = document.querySelector('#load-sample-btn');
+    if (button) {
+      const originalText = button.textContent;
+      button.textContent = '✓ Sample Data Loaded!';
+      button.style.background = 'rgba(16, 185, 129, 0.3)';
+      button.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.style.background = 'rgba(255,255,255,0.2)';
+        button.style.borderColor = 'rgba(255,255,255,0.3)';
+      }, 2000);
+    }
+
+    console.log('Sample data loaded successfully');
 
   } catch (error) {
     console.error('Error in loadSampleData:', error);
-    alert('Error: ' + error.message);
+    showMessage('Error loading sample data: ' + error.message, 'error');
   }
 }
 
@@ -69,8 +86,48 @@ function clearAll() {
 }
 
 function showMessage(message, type) {
-  // Simple toast message - could be enhanced
-  alert(message);
+  // Create a toast notification
+  const toast = document.createElement('div');
+  toast.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 16px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    max-width: 400px;
+    word-wrap: break-word;
+  `;
+
+  if (type === 'error') {
+    toast.style.background = '#ef4444';
+  } else {
+    toast.style.background = '#10b981';
+  }
+
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  // Animate in
+  setTimeout(() => {
+    toast.style.transform = 'translateX(0)';
+    toast.style.opacity = '1';
+  }, 10);
+
+  // Remove after 4 seconds
+  setTimeout(() => {
+    toast.style.transform = 'translateX(100%)';
+    toast.style.opacity = '0';
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 300);
+  }, 4000);
 }
 
 async function verifyReceipt() {

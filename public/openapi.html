@@ -36,10 +36,35 @@
 
     <section class="section">
       <div class="container">
+        <div id="api-fallback" style="display: none; text-align: center; padding: 2rem; background: #f8fafc; border-radius: 12px; margin: 2rem 0;">
+          <p>Loading API documentation...</p>
+          <p><a href="/openapi.json" style="color: #3b82f6;">View OpenAPI JSON directly</a></p>
+        </div>
         <api-reference configuration='{"spec":{"url":"/openapi.json"},"layout":"modern"}'></api-reference>
       </div>
     </section>
   </main>
+
+  <script>
+    // Show fallback if API reference doesn't load
+    setTimeout(() => {
+      const apiRef = document.querySelector('api-reference');
+      const fallback = document.getElementById('api-fallback');
+
+      if (apiRef && !apiRef.shadowRoot) {
+        fallback.style.display = 'block';
+        fallback.innerHTML = `
+          <h3>API Documentation</h3>
+          <p>The interactive API viewer is loading. You can:</p>
+          <ul style="text-align: left; display: inline-block;">
+            <li><a href="/openapi.json" target="_blank">View the OpenAPI specification (JSON)</a></li>
+            <li><a href="/verify">Try the validator tool</a></li>
+            <li><a href="https://github.com/certnode/certnode" target="_blank">View the GitHub repository</a></li>
+          </ul>
+        `;
+      }
+    }, 2000);
+  </script>
 
   <footer>
     <div class="container">

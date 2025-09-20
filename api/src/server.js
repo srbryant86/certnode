@@ -4,6 +4,7 @@ const { handle: jwksHandler } = require("./routes/jwks");
 const { handle: healthHandler } = require("./routes/health");
 const { handle: openapiHandler } = require("./routes/openapi");
 const { handle: metricsHandler } = require("./routes/metrics");
+const { setupDashboardRoutes } = require("./routes/dashboard");
 const { createCompositeRateLimiter, toPosInt } = require("./plugins/ratelimit");
 const { createCorsMiddleware } = require("./plugins/cors");
 const { setupGlobalErrorHandlers, createErrorMiddleware, asyncHandler } = require("./middleware/errorHandler");
@@ -104,6 +105,41 @@ const server = http.createServer(async (req, res) => {
     return metricsHandler(req, res);
   }
 
+  // Dashboard API endpoints
+  if (url.pathname.startsWith("/api/dashboard/")) {
+    const { getDashboardMetrics, trackSubscriber, trackTrial } = require("./routes/dashboard");
+
+    if (req.method === "GET" && url.pathname === "/api/dashboard/metrics") {
+      try {
+        const metrics = getDashboardMetrics();
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify(metrics, null, 2));
+      } catch (error) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: error.message }));
+      }
+    }
+
+    if (req.method === "GET" && url.pathname === "/api/dashboard/export") {
+      try {
+        const { analytics } = require("./routes/dashboard");
+        const data = {
+          subscribers: Array.from(analytics?.subscribers?.values() || []),
+          trials: Array.from(analytics?.trials?.values() || []),
+          timestamp: new Date().toISOString()
+        };
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Content-Disposition': 'attachment; filename="certnode-analytics.json"'
+        });
+        return res.end(JSON.stringify(data, null, 2));
+      } catch (error) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: error.message }));
+      }
+    }
+  }
+
   // Analytics dashboard (internal use)
   if (req.method === "GET" && url.pathname === "/api/analytics") {
     const { getAnalyticsDashboard } = require("./plugins/customer-analytics");
@@ -154,6 +190,8 @@ const server = http.createServer(async (req, res) => {
       filePath = path.join(process.cwd(), "web", "pricing.html");
     } else if (url.pathname === "/account") {
       filePath = path.join(process.cwd(), "web", "account.html");
+    } else if (url.pathname === "/dashboard") {
+      filePath = path.join(process.cwd(), "web", "dashboard.html");
     } else if (url.pathname === "/compliance-calculator") {
       filePath = path.join(process.cwd(), "web", "compliance-calculator.html");
     } else if (url.pathname === "/pitch") {

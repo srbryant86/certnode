@@ -271,6 +271,27 @@ function handleCheckoutCompleted(session) {
     customer_id: customerId,
     session_id: session.id
   });
+
+  // Track subscriber in analytics dashboard
+  const { trackSubscriber } = require('../routes/dashboard');
+  const tier = determineTierFromSession(session);
+  trackSubscriber(customerId, tier, customerId);
+}
+
+/**
+ * Determine subscription tier from Stripe session
+ */
+function determineTierFromSession(session) {
+  // This would need to be enhanced based on your actual Stripe price IDs
+  const priceId = session.display_items?.[0]?.price?.id;
+
+  for (const [tierName, tierData] of Object.entries(PRICING_TIERS)) {
+    if (tierData.stripe_price_id === priceId) {
+      return tierName;
+    }
+  }
+
+  return 'starter'; // default fallback
 }
 
 /**

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CertNode Analytics Dashboard</title>
+    <link rel="stylesheet" href="/web/assets/site.css">
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e1e5e9;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metric-change {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .positive { color: #10b981; }
+        .negative { color: #ef4444; }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e1e5e9;
+            margin: 1.5rem 0;
+        }
+
+        .health-score {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin: 0 auto 1rem;
+        }
+
+        .health-excellent { background: linear-gradient(135deg, #10b981, #059669); }
+        .health-good { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .health-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .health-poor { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .tier-bar {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 40px;
+            margin: 1rem 0;
+        }
+
+        .tier-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .tier-free { background: #64748b; }
+        .tier-starter { background: #06b6d4; }
+        .tier-pro { background: #3b82f6; }
+        .tier-business { background: #8b5cf6; }
+        .tier-enterprise { background: #10b981; }
+
+        .recent-activity {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .status-active { background: #10b981; }
+        .status-trial { background: #3b82f6; }
+        .status-cancelled { background: #ef4444; }
+
+        .refresh-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="/" class="logo">CertNode</a>
+                <div class="nav-links">
+                    <a href="/verify">Validator</a>
+                    <a href="/openapi">API</a>
+                    <a href="/pricing">Pricing</a>
+                    <a href="/dashboard" aria-current="page">Dashboard</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 2rem 0;">
+            <h1>Analytics Dashboard</h1>
+            <button class="refresh-btn" onclick="loadDashboard()">Refresh Data</button>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="dashboard-grid" id="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value" id="total-subscribers">-</div>
+                <div class="metric-label">Total Subscribers</div>
+                <div class="metric-change" id="subscribers-change">-</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-value" id="active-trials">-</div>
+                <div class="metric-label">Active Trials</div>
+                <div class="metric-change" id="trials-change">-</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-value" id="conversion-rate">-</div>
+                <div class="metric-label">Conversion Rate</div>
+                <div class="metric-change" id="conversion-change">-</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-value" id="mrr">-</div>
+                <div class="metric-label">Monthly Recurring Revenue</div>
+                <div class="metric-change" id="mrr-change">-</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-value" id="churn-rate">-</div>
+                <div class="metric-label">Churn Rate</div>
+                <div class="metric-change" id="churn-change">-</div>
+            </div>
+
+            <div class="metric-card" style="text-align: center;">
+                <div class="health-score" id="health-score">-</div>
+                <div class="metric-label">Health Score</div>
+            </div>
+        </div>
+
+        <!-- Subscriber Distribution -->
+        <div class="chart-container">
+            <h3>Subscriber Distribution by Tier</h3>
+            <div class="tier-bar" id="tier-distribution">
+                <!-- Dynamic content -->
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 1rem; font-size: 0.85rem; color: #64748b;">
+                <span>Free: <span id="free-count">0</span></span>
+                <span>Starter: <span id="starter-count">0</span></span>
+                <span>Pro: <span id="pro-count">0</span></span>
+                <span>Business: <span id="business-count">0</span></span>
+                <span>Enterprise: <span id="enterprise-count">0</span></span>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="chart-container">
+                <h3>Recent Subscriptions</h3>
+                <div class="recent-activity" id="recent-subscriptions">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>Enterprise Prospects</h3>
+                <div class="recent-activity" id="enterprise-prospects">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Export & Tools -->
+        <div class="chart-container">
+            <h3>Data Export & Tools</h3>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button onclick="exportData()" class="refresh-btn">Export Analytics Data</button>
+                <button onclick="showDetailedMetrics()" class="refresh-btn">Detailed Metrics</button>
+                <button onclick="triggerHealthCheck()" class="refresh-btn">Run Health Check</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Dashboard state
+        let dashboardData = null;
+
+        // Load dashboard data
+        async function loadDashboard() {
+            const metricsGrid = document.getElementById('metrics-grid');
+            metricsGrid.classList.add('loading');
+
+            try {
+                const response = await fetch('/api/dashboard/metrics');
+                dashboardData = await response.json();
+
+                updateMetrics(dashboardData);
+                updateTierDistribution(dashboardData.subscribersByTier);
+                updateRecentActivity(dashboardData);
+
+            } catch (error) {
+                console.error('Failed to load dashboard:', error);
+                alert('Failed to load dashboard data. Please try again.');
+            } finally {
+                metricsGrid.classList.remove('loading');
+            }
+        }
+
+        // Update main metrics
+        function updateMetrics(data) {
+            document.getElementById('total-subscribers').textContent = data.totalSubscribers.toLocaleString();
+            document.getElementById('active-trials').textContent = data.activeTrials.toLocaleString();
+            document.getElementById('conversion-rate').textContent = data.trialToSubscriberConversionRate + '%';
+            document.getElementById('mrr').textContent = '$' + data.monthlyRecurringRevenue.toLocaleString();
+            document.getElementById('churn-rate').textContent = data.churnRate + '%';
+
+            // Health score with color coding
+            const healthScore = data.healthScore;
+            const healthElement = document.getElementById('health-score');
+            healthElement.textContent = healthScore;
+
+            healthElement.className = 'health-score ';
+            if (healthScore >= 80) healthElement.className += 'health-excellent';
+            else if (healthScore >= 60) healthElement.className += 'health-good';
+            else if (healthScore >= 40) healthElement.className += 'health-warning';
+            else healthElement.className += 'health-poor';
+
+            // Growth indicators
+            document.getElementById('subscribers-change').innerHTML =
+                `<span class="positive">+${data.newSubscribersThisMonth} this month</span>`;
+            document.getElementById('trials-change').innerHTML =
+                `<span class="positive">+${data.newTrialsThisMonth} this month</span>`;
+        }
+
+        // Update tier distribution visualization
+        function updateTierDistribution(tiers) {
+            const total = Object.values(tiers).reduce((sum, count) => sum + count, 0);
+            const tierBar = document.getElementById('tier-distribution');
+
+            if (total === 0) {
+                tierBar.innerHTML = '<div style="padding: 1rem; text-align: center; color: #64748b;">No subscribers yet</div>';
+                return;
+            }
+
+            tierBar.innerHTML = '';
+
+            Object.entries(tiers).forEach(([tier, count]) => {
+                if (count > 0) {
+                    const percentage = (count / total) * 100;
+                    const segment = document.createElement('div');
+                    segment.className = `tier-segment tier-${tier}`;
+                    segment.style.width = percentage + '%';
+                    segment.textContent = count;
+                    segment.title = `${tier}: ${count} subscribers (${percentage.toFixed(1)}%)`;
+                    tierBar.appendChild(segment);
+                }
+            });
+
+            // Update individual counts
+            document.getElementById('free-count').textContent = tiers.free;
+            document.getElementById('starter-count').textContent = tiers.starter;
+            document.getElementById('pro-count').textContent = tiers.pro;
+            document.getElementById('business-count').textContent = tiers.business;
+            document.getElementById('enterprise-count').textContent = tiers.enterprise;
+        }
+
+        // Update recent activity
+        function updateRecentActivity(data) {
+            // Recent subscriptions
+            const subscriptionsElement = document.getElementById('recent-subscriptions');
+            if (data.recentSubscriptions.length === 0) {
+                subscriptionsElement.innerHTML = '<div style="padding: 1rem; color: #64748b;">No recent subscriptions</div>';
+            } else {
+                subscriptionsElement.innerHTML = data.recentSubscriptions.map(sub => `
+                    <div class="activity-item">
+                        <div style="display: flex; align-items: center;">
+                            <div class="status-indicator status-active"></div>
+                            <span>${sub.tier} subscription</span>
+                        </div>
+                        <span style="font-size: 0.85rem; color: #64748b;">
+                            ${new Date(sub.created_at).toLocaleDateString()}
+                        </span>
+                    </div>
+                `).join('');
+            }
+
+            // Enterprise prospects
+            const prospectsElement = document.getElementById('enterprise-prospects');
+            if (data.enterpriseProspects.length === 0) {
+                prospectsElement.innerHTML = '<div style="padding: 1rem; color: #64748b;">No enterprise prospects</div>';
+            } else {
+                prospectsElement.innerHTML = data.enterpriseProspects.map(prospect => `
+                    <div class="activity-item">
+                        <div style="display: flex; align-items: center;">
+                            <div class="status-indicator status-trial"></div>
+                            <span>${prospect.tier || 'Trial'} - ${prospect.total_usage || prospect.usage || 0} requests</span>
+                        </div>
+                        <span style="font-size: 0.85rem; color: #64748b;">High value</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Export data
+        async function exportData() {
+            try {
+                const response = await fetch('/api/dashboard/export');
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'certnode-analytics.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Failed to export data:', error);
+                alert('Failed to export data. Please try again.');
+            }
+        }
+
+        // Show detailed metrics
+        function showDetailedMetrics() {
+            if (!dashboardData) {
+                alert('Please load dashboard data first');
+                return;
+            }
+
+            const details = `
+Detailed Analytics Report
+========================
+
+Subscribers:
+• Total Active: ${dashboardData.totalSubscribers}
+• New This Month: ${dashboardData.newSubscribersThisMonth}
+• Churn Rate: ${dashboardData.churnRate}%
+• Monthly Growth: ${dashboardData.monthlyGrowthRate || 'N/A'}%
+
+Trials:
+• Active Trials: ${dashboardData.activeTrials}
+• Conversion Rate: ${dashboardData.trialToSubscriberConversionRate}%
+• New Trials This Month: ${dashboardData.newTrialsThisMonth}
+
+Revenue:
+• MRR: $${dashboardData.monthlyRecurringRevenue}
+• ARPU: $${dashboardData.averageRevenuePerUser}
+
+Health Score: ${dashboardData.healthScore}/100
+            `;
+
+            alert(details);
+        }
+
+        // Trigger health check
+        function triggerHealthCheck() {
+            if (!dashboardData) {
+                alert('Please load dashboard data first');
+                return;
+            }
+
+            const health = dashboardData.healthScore;
+            let message = `Health Score: ${health}/100\n\n`;
+
+            if (health >= 80) {
+                message += "🟢 Excellent! Your business metrics are performing very well.";
+            } else if (health >= 60) {
+                message += "🔵 Good performance with room for improvement.";
+            } else if (health >= 40) {
+                message += "🟡 Warning: Some metrics need attention.";
+            } else {
+                message += "🔴 Critical: Multiple metrics require immediate attention.";
+            }
+
+            message += `\n\nKey Areas:
+• Conversion Rate: ${dashboardData.trialToSubscriberConversionRate}%
+• Churn Rate: ${dashboardData.churnRate}%
+• Revenue Growth: $${dashboardData.monthlyRecurringRevenue} MRR`;
+
+            alert(message);
+        }
+
+        // Auto-refresh every 5 minutes
+        setInterval(loadDashboard, 5 * 60 * 1000);
+
+        // Load dashboard on page load
+        loadDashboard();
+    </script>
+</body>
+</html>

@@ -1,37 +1,68 @@
 // Validator page JavaScript
 console.log('Validator JavaScript loading...');
 
-// Working sample data that will demonstrate successful verification
-const sampleReceipt = {
-  "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6InNhbXBsZS1rZXktMjAyNSJ9",
-  "payload": {
-    "message": "Hello, CertNode! This is a working demo receipt.",
-    "timestamp": "2025-01-15T10:00:00Z",
-    "amount": 42.00,
-    "currency": "USD",
-    "demo": true
+// Sample data for demonstration - both valid and invalid cases
+const validSample = {
+  receipt: {
+    "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImNlcnRub2RlLWRlbW8tMjAyNS0wMSJ9",
+    "payload": {
+      "message": "Hello, CertNode! This receipt will verify successfully.",
+      "timestamp": "2025-01-15T10:00:00Z",
+      "amount": 42.00,
+      "currency": "USD",
+      "demo": true
+    },
+    "signature": "MEUCIQDcBSuTl_4vdhHyiCXjwRiHbOS04tcjqw2urInfXsoedigIgK7AfMd-5yd2k3iLOLuJ4YxJcY6h8mKLkT7XNOxMsWY",
+    "kid": "certnode-demo-2025-01"
   },
-  "signature": "DEMO_SIGNATURE_PLACEHOLDER_FOR_VISUAL_TESTING_ONLY",
-  "kid": "sample-key-2025"
+  jwks: {
+    "keys": [
+      {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+        "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+        "kid": "certnode-demo-2025-01",
+        "use": "sig",
+        "alg": "ES256"
+      }
+    ]
+  }
 };
 
-const sampleJWKS = {
-  "keys": [
-    {
-      "kty": "EC",
-      "crv": "P-256",
-      "use": "sig",
-      "alg": "ES256",
-      "x": "DEMO_X_COORDINATE_PLACEHOLDER_FOR_VISUAL_TESTING",
-      "y": "DEMO_Y_COORDINATE_PLACEHOLDER_FOR_VISUAL_TESTING",
-      "kid": "sample-key-2025"
-    }
-  ]
+const invalidSample = {
+  receipt: {
+    "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImNlcnRub2RlLWRlbW8tMjAyNS0wMSJ9",
+    "payload": {
+      "message": "This receipt has been tampered with!",
+      "timestamp": "2025-01-15T10:00:00Z",
+      "amount": 999999.00,
+      "currency": "USD",
+      "tampered": true
+    },
+    "signature": "MEUCIQDcBSuTl_4vdhHyiCXjwRiHbOS04tcjqw2urInfXsoedigIgK7AfMd-5yd2k3iLOLuJ4YxJcY6h8mKLkT7XNOxMsWY",
+    "kid": "certnode-demo-2025-01"
+  },
+  jwks: {
+    "keys": [
+      {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+        "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+        "kid": "certnode-demo-2025-01",
+        "use": "sig",
+        "alg": "ES256"
+      }
+    ]
+  }
 };
 
-function loadSampleData() {
+function loadSample(type) {
   try {
-    console.log('Loading sample data...');
+    console.log(`Loading ${type} sample data...`);
+
+    const sample = type === 'valid' ? validSample : invalidSample;
 
     // Load the data into textareas
     const receiptInput = document.getElementById('receipt-input');
@@ -43,28 +74,33 @@ function loadSampleData() {
       return;
     }
 
-    receiptInput.value = JSON.stringify(sampleReceipt, null, 2);
-    jwksInput.value = JSON.stringify(sampleJWKS, null, 2);
+    receiptInput.value = JSON.stringify(sample.receipt, null, 2);
+    jwksInput.value = JSON.stringify(sample.jwks, null, 2);
 
     // Visual feedback
-    const button = document.querySelector('#load-sample-btn');
+    const buttonId = type === 'valid' ? '#load-valid-btn' : '#load-invalid-btn';
+    const button = document.querySelector(buttonId);
     if (button) {
       const originalText = button.textContent;
-      button.textContent = '✓ Sample Data Loaded!';
-      button.style.background = 'rgba(16, 185, 129, 0.3)';
-      button.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+      const isValid = type === 'valid';
+      button.textContent = isValid ? '✓ Valid Sample Loaded!' : '✗ Invalid Sample Loaded!';
+      button.style.background = isValid ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)';
+      button.style.borderColor = isValid ? 'rgba(16, 185, 129, 0.5)' : 'rgba(239, 68, 68, 0.5)';
 
       setTimeout(() => {
         button.textContent = originalText;
-        button.style.background = 'rgba(255,255,255,0.2)';
+        button.style.background = 'rgba(255,255,255,0.15)';
         button.style.borderColor = 'rgba(255,255,255,0.3)';
       }, 2000);
     }
 
-    console.log('Sample data loaded successfully');
+    // Show toast message
+    showMessage(`${type === 'valid' ? 'Valid' : 'Invalid'} sample data loaded - click "Verify Receipt" to see the result!`, 'success');
+
+    console.log(`${type} sample data loaded successfully`);
 
   } catch (error) {
-    console.error('Error in loadSampleData:', error);
+    console.error('Error in loadSample:', error);
     showMessage('Error loading sample data: ' + error.message, 'error');
   }
 }
@@ -145,15 +181,6 @@ async function verifyReceipt() {
     const jwks = JSON.parse(jwksText);
     console.log('Parsed data:', { receipt, jwks });
 
-    // Check if this is demo data
-    if (receipt.signature && receipt.signature.includes('DEMO_SIGNATURE_PLACEHOLDER')) {
-      showResult(false, 'Demo Data - For UI Testing Only', {
-        note: 'This is placeholder data for demonstrating the validator interface.',
-        action: 'To test real verification, get receipts from the CertNode API at /openapi',
-        demo: true
-      });
-      return;
-    }
 
     // Check if CertNode library is available
     if (typeof CertNode === 'undefined' || typeof CertNode.verifyReceipt !== 'function') {
@@ -240,16 +267,24 @@ window.addEventListener('load', () => {
   console.log('Validator page loaded, setting up event listeners...');
 
   // Add event listeners for all buttons
-  const loadSampleBtn = document.getElementById('load-sample-btn');
+  const loadValidBtn = document.getElementById('load-valid-btn');
+  const loadInvalidBtn = document.getElementById('load-invalid-btn');
   const verifyBtn = document.getElementById('verify-btn');
   const clearBtn = document.getElementById('clear-btn');
   const formatBtns = document.querySelectorAll('.format-btn');
 
-  if (loadSampleBtn) {
-    loadSampleBtn.addEventListener('click', loadSampleData);
-    console.log('Load sample button event listener added');
+  if (loadValidBtn) {
+    loadValidBtn.addEventListener('click', () => loadSample('valid'));
+    console.log('Load valid sample button event listener added');
   } else {
-    console.error('Load sample button not found!');
+    console.error('Load valid sample button not found!');
+  }
+
+  if (loadInvalidBtn) {
+    loadInvalidBtn.addEventListener('click', () => loadSample('invalid'));
+    console.log('Load invalid sample button event listener added');
+  } else {
+    console.error('Load invalid sample button not found!');
   }
 
   if (verifyBtn) {

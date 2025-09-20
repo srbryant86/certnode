@@ -267,31 +267,22 @@
         let isAuthenticated = false;
 
         // Admin authentication
-        const ADMIN_PASSWORD_HASH = 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'; // SHA-256 of 'hello'
+        const ADMIN_PASSWORD = 'certnode-admin-2025'; // Simple password
 
         // Check if already authenticated
         function checkAuth() {
             const token = localStorage.getItem('dashboard_auth');
-            if (token === ADMIN_PASSWORD_HASH) {
+            if (token === 'authenticated') {
                 showDashboard();
                 return true;
             }
             return false;
         }
 
-        // Hash password (simple SHA-256)
-        async function hashPassword(password) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password);
-            const hash = await crypto.subtle.digest('SHA-256', data);
-            return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-
         // Authenticate user
-        async function authenticate(password) {
-            const hash = await hashPassword(password);
-            if (hash === ADMIN_PASSWORD_HASH) {
-                localStorage.setItem('dashboard_auth', hash);
+        function authenticate(password) {
+            if (password === ADMIN_PASSWORD) {
+                localStorage.setItem('dashboard_auth', 'authenticated');
                 showDashboard();
                 return true;
             }
@@ -315,10 +306,10 @@
         }
 
         // Handle auth form submission
-        document.getElementById('auth-form').addEventListener('submit', async (e) => {
+        document.getElementById('auth-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const password = document.getElementById('admin-password').value;
-            const success = await authenticate(password);
+            const success = authenticate(password);
 
             if (!success) {
                 document.getElementById('auth-error').style.display = 'block';

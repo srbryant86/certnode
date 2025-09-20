@@ -160,7 +160,7 @@ a {
 /* Layout helpers */
 .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-8); }
 .section { padding: var(--space-8) 0; }
-.section--hero { padding: var(--space-20) 0 var(--space-16); background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-600) 100%); color: var(--text-inverse); }
+.section--hero { padding: var(--space-20) 0 var(--space-16); background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-900) 100%); color: var(--text-inverse); }
 .text-center { text-align: center; }
 .mb-0 { margin-bottom: 0; }
 .mb-2 { margin-bottom: var(--space-2); }

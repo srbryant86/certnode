@@ -218,7 +218,7 @@
     <div class="quick-start">
       <h2>🚀 Try it Now</h2>
       <p>New to CertNode? Start with our sample receipt to see how validation works</p>
-      <button class="demo-button" onclick="loadSampleData()">Load Sample Receipt & JWKS</button>
+      <button class="demo-button" id="load-sample-btn" onclick="loadSample()">🔥 CLICK ME - TEST BUTTON 🔥</button>
     </div>
 
     <div class="validation-area">
@@ -227,7 +227,7 @@
         <p style="color: #64748b; margin-bottom: 1rem; font-size: 0.9rem;">Paste your receipt JSON here, or use the sample data above</p>
         <textarea id="receipt-input" placeholder='{"protected": "...", "payload": {...}, "signature": "...", "kid": "..."}'></textarea>
         <div style="margin-top: 1rem;">
-          <button class="btn btn-secondary" onclick="formatJSON('receipt-input')" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Format JSON</button>
+          <button class="btn btn-secondary format-btn" data-target="receipt-input" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Format JSON</button>
         </div>
       </div>
 
@@ -236,14 +236,14 @@
         <p style="color: #64748b; margin-bottom: 1rem; font-size: 0.9rem;">Paste the JWKS (public keys) for verification</p>
         <textarea id="jwks-input" placeholder='{"keys": [{"kty": "EC", "crv": "P-256", "x": "...", "y": "...", "kid": "..."}]}'></textarea>
         <div style="margin-top: 1rem;">
-          <button class="btn btn-secondary" onclick="formatJSON('jwks-input')" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Format JSON</button>
+          <button class="btn btn-secondary format-btn" data-target="jwks-input" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Format JSON</button>
         </div>
       </div>
     </div>
 
     <div class="actions">
-      <button class="btn btn-primary" onclick="verifyReceipt()">✓ Verify Receipt</button>
-      <button class="btn btn-secondary" onclick="clearAll()">Clear All</button>
+      <button class="btn btn-primary" id="verify-btn">✓ Verify Receipt</button>
+      <button class="btn btn-secondary" id="clear-btn">Clear All</button>
     </div>
 
     <div id="result-area" class="result-area">
@@ -257,151 +257,26 @@
     </div>
   </div>
 
-  <script>
-    // Sample data for easy testing
-    const sampleReceipt = {
-      "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImV4YW1wbGUta2lkIn0",
-      "payload": { "hello": "world", "n": 42 },
-      "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-      "kid": "example-kid",
-      "payload_jcs_sha256": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-      "receipt_id": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-    };
-
-    const sampleJWKS = {
-      "keys": [
-        {
-          "kty": "EC",
-          "crv": "P-256",
-          "x": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-          "y": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-          "kid": "example-kid"
-        }
-      ]
-    };
-
-    function loadSampleData() {
-      console.log('Loading sample data...');
-      document.getElementById('receipt-input').value = JSON.stringify(sampleReceipt, null, 2);
-      document.getElementById('jwks-input').value = JSON.stringify(sampleJWKS, null, 2);
-
-      // Visual feedback instead of alert
-      showResult(false, 'Sample data loaded! Click "Verify Receipt" to test validation.');
-      setTimeout(() => {
-        document.getElementById('result-area').style.display = 'none';
-      }, 3000);
-    }
-
-    function formatJSON(textareaId) {
-      const textarea = document.getElementById(textareaId);
-      try {
-        const parsed = JSON.parse(textarea.value);
-        textarea.value = JSON.stringify(parsed, null, 2);
-      } catch (e) {
-        showMessage('Invalid JSON format', 'error');
-      }
-    }
-
-    function clearAll() {
-      document.getElementById('receipt-input').value = '';
-      document.getElementById('jwks-input').value = '';
-      document.getElementById('result-area').style.display = 'none';
-    }
-
-    function showMessage(message, type) {
-      // Simple toast message - could be enhanced
-      alert(message);
-    }
-
-    async function verifyReceipt() {
-      console.log('Verify button clicked');
-      const receiptText = document.getElementById('receipt-input').value.trim();
-      const jwksText = document.getElementById('jwks-input').value.trim();
-
-      if (!receiptText || !jwksText) {
-        showResult(false, 'Please provide both receipt and JWKS data');
-        return;
-      }
-
-      try {
-        const receipt = JSON.parse(receiptText);
-        const jwks = JSON.parse(jwksText);
-        console.log('Parsed data:', { receipt, jwks });
-
-        // Check if CertNode library is available
-        if (typeof CertNode === 'undefined' || typeof CertNode.verifyReceipt !== 'function') {
-          showResult(false, 'Verification library not loaded. Please refresh the page.');
-          return;
-        }
-
-        console.log('Calling CertNode.verifyReceipt...');
-        const result = await CertNode.verifyReceipt(receipt, jwks);
-        console.log('Verification result:', result);
-
-        if (result.valid) {
-          showResult(true, 'Receipt is valid and authentic!', result);
-        } else {
-          showResult(false, result.reason || 'Receipt validation failed', result);
-        }
-      } catch (error) {
-        console.error('Verification error:', error);
-        showResult(false, 'Error: ' + error.message);
-      }
-    }
-
-    function showResult(success, message, details = null) {
-      const resultArea = document.getElementById('result-area');
-      const resultIcon = document.getElementById('result-icon');
-      const resultMessage = document.getElementById('result-message');
-      const resultDetails = document.getElementById('result-details');
-      const resultText = document.getElementById('result-text');
-
-      // Show the result area
-      resultArea.style.display = 'block';
-      resultArea.className = success ? 'result-area result-success' : 'result-area result-error';
-
-      // Set icon and message
-      resultIcon.className = success ? 'result-icon success' : 'result-icon error';
-      resultIcon.textContent = success ? '✓' : '✗';
-      resultMessage.textContent = message;
-
-      // Show details if available
-      if (details) {
-        resultDetails.style.display = 'block';
-        resultText.textContent = JSON.stringify(details, null, 2);
-      } else {
-        resultDetails.style.display = 'none';
-      }
-
-      // Scroll to result
-      resultArea.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Auto-load sample data on page load for first-time users
-    window.addEventListener('load', () => {
-      console.log('Page loaded');
-
-      // Check if verification library loaded
-      setTimeout(() => {
-        if (typeof CertNode !== 'undefined' && typeof CertNode.verifyReceipt === 'function') {
-          console.log('CertNode verification library loaded successfully');
-        } else {
-          console.error('CertNode verification library failed to load');
-        }
-      }, 500);
-
-      // Only load if both fields are empty
-      if (!document.getElementById('receipt-input').value && !document.getElementById('jwks-input').value) {
-        setTimeout(() => {
-          if (confirm('Would you like to load sample data to try the validator?')) {
-            loadSampleData();
-          }
-        }, 1000);
-      }
-    });
-  </script>
-
   <!-- Include verification library -->
   <script src="/web/js/verify.js"></script>
+  <script src="/web/js/validator.js?v=2"></script>
+  <script>
+  console.log('🔥 SCRIPT IS LOADING! 🔥');
+
+  function loadSample() {
+    alert('🎉 BUTTON ACTUALLY CLICKED! 🎉');
+    console.log('Function called successfully!');
+
+    try {
+      document.getElementById('receipt-input').value = 'SAMPLE RECEIPT DATA LOADED!';
+      document.getElementById('jwks-input').value = 'SAMPLE JWKS DATA LOADED!';
+      alert('✅ DATA LOADED SUCCESSFULLY!');
+    } catch(e) {
+      alert('❌ ERROR: ' + e.message);
+    }
+  }
+
+  console.log('🔥 SCRIPT LOADED COMPLETELY! 🔥');
+  </script>
 </body>
 </html>

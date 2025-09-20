@@ -42,15 +42,15 @@ html {
   --text-tertiary: #64748b;
   --text-inverse: #ffffff;
 
-  /* Brand Colors - Professional Slate Gray */
-  --primary: #475569;
-  --primary-light: #64748b;
-  --primary-dark: #334155;
-  --primary-50: #f8fafc;
-  --primary-100: #f1f5f9;
-  --primary-500: #64748b;
-  --primary-600: #475569;
-  --primary-900: #1e293b;
+  /* Brand Colors - Trust & Infrastructure Blue */
+  --primary: #3b82f6;
+  --primary-light: #60a5fa;
+  --primary-dark: #1d4ed8;
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-900: #1e40af;
 
   /* Semantic Colors */
   --success: #10b981;
@@ -564,11 +564,7 @@ footer {
 
 /* Pricing Page */
 .pricing-hero {
-  background:
-    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.08) 0%, transparent 50%),
-    linear-gradient(135deg, var(--primary-600) 0%, var(--primary-900) 100%);
+  background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-900) 100%);
   color: #fff;
   padding: 80px 0;
   text-align: center;

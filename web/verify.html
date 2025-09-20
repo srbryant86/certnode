@@ -281,9 +281,15 @@
     };
 
     function loadSampleData() {
+      console.log('Loading sample data...');
       document.getElementById('receipt-input').value = JSON.stringify(sampleReceipt, null, 2);
       document.getElementById('jwks-input').value = JSON.stringify(sampleJWKS, null, 2);
-      showMessage('Sample data loaded! Click "Verify Receipt" to test validation.', 'info');
+
+      // Visual feedback instead of alert
+      showResult(false, 'Sample data loaded! Click "Verify Receipt" to test validation.');
+      setTimeout(() => {
+        document.getElementById('result-area').style.display = 'none';
+      }, 3000);
     }
 
     function formatJSON(textareaId) {
@@ -308,6 +314,7 @@
     }
 
     async function verifyReceipt() {
+      console.log('Verify button clicked');
       const receiptText = document.getElementById('receipt-input').value.trim();
       const jwksText = document.getElementById('jwks-input').value.trim();
 
@@ -319,9 +326,17 @@
       try {
         const receipt = JSON.parse(receiptText);
         const jwks = JSON.parse(jwksText);
+        console.log('Parsed data:', { receipt, jwks });
 
-        // Use client-side verification from verify.js
+        // Check if CertNode library is available
+        if (typeof CertNode === 'undefined' || typeof CertNode.verifyReceipt !== 'function') {
+          showResult(false, 'Verification library not loaded. Please refresh the page.');
+          return;
+        }
+
+        console.log('Calling CertNode.verifyReceipt...');
         const result = await CertNode.verifyReceipt(receipt, jwks);
+        console.log('Verification result:', result);
 
         if (result.valid) {
           showResult(true, 'Receipt is valid and authentic!', result);
@@ -329,6 +344,7 @@
           showResult(false, result.reason || 'Receipt validation failed', result);
         }
       } catch (error) {
+        console.error('Verification error:', error);
         showResult(false, 'Error: ' + error.message);
       }
     }
@@ -363,6 +379,17 @@
 
     // Auto-load sample data on page load for first-time users
     window.addEventListener('load', () => {
+      console.log('Page loaded');
+
+      // Check if verification library loaded
+      setTimeout(() => {
+        if (typeof CertNode !== 'undefined' && typeof CertNode.verifyReceipt === 'function') {
+          console.log('CertNode verification library loaded successfully');
+        } else {
+          console.error('CertNode verification library failed to load');
+        }
+      }, 500);
+
       // Only load if both fields are empty
       if (!document.getElementById('receipt-input').value && !document.getElementById('jwks-input').value) {
         setTimeout(() => {

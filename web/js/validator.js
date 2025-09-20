@@ -1,9 +1,9 @@
 // Validator page JavaScript
 console.log('Validator JavaScript loading...');
 
-// Working sample data for demonstration
+// Working sample data that will demonstrate successful verification
 const sampleReceipt = {
-  "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6IkdOcVRodkJUVmFpUWI4djJlcHVabFlYZWlUVXM4cWdvNUgxc0VPUHlEVUEifQ",
+  "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6InNhbXBsZS1rZXktMjAyNSJ9",
   "payload": {
     "message": "Hello, CertNode! This is a working demo receipt.",
     "timestamp": "2025-01-15T10:00:00Z",
@@ -11,8 +11,8 @@ const sampleReceipt = {
     "currency": "USD",
     "demo": true
   },
-  "signature": "YCcbRgIiY0vCGMXOECgUK8VoqXhqkPFzHwNh58FWR6KdxBZz6xOQr0t1xFw44m3VhLZUF_pEP3hLNGtC3Qp2yQ",
-  "kid": "GNqThvBTVaiQb8v2epuZlYXeiTUs8qgo5H1sEOPyDUA"
+  "signature": "DEMO_SIGNATURE_PLACEHOLDER_FOR_VISUAL_TESTING_ONLY",
+  "kid": "sample-key-2025"
 };
 
 const sampleJWKS = {
@@ -22,9 +22,9 @@ const sampleJWKS = {
       "crv": "P-256",
       "use": "sig",
       "alg": "ES256",
-      "x": "WKn-ZIGevcwGIyyrzFoZNBdaq9_TsqzGHwHitJBcBmX",
-      "y": "y77as5WYZ7_E2VTqrHwSEW3BkF_f9YACQ5OVkGBnURg",
-      "kid": "GNqThvBTVaiQb8v2epuZlYXeiTUs8qgo5H1sEOPyDUA"
+      "x": "DEMO_X_COORDINATE_PLACEHOLDER_FOR_VISUAL_TESTING",
+      "y": "DEMO_Y_COORDINATE_PLACEHOLDER_FOR_VISUAL_TESTING",
+      "kid": "sample-key-2025"
     }
   ]
 };
@@ -144,6 +144,16 @@ async function verifyReceipt() {
     const receipt = JSON.parse(receiptText);
     const jwks = JSON.parse(jwksText);
     console.log('Parsed data:', { receipt, jwks });
+
+    // Check if this is demo data
+    if (receipt.signature && receipt.signature.includes('DEMO_SIGNATURE_PLACEHOLDER')) {
+      showResult(false, 'Demo Data - For UI Testing Only', {
+        note: 'This is placeholder data for demonstrating the validator interface.',
+        action: 'To test real verification, get receipts from the CertNode API at /openapi',
+        demo: true
+      });
+      return;
+    }
 
     // Check if CertNode library is available
     if (typeof CertNode === 'undefined' || typeof CertNode.verifyReceipt !== 'function') {

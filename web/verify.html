@@ -33,33 +33,57 @@
     .quick-start {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: white;
-      border-radius: 16px;
-      padding: 2rem;
+      border-radius: 20px;
+      padding: 3rem 2rem;
       margin-bottom: 3rem;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+    }
+    .quick-start::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+      pointer-events: none;
     }
     .quick-start h2 {
       margin: 0 0 1rem 0;
-      font-size: 1.8rem;
+      font-size: 2rem;
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
     }
     .quick-start p {
-      margin: 0 0 1.5rem 0;
-      opacity: 0.9;
+      margin: 0 0 2rem 0;
+      opacity: 0.95;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 1;
     }
     .demo-button {
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.15);
       color: white;
       border: 2px solid rgba(255,255,255,0.3);
-      padding: 1rem 2rem;
-      border-radius: 8px;
+      padding: 1.2rem 2.5rem;
+      border-radius: 12px;
       font-size: 1.1rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(10px);
     }
     .demo-button:hover {
-      background: rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.25);
       border-color: rgba(255,255,255,0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
     }
     .validation-area {
       display: grid;
@@ -69,30 +93,60 @@
     }
     .input-card {
       background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      border: 2px solid #e1e5e9;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .input-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+    }
+    .input-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      border-color: #cbd5e1;
     }
     .input-card h3 {
       margin: 0 0 1rem 0;
       color: #1e40af;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
     .input-card textarea {
       width: 100%;
-      min-height: 200px;
-      border: 1px solid #e1e5e9;
-      border-radius: 8px;
-      padding: 1rem;
+      min-height: 220px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.25rem;
       font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
       font-size: 0.9rem;
       resize: vertical;
+      background: #f8fafc;
+      transition: all 0.3s ease;
+      line-height: 1.5;
     }
     .input-card textarea:focus {
       outline: none;
       border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+      background: white;
+      transform: scale(1.01);
+    }
+    .input-card textarea::placeholder {
+      color: #94a3b8;
+      font-style: italic;
     }
     .actions {
       display: flex;
@@ -101,48 +155,104 @@
       margin: 2rem 0;
     }
     .btn {
-      padding: 1rem 2rem;
-      border-radius: 8px;
+      padding: 1.2rem 2.5rem;
+      border-radius: 12px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s ease;
       text-decoration: none;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
       text-align: center;
       border: none;
-      font-size: 1rem;
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    .btn:hover::before {
+      left: 100%;
     }
     .btn-primary {
-      background: #3b82f6;
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
       color: white;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
     }
     .btn-primary:hover {
-      background: #2563eb;
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
     }
     .btn-secondary {
-      background: transparent;
+      background: white;
       color: #3b82f6;
       border: 2px solid #3b82f6;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     .btn-secondary:hover {
       background: #3b82f6;
       color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
     }
     .result-area {
       background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      border: 2px solid #e1e5e9;
-      margin-top: 2rem;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0;
+      margin-top: 3rem;
       display: none;
+      position: relative;
+      overflow: hidden;
+      animation: slideIn 0.5s ease-out;
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     .result-success {
       border-color: #10b981;
+      background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+    }
+    .result-success::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981, #059669);
     }
     .result-error {
       border-color: #ef4444;
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    }
+    .result-error::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #ef4444, #dc2626);
     }
     .result-header {
       display: flex;
@@ -219,8 +329,9 @@
   <div class="validator-container">
     <div class="quick-start">
       <h2>🚀 Try it Now</h2>
-      <p>New to CertNode? Start with our sample receipt to see how validation works</p>
-      <button class="demo-button" id="load-sample-btn">Load Sample Receipt & JWKS</button>
+      <p>New to CertNode? Load sample data to explore the validator interface, then try with real receipts from our API</p>
+      <button class="demo-button" id="load-sample-btn">Load Demo Data</button>
+      <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">Sample data is for UI demonstration. For working verification, get receipts from our <a href="/openapi" style="color: rgba(255,255,255,0.9); text-decoration: underline;">API</a>.</p>
     </div>
 
     <div class="validation-area">
@@ -261,6 +372,6 @@
 
   <!-- Include verification library -->
   <script src="/web/js/verify.js"></script>
-  <script src="/web/js/validator.js?v=3"></script>
+  <script src="/web/js/validator.js?v=4"></script>
 </body>
 </html>

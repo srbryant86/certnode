@@ -34,13 +34,13 @@ const invalidSample = {
   receipt: {
     "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjBGWnFCeERxT2xZRDBGNWx4eERDbWhzTzhvUnBkd0tZR1pPVzctcUdzRzAifQ",
     "payload": {
-      "message": "This receipt has been tampered with!",
+      "message": "Hello, CertNode! This receipt will verify successfully.",
       "timestamp": "2025-01-15T10:00:00Z",
-      "amount": 999999.00,
+      "amount": 999999.00,  // FRAUD: Changed from 42.00 to 999999.00
       "currency": "USD",
-      "tampered": true
+      "demo": true
     },
-    "signature": "DEMO_INVALID_SIGNATURE_FOR_UI_TESTING",
+    "signature": "DEMO_INVALID_SIGNATURE_FOR_UI_TESTING",  // Same signature as valid, but content changed
     "kid": "0FZqBxDqOlYD0F5lxxDCmhsO8oRpdwKYGZOW7-qGsG0"
   },
   jwks: {

@@ -36,11 +36,44 @@
 
     <section class="section">
       <div class="container">
-        <div id="api-fallback" style="display: none; text-align: center; padding: 2rem; background: #f8fafc; border-radius: 12px; margin: 2rem 0;">
-          <p>Loading API documentation...</p>
-          <p><a href="/openapi.json" style="color: #3b82f6;">View OpenAPI JSON directly</a></p>
+        <div class="api-docs" style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+          <h2 style="color: #1e40af; margin-bottom: 1.5rem;">CertNode API Reference</h2>
+
+          <div style="margin-bottom: 2rem;">
+            <h3 style="color: #374151; margin-bottom: 1rem;">Quick Start</h3>
+            <p style="color: #6b7280; line-height: 1.6;">Generate tamper-evident receipts for any JSON payload with cryptographic signatures.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #3b82f6;">
+              <h4 style="color: #1e40af; margin: 0 0 1rem 0;">POST /v1/sign</h4>
+              <p style="color: #6b7280; margin: 0 0 1rem 0; font-size: 0.9rem;">Generate a cryptographically signed receipt</p>
+              <code style="background: #e5e7eb; padding: 0.5rem; border-radius: 4px; display: block; font-size: 0.8rem;">
+                {"payload": {"amount": 42.00}}
+              </code>
+            </div>
+
+            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #10b981;">
+              <h4 style="color: #059669; margin: 0 0 1rem 0;">GET /.well-known/jwks.json</h4>
+              <p style="color: #6b7280; margin: 0 0 1rem 0; font-size: 0.9rem;">Public keys for signature verification</p>
+              <code style="background: #e5e7eb; padding: 0.5rem; border-radius: 4px; display: block; font-size: 0.8rem;">
+                {"keys": [...]}
+              </code>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin: 2rem 0;">
+            <a href="/openapi.json" style="display: inline-block; background: #3b82f6; color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; margin-right: 1rem;">Download OpenAPI Spec</a>
+            <a href="/verify" style="display: inline-block; background: transparent; color: #3b82f6; padding: 1rem 2rem; border: 2px solid #3b82f6; border-radius: 8px; text-decoration: none; font-weight: 600;">Try Validator</a>
+          </div>
+
+          <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
+            <h4 style="color: #92400e; margin: 0 0 0.5rem 0;">API Reference Loading...</h4>
+            <p style="color: #92400e; margin: 0; font-size: 0.9rem;">Interactive documentation is loading. For full API details, <a href="/openapi.json" style="color: #92400e; text-decoration: underline;">download the OpenAPI specification</a>.</p>
+          </div>
         </div>
-        <api-reference configuration='{"spec":{"url":"/openapi.json"},"layout":"modern"}'></api-reference>
+
+        <api-reference configuration='{"spec":{"url":"/openapi.json"},"layout":"modern"}' style="margin-top: 2rem;"></api-reference>
       </div>
     </section>
   </main>

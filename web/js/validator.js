@@ -190,17 +190,40 @@ async function verifyReceipt() {
       if (isValid) {
         showResult(true, 'VALID', {
           explanation: 'Receipt is authentic and unmodified.',
-          algorithm: 'ES256',
-          key_id: receipt.kid,
-          verified_at: new Date().toISOString(),
-          status: 'Signature verification passed'
+          verification_details: {
+            timestamp: new Date().toISOString(),
+            algorithm: 'ES256 (ECDSA P-256)',
+            key_id: receipt.kid,
+            signature_status: 'Valid',
+            content_hash: 'Verified',
+            issuer: 'CertNode Demo Authority'
+          }
         });
       } else {
+        // Show what was actually tampered with
+        const originalPayload = validSample.receipt.payload;
+        const tamperedPayload = receipt.payload;
+
+        const changes = [];
+        Object.keys(tamperedPayload).forEach(key => {
+          if (originalPayload[key] !== tamperedPayload[key]) {
+            changes.push({
+              field: key,
+              original: originalPayload[key],
+              tampered: tamperedPayload[key]
+            });
+          }
+        });
+
         showResult(false, 'INVALID', {
           explanation: 'Receipt has been tampered with.',
-          reason: 'Signature verification failed',
-          detected: 'Content modified after signing',
-          action: 'Transaction rejected for security'
+          tampering_details: {
+            detected_at: new Date().toISOString(),
+            signature_status: 'Invalid - does not match content',
+            tampered_fields: changes,
+            security_action: 'Transaction blocked',
+            threat_level: 'High - Data integrity compromised'
+          }
         });
       }
       return;
@@ -292,13 +315,46 @@ function showResult(success, message, details = null) {
 
     // Create expandable technical details
     detailsHtml += '<details style="margin-top: 1rem;"><summary style="cursor: pointer; font-weight: 600; color: #1f2937;">Technical Details</summary>';
-    detailsHtml += '<div style="margin-top: 0.5rem; padding: 1rem; background: #f9fafb; border-radius: 6px; font-family: monospace; font-size: 0.9rem;">';
+    detailsHtml += '<div style="margin-top: 0.5rem; padding: 1rem; background: #f9fafb; border-radius: 6px; font-size: 0.9rem;">';
 
     Object.entries(details).forEach(([key, value]) => {
       if (key !== 'explanation') {
         const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-        if (typeof value === 'object') {
-          detailsHtml += `<div><strong>${label}:</strong><pre style="margin: 0.5rem 0; white-space: pre-wrap;">${JSON.stringify(value, null, 2)}</pre></div>`;
+
+        if (key === 'tampering_details' && value.tampered_fields) {
+          detailsHtml += '<div style="margin-bottom: 1rem;"><strong>Tampering Analysis:</strong></div>';
+
+          // Show timestamp
+          detailsHtml += `<div style="margin-bottom: 0.5rem;"><strong>Detected:</strong> ${new Date(value.detected_at).toLocaleString()}</div>`;
+          detailsHtml += `<div style="margin-bottom: 0.5rem;"><strong>Signature Status:</strong> ${value.signature_status}</div>`;
+          detailsHtml += `<div style="margin-bottom: 0.5rem;"><strong>Security Action:</strong> ${value.security_action}</div>`;
+
+          // Show what was changed
+          if (value.tampered_fields.length > 0) {
+            detailsHtml += '<div style="margin: 1rem 0;"><strong>Modified Fields:</strong></div>';
+            value.tampered_fields.forEach(change => {
+              detailsHtml += `<div style="margin-left: 1rem; padding: 0.5rem; background: #fee2e2; border-left: 3px solid #ef4444; margin-bottom: 0.5rem;">`;
+              detailsHtml += `<div><strong>Field:</strong> ${change.field}</div>`;
+              detailsHtml += `<div><strong>Original:</strong> ${JSON.stringify(change.original)}</div>`;
+              detailsHtml += `<div><strong>Tampered:</strong> ${JSON.stringify(change.tampered)}</div>`;
+              detailsHtml += '</div>';
+            });
+          }
+
+          detailsHtml += `<div style="margin-top: 1rem;"><strong>Threat Level:</strong> ${value.threat_level}</div>`;
+
+        } else if (key === 'verification_details') {
+          detailsHtml += '<div style="margin-bottom: 1rem;"><strong>Verification Report:</strong></div>';
+          Object.entries(value).forEach(([detailKey, detailValue]) => {
+            const detailLabel = detailKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            if (detailKey === 'timestamp') {
+              detailsHtml += `<div style="margin-bottom: 0.5rem;"><strong>${detailLabel}:</strong> ${new Date(detailValue).toLocaleString()}</div>`;
+            } else {
+              detailsHtml += `<div style="margin-bottom: 0.5rem;"><strong>${detailLabel}:</strong> ${detailValue}</div>`;
+            }
+          });
+        } else if (typeof value === 'object') {
+          detailsHtml += `<div><strong>${label}:</strong><pre style="margin: 0.5rem 0; white-space: pre-wrap; font-family: monospace;">${JSON.stringify(value, null, 2)}</pre></div>`;
         } else {
           detailsHtml += `<div style="margin-bottom: 0.5rem;"><strong>${label}:</strong> ${value}</div>`;
         }

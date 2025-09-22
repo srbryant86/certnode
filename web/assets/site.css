@@ -617,6 +617,15 @@ footer {
     gap: var(--space-4);
   }
 
+  .nav a {
+    padding: var(--space-2);
+    font-size: var(--font-size-xs);
+  }
+
+  .header-container {
+    padding: var(--space-3) var(--space-4);
+  }
+
   .section {
     padding: var(--space-16) 0;
   }

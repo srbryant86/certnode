@@ -3,68 +3,128 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CertNode Test Vectors</title>
+  <link rel="canonical" href="https://certnode.io/test-vectors" />
+  <title>Test Vectors — CertNode</title>
+  <link rel="stylesheet" href="/web/assets/site.css" />
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #1e293b;
-      background: #fafbfc;
-      line-height: 1.6;
-    }
-    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-    .header {
-      text-align: center;
-      margin-bottom: 3rem;
-      padding: 2rem;
-      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    .vectors-hero {
+      background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-900) 100%);
       color: white;
-      border-radius: 12px;
+      padding: 4rem 0;
+      text-align: center;
     }
-    .header h1 { margin: 0; font-size: 2.5rem; font-weight: 600; }
-    .header p { margin: 1rem 0 0 0; font-size: 1.1rem; opacity: 0.9; }
-    .card {
-      background: #fff;
-      border: 1px solid #e1e5e9;
-      border-radius: 12px;
+    .vectors-hero h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: white;
+    }
+    .vectors-hero p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0 auto;
+      max-width: 600px;
+    }
+    .vectors-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .vectors-card {
+      background: white;
+      border-radius: 16px;
       padding: 2rem;
       margin-bottom: 2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
     }
-    .card h2 { margin-top: 0; color: #1e40af; font-size: 1.5rem; }
-    code { background: #f8fafc; padding: 4px 8px; border-radius: 6px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; }
-    a { color: #1e40af; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    ul { list-style: none; padding: 0; }
-    li { margin-bottom: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9; }
-    li:last-child { border-bottom: none; }
-    li a { display: block; padding: 0.5rem; border-radius: 6px; transition: background-color 0.2s; }
-    li a:hover { background-color: #f8fafc; text-decoration: none; }
+    .vectors-card h2 {
+      color: #1e40af;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 0 0 1rem 0;
+    }
+    .vectors-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .vectors-list li {
+      margin-bottom: 0.5rem;
+      padding: 0.75rem;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+    .vectors-list li:hover {
+      background-color: #f8fafc;
+    }
+    .vectors-list a {
+      color: #3b82f6;
+      text-decoration: none;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.9rem;
+    }
+    .vectors-list a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>CertNode Test Vectors</h1>
-      <p>Use these standard vectors for cross-language verification of JWS/JCS receipts.</p>
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/" class="logo">CertNode</a>
+        <div class="nav-links">
+          <a href="/verify">Validator</a>
+          <a href="/openapi">Specification</a>
+          <a href="/test-vectors" aria-current="page">Test Vectors</a>
+          <a href="/trust">Trust Center</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/usage">Infrastructure</a>
+          <a href="https://github.com/certnode/certnode" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </nav>
     </div>
+  </header>
 
-    <div class="card">
-      <h2>JWKS Sets</h2>
-      <ul>
-        <li><a href="/public/test-vectors/valid/jwks.json">valid/jwks.json</a></li>
-        <li><a href="/public/test-vectors/wrong-kid/jwks.json">wrong-kid/jwks.json</a></li>
-        <li><a href="/public/test-vectors/wrong-alg/jwks.json">wrong-alg/jwks.json</a></li>
-        <li><a href="/public/test-vectors/tampered-payload/jwks.json">tampered-payload/jwks.json</a></li>
-        <li><a href="/public/test-vectors/malformed/jwks.json">malformed/jwks.json</a></li>
-      </ul>
+  <section class="vectors-hero">
+    <div class="vectors-container">
+      <h1>Test Vectors</h1>
+      <p>Standard test vectors for cross-language verification of JWS/JCS receipts and signature validation.</p>
     </div>
+  </section>
 
-    <div class="card">
-      <h2>OpenAPI</h2>
-      <p>Import the <a href="/openapi.json">OpenAPI JSON</a> or use the <a href="/openapi">Spec Viewer</a>.</p>
+  <main>
+    <div class="vectors-container">
+      <div class="vectors-card">
+        <h2>📁 JWKS Key Sets</h2>
+        <p>Public key sets for testing different validation scenarios:</p>
+        <ul class="vectors-list">
+          <li><a href="/public/test-vectors/valid/jwks.json">valid/jwks.json</a></li>
+          <li><a href="/public/test-vectors/wrong-kid/jwks.json">wrong-kid/jwks.json</a></li>
+          <li><a href="/public/test-vectors/wrong-alg/jwks.json">wrong-alg/jwks.json</a></li>
+          <li><a href="/public/test-vectors/tampered-payload/jwks.json">tampered-payload/jwks.json</a></li>
+          <li><a href="/public/test-vectors/malformed/jwks.json">malformed/jwks.json</a></li>
+        </ul>
+      </div>
+
+      <div class="vectors-card">
+        <h2>🔧 Developer Resources</h2>
+        <p>Additional tools and documentation for implementation testing:</p>
+        <ul class="vectors-list">
+          <li><a href="/openapi.json">OpenAPI Specification (JSON)</a></li>
+          <li><a href="/openapi">Interactive API Documentation</a></li>
+          <li><a href="/verify">Live Receipt Validator</a></li>
+        </ul>
+      </div>
     </div>
-  </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 CertNode — Universal receipt infrastructure standard.</p>
+    </div>
+  </footer>
+
 </body>
 </html>

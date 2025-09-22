@@ -6,7 +6,6 @@
   <link rel="canonical" href="https://certnode.io/openapi" />
   <title>API Specification — CertNode</title>
   <link rel="stylesheet" href="/web/assets/site.css" />
-  <script type="module" src="/public/vendor/scalar/api-reference.js"></script>
 </head>
 <body>
   <header class="header">
@@ -67,41 +66,104 @@
             <a href="/verify" style="display: inline-block; background: transparent; color: #3b82f6; padding: 1rem 2rem; border: 2px solid #3b82f6; border-radius: 8px; text-decoration: none; font-weight: 600;">Try Validator</a>
           </div>
 
-          <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
-            <h4 style="color: #92400e; margin: 0 0 0.5rem 0;">API Reference Loading...</h4>
-            <p style="color: #92400e; margin: 0; font-size: 0.9rem;">Interactive documentation is loading. For full API details, <a href="/openapi.json" style="color: #92400e; text-decoration: underline;">download the OpenAPI specification</a>.</p>
+          <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #059669; margin-top: 2rem;">
+            <h4 style="color: #059669; margin: 0 0 1rem 0;">📚 Complete API Documentation</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+              <div>
+                <h5 style="color: #374151; margin: 0 0 0.5rem 0;">Interactive Documentation</h5>
+                <p style="color: #6b7280; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                  Use any OpenAPI-compatible tool with our specification:
+                </p>
+                <ul style="color: #6b7280; margin: 0; padding-left: 1.5rem;">
+                  <li><a href="https://editor.swagger.io/?url=https://certnode.io/openapi.json" target="_blank" style="color: #3b82f6;">Swagger Editor</a></li>
+                  <li><a href="https://petstore.swagger.io/?url=https://certnode.io/openapi.json" target="_blank" style="color: #3b82f6;">Swagger UI</a></li>
+                  <li><a href="/openapi.json" style="color: #3b82f6;">Raw OpenAPI 3.1 Spec</a></li>
+                </ul>
+              </div>
+              <div>
+                <h5 style="color: #374151; margin: 0 0 0.5rem 0;">Quick Reference</h5>
+                <p style="color: #6b7280; margin: 0 0 1rem 0; font-size: 0.9rem;">
+                  Essential endpoints for developers:
+                </p>
+                <ul style="color: #6b7280; margin: 0; padding-left: 1.5rem;">
+                  <li><code style="background: #e5e7eb; padding: 0.2rem 0.4rem; border-radius: 3px;">POST /v1/sign</code> - Generate receipts</li>
+                  <li><code style="background: #e5e7eb; padding: 0.2rem 0.4rem; border-radius: 3px;">GET /.well-known/jwks.json</code> - Public keys</li>
+                  <li><code style="background: #e5e7eb; padding: 0.2rem 0.4rem; border-radius: 3px;">GET /health</code> - Service status</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: #d1fae5; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #059669; margin-top: 1rem;">
+            <h4 style="color: #059669; margin: 0 0 0.5rem 0;">✅ Interactive Documentation Ready!</h4>
+            <p style="color: #059669; margin: 0; font-size: 0.9rem;">
+              <strong>Get started quickly:</strong><br>
+              • <a href="/verify" style="color: #059669; text-decoration: underline;">Live receipt validator</a> - Test receipt verification<br>
+              • <a href="/test-vectors" style="color: #059669; text-decoration: underline;">Test vectors</a> - Sample receipts and test data<br>
+              • <a href="https://github.com/certnode/certnode" style="color: #059669; text-decoration: underline;" target="_blank">GitHub repository</a> - Source code and examples
+            </p>
           </div>
         </div>
 
-        <api-reference configuration='{"spec":{"url":"/openapi.json"},"layout":"modern"}' style="margin-top: 2rem;"></api-reference>
+        <div id="api-spec-embed" style="margin-top: 2rem; background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+          <h3 style="color: #1e40af; margin: 0 0 1rem 0;">OpenAPI Specification Preview</h3>
+          <p style="color: #6b7280; margin: 0 0 1rem 0;">
+            Below is a simplified view of our API endpoints. For interactive documentation, use the links above.
+          </p>
+
+          <div style="border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
+            <div style="background: #f8fafc; padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+              <h4 style="margin: 0; color: #374151;">Core Endpoints</h4>
+            </div>
+            <div style="padding: 1.5rem;">
+              <div style="margin-bottom: 2rem;">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                  <span style="background: #059669; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">POST</span>
+                  <code style="margin-left: 0.5rem; font-weight: 600;">/v1/sign</code>
+                </div>
+                <p style="color: #6b7280; margin: 0 0 0.5rem 0; font-size: 0.9rem;">Generate a cryptographically signed receipt for any JSON payload</p>
+                <details style="margin-top: 0.5rem;">
+                  <summary style="color: #3b82f6; cursor: pointer; font-size: 0.9rem;">Request Example</summary>
+                  <pre style="background: #f8fafc; padding: 1rem; border-radius: 4px; margin: 0.5rem 0; overflow: auto; font-size: 0.8rem;"><code>{
+  "payload": {
+    "amount": 42.00,
+    "description": "Coffee purchase",
+    "timestamp": "2025-01-15T10:30:00Z"
+  },
+  "headers": {
+    "tsr": true
+  }
+}</code></pre>
+                </details>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                  <span style="background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">GET</span>
+                  <code style="margin-left: 0.5rem; font-weight: 600;">/.well-known/jwks.json</code>
+                </div>
+                <p style="color: #6b7280; margin: 0; font-size: 0.9rem;">Public keys for verifying receipt signatures (JWK Set format)</p>
+              </div>
+
+              <div>
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                  <span style="background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">GET</span>
+                  <code style="margin-left: 0.5rem; font-weight: 600;">/health</code>
+                </div>
+                <p style="color: #6b7280; margin: 0; font-size: 0.9rem;">Service health and dependency status</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
-  <script>
-    // Show fallback if API reference doesn't load
-    setTimeout(() => {
-      const apiRef = document.querySelector('api-reference');
-      const fallback = document.getElementById('api-fallback');
-
-      if (apiRef && !apiRef.shadowRoot) {
-        fallback.style.display = 'block';
-        fallback.innerHTML = `
-          <h3>API Documentation</h3>
-          <p>The interactive API viewer is loading. You can:</p>
-          <ul style="text-align: left; display: inline-block;">
-            <li><a href="/openapi.json" target="_blank">View the OpenAPI specification (JSON)</a></li>
-            <li><a href="/verify">Try the validator tool</a></li>
-            <li><a href="https://github.com/certnode/certnode" target="_blank">View the GitHub repository</a></li>
-          </ul>
-        `;
-      }
-    }, 2000);
-  </script>
 
   <footer>
     <div class="container">
       <p>&copy; 2025 CertNode — Universal receipt infrastructure standard.</p>
+      <p style="font-size: 0.8rem; color: #6b7280; margin-top: 0.5rem;">🔄 FRESH CONTENT - Last updated: 2025-09-21 23:45 UTC</p>
     </div>
   </footer>
 </body>

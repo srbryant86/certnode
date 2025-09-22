@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "description": "CertNode API serverless dependencies",
-  "engines": { "node": ">=18" },
+  "engines": { "node": ">=20.0.0" },
   "dependencies": {
     "stripe": "^13.5.0"
   }

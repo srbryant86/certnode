@@ -7,460 +7,442 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
   <title>Trust Center � CertNode</title>
   <style>
-    :root {
-      --bg: #fafbfc;
-      --bg-primary: #1e40af;
-      --panel: #ffffff;
-      --border: #e1e5e9;
-      --border-light: #f1f5f9;
-      --text: #1e293b;
-      --text-muted: #64748b;
-      --text-light: #94a3b8;
-      --primary: #1e40af;
-      --primary-dark: #1e3a8a;
-      --accent: #3b82f6;
-      --accent-light: #60a5fa;
-
-      /* Cryptographic Identity Colors */
-      --crypto-gold: #f59e0b;
-      --security-teal: #0891b2;
-      --warning-amber: #d97706;
-      --verified-green: #059669;
-
-      /* Compliance Framework Colors */
-      --sox-blue: #1e40af;
-      --hipaa-green: #059669;
-      --pci-red: #dc2626;
-      --gdpr-purple: #7c3aed;
-      --fedramp-orange: #ea580c;
-
-      --success: #059669;
-      --success-bg: #f0fdf4;
-      --success-border: #bbf7d0;
-    }
-
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      letter-spacing: -0.01em;
-    }
-
-    header {
-      background: var(--panel);
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
-
-    .header-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--primary);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-
-    .nav {
-      display: flex;
-      gap: 40px;
-      align-items: center;
-    }
-
-    .nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 400;
-      font-size: 15px;
-      transition: all 0.2s ease;
-      position: relative;
-    }
-
-    .nav a:hover {
-      color: var(--primary);
-    }
-
-    .nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--primary);
-      transition: width 0.3s ease;
-    }
-
-    .nav a:hover::after {
-      width: 100%;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 32px;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--primary-dark) 100%);
+    .trust-hero {
+      background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-900) 100%);
       color: white;
-      padding: 100px 0;
+      padding: 4rem 0;
       text-align: center;
       position: relative;
     }
 
-    .hero::before {
+    .trust-hero::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(30, 41, 59, 0.2);
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.05) 0%, transparent 50%);
       pointer-events: none;
     }
 
-    /* Cryptographic Pattern Overlay */
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 2px,
-        rgba(255,255,255,0.05) 2px,
-        rgba(255,255,255,0.05) 4px
-      );
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .hero h1 {
-      font-size: 48px;
-      font-weight: 400;
-      margin-bottom: 32px;
-      line-height: 1.3;
-      letter-spacing: -0.02em;
+    .trust-hero h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
       position: relative;
       z-index: 1;
+      color: white;
     }
 
-    .hero p {
-      font-size: 22px;
+    .trust-hero p {
+      font-size: 1.1rem;
       color: rgba(255, 255, 255, 0.9);
       margin: 0 auto;
-      line-height: 1.6;
-      font-weight: 300;
-      max-width: 700px;
+      max-width: 600px;
       position: relative;
       z-index: 1;
     }
 
-    .section {
-      padding: 80px 0;
+    .trust-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
     }
 
-    .trust-section {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 48px;
-      margin: 32px 0;
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
     }
 
-    .trust-section h2 {
-      color: var(--primary);
-      font-size: 32px;
-      margin-bottom: 24px;
+    .trust-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    .trust-section h3 {
-      color: var(--primary);
-      font-size: 24px;
-      margin: 32px 0 16px 0;
+    .trust-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #2563eb);
     }
 
-    .trust-section p {
-      font-size: 16px;
-      line-height: 1.7;
-      margin-bottom: 16px;
+    .trust-card:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+    }
+
+    .trust-card h3 {
+      color: #1e40af;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .trust-card p {
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
     }
 
     .trust-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: var(--success-bg);
-      border: 1px solid var(--success-border);
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
       border-radius: 20px;
-      color: var(--success);
-      font-size: 14px;
+      color: #059669;
+      font-size: 0.875rem;
       font-weight: 500;
-      margin: 4px 8px 4px 0;
+      margin: 0.25rem 0.5rem 0.25rem 0;
     }
 
     .trust-list {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
 
     .trust-list li {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border-light);
       display: flex;
       align-items: flex-start;
-      gap: 12px;
-    }
-
-    .trust-list li:last-child {
-      border-bottom: none;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      color: #374151;
+      line-height: 1.6;
     }
 
     .trust-list li::before {
       content: "✓";
-      color: var(--success);
-      font-weight: bold;
+      color: #059669;
+      font-weight: 600;
       flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .key-info {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.875rem;
+      border: 1px solid #e2e8f0;
+    }
+
+    .key-info div {
+      margin-bottom: 0.5rem;
+    }
+
+    .key-info div:last-child {
+      margin-bottom: 0;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .metric-card {
+      text-align: center;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #059669;
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-label {
+      color: #64748b;
+      font-size: 0.875rem;
+    }
+
+    .metric-description {
+      color: #94a3b8;
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    .compliance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .compliance-card {
+      padding: 1rem;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .compliance-card:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .compliance-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #1e40af;
+    }
+
+    .compliance-status {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+
+    @media (max-width: 768px) {
+      .trust-container {
+        padding: 1rem;
+      }
+
+      .trust-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .trust-hero h1 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="header-container">
-      <a href="/" class="logo">CertNode</a>
+  <header class="header">
+    <div class="container">
       <nav class="nav">
-        <a href="/">Home</a>
-        <a href="/verify">Validator</a>
-        <a href="/pricing">Implementation</a>
-        <a href="/openapi">Specification</a>
-        <a href="/trust" aria-current="page">Trust</a>
-        <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
+        <a href="/" class="logo">CertNode</a>
+        <div class="nav-links">
+          <a href="/verify">Validator</a>
+          <a href="/openapi">Specification</a>
+          <a href="/test-vectors">Test Vectors</a>
+          <a href="/trust" aria-current="page">Trust Center</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/usage">Infrastructure</a>
+          <a href="https://github.com/certnode/certnode" target="_blank" rel="noopener">GitHub</a>
+        </div>
       </nav>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="container">
+  <section class="trust-hero">
+    <div class="trust-container">
       <h1>Trust Center</h1>
-      <p>Security, compliance, and transparency commitments that protect your cryptographic infrastructure</p>
+      <p>Security, compliance, and transparency commitments that protect your cryptographic infrastructure.</p>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container">
+  <main>
+    <div class="trust-container">
+      <div class="trust-grid">
 
-      <div class="trust-section">
-        <h2>Security Infrastructure</h2>
-        <p>CertNode implements industry-standard cryptographic protocols designed for high-security environments:</p>
+        <div class="trust-card">
+          <h3>🔐 Security Infrastructure</h3>
+          <p>Industry-standard cryptographic protocols designed for high-security environments.</p>
 
-        <div style="margin: 24px 0;">
-          <div class="trust-badge" style="border-left: 3px solid var(--crypto-gold);">ECDSA P-256 Signatures</div>
-          <div class="trust-badge" style="border-left: 3px solid var(--security-teal);">SHA-256 Hashing</div>
-          <div class="trust-badge" style="border-left: 3px solid var(--primary);">RFC 7515 Compliant</div>
-          <div class="trust-badge" style="border-left: 3px solid var(--verified-green);">Zero-Knowledge Architecture</div>
+          <div style="margin: 1.5rem 0;">
+            <div class="trust-badge">ECDSA P-256 Signatures</div>
+            <div class="trust-badge">SHA-256 Hashing</div>
+            <div class="trust-badge">RFC 7515 Compliant</div>
+            <div class="trust-badge">Zero-Knowledge Architecture</div>
+          </div>
+
+          <ul class="trust-list">
+            <li><strong>End-to-End Encryption:</strong> TLS 1.3 with perfect forward secrecy</li>
+            <li><strong>Private Key Security:</strong> Keys never leave your environment</li>
+            <li><strong>Tamper Detection:</strong> Instant cryptographic verification</li>
+            <li><strong>Audit Trail Integrity:</strong> Immutable receipt generation</li>
+          </ul>
         </div>
 
-        <ul class="trust-list">
-          <li><strong>End-to-End Encryption:</strong> All data transmission uses TLS 1.3 with perfect forward secrecy</li>
-          <li><strong>Private Key Security:</strong> Keys never leave your environment—we never see your private keys</li>
-          <li><strong>Tamper Detection:</strong> Cryptographic signatures instantly reveal any data modification attempts</li>
-          <li><strong>Audit Trail Integrity:</strong> Immutable receipt generation with mathematical verification</li>
-        </ul>
-      </div>
+        <div class="trust-card">
+          <h3>📋 Compliance Standards</h3>
+          <p>Cryptographic infrastructure designed to support various regulatory frameworks.</p>
 
-      <div class="trust-section">
-        <h2>Compliance Standards</h2>
-        <p>Our cryptographic infrastructure is designed to support various regulatory frameworks:</p>
+          <div style="margin: 1.5rem 0;">
+            <strong style="color: #1e40af; display: block; margin-bottom: 0.5rem;">Financial Services</strong>
+            <ul class="trust-list" style="margin-bottom: 1rem;">
+              <li>SOX Section 404 documentation</li>
+              <li>PCI DSS data protection</li>
+              <li>Financial audit trail preservation</li>
+            </ul>
 
-        <h3>Financial Services</h3>
-        <ul class="trust-list">
-          <li>SOX Section 404 documentation requirements</li>
-          <li>PCI DSS data protection standards</li>
-          <li>Financial audit trail preservation</li>
-        </ul>
+            <strong style="color: #1e40af; display: block; margin-bottom: 0.5rem;">Healthcare</strong>
+            <ul class="trust-list" style="margin-bottom: 1rem;">
+              <li>HIPAA Security Rule safeguards</li>
+              <li>PHI integrity protection</li>
+              <li>Healthcare audit documentation</li>
+            </ul>
 
-        <h3>Healthcare</h3>
-        <ul class="trust-list">
-          <li>HIPAA Security Rule technical safeguards</li>
-          <li>Protected health information (PHI) integrity</li>
-          <li>Healthcare audit documentation</li>
-        </ul>
-
-        <h3>Privacy Regulations</h3>
-        <ul class="trust-list">
-          <li>GDPR data processing transparency</li>
-          <li>Data subject rights verification</li>
-          <li>Cross-border transfer documentation</li>
-        </ul>
-      </div>
-
-      <div class="trust-section">
-        <h2>Technical Standards</h2>
-        <p>CertNode implements established cryptographic standards from trusted organizations:</p>
-
-        <ul class="trust-list">
-          <li><strong>RFC 7515:</strong> JSON Web Signature (JWS) standard implementation</li>
-          <li><strong>FIPS 186-4:</strong> Digital Signature Standard (DSS) compliance</li>
-          <li><strong>NIST SP 800-57:</strong> Key management best practices</li>
-          <li><strong>RFC 8785:</strong> JSON Canonicalization Scheme (JCS) for consistent hashing</li>
-        </ul>
-      </div>
-
-      <div class="trust-section">
-        <h2>Data Handling</h2>
-        <p>We maintain strict data handling practices to protect your sensitive information:</p>
-
-        <h3>What We Never Store</h3>
-        <ul class="trust-list">
-          <li>Your private cryptographic keys</li>
-          <li>Unencrypted sensitive data</li>
-          <li>User passwords or credentials</li>
-          <li>Personal identifiable information (PII)</li>
-        </ul>
-
-        <h3>What We Do Store</h3>
-        <ul class="trust-list">
-          <li>Public keys and certificates for verification</li>
-          <li>Cryptographic receipts and signatures</li>
-          <li>System logs for security monitoring</li>
-          <li>Usage metrics for service improvement</li>
-        </ul>
-      </div>
-
-      <div class="trust-section">
-        <h2>Key Management & Rotation</h2>
-        <p>Transparent key lifecycle management with public rotation logs and security policies:</p>
-
-        <h3>Current Keys</h3>
-        <div style="background: var(--border-light); border-radius: 8px; padding: 16px; margin: 16px 0; font-family: monospace; font-size: 14px;">
-          <div style="margin-bottom: 8px;"><strong>Active Key ID:</strong> cert-2025-01-15-prod</div>
-          <div style="margin-bottom: 8px;"><strong>Algorithm:</strong> ES256 (ECDSA P-256)</div>
-          <div style="margin-bottom: 8px;"><strong>Created:</strong> 2025-01-15T10:30:00Z</div>
-          <div><strong>JWKS Endpoint:</strong> <a href="/.well-known/jwks.json" style="color: var(--primary);">/.well-known/jwks.json</a></div>
+            <strong style="color: #1e40af; display: block; margin-bottom: 0.5rem;">Privacy</strong>
+            <ul class="trust-list">
+              <li>GDPR data processing transparency</li>
+              <li>Data subject rights verification</li>
+              <li>Cross-border transfer documentation</li>
+            </ul>
+          </div>
         </div>
 
-        <h3>Rotation Log</h3>
-        <div style="overflow-x: auto; margin: 16px 0;">
-          <table style="width: 100%; border-collapse: collapse; font-family: monospace; font-size: 14px;">
-            <thead>
-              <tr style="background: var(--border-light); border-bottom: 2px solid var(--border);">
-                <th style="padding: 12px; text-align: left; border-right: 1px solid var(--border);">Date</th>
-                <th style="padding: 12px; text-align: left; border-right: 1px solid var(--border);">Key ID</th>
-                <th style="padding: 12px; text-align: left; border-right: 1px solid var(--border);">Action</th>
-                <th style="padding: 12px; text-align: left;">Comment</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style="border-bottom: 1px solid var(--border-light);">
-                <td style="padding: 12px; border-right: 1px solid var(--border-light);">2025-01-15T10:30:00Z</td>
-                <td style="padding: 12px; border-right: 1px solid var(--border-light);">cert-2025-01-15-prod</td>
-                <td style="padding: 12px; border-right: 1px solid var(--border-light); color: var(--verified-green);">added</td>
-                <td style="padding: 12px;">Initial production key deployment</td>
-              </tr>
-              <tr style="border-bottom: 1px solid var(--border-light);">
-                <td style="padding: 12px; border-right: 1px solid var(--border-light);">2025-01-01T00:00:00Z</td>
-                <td style="padding: 12px; border-right: 1px solid var(--border-light);">cert-2024-12-test</td>
-                <td style="padding: 12px; border-right: 1px solid var(--border-light); color: var(--warning-amber);">deprecated</td>
-                <td style="padding: 12px;">Retired test environment key</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="trust-card">
+          <h3>📐 Technical Standards</h3>
+          <p>Established cryptographic standards from trusted organizations.</p>
+
+          <ul class="trust-list">
+            <li><strong>RFC 7515:</strong> JSON Web Signature (JWS) implementation</li>
+            <li><strong>FIPS 186-4:</strong> Digital Signature Standard compliance</li>
+            <li><strong>NIST SP 800-57:</strong> Key management best practices</li>
+            <li><strong>RFC 8785:</strong> JSON Canonicalization Scheme</li>
+          </ul>
         </div>
 
-        <h3>Rotation Policy</h3>
-        <ul class="trust-list">
-          <li><strong>Regular Rotation:</strong> Keys rotated every 90 days or as needed</li>
-          <li><strong>Emergency Rotation:</strong> Immediate rotation upon suspected compromise</li>
-          <li><strong>Grace Period:</strong> Previous keys maintained for 90 days after rotation</li>
-          <li><strong>Notification:</strong> 7-day advance notice for planned rotations</li>
-        </ul>
+        <div class="trust-card">
+          <h3>🛡️ Data Handling</h3>
+          <p>Strict data handling practices to protect your sensitive information.</p>
+
+          <div style="margin: 1.5rem 0;">
+            <strong style="color: #dc2626; display: block; margin-bottom: 0.5rem;">What We Never Store</strong>
+            <ul class="trust-list" style="margin-bottom: 1rem;">
+              <li>Your private cryptographic keys</li>
+              <li>Unencrypted sensitive data</li>
+              <li>User passwords or credentials</li>
+              <li>Personal identifiable information</li>
+            </ul>
+
+            <strong style="color: #059669; display: block; margin-bottom: 0.5rem;">What We Do Store</strong>
+            <ul class="trust-list">
+              <li>Public keys for verification</li>
+              <li>Cryptographic receipts and signatures</li>
+              <li>System logs for security monitoring</li>
+              <li>Usage metrics for service improvement</li>
+            </ul>
+          </div>
+        </div>
+
       </div>
 
-      <div class="trust-section">
-        <h2>Security Policies & Procedures</h2>
-        <p>Enterprise-grade security controls and operational transparency:</p>
+      <div class="trust-card" style="grid-column: 1 / -1;">
+        <h3>🔑 Key Management & Rotation</h3>
+        <p>Transparent key lifecycle management with public rotation logs and security policies.</p>
 
-        <h3>Incident Response</h3>
-        <ul class="trust-list">
-          <li><strong>Security Contact:</strong> <a href="mailto:security@certnode.io" style="color: var(--primary);">security@certnode.io</a></li>
-          <li><strong>Response Time:</strong> Critical issues acknowledged within 4 hours</li>
-          <li><strong>Disclosure Policy:</strong> Coordinated vulnerability disclosure with 90-day timeline</li>
-          <li><strong>Status Updates:</strong> Real-time incident communication via status page</li>
-        </ul>
+        <div style="margin: 2rem 0;">
+          <strong style="color: #1e40af; display: block; margin-bottom: 1rem; font-size: 1.1rem;">Current Keys</strong>
+          <div class="key-info">
+            <div><strong>Active Key ID:</strong> cert-2025-01-15-prod</div>
+            <div><strong>Algorithm:</strong> ES256 (ECDSA P-256)</div>
+            <div><strong>Created:</strong> 2025-01-15T10:30:00Z</div>
+            <div><strong>JWKS Endpoint:</strong> <a href="/.well-known/jwks.json" style="color: #3b82f6;">/.well-known/jwks.json</a></div>
+          </div>
 
-        <h3>Security Monitoring</h3>
-        <ul class="trust-list">
-          <li><strong>Continuous monitoring:</strong> Continuous security monitoring and alerting</li>
-          <li><strong>Anomaly Detection:</strong> Automated detection of unusual signing patterns</li>
-          <li><strong>Access Logging:</strong> Comprehensive audit logs for all key operations</li>
-          <li><strong>Penetration Testing:</strong> Quarterly security assessments by independent firms</li>
-        </ul>
-
-        <h3>Compliance Documentation</h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 16px 0;">
-          <div style="padding: 16px; border: 1px solid var(--border); border-radius: 8px; text-align: center;">
-            <div style="font-weight: 600; margin-bottom: 8px;">SOC 2 Type II</div>
-            <div style="font-size: 14px; color: var(--text-muted);">Available upon request</div>
-          </div>
-          <div style="padding: 16px; border: 1px solid var(--border); border-radius: 8px; text-align: center;">
-            <div style="font-weight: 600; margin-bottom: 8px;">Security Audit</div>
-            <div style="font-size: 14px; color: var(--text-muted);">Q1 2025 completion</div>
-          </div>
-          <div style="padding: 16px; border: 1px solid var(--border); border-radius: 8px; text-align: center;">
-            <div style="font-weight: 600; margin-bottom: 8px;">Penetration Test</div>
-            <div style="font-size: 14px; color: var(--text-muted);">Quarterly assessment</div>
-          </div>
+          <strong style="color: #1e40af; display: block; margin: 2rem 0 1rem 0; font-size: 1.1rem;">Rotation Policy</strong>
+          <ul class="trust-list">
+            <li><strong>Regular Rotation:</strong> Keys rotated every 90 days or as needed</li>
+            <li><strong>Emergency Rotation:</strong> Immediate rotation upon suspected compromise</li>
+            <li><strong>Grace Period:</strong> Previous keys maintained for 90 days after rotation</li>
+            <li><strong>Notification:</strong> 7-day advance notice for planned rotations</li>
+          </ul>
         </div>
       </div>
 
-      <div class="trust-section">
-        <h2>Service Level Targets</h2>
-        <p>Our operational commitments for the CertNode infrastructure:</p>
+      <div class="trust-card">
+        <h3>⚡ Service Level Targets</h3>
+        <p>Our operational commitments for the CertNode infrastructure.</p>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin: 24px 0;">
-          <div>
-            <h4 style="color: var(--primary); margin-bottom: 8px;">Availability</h4>
-            <div style="font-size: 24px; font-weight: 600; color: var(--verified-green); margin-bottom: 4px;">99.9%</div>
-            <div style="font-size: 14px; color: var(--text-muted);">Monthly uptime target</div>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-value">99.9%</div>
+            <div class="metric-label">Availability</div>
+            <div class="metric-description">Monthly uptime target</div>
           </div>
-          <div>
-            <h4 style="color: var(--primary); margin-bottom: 8px;">Response Time</h4>
-            <div style="font-size: 24px; font-weight: 600; color: var(--verified-green); margin-bottom: 4px;">&lt; 200ms</div>
-            <div style="font-size: 14px; color: var(--text-muted);">95th percentile API response</div>
+          <div class="metric-card">
+            <div class="metric-value">&lt; 200ms</div>
+            <div class="metric-label">Response Time</div>
+            <div class="metric-description">95th percentile API response</div>
           </div>
-          <div>
-            <h4 style="color: var(--primary); margin-bottom: 8px;">Error Rate</h4>
-            <div style="font-size: 24px; font-weight: 600; color: var(--verified-green); margin-bottom: 4px;">&lt; 0.1%</div>
-            <div style="font-size: 14px; color: var(--text-muted);">Monthly error rate target</div>
+          <div class="metric-card">
+            <div class="metric-value">&lt; 0.1%</div>
+            <div class="metric-label">Error Rate</div>
+            <div class="metric-description">Monthly error rate target</div>
           </div>
         </div>
 
         <ul class="trust-list">
-          <li><strong>Status Page:</strong> <a href="/status" style="color: var(--primary);">Real-time service health monitoring</a></li>
+          <li><strong>Status Page:</strong> <a href="/status" style="color: #3b82f6;">Real-time service health monitoring</a></li>
           <li><strong>Maintenance Windows:</strong> Scheduled during low-traffic periods with advance notice</li>
           <li><strong>Disaster Recovery:</strong> Multi-region failover with RTO < 15 minutes</li>
           <li><strong>Data Retention:</strong> Cryptographic receipts retained for minimum 7 years</li>
         </ul>
       </div>
 
-      <div class="trust-section">
-        <h2>Open Source Commitment</h2>
-        <p>Transparency through open source development ensures you can verify our security claims:</p>
+      <div class="trust-card">
+        <h3>🔒 Security Policies</h3>
+        <p>Enterprise-grade security controls and operational transparency.</p>
+
+        <div style="margin: 1.5rem 0;">
+          <strong style="color: #1e40af; display: block; margin-bottom: 0.5rem;">Incident Response</strong>
+          <ul class="trust-list" style="margin-bottom: 1rem;">
+            <li><strong>Security Contact:</strong> <a href="mailto:security@certnode.io" style="color: #3b82f6;">security@certnode.io</a></li>
+            <li><strong>Response Time:</strong> Critical issues acknowledged within 4 hours</li>
+            <li><strong>Disclosure Policy:</strong> Coordinated vulnerability disclosure with 90-day timeline</li>
+            <li><strong>Status Updates:</strong> Real-time incident communication via status page</li>
+          </ul>
+
+          <strong style="color: #1e40af; display: block; margin-bottom: 0.5rem;">Security Monitoring</strong>
+          <ul class="trust-list" style="margin-bottom: 1rem;">
+            <li><strong>Continuous Monitoring:</strong> 24/7 security monitoring and alerting</li>
+            <li><strong>Anomaly Detection:</strong> Automated detection of unusual signing patterns</li>
+            <li><strong>Access Logging:</strong> Comprehensive audit logs for all key operations</li>
+            <li><strong>Penetration Testing:</strong> Quarterly security assessments by independent firms</li>
+          </ul>
+
+          <strong style="color: #1e40af; display: block; margin-bottom: 0.5rem;">Compliance Documentation</strong>
+          <div class="compliance-grid">
+            <div class="compliance-card">
+              <div class="compliance-title">SOC 2 Type II</div>
+              <div class="compliance-status">Available upon request</div>
+            </div>
+            <div class="compliance-card">
+              <div class="compliance-title">Security Audit</div>
+              <div class="compliance-status">Q1 2025 completion</div>
+            </div>
+            <div class="compliance-card">
+              <div class="compliance-title">Penetration Test</div>
+              <div class="compliance-status">Quarterly assessment</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trust-card">
+        <h3>🌐 Open Source Commitment</h3>
+        <p>Transparency through open source development ensures you can verify our security claims.</p>
 
         <ul class="trust-list">
           <li><strong>Public Repository:</strong> Full source code available on GitHub</li>
@@ -473,7 +455,14 @@
       </div>
 
     </div>
-  </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 CertNode — Universal receipt infrastructure standard.</p>
+    </div>
+  </footer>
 
 </body>
 </html>

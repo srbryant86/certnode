@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>API Specification Debug — CertNode</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    .status { padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+    .success { background: #d1fae5; border: 1px solid #059669; color: #059669; }
+    .error { background: #fee2e2; border: 1px solid #dc2626; color: #dc2626; }
+    .warning { background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; }
+    pre { background: #f8fafc; padding: 1rem; border-radius: 4px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h1>CertNode API Reference Debug</h1>
+
+  <div id="status" class="status warning">
+    Checking API reference loading...
+  </div>
+
+  <h2>CSP Test</h2>
+  <div id="csp-test">Testing Content Security Policy...</div>
+
+  <h2>OpenAPI Spec Test</h2>
+  <div id="spec-test">Testing OpenAPI specification...</div>
+  <pre id="spec-data"></pre>
+
+  <h2>Scalar Component Test</h2>
+  <div id="scalar-test">Testing Scalar API Reference component...</div>
+
+  <!-- Simple API Reference with error handling -->
+  <api-reference
+    id="api-ref"
+    configuration='{"spec":{"url":"/openapi.json"},"layout":"modern"}'
+    style="margin-top: 2rem;">
+  </api-reference>
+
+  <script type="module">
+    // Test CSP
+    document.getElementById('csp-test').innerHTML = '<span class="success">✓ Inline script executed (CSP allows scripts)</span>';
+
+    // Test OpenAPI spec loading
+    fetch('/openapi.json')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('spec-test').innerHTML = '<span class="success">✓ OpenAPI spec loaded successfully</span>';
+        document.getElementById('spec-data').textContent = JSON.stringify(data, null, 2).substring(0, 500) + '...';
+      })
+      .catch(error => {
+        document.getElementById('spec-test').innerHTML = '<span class="error">✗ Failed to load OpenAPI spec: ' + error.message + '</span>';
+      });
+
+    // Import Scalar API Reference
+    try {
+      const scalarModule = await import('https://cdn.jsdelivr.net/npm/@scalar/api-reference@latest');
+      document.getElementById('scalar-test').innerHTML = '<span class="success">✓ Scalar module loaded successfully</span>';
+
+      // Monitor API reference component
+      const apiRef = document.getElementById('api-ref');
+      if (apiRef) {
+        // Check for loading
+        let checkCount = 0;
+        const checkInterval = setInterval(() => {
+          checkCount++;
+
+          if (apiRef.shadowRoot || apiRef.innerHTML.trim() !== '') {
+            clearInterval(checkInterval);
+            document.getElementById('status').innerHTML = '<span class="success">✓ API Reference loaded successfully!</span>';
+            document.getElementById('status').className = 'status success';
+          } else if (checkCount > 10) {
+            clearInterval(checkInterval);
+            document.getElementById('status').innerHTML = '<span class="error">✗ API Reference failed to load after 10 attempts</span>';
+            document.getElementById('status').className = 'status error';
+          }
+        }, 1000);
+      }
+
+    } catch (error) {
+      document.getElementById('scalar-test').innerHTML = '<span class="error">✗ Failed to load Scalar module: ' + error.message + '</span>';
+      document.getElementById('status').innerHTML = '<span class="error">✗ Scalar module loading failed</span>';
+      document.getElementById('status').className = 'status error';
+    }
+  </script>
+
+  <script>
+    // Fallback for browsers that don't support modules
+    if (!window.supports_modules) {
+      document.getElementById('status').innerHTML = '<span class="warning">⚠ Browser may not support ES modules</span>';
+    }
+  </script>
+</body>
+</html>

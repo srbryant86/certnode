@@ -8,14 +8,26 @@ const { setupDashboardRoutes } = require("./routes/dashboard");
 const { createCompositeRateLimiter, toPosInt } = require("./plugins/ratelimit");
 const { createCorsMiddleware } = require("./plugins/cors");
 const { setupGlobalErrorHandlers, createErrorMiddleware, asyncHandler } = require("./middleware/errorHandler");
+const { createValidationMiddleware, schemas } = require("./middleware/validation");
+const { createTimeoutMiddleware } = require("./middleware/timeout");
+const { monitoring } = require("./middleware/monitoring");
 const { securityHeaders } = require("./plugins/security");
 const { attach } = require("./plugins/requestId");
 const { emit } = require("./plugins/metrics");
+const { createLogger } = require("./util/logger");
 
 const port = process.env.PORT || 3000;
 const limiter = createCompositeRateLimiter({});
 const corsMiddleware = createCorsMiddleware();
 const errorMiddleware = createErrorMiddleware();
+const validationMiddleware = createValidationMiddleware({
+  maxDepth: 15,
+  maxKeys: 200,
+  maxStringLength: 50000,
+  maxArrayLength: 5000
+});
+const timeoutMiddleware = createTimeoutMiddleware();
+const logger = createLogger('server');
 
 // Setup global error handlers
 setupGlobalErrorHandlers();
@@ -23,14 +35,29 @@ setupGlobalErrorHandlers();
 const server = http.createServer(async (req, res) => {
   const t0 = Date.now();
   let pathname = null;
-  // Attach request ID first
+
+  // Reject new requests during shutdown
+  if (isShuttingDown) {
+    res.writeHead(503, {
+      'Content-Type': 'application/json',
+      'Connection': 'close'
+    });
+    res.end(JSON.stringify({
+      error: 'service_unavailable',
+      message: 'Server is shutting down',
+      timestamp: new Date().toISOString()
+    }));
+    return;
+  }
+
+  // Apply middleware in order
   attach(req, res);
-  
-  // Apply security headers first
   securityHeaders(req, res);
-  
-  // Apply error middleware first
   errorMiddleware(req, res);
+
+  // Apply middleware in order
+  timeoutMiddleware.middleware()(req, res, () => {});
+  monitoring.middleware()(req, res, () => {});
   
   // Emit completion metric once per request
   res.once('finish', () => {
@@ -60,7 +87,7 @@ const server = http.createServer(async (req, res) => {
     return healthHandler(req, res);
   }
 
-  // /v1/sign with rate limit
+  // /v1/sign with rate limit and validation
   if (req.method === "POST" && (url.pathname === "/v1/sign" || url.pathname === "/api/v1/sign")) {
     const gate = limiter.allow(req);
     if (!gate.ok) {
@@ -79,8 +106,19 @@ const server = http.createServer(async (req, res) => {
       if (req && req.id) body.request_id = req.id;
       return res.end(JSON.stringify(body));
     }
-    emit('request_received', 1, { path: url.pathname, method: req.method, request_id: req.id });
-    return signHandler(req, res);
+
+    // Apply validation middleware for sign endpoint
+    return new Promise((resolve) => {
+      validationMiddleware.middleware(schemas.SIGN_SCHEMA)(req, res, (err) => {
+        if (err) {
+          // Validation middleware already sent response for validation errors
+          return resolve();
+        }
+        emit('request_received', 1, { path: url.pathname, method: req.method, request_id: req.id });
+        signHandler(req, res);
+        resolve();
+      });
+    });
   }
 
   // jwks (public)
@@ -103,6 +141,13 @@ const server = http.createServer(async (req, res) => {
   // /metrics (Prometheus)
   if (req.method === "GET" && (url.pathname === "/metrics" || url.pathname === "/api/metrics")) {
     return metricsHandler(req, res);
+  }
+
+  // /monitoring (Application metrics)
+  if (req.method === "GET" && (url.pathname === "/monitoring" || url.pathname === "/api/monitoring")) {
+    const monitoringData = monitoring.getMetrics();
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify(monitoringData, null, 2));
   }
 
   // Dashboard API endpoints (admin only)
@@ -195,6 +240,8 @@ const server = http.createServer(async (req, res) => {
       filePath = path.join(process.cwd(), "web", "verify.html");
     } else if (url.pathname === "/openapi") {
       filePath = path.join(process.cwd(), "public", "openapi.html");
+    } else if (url.pathname === "/openapi-debug") {
+      filePath = path.join(process.cwd(), "public", "openapi-debug.html");
     } else if (url.pathname === "/pricing") {
       filePath = path.join(process.cwd(), "web", "pricing.html");
     } else if (url.pathname === "/account") {
@@ -248,9 +295,17 @@ const server = http.createServer(async (req, res) => {
           ".jpg": "public, max-age=31536000, immutable",
           ".jpeg":"public, max-age=31536000, immutable",
           ".svg": "public, max-age=31536000, immutable",
-          ".html":"public, max-age=3600"
+          ".html":"no-cache, no-store, must-revalidate"
         };
+
         if (cacheMap[ext]) headers['Cache-Control'] = cacheMap[ext];
+
+        // Force no cache for OpenAPI page to prevent old content
+        if (filePath && filePath.includes("openapi.html")) {
+          headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, private';
+          headers['Pragma'] = 'no-cache';
+          headers['Expires'] = '0';
+        }
         // Gzip compression for text assets when accepted
         const ae = String(req.headers['accept-encoding']||'');
         const isText = /^(text\/|application\/(javascript|json|xml))/.test(headers['Content-Type']);
@@ -294,4 +349,78 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(port, () => console.log("Server on", port));
+// Track active connections for graceful shutdown
+const connections = new Set();
+let isShuttingDown = false;
+
+server.on('connection', (connection) => {
+  connections.add(connection);
+  connection.on('close', () => {
+    connections.delete(connection);
+  });
+});
+
+// Graceful shutdown handler
+const gracefulShutdown = async (signal) => {
+  logger.info(`Received ${signal}. Starting graceful shutdown...`);
+  isShuttingDown = true;
+
+  // Stop accepting new connections
+  server.close((err) => {
+    if (err) {
+      logger.error('Error closing server', { error: err.message });
+      process.exit(1);
+    }
+    logger.info('Server stopped accepting new connections');
+  });
+
+  // Allow time for ongoing requests to complete before closing connections
+  const drainTimeout = setTimeout(() => {
+    logger.warn(`Force closing ${connections.size} active connections after drain timeout`);
+    connections.forEach((connection) => {
+      connection.destroy();
+    });
+  }, 5000);
+
+  // Give total shutdown process max 15 seconds
+  const shutdownTimeout = setTimeout(() => {
+    logger.error('Force shutdown after timeout');
+    process.exit(1);
+  }, 15000);
+
+  // Wait for all connections to close naturally or be destroyed
+  const checkConnections = setInterval(() => {
+    if (connections.size === 0) {
+      clearInterval(checkConnections);
+      clearTimeout(shutdownTimeout);
+      clearTimeout(drainTimeout);
+      logger.info('Graceful shutdown complete');
+      process.exit(0);
+    }
+  }, 100);
+};
+
+// Register signal handlers
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+  logger.error('Uncaught Exception', { error: err.message, stack: err.stack });
+  gracefulShutdown('uncaughtException');
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Rejection', { reason, promise: promise.toString() });
+  gracefulShutdown('unhandledRejection');
+});
+
+server.listen(port, () => {
+  logger.info('Server started', {
+    port,
+    pid: process.pid,
+    node_version: process.version,
+    environment: process.env.NODE_ENV || 'development'
+  });
+});

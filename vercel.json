@@ -100,6 +100,7 @@
     { "source": "/specification", "destination": "/public/openapi.html" },
     { "source": "/openapi", "destination": "/public/openapi.html" },
     { "source": "/pricing", "destination": "/web/pricing.html" },
+    { "source": "/enterprise", "destination": "/public/enterprise.html" },
     { "source": "/test-vectors", "destination": "/public/test-vectors/index.html" },
     { "source": "/signup/developer", "destination": "/public/signup/developer.html" },
     { "source": "/signup/starter", "destination": "/public/signup/starter.html" },

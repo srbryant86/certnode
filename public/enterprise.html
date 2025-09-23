@@ -9,6 +9,219 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* CertNode Enterprise Design System */
+    :root {
+      --primary-50: #eff6ff;
+      --primary-100: #dbeafe;
+      --primary-500: #3b82f6;
+      --primary-600: #2563eb;
+      --primary-700: #1d4ed8;
+      --primary-800: #1e40af;
+      --primary-900: #1e3a8a;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --success-500: #10b981;
+      --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-inter);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Enterprise Navigation */
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 72px;
+    }
+
+    .logo {
+      font-family: var(--font-inter);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-600);
+      text-decoration: none;
+      letter-spacing: -0.025em;
+      transition: all 0.2s ease;
+    }
+
+    .logo:hover {
+      color: var(--primary-700);
+      transform: translateY(-1px);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--gray-600);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-600);
+      background: var(--primary-50);
+    }
+
+    .nav-links a[aria-current="page"] {
+      color: var(--primary-600);
+      background: var(--primary-50);
+      font-weight: 600;
+    }
+
+    /* Hero Section */
+    .enterprise-hero {
+      background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .enterprise-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='60' cy='60' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .enterprise-hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.025em;
+      position: relative;
+    }
+
+    .enterprise-hero p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Content Sections */
+    .content-section {
+      padding: 6rem 0;
+      background: white;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+      border-color: var(--primary-200);
+    }
+
+    .feature-card h3 {
+      font-size: 1.375rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+    }
+
+    .feature-card p {
+      color: var(--gray-600);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-list {
+      color: var(--gray-700);
+      margin: 0;
+      padding-left: 1.5rem;
+    }
+
+    .feature-list li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .enterprise-hero h1 { font-size: 2.5rem; }
+      .nav-links { gap: 1rem; flex-wrap: wrap; }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    .nav-links a:focus-visible {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
+    }
+  </style>
 </head>
 <body>
   <header class="header">
@@ -27,66 +240,67 @@
   </header>
 
   <main>
-    <section class="section section--hero">
-      <div class="container text-center">
-        <h1 class="mb-2" style="color: white;">Enterprise Solutions</h1>
-        <p class="mb-0" style="color: rgba(255,255,255,0.9)">Cryptographic receipt infrastructure designed for enterprise compliance, security, and scale requirements.</p>
+    <section class="enterprise-hero">
+      <div class="container">
+        <h1>Enterprise Solutions</h1>
+        <p>Cryptographic receipt infrastructure designed for enterprise compliance, security, and scale requirements.</p>
       </div>
     </section>
 
-    <section class="section">
+    <section class="content-section">
       <div class="container">
-        <div style="background: white; border-radius: 12px; padding: 3rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 3rem;">
-          <h2 style="color: #1e40af; margin-bottom: 2rem; text-align: center;">Built for Enterprise Scale</h2>
+        <div class="section-header">
+          <h2>Built for Enterprise Scale</h2>
+        </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-            <div style="padding: 2rem; border: 2px solid #e5e7eb; border-radius: 8px;">
-              <h3 style="color: #1e40af; margin-bottom: 1rem;">🏛️ SOC 2 Type II Ready</h3>
-              <p style="color: #6b7280; margin-bottom: 1.5rem;">Complete compliance framework with automated controls, audit trails, and enterprise security requirements. Ready for Fortune 500 procurement processes.</p>
-              <ul style="color: #374151; margin: 0; padding-left: 1.5rem;">
-                <li>Automated control testing and evidence collection</li>
-                <li>Continuous monitoring and compliance reporting</li>
-                <li>Security incident response procedures</li>
-                <li>Third-party audit support and documentation</li>
-              </ul>
-            </div>
-
-            <div style="padding: 2rem; border: 2px solid #e5e7eb; border-radius: 8px;">
-              <h3 style="color: #1e40af; margin-bottom: 1rem;">🔐 Hardware Security Modules</h3>
-              <p style="color: #6b7280; margin-bottom: 1.5rem;">Integration with AWS CloudHSM and Thales Luna for FIPS 140-2 Level 3+ compliance. Hardware-based cryptographic key protection.</p>
-              <ul style="color: #374151; margin: 0; padding-left: 1.5rem;">
-                <li>AWS CloudHSM and Thales Luna HSM support</li>
-                <li>FIPS 140-2 Level 3+ certified hardware</li>
-                <li>High availability with failover capabilities</li>
-                <li>Tamper-evident audit logging</li>
-              </ul>
-            </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <h3>🏛️ SOC 2 Type II Ready</h3>
+            <p>Complete compliance framework with automated controls, audit trails, and enterprise security requirements. Ready for Fortune 500 procurement processes.</p>
+            <ul class="feature-list">
+              <li>Automated control testing and evidence collection</li>
+              <li>Continuous monitoring and compliance reporting</li>
+              <li>Security incident response procedures</li>
+              <li>Third-party audit support and documentation</li>
+            </ul>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-            <div style="padding: 2rem; border: 2px solid #e5e7eb; border-radius: 8px;">
-              <h3 style="color: #1e40af; margin-bottom: 1rem;">⚡ High-Performance Processing</h3>
-              <p style="color: #6b7280; margin-bottom: 1.5rem;">Batch processing up to 10,000+ receipts per job with multi-tenant isolation and real-time analytics.</p>
-              <ul style="color: #374151; margin: 0; padding-left: 1.5rem;">
-                <li>Redis/Bull queue with concurrent processing</li>
-                <li>10,000+ receipts per batch job</li>
-                <li>Real-time processing status and notifications</li>
-                <li>Automatic retry logic and error handling</li>
-              </ul>
-            </div>
+          <div class="feature-card">
+            <h3>🔐 Hardware Security Modules</h3>
+            <p>Integration with AWS CloudHSM and Thales Luna for FIPS 140-2 Level 3+ compliance. Hardware-based cryptographic key protection.</p>
+            <ul class="feature-list">
+              <li>AWS CloudHSM and Thales Luna HSM support</li>
+              <li>FIPS 140-2 Level 3+ certified hardware</li>
+              <li>High availability with failover capabilities</li>
+              <li>Tamper-evident audit logging</li>
+            </ul>
+          </div>
+          </div>
 
-            <div style="padding: 2rem; border: 2px solid #e5e7eb; border-radius: 8px;">
-              <h3 style="color: #1e40af; margin-bottom: 1rem;">🏢 Multi-Tenant Architecture</h3>
-              <p style="color: #6b7280; margin-bottom: 1.5rem;">Complete tenant isolation with custom domains, branding, and resource quotas for enterprise deployments.</p>
-              <ul style="color: #374151; margin: 0; padding-left: 1.5rem;">
-                <li>Complete data isolation between tenants</li>
-                <li>Custom domain and SSL certificate management</li>
-                <li>White-label branding and portal customization</li>
-                <li>Resource quotas and usage tracking</li>
-              </ul>
-            </div>
+          <div class="feature-card">
+            <h3>⚡ High-Performance Processing</h3>
+            <p>Batch processing up to 10,000+ receipts per job with multi-tenant isolation and real-time analytics.</p>
+            <ul class="feature-list">
+              <li>Redis/Bull queue with concurrent processing</li>
+              <li>10,000+ receipts per batch job</li>
+              <li>Real-time processing status and notifications</li>
+              <li>Automatic retry logic and error handling</li>
+            </ul>
+          </div>
+
+          <div class="feature-card">
+            <h3>🏢 Multi-Tenant Architecture</h3>
+            <p>Complete tenant isolation with custom domains, branding, and resource quotas for enterprise deployments.</p>
+            <ul class="feature-list">
+              <li>Complete data isolation between tenants</li>
+              <li>Custom domain and SSL certificate management</li>
+              <li>White-label branding and portal customization</li>
+              <li>Resource quotas and usage tracking</li>
+            </ul>
           </div>
         </div>
+      </div>
+    </section>
 
         <div style="background: linear-gradient(135deg, #e7f3ff 0%, #f0f9ff 100%); border-left: 4px solid #1e40af; padding: 2rem; border-radius: 0 8px 8px 0; margin-bottom: 3rem;">
           <h3 style="color: #1e40af; margin: 0 0 1rem 0;">🎯 Enterprise-First Design</h3>

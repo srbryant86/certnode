@@ -1,56 +1,40 @@
 {
-  "name": "@certnode/cli",
-  "version": "1.0.0",
-  "description": "CLI tool for CertNode - receipt generation, verification, and project scaffolding",
-  "main": "index.js",
+  "name": "certnode-cli",
+  "version": "2.0.0",
+  "description": "Interactive CLI tool for CertNode management, testing, and monitoring",
+  "main": "certnode-cli.js",
   "bin": {
-    "certnode": "./bin/certnode.js"
-  },
-  "engines": {
-    "node": ">=20.0.0"
-  },
-  "sideEffects": false,
-  "publishConfig": {
-    "access": "public"
-  },
-  "homepage": "https://github.com/srbryant86/certnode/tree/main/cli",
-  "bugs": {
-    "url": "https://github.com/srbryant86/certnode/issues"
+    "certnode-cli": "./certnode-cli.js",
+    "certnode": "./certnode-cli.js"
   },
   "scripts": {
-    "pack": "npm pack",
-    "publish:dry-run": "npm publish --dry-run"
+    "start": "node certnode-cli.js",
+    "test": "node certnode-cli.js test all",
+    "security": "node certnode-cli.js security audit",
+    "benchmark": "node certnode-cli.js benchmark api 100"
   },
   "keywords": [
     "certnode",
     "cli",
-    "receipt",
-    "verification",
-    "es256",
-    "eddsa",
-    "ecdsa",
-    "ed25519",
-    "jws",
+    "receipts",
     "cryptography",
-    "digital-evidence",
-    "tamper-evident",
-    "scaffold"
+    "jwks",
+    "security",
+    "monitoring",
+    "testing"
   ],
-  "author": "CertNode",
+  "author": "CertNode Team",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "preferGlobal": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/srbryant86/certnode.git",
-    "directory": "cli"
+    "url": "https://github.com/certnode/certnode"
   },
-  "files": [
-    "bin/",
-    "lib/",
-    "templates/",
-    "README.md"
-  ],
-  "dependencies": {
-    "@certnode/sdk": "^1.1.0",
-    "commander": "^11.0.0"
-  }
+  "bugs": {
+    "url": "https://github.com/certnode/certnode/issues"
+  },
+  "homepage": "https://certnode.com"
 }

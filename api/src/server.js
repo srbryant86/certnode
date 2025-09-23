@@ -16,6 +16,12 @@ const { attach } = require("./plugins/requestId");
 const { emit } = require("./plugins/metrics");
 const { createLogger } = require("./util/logger");
 
+// Enhanced performance middleware
+const { createPerformanceMiddleware, performanceMonitor } = require("./middleware/performance");
+
+// Security audit and hardening
+const { securityMiddleware, initializeSecurityMonitoring } = require("./routes/security");
+
 const port = process.env.PORT || 3000;
 const limiter = createCompositeRateLimiter({});
 const corsMiddleware = createCorsMiddleware();
@@ -28,6 +34,16 @@ const validationMiddleware = createValidationMiddleware({
 });
 const timeoutMiddleware = createTimeoutMiddleware();
 const logger = createLogger('server');
+
+// Initialize performance middleware with optimized settings
+const performanceMiddleware = createPerformanceMiddleware({
+  enableCache: true,
+  enableCompression: true,
+  enableETag: true,
+  enablePushHints: true,
+  cacheRoutes: ['/jwks', '/.well-known/jwks.json', '/health', '/healthz', '/metrics', '/openapi.json'],
+  compressionThreshold: 1024
+});
 
 // Setup global error handlers
 setupGlobalErrorHandlers();
@@ -55,7 +71,27 @@ const server = http.createServer(async (req, res) => {
   securityHeaders(req, res);
   errorMiddleware(req, res);
 
-  // Apply middleware in order
+  // Apply performance middleware early in the pipeline
+  const runMiddleware = (middleware, next) => {
+    return new Promise((resolve) => {
+      middleware(req, res, (err) => {
+        if (err) console.warn('Middleware warning:', err.message);
+        resolve();
+      });
+    });
+  };
+
+  await runMiddleware(performanceMiddleware.cacheMiddleware);
+  await runMiddleware(performanceMiddleware.compressionMiddleware);
+  await runMiddleware(performanceMiddleware.etagMiddleware);
+  await runMiddleware(performanceMiddleware.pushHintsMiddleware);
+
+  // Apply security hardening middleware
+  if (securityMiddleware) {
+    await runMiddleware(securityMiddleware.middleware());
+  }
+
+  // Apply other middleware
   timeoutMiddleware.middleware()(req, res, () => {});
   monitoring.middleware()(req, res, () => {});
   
@@ -150,6 +186,17 @@ const server = http.createServer(async (req, res) => {
     return res.end(JSON.stringify(monitoringData, null, 2));
   }
 
+  // /performance (Performance metrics and cache statistics)
+  if (req.method === "GET" && (url.pathname === "/performance" || url.pathname === "/api/performance")) {
+    const performanceData = {
+      monitor: performanceMonitor.getMetrics(),
+      cache: performanceMiddleware.getCacheStats(),
+      timestamp: new Date().toISOString()
+    };
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify(performanceData, null, 2));
+  }
+
   // Dashboard API endpoints (admin only)
   if (url.pathname.startsWith("/api/dashboard/")) {
     // Simple admin token check (in production, use proper JWT/OAuth)
@@ -226,6 +273,12 @@ const server = http.createServer(async (req, res) => {
   if (req.method === "POST" && (url.pathname === "/stripe-webhook" || url.pathname === "/api/stripe/webhook")) {
     const { handle: billingHandler } = require("./routes/billing");
     return billingHandler(req, res);
+  }
+
+  // Security endpoints (admin only)
+  if (url.pathname.startsWith("/api/security/")) {
+    const { handle: securityHandler } = require("./routes/security");
+    return securityHandler(req, res);
   }
 
   // Static file serving

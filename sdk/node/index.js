@@ -4,6 +4,26 @@
 const crypto = require('crypto');
 const { JWKSManager } = require('./jwks-manager');
 
+// Enhanced utilities (optional dependencies)
+let enhancedFeatures = {};
+try {
+  const errors = require('./lib/errors');
+  const performance = require('./lib/performance');
+  const validation = require('./lib/validation');
+  const circuitBreaker = require('./lib/circuit-breaker');
+  const enhancedJwks = require('./lib/enhanced-jwks-manager');
+
+  enhancedFeatures = {
+    ...errors,
+    ...performance,
+    ...validation,
+    ...circuitBreaker,
+    EnhancedJWKSManager: enhancedJwks.EnhancedJWKSManager
+  };
+} catch (error) {
+  // Enhanced features not available, continue with basic functionality
+}
+
 // Utility functions (copied from api/src/util/)
 function isObject(v) {
   return v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -126,13 +146,69 @@ function spkiFromEd25519Jwk(jwk) {
 }
 
 /**
- * Verify a CertNode receipt using a JWKS object
+ * Enhanced receipt verification with detailed results
+ * @param {Object} options - Verification options
+ * @param {Object} options.receipt - The receipt to verify
+ * @param {Object} options.jwks - The JWKS containing public keys
+ * @param {boolean} options.enablePerformanceTracking - Enable performance metrics
+ * @param {Object} options.validation - Additional validation options
+ * @returns {Object} Enhanced verification result
+ */
+async function verifyReceipt(options) {
+  // Handle both old and new API styles
+  const { receipt, jwks } = options;
+
+  // If enhanced features are available and performance tracking is enabled
+  if (enhancedFeatures.PerformanceBenchmark && options.enablePerformanceTracking) {
+    const session = enhancedFeatures.PerformanceBenchmark.start('Receipt Verification');
+
+    try {
+      session.checkpoint('Input validation');
+      const result = await verifyReceiptCore({ receipt, jwks });
+      session.checkpoint('Signature verification');
+
+      const performance = session.finish();
+
+      return {
+        ...result,
+        performance: {
+          totalTimeMs: performance.totalTimeMs,
+          breakdown: {
+            keyLookupMs: performance.checkpoints[0]?.timeMs || 0,
+            signatureVerificationMs: performance.checkpoints[1]?.timeMs || 0,
+            payloadValidationMs: performance.totalTimeMs - (performance.checkpoints[1]?.timeMs || 0)
+          }
+        }
+      };
+    } catch (error) {
+      const performance = session.finish();
+      return {
+        ok: false,
+        reason: error.message,
+        performance: {
+          totalTimeMs: performance.totalTimeMs,
+          breakdown: {
+            keyLookupMs: 0,
+            signatureVerificationMs: 0,
+            payloadValidationMs: performance.totalTimeMs
+          }
+        }
+      };
+    }
+  }
+
+  // Fallback to core verification
+  return await verifyReceiptCore({ receipt, jwks });
+}
+
+/**
+ * Core receipt verification logic (backward compatible)
  * @param {Object} options - Verification options
  * @param {Object} options.receipt - The receipt to verify
  * @param {Object} options.jwks - The JWKS containing public keys
  * @returns {Object} { ok: boolean, reason?: string }
  */
-async function verifyReceipt({ receipt, jwks }) {
+async function verifyReceiptCore({ receipt, jwks }) {
   try {
     // Parse receipt if string
     if (typeof receipt === 'string') {
@@ -242,5 +318,70 @@ async function verifyReceipt({ receipt, jwks }) {
   }
 }
 
-module.exports = { verifyReceipt, JWKSManager };
+/**
+ * Batch verify multiple receipts efficiently
+ * @param {Array} receipts - Array of receipts to verify
+ * @param {Object} jwks - JWKS containing verification keys
+ * @param {Object} options - Batch verification options
+ * @returns {Promise<Array>} Array of verification results
+ */
+async function verifyReceiptBatch(receipts, jwks, options = {}) {
+  if (!enhancedFeatures.ErrorAggregator) {
+    // Fallback to sequential verification without enhanced error handling
+    const results = [];
+    for (const receipt of receipts) {
+      try {
+        const result = await verifyReceiptCore({ receipt, jwks });
+        results.push(result);
+      } catch (error) {
+        results.push({ ok: false, reason: error.message });
+      }
+    }
+    return results;
+  }
+
+  const aggregator = new enhancedFeatures.ErrorAggregator();
+  const results = [];
+
+  // Use Promise.allSettled for concurrent verification
+  const promises = receipts.map(async (receipt, index) => {
+    try {
+      const result = await verifyReceipt({ receipt, jwks, ...options });
+      aggregator.addSuccess();
+      return { index, result };
+    } catch (error) {
+      aggregator.addError(error, index);
+      return { index, result: { ok: false, reason: error.message } };
+    }
+  });
+
+  const settled = await Promise.allSettled(promises);
+
+  // Reconstruct results in original order
+  settled.forEach((outcome, index) => {
+    if (outcome.status === 'fulfilled') {
+      results[outcome.value.index] = outcome.value.result;
+    } else {
+      results[index] = { ok: false, reason: outcome.reason.message };
+    }
+  });
+
+  return results;
+}
+
+// Create exports object
+const moduleExports = {
+  // Core functions (always available)
+  verifyReceipt,
+  verifyReceiptBatch,
+  JWKSManager,
+
+  // Enhanced features (available if loaded)
+  ...enhancedFeatures
+};
+
+// Legacy compatibility
+moduleExports.verifyReceiptCore = verifyReceiptCore;
+
+module.exports = moduleExports;
 //---------------------------------------------------------------------

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <!-- ENTERPRISE METADATA TEMPLATE -->
+  <title>{{PAGE_TITLE}} — CertNode Enterprise</title>
+  <link rel="canonical" href="https://certnode.io{{PAGE_PATH}}" />
+  <meta property="og:title" content="{{PAGE_TITLE}} — CertNode Enterprise" />
+  <meta property="og:description" content="{{PAGE_DESCRIPTION}} Enterprise cryptographic receipt platform with SOC 2 compliance, HSM integration, and Fortune 500 security." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://certnode.io{{PAGE_PATH}}" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="{{PAGE_TITLE}} — CertNode Enterprise" />
+  <meta name="twitter:description" content="{{PAGE_DESCRIPTION}} Enterprise-grade cryptographic receipts." />
+  <meta name="description" content="{{PAGE_DESCRIPTION}} CertNode's proprietary enterprise cryptographic receipt platform built for Fortune 500 compliance, security, and scale.">
+
+  <link rel="stylesheet" href="/web/assets/site.css" />
+</head>
+<body>
+  <!-- STANDARDIZED ENTERPRISE NAVIGATION -->
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/" class="logo">CertNode</a>
+        <div class="nav-links">
+          <a href="/verify">Validator</a>
+          <a href="/openapi">Documentation</a>
+          <a href="/enterprise">Enterprise</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/trust">Security</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE CONTENT GOES HERE -->
+  <main>
+    {{PAGE_CONTENT}}
+  </main>
+
+  <!-- STANDARDIZED ENTERPRISE FOOTER -->
+  <footer>
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+        <div>
+          <h4 style="color: white; margin-bottom: 1rem;">Enterprise Platform</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="/enterprise">Enterprise Solutions</a>
+            <a href="/pricing">Pricing Tiers</a>
+            <a href="/trust">Security Center</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="color: white; margin-bottom: 1rem;">Platform</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="/openapi">API Documentation</a>
+            <a href="/verify">Receipt Validator</a>
+            <a href="/status">System Status</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="color: white; margin-bottom: 1rem;">Compliance</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="/trust">SOC 2 Type II</a>
+            <a href="/enterprise">HSM Integration</a>
+            <a href="/pricing">FIPS 140-2 Level 3+</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="color: white; margin-bottom: 1rem;">Enterprise</h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="/enterprise">Request Demo</a>
+            <a href="/pricing">Enterprise Pricing</a>
+            <a href="/trust">Security Documentation</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; padding-top: 2rem; border-top: 1px solid #374151;">
+        <p style="margin: 0; color: #94a3b8;">© 2025 CertNode. Enterprise cryptographic receipt platform. All rights reserved.</p>
+        <p style="font-size: 0.8rem; color: #6b7280; margin-top: 0.5rem;">🔐 SOC 2 TYPE II READY - Fortune 500 Enterprise Security</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

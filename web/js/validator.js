@@ -107,11 +107,52 @@ function loadSample(type) {
 
 function formatJSON(textareaId) {
   const textarea = document.getElementById(textareaId);
+  const button = document.querySelector(`[data-target="${textareaId}"]`);
+
   try {
     const parsed = JSON.parse(textarea.value);
     textarea.value = JSON.stringify(parsed, null, 2);
+
+    // Visual feedback for successful formatting
+    if (button) {
+      const originalText = button.textContent;
+      button.textContent = '✓ Formatted!';
+      button.style.background = '#10b981';
+      button.style.color = 'white';
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.style.background = '';
+        button.style.color = '';
+      }, 1500);
+    }
+
+    // Add validation indicator
+    textarea.style.borderColor = '#10b981';
+    setTimeout(() => {
+      textarea.style.borderColor = '';
+    }, 2000);
+
   } catch (e) {
-    showMessage('Invalid JSON format', 'error');
+    showMessage('Invalid JSON format. Please check your syntax.', 'error');
+
+    // Visual feedback for error
+    if (button) {
+      const originalText = button.textContent;
+      button.textContent = '✗ Invalid JSON';
+      button.style.background = '#ef4444';
+      button.style.color = 'white';
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.style.background = '';
+        button.style.color = '';
+      }, 2000);
+    }
+
+    // Add error indicator
+    textarea.style.borderColor = '#ef4444';
+    setTimeout(() => {
+      textarea.style.borderColor = '';
+    }, 3000);
   }
 }
 
@@ -411,6 +452,45 @@ window.addEventListener('load', () => {
       const target = e.target.getAttribute('data-target');
       if (target) formatJSON(target);
     });
+  });
+
+  // Add auto-formatting on paste and real-time validation
+  const receiptInput = document.getElementById('receipt-input');
+  const jwksInput = document.getElementById('jwks-input');
+
+  [receiptInput, jwksInput].forEach(textarea => {
+    if (textarea) {
+      // Auto-format on paste
+      textarea.addEventListener('paste', (e) => {
+        setTimeout(() => {
+          try {
+            const parsed = JSON.parse(textarea.value);
+            textarea.value = JSON.stringify(parsed, null, 2);
+            textarea.style.borderColor = '#10b981';
+            setTimeout(() => {
+              textarea.style.borderColor = '';
+            }, 1500);
+          } catch (e) {
+            // Invalid JSON - leave as is, user can format manually
+          }
+        }, 10);
+      });
+
+      // Real-time validation indicator
+      textarea.addEventListener('input', () => {
+        if (textarea.value.trim() === '') {
+          textarea.style.borderColor = '';
+          return;
+        }
+
+        try {
+          JSON.parse(textarea.value);
+          textarea.style.borderColor = '#10b981';
+        } catch (e) {
+          textarea.style.borderColor = '#f59e0b'; // Yellow for invalid
+        }
+      });
+    }
   });
 
   console.log('All event listeners added successfully');

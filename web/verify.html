@@ -443,7 +443,15 @@
       <div class="input-card">
         <h3>📄 Receipt JSON</h3>
         <p style="color: #64748b; margin-bottom: 1rem; font-size: 0.9rem;">Paste your receipt JSON here, or use the sample data above</p>
-        <textarea id="receipt-input" placeholder='{"protected": "...", "payload": {...}, "signature": "...", "kid": "..."}'></textarea>
+        <textarea id="receipt-input" placeholder='Paste your cryptographic receipt JSON here...
+
+Example format:
+{
+  "protected": "eyJhbGciOiJFUzI1NiIs...",
+  "payload": {"amount": 42.00, "timestamp": "..."},
+  "signature": "MEUCIQDtlTxYHaEz...",
+  "kid": "0FZqBxDqOlYD0F5l..."
+}'></textarea>
         <div style="margin-top: 1rem;">
           <button class="btn btn-secondary format-btn" data-target="receipt-input" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Format JSON</button>
         </div>
@@ -452,7 +460,22 @@
       <div class="input-card">
         <h3>🔑 JWKS JSON</h3>
         <p style="color: #64748b; margin-bottom: 1rem; font-size: 0.9rem;">Paste the JWKS (public keys) for verification</p>
-        <textarea id="jwks-input" placeholder='{"keys": [{"kty": "EC", "crv": "P-256", "x": "...", "y": "...", "kid": "..."}]}'></textarea>
+        <textarea id="jwks-input" placeholder='Paste the JWKS (public keys) JSON here...
+
+Example format:
+{
+  "keys": [
+    {
+      "kty": "EC",
+      "crv": "P-256",
+      "x": "f83OJ3D2xF1Bg8vub9tLe1...",
+      "y": "x_FEzRu9m36HLN_tue659...",
+      "kid": "0FZqBxDqOlYD0F5l...",
+      "use": "sig",
+      "alg": "ES256"
+    }
+  ]
+}'></textarea>
         <div style="margin-top: 1rem;">
           <button class="btn btn-secondary format-btn" data-target="jwks-input" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Format JSON</button>
         </div>

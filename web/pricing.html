@@ -801,23 +801,21 @@
                 button.disabled = true;
 
                 // Create Stripe checkout session
-                fetch('/api/create-checkout-session', {
+                fetch('/api/create-checkout', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        priceId: priceId,
                         tier: tier,
-                        successUrl: window.location.origin + '/dashboard?success=true',
-                        cancelUrl: window.location.origin + '/pricing?canceled=true'
+                        email: null // Will be collected in Stripe checkout
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.url) {
+                    if (data.checkout_url || data.url) {
                         // Redirect to Stripe checkout
-                        window.location.href = data.url;
+                        window.location.href = data.checkout_url || data.url;
                     } else {
                         throw new Error(data.error || 'Failed to create checkout session');
                     }

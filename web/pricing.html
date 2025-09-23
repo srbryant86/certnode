@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <!-- Performance Optimization -->
+  <meta name="theme-color" content="#1e40af">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
@@ -18,10 +20,53 @@
   <meta name="twitter:title" content="Enterprise Pricing — CertNode" />
   <meta name="twitter:description" content="Transparent enterprise pricing for cryptographic receipt infrastructure." />
 
-  <!-- Enterprise Design System -->
+  <!-- Enterprise Design System - Optimized Font Loading -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+
+  <!-- Critical Resource Preloads for Performance -->
+  <link rel="dns-prefetch" href="//certnode.io">
+
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "CertNode Enterprise Platform",
+    "description": "Enterprise cryptographic receipt infrastructure with compliance automation and security features",
+    "brand": {
+      "@type": "Brand",
+      "name": "CertNode"
+    },
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Developer Plan",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "description": "Free plan for developers and testing"
+      },
+      {
+        "@type": "Offer",
+        "name": "Professional Plan",
+        "price": "49",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "description": "Professional plan for growing teams"
+      },
+      {
+        "@type": "Offer",
+        "name": "Enterprise Plan",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "description": "Custom enterprise pricing with advanced features"
+      }
+    ]
+  }
+  </script>
   <style>
     /* CertNode Enterprise Design System */
     :root {
@@ -120,6 +165,51 @@
       background: var(--primary-50);
       font-weight: 600;
     }
+
+    /* Mobile Navigation */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--gray-600);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu-toggle:hover {
+      color: var(--primary-600);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid var(--gray-200);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        flex-direction: column;
+        padding: 1rem 0;
+      }
+
+      .nav-links.mobile-open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 1rem 1.5rem;
+        border-radius: 0;
+      }
+    }
     .pricing-hero {
       background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
       color: white;
@@ -167,6 +257,34 @@
     .cta-button { width: 100%; padding: 1rem; background: #3b82f6; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; display: block; text-align: center; }
     .cta-button.secondary { background: transparent; color: #3b82f6; border: 2px solid #3b82f6; }
     .cta-button:hover { background: #2563eb; transform: translateY(-1px); }
+
+    /* Featured Plan Styling */
+    .pricing-card.featured {
+      position: relative;
+      border: 2px solid #3b82f6;
+      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.15);
+      transform: scale(1.05);
+    }
+
+    .pricing-card.featured:hover {
+      transform: scale(1.05) translateY(-5px);
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      padding: 8px 24px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
 
     /* FAQ Section Styling */
     .faq-section { background: #f8f9fa; padding: 4rem 0; margin-top: 4rem; }
@@ -252,7 +370,7 @@
     }
   </style>
 
-  <title>Pricing - CertNode Universal Receipt Infrastructure</title>
+  <title>Enterprise Pricing — CertNode Enterprise Platform</title>
   
 </head>
 <body>
@@ -261,6 +379,13 @@
         <div class="container">
             <nav class="nav">
                 <a href="/" class="logo">CertNode</a>
+                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
                 <div class="nav-links">
                     <a href="/verify">Validator</a>
                     <a href="/openapi">Documentation</a>
@@ -313,6 +438,7 @@
             </div>
 
             <div class="pricing-card featured">
+                <div class="popular-badge">Most Popular</div>
                 <div class="plan-name">Professional</div>
                 <div class="plan-price">$199<span class="period">/month</span></div>
                 <div class="plan-description">For growing businesses with compliance needs</div>
@@ -597,5 +723,157 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            if (mobileToggle && navLinks) {
+                mobileToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('mobile-open');
+
+                    // Update ARIA label for accessibility
+                    const isOpen = navLinks.classList.contains('mobile-open');
+                    mobileToggle.setAttribute('aria-label', isOpen ? 'Close mobile menu' : 'Toggle mobile menu');
+                    mobileToggle.setAttribute('aria-expanded', isOpen.toString());
+                });
+
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!event.target.closest('.nav') && navLinks.classList.contains('mobile-open')) {
+                        navLinks.classList.remove('mobile-open');
+                        mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+                        mobileToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                // Close mobile menu on window resize (if going back to desktop)
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768 && navLinks.classList.contains('mobile-open')) {
+                        navLinks.classList.remove('mobile-open');
+                        mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+                        mobileToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+        });
+
+        // Subscribe Button Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Stripe pricing configuration
+            const stripePrices = {
+                'starter': 'price_starter_monthly', // Replace with actual Stripe price IDs
+                'pro': 'price_pro_monthly',
+                'business': 'price_business_monthly'
+            };
+
+            // Handle subscription button clicks
+            document.querySelectorAll('[data-tier]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tier = this.getAttribute('data-tier');
+
+                    if (tier === 'developer') {
+                        // Free tier - redirect to signup
+                        window.location.href = '/signup/developer';
+                        return;
+                    }
+
+                    if (tier === 'enterprise' || this.id === 'contact-sales-btn') {
+                        // Enterprise tier - redirect to contact
+                        window.location.href = '/enterprise';
+                        return;
+                    }
+
+                    // Handle paid subscriptions
+                    if (stripePrices[tier]) {
+                        handleSubscription(tier, stripePrices[tier]);
+                    }
+                });
+            });
+
+            function handleSubscription(tier, priceId) {
+                // Show loading state
+                const button = document.querySelector(`[data-tier="${tier}"]`);
+                const originalText = button.textContent;
+                button.textContent = 'Loading...';
+                button.disabled = true;
+
+                // Create Stripe checkout session
+                fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        priceId: priceId,
+                        tier: tier,
+                        successUrl: window.location.origin + '/dashboard?success=true',
+                        cancelUrl: window.location.origin + '/pricing?canceled=true'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.url) {
+                        // Redirect to Stripe checkout
+                        window.location.href = data.url;
+                    } else {
+                        throw new Error(data.error || 'Failed to create checkout session');
+                    }
+                })
+                .catch(error => {
+                    console.error('Subscription error:', error);
+
+                    // Reset button state
+                    button.textContent = originalText;
+                    button.disabled = false;
+
+                    // Show error message
+                    showNotification('Unable to process subscription. Please try again or contact support.', 'error');
+                });
+            }
+
+            // Notification system
+            function showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    z-index: 1000;
+                    padding: 16px 20px;
+                    border-radius: 8px;
+                    color: white;
+                    font-weight: 600;
+                    max-width: 400px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                    background: ${type === 'error' ? '#ef4444' : '#10b981'};
+                `;
+
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                // Animate in
+                setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => document.body.removeChild(notification), 300);
+                }, 5000);
+            }
+
+            // Check for URL parameters (success/cancel)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === 'true') {
+                showNotification('Subscription successful! Welcome to CertNode.', 'success');
+            } else if (urlParams.get('canceled') === 'true') {
+                showNotification('Subscription canceled. You can try again anytime.', 'info');
+            }
+        });
+    </script>
 </body>
 </html>

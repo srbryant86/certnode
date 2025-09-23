@@ -2,29 +2,99 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-XSS-Protection" content="1; mode=block">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
+  <!-- Performance Optimization -->
+  <meta name="theme-color" content="#1e40af">
+  <meta name="mobile-web-app-capable" content="yes">
+
   <!-- 10/10 Enterprise Metadata -->
   <title>Enterprise Cryptographic Receipt Platform — CertNode</title>
   <link rel="canonical" href="https://certnode.io/" />
   <meta property="og:title" content="CertNode — Enterprise Cryptographic Receipt Platform" />
-  <meta property="og:description" content="Proprietary cryptographic receipt infrastructure built exclusively for Fortune 500 companies. SOC 2 Type II compliant with HSM integration, multi-tenant architecture, and enterprise-grade security." />
+  <meta property="og:description" content="Enterprise cryptographic receipt infrastructure for secure transaction verification. SOC 2 Type II ready with HSM integration, multi-tenant architecture, and enterprise-grade security." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://certnode.io/" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="CertNode — Enterprise Cryptographic Receipt Platform" />
   <meta name="twitter:description" content="Enterprise-grade cryptographic receipts for Fortune 500 compliance and security." />
-  <meta name="description" content="CertNode's proprietary enterprise cryptographic receipt platform. Built exclusively for Fortune 500 companies requiring SOC 2 Type II compliance, HSM integration, and advanced multi-tenant security architecture.">
+  <meta name="description" content="CertNode's enterprise cryptographic receipt platform. Built for organizations requiring SOC 2 Type II compliance, HSM integration, and advanced multi-tenant security architecture.">
 
-  <!-- Enterprise Design System -->
+  <!-- Enterprise Design System - Optimized Font Loading -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+
+  <!-- Critical Resource Preloads for Performance -->
+  <link rel="dns-prefetch" href="//certnode.io">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "CertNode",
+    "description": "Enterprise cryptographic receipt platform for secure transaction verification",
+    "url": "https://certnode.io",
+    "logo": "https://certnode.io/assets/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Enterprise Sales",
+      "url": "https://certnode.io/enterprise"
+    },
+    "sameAs": [],
+    "foundingDate": "2024",
+    "numberOfEmployees": "10-50",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "US"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "CertNode Enterprise Platform",
+    "description": "Enterprise cryptographic receipt infrastructure with SOC 2 Type II compliance, HSM integration, and multi-tenant architecture",
+    "brand": {
+      "@type": "Brand",
+      "name": "CertNode"
+    },
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "priceCurrency": "USD",
+      "url": "https://certnode.io/pricing"
+    },
+    "applicationCategory": "Enterprise Software",
+    "operatingSystem": "Cloud-based"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "CertNode",
+    "url": "https://certnode.io",
+    "description": "Enterprise cryptographic receipt platform",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://certnode.io/verify?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 
   <style>
     /* CertNode Enterprise Design System - 10/10 Polish */
@@ -57,6 +127,8 @@
       color: var(--gray-800);
       background: var(--gray-50);
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-display: swap;
     }
 
     .container {
@@ -380,12 +452,96 @@
       font-weight: 500;
     }
 
+    /* Mobile Navigation */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray-600);
+      padding: 0.5rem;
+    }
+
+    .mobile-menu-toggle:hover {
+      color: var(--primary-600);
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
-      .hero h1 { font-size: 2.5rem; }
-      .nav-links { gap: 1rem; flex-wrap: wrap; }
-      .features-grid { grid-template-columns: 1fr; }
-      .cta-buttons { flex-direction: column; align-items: center; }
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid var(--gray-200);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem 0;
+      }
+
+      .nav-links.mobile-open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 1rem 1.5rem;
+        border-radius: 0;
+        border-bottom: 1px solid var(--gray-100);
+        width: 100%;
+        text-align: left;
+      }
+
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+
+      .nav {
+        position: relative;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .platform-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+      }
+
+      .container {
+        padding: 0 1rem;
+      }
     }
 
     /* Accessibility */
@@ -405,6 +561,13 @@
     <div class="container">
       <nav class="nav">
         <a href="/" class="logo">CertNode</a>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
         <div class="nav-links">
           <a href="/verify">Validator</a>
           <a href="/openapi">Documentation</a>
@@ -423,8 +586,8 @@
         <h1>Prove Every Transaction</h1>
         <p>Enterprise-grade cryptographic receipts that provide irrefutable proof of digital transactions. Built for organizations that need compliance-ready audit trails, tamper-evident records, and bulletproof verification systems.</p>
         <div class="cta-buttons">
-          <a href="/enterprise" class="btn btn-primary">Request Enterprise Demo</a>
-          <a href="/verify" class="btn btn-secondary">Try Platform</a>
+          <a href="/enterprise" class="btn btn-primary">Schedule Demo</a>
+          <a href="/verify" class="btn btn-secondary">Try Validator Free</a>
         </div>
       </div>
     </section>
@@ -519,8 +682,8 @@
         <h2>Ready for Enterprise Deployment?</h2>
         <p>Join enterprise organizations using CertNode's cryptographic receipt platform for compliance, security, and operational excellence.</p>
         <div class="cta-buttons">
-          <a href="/enterprise" class="btn btn-primary">Schedule Enterprise Demo</a>
-          <a href="/pricing" class="btn btn-secondary">View Enterprise Pricing</a>
+          <a href="/enterprise" class="btn btn-primary">Get Enterprise Access</a>
+          <a href="/pricing" class="btn btn-secondary">View Pricing</a>
         </div>
       </div>
     </section>
@@ -570,5 +733,46 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    // Mobile Navigation Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileToggle = document.querySelector('.mobile-menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+
+      if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', function() {
+          navLinks.classList.toggle('mobile-open');
+
+          // Update ARIA label for accessibility
+          const isOpen = navLinks.classList.contains('mobile-open');
+          mobileToggle.setAttribute('aria-label', isOpen ? 'Close mobile menu' : 'Toggle mobile menu');
+          mobileToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('.nav') && navLinks.classList.contains('mobile-open')) {
+            navLinks.classList.remove('mobile-open');
+            mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Close mobile menu on window resize (if going back to desktop) - throttled for performance
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(function() {
+            if (window.innerWidth > 768 && navLinks.classList.contains('mobile-open')) {
+              navLinks.classList.remove('mobile-open');
+              mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+              mobileToggle.setAttribute('aria-expanded', 'false');
+            }
+          }, 100);
+        });
+      }
+    });
+  </script>
 </body>
 </html>

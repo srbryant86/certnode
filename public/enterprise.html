@@ -221,6 +221,162 @@
       outline: 2px solid var(--primary-500);
       outline-offset: 2px;
     }
+
+    /* Enterprise Page Specific Styles */
+    .icon-inline {
+      display: inline-block;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+
+    .enterprise-highlight {
+      background: linear-gradient(135deg, #e7f3ff 0%, #f0f9ff 100%);
+      border-left: 4px solid #1e40af;
+      padding: 2rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 3rem;
+    }
+
+    .enterprise-highlight h3 {
+      color: #1e40af;
+      margin: 0 0 1rem 0;
+    }
+
+    .enterprise-highlight p {
+      color: #333;
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .platform-section {
+      background: white;
+      border-radius: 12px;
+      padding: 3rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .platform-section h2 {
+      color: #1e40af;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .platform-card {
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 4px solid #3b82f6;
+    }
+
+    .platform-card.analytics { border-left-color: #3b82f6; }
+    .platform-card.webhook { border-left-color: #10b981; }
+    .platform-card.domain { border-left-color: #8b5cf6; }
+    .platform-card.compliance { border-left-color: #f59e0b; }
+
+    .platform-card h4 {
+      margin: 0 0 1rem 0;
+    }
+
+    .platform-card.analytics h4 { color: #1e40af; }
+    .platform-card.webhook h4 { color: #059669; }
+    .platform-card.domain h4 { color: #7c3aed; }
+    .platform-card.compliance h4 { color: #d97706; }
+
+    .platform-card p {
+      color: #6b7280;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .enterprise-cta {
+      background: #1e293b;
+      padding: 4rem 0;
+      color: white;
+    }
+
+    .cta-content {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cta-content h2 {
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-content p {
+      color: #94a3b8;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: #3b82f6;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: #3b82f6;
+      padding: 1rem 2rem;
+      border: 2px solid #3b82f6;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .use-cases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .use-case-card {
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .use-case-card h3 {
+      color: #1e40af;
+      margin-bottom: 1rem;
+    }
+
+    .use-case-card p {
+      color: #6b7280;
+      margin-bottom: 1rem;
+    }
+
+    .use-case-list {
+      color: #374151;
+      font-size: 0.9rem;
+    }
+
+    .enterprise-badge {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -255,7 +411,7 @@
 
         <div class="features-grid">
           <div class="feature-card">
-            <h3><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; margin-right: 0.5rem; vertical-align: middle;"><path d="M12 2L22 7V17C22 17.5304 21.7893 18.0391 21.4142 18.4142C21.0391 18.7893 20.5304 19 20 19H4C3.46957 19 2.96086 18.7893 2.58579 18.4142C2.21071 18.0391 2 17.5304 2 17V7L12 2Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 7L12 12L22 7" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22V12" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> SOC 2 Type II Ready</h3>
+            <h3><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-inline"><path d="M12 2L22 7V17C22 17.5304 21.7893 18.0391 21.4142 18.4142C21.0391 18.7893 20.5304 19 20 19H4C3.46957 19 2.96086 18.7893 2.58579 18.4142C2.21071 18.0391 2 17.5304 2 17V7L12 2Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 7L12 12L22 7" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22V12" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> SOC 2 Type II Ready</h3>
             <p>Complete compliance framework with automated controls, audit trails, and enterprise security requirements. Ready for Fortune 500 procurement processes.</p>
             <ul class="feature-list">
               <li>Automated control testing and evidence collection</li>
@@ -302,51 +458,51 @@
       </div>
     </section>
 
-        <div style="background: linear-gradient(135deg, #e7f3ff 0%, #f0f9ff 100%); border-left: 4px solid #1e40af; padding: 2rem; border-radius: 0 8px 8px 0; margin-bottom: 3rem;">
-          <h3 style="color: #1e40af; margin: 0 0 1rem 0;">🎯 Enterprise-First Design</h3>
-          <p style="color: #333; margin: 0; font-size: 1.1rem;">
+        <div class="enterprise-highlight">
+          <h3>🎯 Enterprise-First Design</h3>
+          <p>
             Unlike open standards that commoditize the technology, CertNode's proprietary algorithms and enterprise architecture provide competitive advantages for our customers. Built specifically for compliance-heavy industries and high-volume operations.
           </p>
         </div>
 
-        <div style="background: white; border-radius: 12px; padding: 3rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-          <h2 style="color: #1e40af; margin-bottom: 2rem; text-align: center;">Enterprise Platform Components</h2>
+        <div class="platform-section">
+          <h2>Enterprise Platform Components</h2>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #3b82f6;">
-              <h4 style="color: #1e40af; margin: 0 0 1rem 0;">📊 Real-Time Analytics</h4>
-              <p style="color: #6b7280; margin: 0; font-size: 0.9rem;">Advanced analytics engine with custom dashboards, usage metrics, and business intelligence for enterprise decision-making and compliance reporting.</p>
+          <div class="platform-grid">
+            <div class="platform-card analytics">
+              <h4>📊 Real-Time Analytics</h4>
+              <p>Advanced analytics engine with custom dashboards, usage metrics, and business intelligence for enterprise decision-making and compliance reporting.</p>
             </div>
 
-            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #10b981;">
-              <h4 style="color: #059669; margin: 0 0 1rem 0;">📡 Webhook Integration</h4>
-              <p style="color: #6b7280; margin: 0; font-size: 0.9rem;">Enterprise webhook system with HMAC verification, exponential backoff, and reliable delivery for real-time notifications and system integrations.</p>
+            <div class="platform-card webhook">
+              <h4>📡 Webhook Integration</h4>
+              <p>Enterprise webhook system with HMAC verification, exponential backoff, and reliable delivery for real-time notifications and system integrations.</p>
             </div>
 
-            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #8b5cf6;">
-              <h4 style="color: #7c3aed; margin: 0 0 1rem 0;">🌐 Custom Domains</h4>
-              <p style="color: #6b7280; margin: 0; font-size: 0.9rem;">White-label solutions with automated SSL certificates, domain management, and branded receipt verification portals for seamless customer experience.</p>
+            <div class="platform-card domain">
+              <h4>🌐 Custom Domains</h4>
+              <p>White-label solutions with automated SSL certificates, domain management, and branded receipt verification portals for seamless customer experience.</p>
             </div>
 
-            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
-              <h4 style="color: #d97706; margin: 0 0 1rem 0;">🛡️ Compliance Automation</h4>
-              <p style="color: #6b7280; margin: 0; font-size: 0.9rem;">Automated SOC 2 controls, audit trail generation, and compliance reporting for streamlined certification processes and regulatory requirements.</p>
+            <div class="platform-card compliance">
+              <h4>🛡️ Compliance Automation</h4>
+              <p>Automated SOC 2 controls, audit trail generation, and compliance reporting for streamlined certification processes and regulatory requirements.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section style="background: #1e293b; padding: 4rem 0; color: white;">
+    <section class="enterprise-cta">
       <div class="container">
-        <div style="text-align: center; max-width: 800px; margin: 0 auto;">
-          <h2 style="color: white; margin-bottom: 1.5rem;">Ready for Enterprise Deployment?</h2>
-          <p style="color: #94a3b8; font-size: 1.1rem; margin-bottom: 2rem;">
+        <div class="cta-content">
+          <h2>Ready for Enterprise Deployment?</h2>
+          <p>
             Schedule a personalized demonstration of our enterprise features, compliance capabilities, and proprietary cryptographic algorithms. See how CertNode provides competitive advantages for your organization.
           </p>
-          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="/pricing" style="display: inline-block; background: #3b82f6; color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600;">Enterprise Pricing</a>
-            <a href="/verify" style="display: inline-block; background: transparent; color: #3b82f6; padding: 1rem 2rem; border: 2px solid #3b82f6; border-radius: 8px; text-decoration: none; font-weight: 600;">Try Platform</a>
+          <div class="cta-buttons">
+            <a href="/pricing" class="btn-primary">See Enterprise Plans</a>
+            <a href="/verify" class="btn-secondary">Test Receipt Validation</a>
           </div>
         </div>
       </div>
@@ -354,14 +510,14 @@
 
     <section class="section">
       <div class="container">
-        <div style="background: white; border-radius: 12px; padding: 3rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-          <h2 style="color: #1e40af; margin-bottom: 2rem; text-align: center;">Enterprise Use Cases</h2>
+        <div class="platform-section">
+          <h2>Enterprise Use Cases</h2>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-            <div style="padding: 2rem; border-radius: 8px; border: 1px solid #e5e7eb;">
-              <h3 style="color: #1e40af; margin-bottom: 1rem;">🏦 Financial Services</h3>
-              <p style="color: #6b7280; margin-bottom: 1rem;">Cryptographic receipts for transaction processing, regulatory compliance, and audit trail requirements in banking and fintech applications.</p>
-              <ul style="color: #374151; font-size: 0.9rem;">
+          <div class="use-cases-grid">
+            <div class="use-case-card">
+              <h3>🏦 Financial Services</h3>
+              <p>Cryptographic receipts for transaction processing, regulatory compliance, and audit trail requirements in banking and fintech applications.</p>
+              <ul class="use-case-list">
                 <li>SOC 2 Type II compliance for customer data</li>
                 <li>HSM integration for PCI DSS requirements</li>
                 <li>Automated audit trail generation</li>
@@ -369,10 +525,10 @@
               </ul>
             </div>
 
-            <div style="padding: 2rem; border-radius: 8px; border: 1px solid #e5e7eb;">
-              <h3 style="color: #1e40af; margin-bottom: 1rem;">🏥 Healthcare</h3>
-              <p style="color: #6b7280; margin-bottom: 1rem;">HIPAA-compliant receipt infrastructure for patient data processing, billing verification, and healthcare transaction integrity.</p>
-              <ul style="color: #374151; font-size: 0.9rem;">
+            <div class="use-case-card">
+              <h3>🏥 Healthcare</h3>
+              <p>HIPAA-compliant receipt infrastructure for patient data processing, billing verification, and healthcare transaction integrity.</p>
+              <ul class="use-case-list">
                 <li>HIPAA compliance with BAA support</li>
                 <li>Patient data processing receipts</li>
                 <li>Medical billing verification</li>
@@ -380,10 +536,10 @@
               </ul>
             </div>
 
-            <div style="padding: 2rem; border-radius: 8px; border: 1px solid #e5e7eb;">
-              <h3 style="color: #1e40af; margin-bottom: 1rem;">🏛️ Government</h3>
-              <p style="color: #6b7280; margin-bottom: 1rem;">FedRAMP-ready infrastructure for government agencies requiring the highest levels of security and compliance for digital transactions.</p>
-              <ul style="color: #374151; font-size: 0.9rem;">
+            <div class="use-case-card">
+              <h3>🏛️ Government</h3>
+              <p>FedRAMP-ready infrastructure for government agencies requiring the highest levels of security and compliance for digital transactions.</p>
+              <ul class="use-case-list">
                 <li>FIPS 140-2 Level 3+ HSM compliance</li>
                 <li>FedRAMP certification pathway</li>
                 <li>Government security standards</li>
@@ -391,10 +547,10 @@
               </ul>
             </div>
 
-            <div style="padding: 2rem; border-radius: 8px; border: 1px solid #e5e7eb;">
-              <h3 style="color: #1e40af; margin-bottom: 1rem;">🛒 Enterprise E-commerce</h3>
-              <p style="color: #6b7280; margin-bottom: 1rem;">Scalable receipt infrastructure for high-volume e-commerce platforms with multi-tenant architecture and white-label solutions.</p>
-              <ul style="color: #374151; font-size: 0.9rem;">
+            <div class="use-case-card">
+              <h3>🛒 Enterprise E-commerce</h3>
+              <p>Scalable receipt infrastructure for high-volume e-commerce platforms with multi-tenant architecture and white-label solutions.</p>
+              <ul class="use-case-list">
                 <li>High-volume transaction processing</li>
                 <li>Multi-tenant marketplace support</li>
                 <li>Custom domain and branding</li>
@@ -410,7 +566,7 @@
   <footer>
     <div class="container">
       <p>&copy; 2025 CertNode — Enterprise cryptographic receipt platform.</p>
-      <p style="font-size: 0.8rem; color: #6b7280; margin-top: 0.5rem;">🔐 ENTERPRISE READY - SOC 2 Type II Compliant</p>
+      <p class="enterprise-badge">🔐 ENTERPRISE READY - SOC 2 Type II Compliant</p>
     </div>
   </footer>
 </body>

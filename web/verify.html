@@ -20,10 +20,39 @@
   <meta name="twitter:description" content="Verify cryptographic receipts instantly with enterprise security." />
   <meta name="description" content="Instantly verify that digital receipts are authentic and tamper-proof. Enterprise-grade cryptographic verification with real-time validation.">
 
-  <!-- Enterprise Design System -->
+  <!-- Enterprise Design System - Optimized Font Loading -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+
+  <!-- Critical Resource Preloads for Performance -->
+  <link rel="dns-prefetch" href="//certnode.io">
+
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CertNode Receipt Validator",
+    "description": "Enterprise cryptographic receipt validation tool for verifying digital transaction authenticity",
+    "url": "https://certnode.io/verify",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "featureList": [
+      "Cryptographic receipt validation",
+      "Real-time verification",
+      "JSON format support",
+      "Enterprise security"
+    ]
+  }
+  </script>
   <style>
     /* CertNode Enterprise Design System */
     :root {
@@ -121,6 +150,51 @@
       color: var(--primary-600);
       background: var(--primary-50);
       font-weight: 600;
+    }
+
+    /* Mobile Navigation */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--gray-600);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu-toggle:hover {
+      color: var(--primary-600);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid var(--gray-200);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        flex-direction: column;
+        padding: 1rem 0;
+      }
+
+      .nav-links.mobile-open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 1rem 1.5rem;
+        border-radius: 0;
+      }
     }
 
     .validator-hero {
@@ -306,6 +380,59 @@
       background: #f9fafb;
       border-color: #9ca3af;
     }
+
+    .format-btn {
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+      border-color: #d1d5db;
+      color: #6b7280;
+    }
+
+    .format-btn:hover {
+      border-color: #9ca3af;
+      color: #374151;
+    }
+
+    /* Loading states */
+    .btn-loading {
+      position: relative;
+      color: transparent !important;
+    }
+
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      margin-left: -8px;
+      margin-top: -8px;
+      border: 2px solid transparent;
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: btn-loading-spin 1s ease infinite;
+    }
+
+    @keyframes btn-loading-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .btn-loading .btn-text {
+      visibility: hidden;
+    }
+
+    /* Enhanced form validation states */
+    .textarea-error {
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+    }
+
+    .textarea-success {
+      border-color: #10b981 !important;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+    }
     .result-area {
       background: white;
       border-radius: 16px;
@@ -410,6 +537,13 @@
     <div class="container">
       <nav class="nav">
         <a href="/" class="logo">CertNode</a>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
         <div class="nav-links">
           <a href="/verify" aria-current="page">Validator</a>
           <a href="/openapi">Documentation</a>
@@ -433,8 +567,8 @@
       <h2>🚀 Try it Now</h2>
       <p>See how receipt validation works with real examples. Try both valid and invalid cases:</p>
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <button class="demo-button" id="load-valid-btn">✓ Load Valid Receipt</button>
-        <button class="demo-button" id="load-invalid-btn">✗ Load Invalid Receipt</button>
+        <button class="demo-button" id="load-valid-btn">✓ Try Valid Example</button>
+        <button class="demo-button" id="load-invalid-btn">✗ Try Invalid Example</button>
       </div>
       <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">Or try with your own receipts from our <a href="/openapi" style="color: rgba(255,255,255,0.9); text-decoration: underline;">API</a>.</p>
     </div>
@@ -453,7 +587,7 @@ Example format:
   "kid": "0FZqBxDqOlYD0F5l..."
 }'></textarea>
         <div style="margin-top: 1rem;">
-          <button class="btn btn-secondary format-btn" data-target="receipt-input" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Format JSON</button>
+          <button class="btn btn-secondary format-btn" data-target="receipt-input">Format JSON</button>
         </div>
       </div>
 
@@ -477,14 +611,16 @@ Example format:
   ]
 }'></textarea>
         <div style="margin-top: 1rem;">
-          <button class="btn btn-secondary format-btn" data-target="jwks-input" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Format JSON</button>
+          <button class="btn btn-secondary format-btn" data-target="jwks-input">Format JSON</button>
         </div>
       </div>
     </div>
 
     <div class="actions">
-      <button class="btn btn-primary" id="verify-btn">✓ Verify Receipt</button>
-      <button class="btn btn-secondary" id="clear-btn">Clear All</button>
+      <button class="btn btn-primary" id="verify-btn">
+        <span class="btn-text">✓ Verify Receipt</span>
+      </button>
+      <button class="btn btn-secondary" id="clear-btn">Reset Form</button>
     </div>
 
     <div id="result-area" class="result-area">
@@ -499,8 +635,8 @@ Example format:
   </div>
 
   <!-- Include verification library -->
-  <script src="/web/js/verify.js"></script>
-  <script src="/web/js/validator.js?v=12"></script>
+  <script src="/web/js/verify.js" defer></script>
+  <script src="/web/js/validator.js?v=12" defer></script>
 
   <!-- Enterprise Footer -->
   <footer style="background: var(--gray-900); color: white; padding: 3rem 0 1rem 0; margin-top: 4rem;">
@@ -529,5 +665,143 @@ Example format:
       </div>
     </div>
   </footer>
+
+  <script>
+    // Mobile Navigation Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileToggle = document.querySelector('.mobile-menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+
+      if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', function() {
+          navLinks.classList.toggle('mobile-open');
+
+          // Update ARIA label for accessibility
+          const isOpen = navLinks.classList.contains('mobile-open');
+          mobileToggle.setAttribute('aria-label', isOpen ? 'Close mobile menu' : 'Toggle mobile menu');
+          mobileToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('.nav') && navLinks.classList.contains('mobile-open')) {
+            navLinks.classList.remove('mobile-open');
+            mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Close mobile menu on window resize (if going back to desktop) - throttled for performance
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(function() {
+            if (window.innerWidth > 768 && navLinks.classList.contains('mobile-open')) {
+              navLinks.classList.remove('mobile-open');
+              mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+              mobileToggle.setAttribute('aria-expanded', 'false');
+            }
+          }, 100);
+        });
+      }
+    });
+
+    // Enhanced User Feedback
+    document.addEventListener('DOMContentLoaded', function() {
+      const verifyBtn = document.getElementById('verify-btn');
+      const receiptInput = document.getElementById('receipt-input');
+      const jwksInput = document.getElementById('jwks-input');
+
+      // Add loading state management
+      function setLoadingState(isLoading) {
+        if (verifyBtn) {
+          if (isLoading) {
+            verifyBtn.classList.add('btn-loading');
+            verifyBtn.disabled = true;
+          } else {
+            verifyBtn.classList.remove('btn-loading');
+            verifyBtn.disabled = false;
+          }
+        }
+      }
+
+      // Enhanced form validation feedback
+      function validateInput(textarea) {
+        if (!textarea || !textarea.value.trim()) {
+          textarea?.classList.remove('textarea-success', 'textarea-error');
+          return false;
+        }
+
+        try {
+          JSON.parse(textarea.value);
+          textarea.classList.remove('textarea-error');
+          textarea.classList.add('textarea-success');
+          return true;
+        } catch (e) {
+          textarea.classList.remove('textarea-success');
+          textarea.classList.add('textarea-error');
+          return false;
+        }
+      }
+
+      // Add real-time validation feedback
+      [receiptInput, jwksInput].forEach(input => {
+        if (input) {
+          input.addEventListener('blur', function() {
+            validateInput(this);
+          });
+
+          input.addEventListener('input', function() {
+            // Clear validation states while typing
+            this.classList.remove('textarea-success', 'textarea-error');
+          });
+        }
+      });
+
+      // Intercept verify button clicks to add loading state
+      if (verifyBtn) {
+        verifyBtn.addEventListener('click', function() {
+          // Validate inputs first
+          const receiptValid = validateInput(receiptInput);
+          const jwksValid = validateInput(jwksInput);
+
+          if (!receiptValid || !jwksValid) {
+            showMessage('Please ensure both Receipt JSON and JWKS JSON are valid before verifying.', 'error');
+            return;
+          }
+
+          // Add loading state
+          setLoadingState(true);
+
+          // Remove loading state after processing (simulated)
+          setTimeout(() => {
+            setLoadingState(false);
+          }, 1500);
+        });
+      }
+
+      // Helper function for toast messages (if not already defined)
+      if (typeof window.showMessage === 'undefined') {
+        window.showMessage = function(message, type) {
+          const toast = document.createElement('div');
+          toast.style.cssText = `
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            padding: 16px 20px; border-radius: 8px; color: white; font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-width: 400px;
+            background: ${type === 'error' ? '#ef4444' : '#10b981'};
+            transform: translateX(100%); transition: transform 0.3s ease;
+          `;
+          toast.textContent = message;
+          document.body.appendChild(toast);
+
+          setTimeout(() => toast.style.transform = 'translateX(0)', 100);
+          setTimeout(() => {
+            toast.style.transform = 'translateX(100%)';
+            setTimeout(() => document.body.removeChild(toast), 300);
+          }, 4000);
+        };
+      }
+    });
+  </script>
 </body>
 </html>

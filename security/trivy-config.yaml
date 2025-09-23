@@ -1,0 +1,132 @@
+# Trivy Security Scanner Configuration
+# Comprehensive vulnerability and misconfiguration scanning
+
+# Global configuration
+format: sarif
+output: trivy-results.sarif
+exit-code: 1
+severity: CRITICAL,HIGH,MEDIUM
+ignore-unfixed: false
+offline-scan: false
+timeout: 10m
+
+# Vulnerability scanning
+vulnerability:
+  type:
+    - os
+    - library
+  skip-update: false
+  skip-java-db-update: false
+  light: false
+
+# Misconfiguration scanning
+misconfiguration:
+  trace: true
+  config-policy: []
+  policy-namespaces: []
+
+# Secret scanning
+secret:
+  config: .trivyignore-secrets
+
+# License scanning
+license:
+  full: true
+  ignored-licenses: []
+
+# Kubernetes scanning (for K8s manifests)
+kubernetes:
+  include-non-failures: false
+  components:
+    - workload
+    - infra
+
+# Docker image scanning options
+image:
+  removed-pkgs: true
+  platform: linux/amd64
+
+# File system scanning options
+filesystem:
+  skip-dirs:
+    - node_modules
+    - .git
+    - coverage
+    - logs
+    - tmp
+
+# Custom policies
+policy:
+  bundle-repository: ""
+  policy-namespaces: []
+
+# Cache configuration
+cache:
+  clear: false
+  dir: ~/.cache/trivy
+
+# Registry configuration
+registry:
+  token: ""
+  username: ""
+  password: ""
+
+# Report configuration
+report:
+  format: sarif
+  template: ""
+
+# Custom checks for CertNode
+custom-checks:
+  # Check for exposed secrets
+  - id: "CN-001"
+    title: "No hardcoded secrets"
+    description: "Ensure no hardcoded secrets in code"
+    severity: "CRITICAL"
+
+  # Check for secure headers
+  - id: "CN-002"
+    title: "Security headers configured"
+    description: "Ensure security headers are properly configured"
+    severity: "HIGH"
+
+  # Check for input validation
+  - id: "CN-003"
+    title: "Input validation present"
+    description: "Ensure proper input validation in API routes"
+    severity: "HIGH"
+
+# Ignored vulnerabilities (with justification)
+ignore:
+  # Example: CVE with low impact for our use case
+  # - cve-id: "CVE-2023-XXXXX"
+  #   reason: "False positive - not applicable to our implementation"
+  #   expires: "2024-12-31"
+
+# Skip specific directories and files
+skip-dirs:
+  - "**/.git"
+  - "**/node_modules"
+  - "**/coverage"
+  - "**/logs"
+  - "**/tmp"
+  - "**/.next"
+  - "**/dist"
+  - "**/build"
+
+skip-files:
+  - "**/*.md"
+  - "**/*.txt"
+  - "**/LICENSE"
+  - "**/.gitignore"
+  - "**/*.log"
+
+# Security policy compliance
+compliance:
+  spec: "nist"
+  controls:
+    - "AC-2"   # Account Management
+    - "AC-3"   # Access Enforcement
+    - "SC-8"   # Transmission Confidentiality and Integrity
+    - "SI-3"   # Malicious Code Protection
+    - "SI-4"   # Information System Monitoring

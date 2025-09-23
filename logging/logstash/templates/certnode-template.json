@@ -1,0 +1,208 @@
+{
+  "index_patterns": ["certnode-*"],
+  "settings": {
+    "index": {
+      "number_of_shards": 3,
+      "number_of_replicas": 1,
+      "refresh_interval": "5s",
+      "codec": "best_compression"
+    },
+    "analysis": {
+      "analyzer": {
+        "certnode_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase", "stop"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "@timestamp": {
+        "type": "date"
+      },
+      "timestamp": {
+        "type": "date"
+      },
+      "level": {
+        "type": "keyword"
+      },
+      "severity": {
+        "type": "keyword"
+      },
+      "service": {
+        "type": "keyword"
+      },
+      "environment": {
+        "type": "keyword"
+      },
+      "message": {
+        "type": "text",
+        "analyzer": "certnode_analyzer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "request_id": {
+        "type": "keyword"
+      },
+      "correlation_id": {
+        "type": "keyword"
+      },
+      "user_id": {
+        "type": "keyword"
+      },
+      "session_id": {
+        "type": "keyword"
+      },
+      "client_ip": {
+        "type": "ip"
+      },
+      "user_agent": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "http": {
+        "properties": {
+          "method": {
+            "type": "keyword"
+          },
+          "url": {
+            "type": "keyword"
+          },
+          "status_code": {
+            "type": "integer"
+          },
+          "response_time": {
+            "type": "float"
+          },
+          "request_size": {
+            "type": "long"
+          },
+          "response_size": {
+            "type": "long"
+          }
+        }
+      },
+      "error": {
+        "properties": {
+          "type": {
+            "type": "keyword"
+          },
+          "message": {
+            "type": "text"
+          },
+          "stack": {
+            "type": "text"
+          },
+          "code": {
+            "type": "keyword"
+          }
+        }
+      },
+      "stack_trace": {
+        "type": "text"
+      },
+      "event_type": {
+        "type": "keyword"
+      },
+      "action": {
+        "type": "keyword"
+      },
+      "resource": {
+        "type": "keyword"
+      },
+      "performance": {
+        "properties": {
+          "duration": {
+            "type": "float"
+          },
+          "memory_usage": {
+            "type": "long"
+          },
+          "cpu_usage": {
+            "type": "float"
+          },
+          "db_query_count": {
+            "type": "integer"
+          },
+          "cache_hits": {
+            "type": "integer"
+          },
+          "cache_misses": {
+            "type": "integer"
+          }
+        }
+      },
+      "security": {
+        "properties": {
+          "threat_level": {
+            "type": "keyword"
+          },
+          "attack_type": {
+            "type": "keyword"
+          },
+          "blocked": {
+            "type": "boolean"
+          },
+          "rule_id": {
+            "type": "keyword"
+          }
+        }
+      },
+      "geoip": {
+        "properties": {
+          "continent_name": {
+            "type": "keyword"
+          },
+          "country_name": {
+            "type": "keyword"
+          },
+          "country_code2": {
+            "type": "keyword"
+          },
+          "region_name": {
+            "type": "keyword"
+          },
+          "city_name": {
+            "type": "keyword"
+          },
+          "location": {
+            "type": "geo_point"
+          }
+        }
+      },
+      "database": {
+        "properties": {
+          "query": {
+            "type": "text"
+          },
+          "query_duration": {
+            "type": "float"
+          },
+          "affected_rows": {
+            "type": "integer"
+          },
+          "connection_id": {
+            "type": "keyword"
+          }
+        }
+      },
+      "tags": {
+        "type": "keyword"
+      },
+      "fields": {
+        "type": "object"
+      }
+    }
+  }
+}

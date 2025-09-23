@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>CertNode - Enterprise Cryptographic Receipt Platform</title>
+    <link rel="canonical" href="https://certnode.io/" />
+    <meta property="og:title" content="CertNode — Enterprise Cryptographic Receipt Platform" />
+    <meta property="og:description" content="Proprietary cryptographic receipt infrastructure for enterprise applications. SOC 2 compliant with batch processing, multi-tenancy, and HSM integration." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://certnode.io/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="CertNode — Enterprise Cryptographic Receipt Platform" />
+    <meta name="twitter:description" content="Enterprise-grade cryptographic receipts with compliance and security." />
+    <meta name="description" content="Enterprise cryptographic receipt platform with proprietary algorithms, SOC 2 compliance, multi-tenant architecture, and hardware security module integration for Fortune 500 companies.">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            background: #fafbfc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e1e5e9;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e40af;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #1e40af;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            color: white;
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #1e40af;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .features {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature h3 {
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+
+        .infrastructure-section {
+            background: #f8f9fa;
+            padding: 6rem 0;
+        }
+
+        .infrastructure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .infrastructure-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .infrastructure-card h4 {
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .standards-notice {
+            background: linear-gradient(135deg, #e7f3ff 0%, #f0f9ff 100%);
+            border-left: 4px solid #1e40af;
+            padding: 2rem;
+            margin: 3rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #94a3b8;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="/" class="logo">CertNode</a>
+                <div class="nav-links">
+                    <a href="/verify">Validator</a>
+                    <a href="/openapi">Documentation</a>
+                    <a href="/enterprise">Enterprise</a>
+                    <a href="/pricing">Pricing</a>
+                    <a href="/trust">Security</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Enterprise Cryptographic Receipts</h1>
+                <p>Proprietary receipt infrastructure built for Fortune 500 companies. SOC 2 compliant with multi-tenant architecture, batch processing, and hardware security module integration for maximum enterprise security.</p>
+                <div class="cta-buttons">
+                    <a href="/enterprise" class="btn btn-primary">Request Demo</a>
+                    <a href="/verify" class="btn btn-secondary">Try Validator</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: #1e40af;">Enterprise-Grade Security</h2>
+                <p style="text-align: center; font-size: 1.25rem; color: #64748b; max-width: 800px; margin: 0 auto;">Proprietary cryptographic algorithms and enterprise architecture designed for the most demanding compliance requirements and high-volume operations.</p>
+
+                <div class="features-grid">
+                    <div class="feature">
+                        <div class="feature-icon">🏛️</div>
+                        <h3>SOC 2 Type II Compliant</h3>
+                        <p>Full compliance framework with automated controls, audit trails, and enterprise security requirements. Ready for Fortune 500 procurement processes.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🔐</div>
+                        <h3>Hardware Security Modules</h3>
+                        <p>Integration with AWS CloudHSM and Thales Luna for FIPS 140-2 Level 3+ compliance. Hardware-based cryptographic key protection for maximum security.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">⚡</div>
+                        <h3>High-Performance Architecture</h3>
+                        <p>Batch processing up to 10,000+ receipts per job, multi-tenant isolation, webhook integrations, and real-time analytics for enterprise operations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="infrastructure-section">
+            <div class="container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: #1e40af;">Enterprise Platform Features</h2>
+                <p style="text-align: center; font-size: 1.25rem; color: #64748b; max-width: 800px; margin: 0 auto;">Complete enterprise platform with multi-tenant architecture, advanced analytics, and compliance automation built for demanding enterprise environments.</p>
+
+                <div class="standards-notice">
+                    <h3 style="margin: 0 0 1rem 0; color: #1e40af;">🎯 Enterprise-First Approach</h3>
+                    <p style="margin: 0; color: #333;">Built from the ground up for enterprise requirements: compliance automation, multi-tenant isolation, batch processing, and proprietary algorithms that provide competitive advantages for our customers.</p>
+                </div>
+
+                <div class="infrastructure-grid">
+                    <div class="infrastructure-card">
+                        <h4>🏢 Multi-Tenant Architecture</h4>
+                        <p>Complete tenant isolation with custom domains, branding, and resource quotas for SaaS and enterprise deployments.</p>
+                    </div>
+                    <div class="infrastructure-card">
+                        <h4>📊 Real-Time Analytics</h4>
+                        <p>Advanced analytics engine with custom dashboards, usage metrics, and business intelligence for enterprise decision-making.</p>
+                    </div>
+                    <div class="infrastructure-card">
+                        <h4>🔄 Batch Processing</h4>
+                        <p>High-volume processing with Redis/Bull queues supporting 10,000+ receipts per job with concurrent processing and retry logic.</p>
+                    </div>
+                    <div class="infrastructure-card">
+                        <h4>📡 Webhook Integration</h4>
+                        <p>Enterprise webhook system with HMAC verification, exponential backoff, and reliable delivery for real-time notifications.</p>
+                    </div>
+                    <div class="infrastructure-card">
+                        <h4>🛡️ Compliance Automation</h4>
+                        <p>Automated SOC 2 controls, audit trail generation, and compliance reporting for streamlined certification processes.</p>
+                    </div>
+                    <div class="infrastructure-card">
+                        <h4>🌐 Custom Domains</h4>
+                        <p>White-label solutions with custom SSL certificates, domain management, and branded receipt verification portals.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" style="background: #f8f9fa;">
+            <div class="container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: #1e40af;">Enterprise Solutions</h2>
+                <p style="text-align: center; font-size: 1.25rem; color: #64748b; margin-bottom: 3rem;">Tailored for enterprise deployment and compliance requirements</p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div style="background: white; padding: 2rem; border-radius: 8px; border: 1px solid #e1e5e9;">
+                        <h3 style="color: #1e40af; margin-bottom: 1rem;">🏢 Enterprise Demo</h3>
+                        <p>Schedule a personalized demonstration of our enterprise features, compliance capabilities, and multi-tenant architecture.</p>
+                        <a href="/enterprise" class="btn btn-primary" style="margin-top: 1rem;">Request Demo</a>
+                    </div>
+                    <div style="background: white; padding: 2rem; border-radius: 8px; border: 1px solid #e1e5e9;">
+                        <h3 style="color: #1e40af; margin-bottom: 1rem;">📋 Compliance Package</h3>
+                        <p>SOC 2 Type II compliance framework with automated controls, audit trails, and enterprise security documentation.</p>
+                        <a href="/pricing" class="btn btn-primary" style="margin-top: 1rem;">View Pricing</a>
+                    </div>
+                    <div style="background: white; padding: 2rem; border-radius: 8px; border: 1px solid #e1e5e9;">
+                        <h3 style="color: #1e40af; margin-bottom: 1rem;">✅ Try the Platform</h3>
+                        <p>Test our cryptographic receipt validation and explore the enterprise feature set with sample data.</p>
+                        <a href="/verify" class="btn btn-primary" style="margin-top: 1rem;">Receipt Validator</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem;">Standard</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/openapi">Technical Specification</a>
+                        <a href="/test-vectors">Test Vectors</a>
+                        <a href="/trust">Governance</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem;">Infrastructure</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/status">System Status</a>
+                        <a href="/usage">Usage Metrics</a>
+                        <a href="/.well-known/jwks.json">JWKS Endpoint</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem;">Developers</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="https://github.com/certnode/certnode" target="_blank" rel="noopener">GitHub</a>
+                        <a href="/verify">Receipt Validator</a>
+                        <a href="/openapi">API Reference</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 1rem;">Libraries</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="https://pypi.org/project/certnode/" target="_blank" rel="noopener">Python (PyPI)</a>
+                        <a href="https://www.npmjs.com/package/@certnode/sdk" target="_blank" rel="noopener">Node.js (npm)</a>
+                        <a href="https://crates.io/crates/certnode" target="_blank" rel="noopener">Rust (crates.io)</a>
+                        <a href="https://pkg.go.dev/github.com/certnode/certnode/sdk/go" target="_blank" rel="noopener">Go (pkg.go.dev)</a>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding-top: 2rem; border-top: 1px solid #374151;">
+                <p style="margin: 0; color: #94a3b8;">© 2025 CertNode. Enterprise cryptographic receipt platform. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,289 @@
+# Default values for CertNode Helm chart
+# This is a YAML-formatted file.
+
+# Global configuration
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  storageClass: ""
+
+# Application configuration
+app:
+  name: certnode
+  version: "2.0.0"
+
+# Image configuration
+image:
+  registry: docker.io
+  repository: certnode/api
+  tag: "latest"
+  pullPolicy: Always
+  pullSecrets: []
+
+# Deployment configuration
+replicaCount: 3
+
+# Rolling update strategy
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+  annotations: {}
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: api.certnode.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: certnode-api-tls
+      hosts:
+        - api.certnode.example.com
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+# Autoscaling configuration
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# Pod Disruption Budget
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2
+
+# Security context
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+  fsGroup: 1001
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1001
+
+# Environment variables
+env:
+  NODE_ENV: production
+  PORT: "3000"
+  LOG_LEVEL: info
+  METRICS_ENABLED: "true"
+
+# Secret environment variables
+secretEnv:
+  # These should be provided via external secret management
+  POSTGRES_PASSWORD: ""
+  REDIS_PASSWORD: ""
+
+# Health checks
+healthChecks:
+  liveness:
+    enabled: true
+    path: /health
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readiness:
+    enabled: true
+    path: /health
+    initialDelaySeconds: 15
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+  startup:
+    enabled: true
+    path: /health
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 30
+
+# Persistence
+persistence:
+  enabled: true
+  storageClass: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+  annotations: {}
+
+# Network policies
+networkPolicy:
+  enabled: true
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+        - namespaceSelector:
+            matchLabels:
+              name: monitoring
+      ports:
+        - protocol: TCP
+          port: 3000
+
+# Pod annotations
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "3000"
+  prometheus.io/path: "/metrics"
+
+# Node selector
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - certnode
+          topologyKey: kubernetes.io/hostname
+
+# PostgreSQL configuration (Bitnami chart)
+postgresql:
+  enabled: true
+  auth:
+    postgresPassword: "postgres"
+    username: "certnode"
+    password: "certnode"
+    database: "certnode"
+  primary:
+    persistence:
+      enabled: true
+      size: 8Gi
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+# Redis configuration (Bitnami chart)
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: "redis"
+  master:
+    persistence:
+      enabled: true
+      size: 8Gi
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+# Monitoring configuration
+monitoring:
+  # Prometheus
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      interval: 30s
+      scrapeTimeout: 10s
+      labels: {}
+      annotations: {}
+    prometheusRule:
+      enabled: true
+      labels: {}
+      rules:
+        - alert: CertNodeHighErrorRate
+          expr: rate(certnode_requests_total{status!~"2.."}[5m]) > 0.1
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High error rate detected"
+            description: "CertNode API error rate is above 10% for 5 minutes"
+        - alert: CertNodeHighLatency
+          expr: histogram_quantile(0.95, rate(certnode_request_duration_seconds_bucket[5m])) > 0.5
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High latency detected"
+            description: "95th percentile latency is above 500ms for 5 minutes"
+
+  # Grafana
+  grafana:
+    enabled: true
+    dashboards:
+      enabled: true
+      annotations: {}
+      labels: {}
+
+# Service account
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# RBAC
+rbac:
+  create: true
+
+# External secrets (for production)
+externalSecrets:
+  enabled: false
+  secretStore:
+    name: ""
+    kind: SecretStore
+
+# Backup configuration
+backup:
+  enabled: false
+  schedule: "0 2 * * *"
+  retention: "30d"
+  storage:
+    type: s3
+    s3:
+      bucket: ""
+      region: ""
+      accessKey: ""
+      secretKey: ""
+
+# Development settings
+development:
+  enabled: false
+  debug: false
+  mock:
+    enabled: false

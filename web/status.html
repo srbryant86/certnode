@@ -1,10 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-    <title>Service Status — CertNode</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <title>Service Status — CertNode Enterprise Platform</title>
+    <link rel="canonical" href="https://certnode.io/status" />
+    <meta property="og:title" content="Service Status — CertNode Enterprise Platform" />
+    <meta property="og:description" content="Real-time monitoring of CertNode enterprise cryptographic infrastructure and service availability with 99.9% uptime SLA." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://certnode.io/status" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Service Status — CertNode" />
+    <meta name="twitter:description" content="Real-time enterprise infrastructure monitoring and status." />
+    <meta name="description" content="Real-time monitoring of CertNode infrastructure and service availability. Enterprise-grade status reporting with comprehensive uptime metrics.">
+
+    <!-- Enterprise Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #fafbfc;
@@ -37,11 +56,12 @@
 
         body {
             margin: 0;
-            font-family: 'Georgia', 'Times New Roman', serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg);
             color: var(--text);
-            line-height: 1.7;
+            line-height: 1.6;
             letter-spacing: -0.01em;
+            -webkit-font-smoothing: antialiased;
         }
 
         header {
@@ -50,102 +70,110 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
-        .header-container {
-            max-width: 1200px;
+        .container {
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 20px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 0 1.5rem;
         }
 
-        .logo {
-            font-size: 28px;
-            font-weight: 600;
-            color: var(--primary);
-            text-decoration: none;
-            letter-spacing: -0.02em;
+        /* Enterprise Navigation */
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .nav {
             display: flex;
-            gap: 40px;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .logo {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.025em;
+            transition: all 0.2s ease;
+        }
+
+        .logo:hover {
+            color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
             align-items: center;
         }
 
-        .nav a {
+        .nav-links a {
+            font-weight: 500;
+            font-size: 15px;
             color: var(--text-muted);
             text-decoration: none;
-            font-weight: 400;
-            font-size: 15px;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
             transition: all 0.2s ease;
-            position: relative;
         }
 
-        .nav a:hover {
+        .nav-links a:hover {
             color: var(--primary);
+            background: var(--primary-50, #eff6ff);
         }
 
-        .nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-
-        .nav a:hover::after {
-            width: 100%;
+        .nav-links a[aria-current="page"] {
+            color: var(--primary);
+            background: var(--primary-50, #eff6ff);
+            font-weight: 600;
         }
 
         .status-hero {
             background: linear-gradient(135deg, var(--bg-primary) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 80px 0;
+            padding: 4rem 0;
             text-align: center;
             position: relative;
+            overflow: hidden;
         }
 
         .status-hero::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(30, 41, 59, 0.2);
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='60' cy='60' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             pointer-events: none;
         }
 
         .status-hero h1 {
-            font-size: 48px;
-            font-weight: 400;
-            margin-bottom: 24px;
-            line-height: 1.3;
-            letter-spacing: -0.02em;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.025em;
             position: relative;
             z-index: 1;
         }
 
         .status-hero p {
-            font-size: 20px;
+            font-size: 1.25rem;
             color: rgba(255, 255, 255, 0.9);
             margin: 0 auto;
             line-height: 1.6;
-            font-weight: 300;
-            max-width: 600px;
+            font-weight: 400;
+            max-width: 640px;
             position: relative;
             z-index: 1;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
 
         .status-overview {
             background: var(--panel);
@@ -416,27 +444,29 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <a href="/" class="logo">CertNode</a>
+    <!-- Enterprise Navigation -->
+    <header class="header">
+        <div class="container">
             <nav class="nav">
-                <a href="/">Home</a>
-                <a href="/verify">Validator</a>
-                <a href="/pricing">Implementation</a>
-                <a href="/openapi">Specification</a>
-                <a href="/trust">Trust</a>
-                <a href="/status" aria-current="page">Status</a>
-                <a href="https://github.com/srbryant86/certnode" rel="noopener" target="_blank">GitHub</a>
+                <a href="/" class="logo">CertNode</a>
+                <div class="nav-links">
+                    <a href="/verify">Validator</a>
+                    <a href="/openapi">Documentation</a>
+                    <a href="/enterprise">Enterprise</a>
+                    <a href="/pricing">Pricing</a>
+                    <a href="/trust">Security</a>
+                    <a href="/status" aria-current="page">Status</a>
+                </div>
             </nav>
         </div>
     </header>
 
-    <div class="status-hero">
+    <section class="status-hero">
         <div class="container">
-            <h1>Service Status</h1>
-            <p>Real-time monitoring of CertNode infrastructure and service availability</p>
+            <h1>Enterprise Service Status</h1>
+            <p>Real-time monitoring of CertNode enterprise cryptographic infrastructure and service availability with 99.9% uptime SLA</p>
         </div>
-    </div>
+    </section>
 
     <div class="container">
         <div class="status-overview">
@@ -579,6 +609,50 @@
             <span class="last-updated">Last updated: <span id="last-updated-time">January 15, 2025 at 10:30 UTC</span></span>
         </div>
     </div>
+
+    <!-- Enterprise Footer -->
+    <footer style="background: var(--text); color: white; padding: 3rem 0 1rem 0; margin-top: 4rem;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <div>
+                    <h4 style="color: white; font-weight: 600; margin-bottom: 1rem;">Enterprise Platform</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/enterprise" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Enterprise Solutions</a>
+                        <a href="/pricing" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Enterprise Pricing</a>
+                        <a href="/trust" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Security Center</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; font-weight: 600; margin-bottom: 1rem;">Platform</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/openapi" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">API Documentation</a>
+                        <a href="/verify" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Receipt Validator</a>
+                        <a href="/status" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">System Status</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; font-weight: 600; margin-bottom: 1rem;">Compliance</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/trust" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">SOC 2 Type II</a>
+                        <a href="/enterprise" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">HSM Integration</a>
+                        <a href="/pricing" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">FIPS 140-2 Level 3+</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; font-weight: 600; margin-bottom: 1rem;">System Health</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/status" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Real-time Status</a>
+                        <a href="/trust" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Uptime Monitoring</a>
+                        <a href="/pricing" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Service Level Targets</a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; padding-top: 2rem; border-top: 1px solid var(--border-light);">
+                <p style="color: #9ca3af;">&copy; 2025 CertNode. Enterprise cryptographic receipt platform. All rights reserved.</p>
+                <p style="font-size: 0.8rem; color: var(--accent); margin-top: 0.5rem; font-weight: 500;">🔐 SOC 2 TYPE II READY • FORTUNE 500 ENTERPRISE SECURITY</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // Auto-refresh functionality

@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CertNode Code Playground - Interactive Examples</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/material-darker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/scroll/simplescrollbars.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo::before {
+            content: '🔐';
+            margin-right: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .example-list {
+            list-style: none;
+        }
+
+        .example-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .example-btn {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .example-btn:hover {
+            background: #f0f4ff;
+            color: #667eea;
+        }
+
+        .example-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .playground {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .playground-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .playground-title {
+            font-size: 1.5rem;
+            color: #667eea;
+            margin: 0;
+        }
+
+        .playground-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .editor-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            height: 100%;
+            min-height: 400px;
+        }
+
+        .editor-panel {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e0e7ff;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .editor-header {
+            background: #f8fafc;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e0e7ff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        .editor-content {
+            flex: 1;
+            position: relative;
+        }
+
+        .CodeMirror {
+            height: 100% !important;
+            font-family: 'Fira Code', 'Monaco', 'Consolas', monospace !important;
+            font-size: 14px !important;
+        }
+
+        .output-panel {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+            font-size: 14px;
+            padding: 1rem;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .output-success {
+            color: #10b981;
+        }
+
+        .output-error {
+            color: #ef4444;
+        }
+
+        .output-info {
+            color: #3b82f6;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0e7ff;
+        }
+
+        .status {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .status.running {
+            color: #f59e0b;
+        }
+
+        .status.success {
+            color: #10b981;
+        }
+
+        .status.error {
+            color: #ef4444;
+        }
+
+        .examples-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e0e7ff;
+        }
+
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #6b7280;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-btn:hover {
+            color: #667eea;
+        }
+
+        .description {
+            background: #f0f4ff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .description p {
+            margin: 0;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .sidebar {
+                order: 2;
+            }
+
+            .playground {
+                order: 1;
+            }
+
+            .editor-container {
+                grid-template-columns: 1fr;
+                min-height: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="../docs/index.html" class="logo">CertNode Playground</a>
+            <nav class="nav-links">
+                <a href="../docs/index.html" class="nav-link">📚 Docs</a>
+                <a href="playground.html" class="nav-link">🔬 Playground</a>
+                <a href="../templates/index.html" class="nav-link">🎨 Templates</a>
+                <a href="https://github.com/certnode/certnode" class="nav-link">📦 GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h3>🔬 Interactive Examples</h3>
+            <ul class="example-list">
+                <li class="example-item">
+                    <button class="example-btn active" data-example="basic-verification">
+                        Basic Receipt Verification
+                    </button>
+                </li>
+                <li class="example-item">
+                    <button class="example-btn" data-example="jwks-fetching">
+                        JWKS Fetching & Caching
+                    </button>
+                </li>
+                <li class="example-item">
+                    <button class="example-btn" data-example="error-handling">
+                        Error Handling & Retry Logic
+                    </button>
+                </li>
+                <li class="example-item">
+                    <button class="example-btn" data-example="batch-verification">
+                        Batch Verification
+                    </button>
+                </li>
+                <li class="example-item">
+                    <button class="example-btn" data-example="circuit-breaker">
+                        Circuit Breaker Pattern
+                    </button>
+                </li>
+                <li class="example-item">
+                    <button class="example-btn" data-example="performance-monitoring">
+                        Performance Monitoring
+                    </button>
+                </li>
+                <li class="example-item">
+                    <button class="example-btn" data-example="custom-validation">
+                        Custom Validation Rules
+                    </button>
+                </li>
+                <li class="example-item">
+                    <button class="example-btn" data-example="api-integration">
+                        API Integration Example
+                    </button>
+                </li>
+            </ul>
+
+            <h3>⚙️ SDK Features</h3>
+            <ul class="example-list">
+                <li class="example-item">
+                    <button class="example-btn" data-example="typescript-usage">
+                        TypeScript Integration
+                    </button>
+                </li>
+                <li class="example-item">
+                    <button class="example-btn" data-example="enhanced-jwks">
+                        Enhanced JWKS Manager
+                    </button>
+                </li>
+                <li class="example-item">
+                    <button class="example-btn" data-example="sdk-configuration">
+                        SDK Configuration Options
+                    </button>
+                </li>
+            </ul>
+
+            <h3>🌐 Real-World Examples</h3>
+            <ul class="example-list">
+                <li class="example-item">
+                    <button class="example-btn" data-example="express-middleware">
+                        Express.js Middleware
+                    </button>
+                </li>
+                <li class="example-item">
+                    <button class="example-btn" data-example="react-component">
+                        React Component
+                    </button>
+                </li>
+                <li class="example-item">
+                    <button class="example-btn" data-example="cloudflare-worker">
+                        Cloudflare Worker
+                    </button>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="playground">
+            <div class="playground-header">
+                <h1 class="playground-title" id="example-title">Basic Receipt Verification</h1>
+                <div class="playground-actions">
+                    <button class="btn btn-primary" id="run-btn">
+                        ▶️ Run Code
+                    </button>
+                    <button class="btn btn-secondary" id="reset-btn">
+                        🔄 Reset
+                    </button>
+                    <button class="btn btn-secondary" id="share-btn">
+                        📤 Share
+                    </button>
+                </div>
+            </div>
+
+            <div class="description" id="example-description">
+                <p>Learn how to verify tamper-evident digital receipts using the CertNode SDK. This example demonstrates basic receipt verification with ES256 signatures.</p>
+            </div>
+
+            <div class="editor-container">
+                <div class="editor-panel">
+                    <div class="editor-header">
+                        📝 JavaScript Code
+                        <span style="float: right; font-size: 0.8rem; color: #6b7280;">
+                            Press Ctrl+Enter to run
+                        </span>
+                    </div>
+                    <div class="editor-content">
+                        <textarea id="code-editor"></textarea>
+                    </div>
+                </div>
+
+                <div class="editor-panel">
+                    <div class="editor-header">📊 Output Console</div>
+                    <div class="editor-content">
+                        <div class="output-panel" id="output"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="status" id="status">Ready to run</div>
+                <div>
+                    <span style="font-size: 0.8rem; color: #6b7280;">
+                        Examples run in your browser using the CertNode WebCrypto SDK
+                    </span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- CodeMirror -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/scroll/simplescrollbars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/selection/active-line.min.js"></script>
+
+    <script type="module">
+        // Import CertNode SDK
+        import { verifyReceipt, JWKSManager } from '../sdk/web/index.js';
+
+        // Make available globally for examples
+        window.CertNode = {
+            verifyReceipt,
+            JWKSManager
+        };
+
+        // Enhanced features (mock for web)
+        window.CertNode.EnhancedJWKSManager = class EnhancedJWKSManager extends JWKSManager {
+            constructor(options = {}) {
+                super(options);
+                this.stats = { hits: 0, misses: 0, fetchAttempts: 0 };
+            }
+
+            getStats() {
+                return this.stats;
+            }
+        };
+
+        window.CertNode.withCircuitBreaker = function(fn, name, options) {
+            // Simplified circuit breaker for demo
+            return async function(...args) {
+                try {
+                    return await fn(...args);
+                } catch (error) {
+                    console.log(`Circuit breaker "${name}" caught error:`, error.message);
+                    throw error;
+                }
+            };
+        };
+
+        console.log('🔐 CertNode SDK loaded and ready!');
+    </script>
+
+    <script>
+        // Example configurations
+        const examples = {
+            'basic-verification': {
+                title: 'Basic Receipt Verification',
+                description: 'Learn how to verify tamper-evident digital receipts using the CertNode SDK. This example demonstrates basic receipt verification with ES256 signatures.',
+                code: `// Example receipt and JWKS data
+const receipt = {
+  protected: "eyJhbGciOiJFUzI1NiIsImtpZCI6ImVzMjU2LWtleSJ9",
+  payload: {
+    document_id: "DOC-2024-001",
+    content: "Important document content",
+    timestamp: new Date().toISOString()
+  },
+  signature: "MEUCIQDKxF8cF6GGXr7j8Z_example_signature_data_here",
+  kid: "es256-key"
+};
+
+const jwks = {
+  keys: [{
+    kty: "EC",
+    crv: "P-256",
+    x: "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+    y: "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+    kid: "es256-key",
+    alg: "ES256"
+  }]
+};
+
+// Verify the receipt
+try {
+  console.log('🔍 Verifying receipt...');
+
+  const result = await CertNode.verifyReceipt({
+    receipt,
+    jwks
+  });
+
+  if (result.ok) {
+    console.log('✅ Receipt is valid!');
+    console.log('Receipt verification successful');
+  } else {
+    console.log('❌ Receipt verification failed');
+    console.log('Reason:', result.reason);
+  }
+} catch (error) {
+  console.error('🚨 Verification error:', error.message);
+}`
+            },
+
+            'jwks-fetching': {
+                title: 'JWKS Fetching & Caching',
+                description: 'Efficiently fetch and cache JWKS (JSON Web Key Set) from remote endpoints with automatic retry and caching mechanisms.',
+                code: `// Initialize JWKS manager with caching
+const jwksManager = new CertNode.JWKSManager({
+  ttlMs: 300000, // Cache for 5 minutes
+});
+
+async function demonstrateJWKSCaching() {
+  console.log('🔑 JWKS Manager Demo');
+  console.log('==================');
+
+  // Set JWKS from object (simulating fetched data)
+  const jwks = {
+    keys: [{
+      kty: "EC",
+      crv: "P-256",
+      x: "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+      y: "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+      kid: "es256-key",
+      alg: "ES256"
+    }]
+  };
+
+  // Set JWKS in cache
+  jwksManager.setFromObject(jwks);
+  console.log('✅ JWKS cached successfully');
+
+  // Get fresh JWKS from cache
+  const cachedJwks = jwksManager.getFresh();
+  if (cachedJwks) {
+    console.log('📦 Retrieved from cache:', cachedJwks.keys.length, 'keys');
+  }
+
+  // Calculate thumbprints
+  const thumbprints = jwksManager.thumbprints();
+  console.log('🔍 Key thumbprints:', thumbprints);
+
+  // Example with enhanced manager (with stats)
+  const enhancedManager = new CertNode.EnhancedJWKSManager();
+  enhancedManager.setFromObject(jwks);
+
+  const stats = enhancedManager.getStats();
+  console.log('📊 Cache statistics:', stats);
+}
+
+demonstrateJWKSCaching();`
+            },
+
+            'error-handling': {
+                title: 'Error Handling & Retry Logic',
+                description: 'Robust error handling with automatic retry mechanisms for network failures and transient errors.',
+                code: `// Simulate a function that might fail
+function unreliableFunction() {
+  const random = Math.random();
+  if (random < 0.7) {
+    throw new Error('Network timeout - simulated failure');
+  }
+  return { success: true, data: 'Operation completed' };
+}
+
+// Retry wrapper with exponential backoff
+async function withRetry(operation, maxAttempts = 3) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      console.log(\`🔄 Attempt \${attempt}/\${maxAttempts}\`);
+      const result = operation();
+      console.log('✅ Success on attempt', attempt);
+      return result;
+    } catch (error) {
+      lastError = error;
+      console.log(\`❌ Attempt \${attempt} failed: \${error.message}\`);
+
+      if (attempt < maxAttempts) {
+        const delay = Math.pow(2, attempt - 1) * 1000; // Exponential backoff
+        console.log(\`⏳ Waiting \${delay}ms before retry...\`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }
+
+  throw new Error(\`All \${maxAttempts} attempts failed. Last error: \${lastError.message}\`);
+}
+
+// Demo retry logic
+async function demonstrateRetry() {
+  console.log('🔁 Retry Logic Demo');
+  console.log('==================');
+
+  try {
+    const result = await withRetry(unreliableFunction, 5);
+    console.log('🎉 Final result:', result);
+  } catch (error) {
+    console.error('🚨 All retries exhausted:', error.message);
+  }
+}
+
+demonstrateRetry();`
+            },
+
+            'circuit-breaker': {
+                title: 'Circuit Breaker Pattern',
+                description: 'Implement circuit breaker pattern to prevent cascading failures and provide graceful degradation during outages.',
+                code: `// Circuit breaker implementation
+class SimpleCircuitBreaker {
+  constructor(failureThreshold = 3, resetTimeout = 5000) {
+    this.failureThreshold = failureThreshold;
+    this.resetTimeout = resetTimeout;
+    this.failureCount = 0;
+    this.state = 'CLOSED'; // CLOSED, OPEN, HALF_OPEN
+    this.nextAttempt = 0;
+  }
+
+  async execute(operation) {
+    if (this.state === 'OPEN') {
+      if (Date.now() < this.nextAttempt) {
+        throw new Error('Circuit breaker is OPEN - failing fast');
+      }
+      this.state = 'HALF_OPEN';
+    }
+
+    try {
+      const result = await operation();
+      this.onSuccess();
+      return result;
+    } catch (error) {
+      this.onFailure();
+      throw error;
+    }
+  }
+
+  onSuccess() {
+    this.failureCount = 0;
+    this.state = 'CLOSED';
+    console.log('✅ Circuit breaker: SUCCESS - state is CLOSED');
+  }
+
+  onFailure() {
+    this.failureCount++;
+    console.log(\`❌ Circuit breaker: FAILURE \${this.failureCount}/\${this.failureThreshold}\`);
+
+    if (this.failureCount >= this.failureThreshold) {
+      this.state = 'OPEN';
+      this.nextAttempt = Date.now() + this.resetTimeout;
+      console.log('🔓 Circuit breaker: OPENED - failing fast for', this.resetTimeout, 'ms');
+    }
+  }
+
+  getState() {
+    return {
+      state: this.state,
+      failureCount: this.failureCount,
+      nextAttempt: this.nextAttempt
+    };
+  }
+}
+
+// Demo circuit breaker
+async function demonstrateCircuitBreaker() {
+  console.log('⚡ Circuit Breaker Demo');
+  console.log('======================');
+
+  const breaker = new SimpleCircuitBreaker(2, 3000);
+
+  // Simulated unreliable service
+  let callCount = 0;
+  const unreliableService = () => {
+    callCount++;
+    if (callCount <= 4) {
+      throw new Error(\`Service failure #\${callCount}\`);
+    }
+    return \`Success after \${callCount} calls\`;
+  };
+
+  // Test circuit breaker behavior
+  for (let i = 1; i <= 8; i++) {
+    try {
+      console.log(\`\\n🔥 Call #\${i}\`);
+      const result = await breaker.execute(unreliableService);
+      console.log('📤 Result:', result);
+    } catch (error) {
+      console.log('💥 Error:', error.message);
+    }
+
+    const state = breaker.getState();
+    console.log('📊 Breaker state:', state.state,
+                \`(failures: \${state.failureCount})\`);
+
+    // Small delay between calls
+    await new Promise(resolve => setTimeout(resolve, 500));
+  }
+}
+
+demonstrateCircuitBreaker();`
+            },
+
+            'batch-verification': {
+                title: 'Batch Verification',
+                description: 'Efficiently verify multiple receipts in parallel for improved performance in high-throughput scenarios.',
+                code: `// Batch verification utility
+async function verifyReceiptBatch(receipts, jwks, options = {}) {
+  const { concurrency = 5 } = options;
+  const results = [];
+
+  console.log(\`🚀 Starting batch verification of \${receipts.length} receipts\`);
+  console.log(\`⚙️  Concurrency limit: \${concurrency}\`);
+
+  // Process in chunks to limit concurrency
+  for (let i = 0; i < receipts.length; i += concurrency) {
+    const chunk = receipts.slice(i, i + concurrency);
+    console.log(\`\\n📦 Processing chunk \${Math.floor(i/concurrency) + 1}: items \${i + 1} to \${Math.min(i + concurrency, receipts.length)}\`);
+
+    const promises = chunk.map(async (receipt, index) => {
+      const actualIndex = i + index;
+      try {
+        console.log(\`  🔍 Verifying receipt #\${actualIndex + 1}\`);
+        const result = await CertNode.verifyReceipt({ receipt, jwks });
+        console.log(\`  \${result.ok ? '✅' : '❌'} Receipt #\${actualIndex + 1}: \${result.ok ? 'VALID' : 'INVALID'}\`);
+        return { index: actualIndex, ...result };
+      } catch (error) {
+        console.log(\`  💥 Receipt #\${actualIndex + 1}: ERROR - \${error.message}\`);
+        return { index: actualIndex, ok: false, reason: error.message };
+      }
+    });
+
+    const chunkResults = await Promise.allSettled(promises);
+
+    chunkResults.forEach((result, index) => {
+      if (result.status === 'fulfilled') {
+        results.push(result.value);
+      } else {
+        results.push({
+          index: i + index,
+          ok: false,
+          reason: result.reason.message
+        });
+      }
+    });
+  }
+
+  return results;
+}
+
+// Demo batch verification
+async function demonstrateBatchVerification() {
+  console.log('📊 Batch Verification Demo');
+  console.log('==========================');
+
+  // Create sample receipts
+  const baseReceipt = {
+    protected: "eyJhbGciOiJFUzI1NiIsImtpZCI6ImVzMjU2LWtleSJ9",
+    payload: { document_id: "DOC-001" },
+    signature: "MEUCIQDKxF8cF6GGXr7j8Z_example",
+    kid: "es256-key"
+  };
+
+  const receipts = Array(12).fill(null).map((_, i) => ({
+    ...baseReceipt,
+    payload: { ...baseReceipt.payload, document_id: \`DOC-\${String(i + 1).padStart(3, '0')}\` }
+  }));
+
+  const jwks = {
+    keys: [{
+      kty: "EC", crv: "P-256",
+      x: "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+      y: "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+      kid: "es256-key", alg: "ES256"
+    }]
+  };
+
+  const startTime = Date.now();
+  const results = await verifyReceiptBatch(receipts, jwks, { concurrency: 3 });
+  const endTime = Date.now();
+
+  // Summary
+  console.log(\`\\n📈 Batch Verification Summary\`);
+  console.log(\`============================\`);
+  console.log(\`Total receipts: \${receipts.length}\`);
+  console.log(\`Valid receipts: \${results.filter(r => r.ok).length}\`);
+  console.log(\`Invalid receipts: \${results.filter(r => !r.ok).length}\`);
+  console.log(\`Total time: \${endTime - startTime}ms\`);
+  console.log(\`Average time per receipt: \${((endTime - startTime) / receipts.length).toFixed(2)}ms\`);
+}
+
+demonstrateBatchVerification();`
+            },
+
+            'express-middleware': {
+                title: 'Express.js Middleware',
+                description: 'Create Express.js middleware for automatic receipt verification in your web applications.',
+                code: `// Express.js middleware for CertNode receipt verification
+function certNodeMiddleware(options = {}) {
+  const {
+    jwksUrl = 'https://api.certnode.io/.well-known/jwks.json',
+    headerName = 'x-certnode-receipt',
+    required = true
+  } = options;
+
+  // In-memory JWKS cache (in production, use Redis or similar)
+  let jwksCache = null;
+  let jwksCacheTime = 0;
+  const CACHE_TTL = 300000; // 5 minutes
+
+  async function fetchJWKS() {
+    const now = Date.now();
+    if (jwksCache && (now - jwksCacheTime) < CACHE_TTL) {
+      return jwksCache;
+    }
+
+    console.log('🔄 Fetching fresh JWKS from:', jwksUrl);
+
+    // Simulate JWKS fetch (in real implementation, use fetch/axios)
+    const jwks = {
+      keys: [{
+        kty: "EC", crv: "P-256",
+        x: "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+        y: "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+        kid: "es256-key", alg: "ES256"
+      }]
+    };
+
+    jwksCache = jwks;
+    jwksCacheTime = now;
+    return jwks;
+  }
+
+  return async (req, res, next) => {
+    const receiptData = req.headers[headerName] || req.body?.receipt;
+
+    if (!receiptData) {
+      if (required) {
+        return res.status(400).json({
+          error: 'missing_receipt',
+          message: \`Receipt required in header '\${headerName}' or body.receipt\`
+        });
+      }
+      return next(); // Skip verification if not required
+    }
+
+    try {
+      console.log(\`🔍 Verifying receipt for \${req.method} \${req.path}\`);
+
+      // Parse receipt if it's a string
+      const receipt = typeof receiptData === 'string'
+        ? JSON.parse(receiptData)
+        : receiptData;
+
+      // Get JWKS
+      const jwks = await fetchJWKS();
+
+      // Verify receipt
+      const result = await CertNode.verifyReceipt({ receipt, jwks });
+
+      if (!result.ok) {
+        console.log(\`❌ Receipt verification failed: \${result.reason}\`);
+        return res.status(401).json({
+          error: 'invalid_receipt',
+          message: 'Receipt verification failed',
+          reason: result.reason
+        });
+      }
+
+      console.log('✅ Receipt verified successfully');
+
+      // Add verified receipt info to request
+      req.certnode = {
+        verified: true,
+        receipt: receipt,
+        kid: receipt.kid
+      };
+
+      next();
+
+    } catch (error) {
+      console.error('💥 Receipt verification error:', error.message);
+      return res.status(500).json({
+        error: 'verification_error',
+        message: 'Failed to verify receipt'
+      });
+    }
+  };
+}
+
+// Example usage demonstration
+function demonstrateMiddleware() {
+  console.log('🌐 Express.js Middleware Demo');
+  console.log('=============================');
+
+  // Simulate Express app setup
+  console.log('📦 Setting up Express app with CertNode middleware...');
+
+  const middleware = certNodeMiddleware({
+    required: true,
+    headerName: 'x-certnode-receipt'
+  });
+
+  console.log('✅ Middleware created with options:');
+  console.log('   - Required: true');
+  console.log('   - Header: x-certnode-receipt');
+
+  // Simulate request processing
+  console.log('\\n🔄 Simulating incoming request...');
+
+  const mockRequest = {
+    method: 'POST',
+    path: '/api/documents',
+    headers: {
+      'x-certnode-receipt': JSON.stringify({
+        protected: "eyJhbGciOiJFUzI1NiIsImtpZCI6ImVzMjU2LWtleSJ9",
+        payload: { document_id: "DOC-001", action: "create" },
+        signature: "MEUCIQDKxF8cF6GGXr7j8Z_example",
+        kid: "es256-key"
+      })
+    }
+  };
+
+  const mockResponse = {
+    status: (code) => ({
+      json: (data) => console.log(\`📤 Response \${code}:\`, JSON.stringify(data, null, 2))
+    })
+  };
+
+  const mockNext = () => {
+    console.log('✅ Middleware passed, proceeding to route handler');
+    console.log('📋 Request now includes req.certnode with verification details');
+  };
+
+  // Process the request
+  middleware(mockRequest, mockResponse, mockNext);
+}
+
+demonstrateMiddleware();`
+            },
+
+            'react-component': {
+                title: 'React Component',
+                description: 'Build React components that handle receipt verification with user-friendly interfaces.',
+                code: `// React component for receipt verification
+const ReceiptVerifier = () => {
+  const [receipt, setReceipt] = React.useState('');
+  const [jwks, setJwks] = React.useState('');
+  const [result, setResult] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(null);
+
+  // Example data
+  const exampleReceipt = {
+    protected: "eyJhbGciOiJFUzI1NiIsImtpZCI6ImVzMjU2LWtleSJ9",
+    payload: {
+      document_id: "DOC-2024-001",
+      content: "Important document content",
+      timestamp: new Date().toISOString()
+    },
+    signature: "MEUCIQDKxF8cF6GGXr7j8Z_example_signature",
+    kid: "es256-key"
+  };
+
+  const exampleJwks = {
+    keys: [{
+      kty: "EC", crv: "P-256",
+      x: "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+      y: "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0",
+      kid: "es256-key", alg: "ES256"
+    }]
+  };
+
+  const loadExample = () => {
+    setReceipt(JSON.stringify(exampleReceipt, null, 2));
+    setJwks(JSON.stringify(exampleJwks, null, 2));
+    setResult(null);
+    setError(null);
+  };
+
+  const verifyReceipt = async () => {
+    if (!receipt.trim() || !jwks.trim()) {
+      setError('Please provide both receipt and JWKS data');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      const receiptObj = JSON.parse(receipt);
+      const jwksObj = JSON.parse(jwks);
+
+      console.log('🔍 Starting verification...');
+      const verificationResult = await CertNode.verifyReceipt({
+        receipt: receiptObj,
+        jwks: jwksObj
+      });
+
+      setResult(verificationResult);
+      console.log('✅ Verification complete:', verificationResult);
+
+    } catch (err) {
+      const errorMsg = err.message || 'Verification failed';
+      setError(errorMsg);
+      console.error('❌ Verification error:', errorMsg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    receipt,
+    setReceipt,
+    jwks,
+    setJwks,
+    result,
+    loading,
+    error,
+    loadExample,
+    verifyReceipt
+  };
+};
+
+// Demo the React component logic
+function demonstrateReactComponent() {
+  console.log('⚛️  React Component Demo');
+  console.log('========================');
+
+  // Create component instance
+  const component = ReceiptVerifier();
+
+  console.log('📦 Component initialized');
+  console.log('📋 Loading example data...');
+
+  // Load example data
+  component.loadExample();
+
+  console.log('✅ Example data loaded');
+  console.log('🔄 Triggering verification...');
+
+  // Simulate verification
+  component.verifyReceipt().then(() => {
+    console.log('\\n📊 Component State After Verification:');
+    console.log('=======================================');
+    console.log('Loading:', component.loading);
+    console.log('Error:', component.error);
+    console.log('Result:', component.result);
+
+    if (component.result) {
+      console.log('\\n🎯 Verification Result:');
+      console.log('Valid:', component.result.ok ? '✅ YES' : '❌ NO');
+      if (!component.result.ok) {
+        console.log('Reason:', component.result.reason);
+      }
+    }
+  });
+
+  // Component usage example
+  console.log('\\n📝 React JSX Usage Example:');
+  console.log('============================');
+  console.log(\`
+function App() {
+  const verifier = ReceiptVerifier();
+
+  return (
+    <div>
+      <h2>CertNode Receipt Verifier</h2>
+
+      <button onClick={verifier.loadExample}>
+        Load Example
+      </button>
+
+      <textarea
+        value={verifier.receipt}
+        onChange={(e) => verifier.setReceipt(e.target.value)}
+        placeholder="Receipt JSON..."
+      />
+
+      <textarea
+        value={verifier.jwks}
+        onChange={(e) => verifier.setJwks(e.target.value)}
+        placeholder="JWKS JSON..."
+      />
+
+      <button
+        onClick={verifier.verifyReceipt}
+        disabled={verifier.loading}
+      >
+        {verifier.loading ? 'Verifying...' : 'Verify Receipt'}
+      </button>
+
+      {verifier.result && (
+        <div className={verifier.result.ok ? 'success' : 'error'}>
+          {verifier.result.ok ? '✅ Valid' : '❌ Invalid'}
+          {!verifier.result.ok && verifier.result.reason}
+        </div>
+      )}
+    </div>
+  );
+}
+  \`);
+}
+
+demonstrateReactComponent();`
+            }
+        };
+
+        // Initialize CodeMirror
+        const editor = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
+            mode: 'javascript',
+            theme: 'material-darker',
+            lineNumbers: true,
+            autoCloseBrackets: true,
+            matchBrackets: true,
+            indentUnit: 2,
+            tabSize: 2,
+            indentWithTabs: false,
+            styleActiveLine: true,
+            scrollbarStyle: 'simple',
+            extraKeys: {
+                'Ctrl-Enter': runCode,
+                'Cmd-Enter': runCode
+            }
+        });
+
+        // UI Elements
+        const runBtn = document.getElementById('run-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const shareBtn = document.getElementById('share-btn');
+        const output = document.getElementById('output');
+        const status = document.getElementById('status');
+        const exampleTitle = document.getElementById('example-title');
+        const exampleDescription = document.getElementById('example-description');
+
+        // Current example
+        let currentExample = 'basic-verification';
+
+        // Console override for output capture
+        const originalConsole = { ...console };
+        function setupConsole() {
+            ['log', 'error', 'warn', 'info'].forEach(method => {
+                console[method] = (...args) => {
+                    const message = args.map(arg =>
+                        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                    ).join(' ');
+
+                    appendOutput(message, method);
+                    originalConsole[method](...args);
+                };
+            });
+        }
+
+        function appendOutput(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'output-error' :
+                            type === 'warn' ? 'output-info' : 'output-success';
+
+            output.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function clearOutput() {
+            output.innerHTML = '';
+        }
+
+        function setStatus(message, type = '') {
+            status.textContent = message;
+            status.className = `status ${type}`;
+        }
+
+        async function runCode() {
+            clearOutput();
+            setStatus('Running...', 'running');
+
+            try {
+                const code = editor.getValue();
+
+                // Create an async function wrapper
+                const asyncFunction = new Function(`
+                    return (async () => {
+                        ${code}
+                    })();
+                `);
+
+                await asyncFunction();
+                setStatus('Execution completed', 'success');
+
+            } catch (error) {
+                console.error('Execution error:', error.message);
+                setStatus('Execution failed', 'error');
+            }
+        }
+
+        function resetCode() {
+            loadExample(currentExample);
+            clearOutput();
+            setStatus('Ready to run');
+        }
+
+        function shareCode() {
+            const code = editor.getValue();
+            const shareData = {
+                example: currentExample,
+                code: code
+            };
+
+            // Create a simple share URL (in real implementation, save to backend)
+            const encoded = btoa(JSON.stringify(shareData));
+            const shareUrl = `${window.location.origin}${window.location.pathname}?share=${encoded}`;
+
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                setStatus('Share URL copied to clipboard!', 'success');
+                setTimeout(() => setStatus('Ready to run'), 3000);
+            }).catch(() => {
+                prompt('Share URL:', shareUrl);
+            });
+        }
+
+        function loadExample(exampleId) {
+            const example = examples[exampleId];
+            if (!example) return;
+
+            currentExample = exampleId;
+            exampleTitle.textContent = example.title;
+            exampleDescription.querySelector('p').textContent = example.description;
+            editor.setValue(example.code);
+
+            // Update active button
+            document.querySelectorAll('.example-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-example="${exampleId}"]`).classList.add('active');
+        }
+
+        // Event listeners
+        runBtn.addEventListener('click', runCode);
+        resetBtn.addEventListener('click', resetCode);
+        shareBtn.addEventListener('click', shareCode);
+
+        // Example navigation
+        document.querySelectorAll('.example-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const exampleId = e.target.dataset.example;
+                loadExample(exampleId);
+            });
+        });
+
+        // Check for shared code in URL
+        function checkForSharedCode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const shareData = urlParams.get('share');
+
+            if (shareData) {
+                try {
+                    const decoded = JSON.parse(atob(shareData));
+                    currentExample = decoded.example;
+                    editor.setValue(decoded.code);
+                    setStatus('Loaded shared code', 'success');
+                } catch (error) {
+                    console.error('Failed to load shared code:', error);
+                }
+            }
+        }
+
+        // Initialize
+        setupConsole();
+        loadExample(currentExample);
+        checkForSharedCode();
+        setStatus('Ready to run');
+
+        console.log('🚀 CertNode Code Playground initialized!');
+        console.log('💡 Try running the examples or write your own code');
+        console.log('⌨️  Press Ctrl+Enter to execute code');
+    </script>
+</body>
+</html>

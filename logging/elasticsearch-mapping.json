@@ -1,0 +1,135 @@
+{
+  "template": "certnode-logs-*",
+  "mappings": {
+    "properties": {
+      "@timestamp": {
+        "type": "date"
+      },
+      "timestamp": {
+        "type": "date"
+      },
+      "level": {
+        "type": "keyword"
+      },
+      "message": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "service": {
+        "type": "keyword"
+      },
+      "environment": {
+        "type": "keyword"
+      },
+      "pid": {
+        "type": "integer"
+      },
+      "hostname": {
+        "type": "keyword"
+      },
+      "correlation_id": {
+        "type": "keyword"
+      },
+      "event_type": {
+        "type": "keyword"
+      },
+      "http": {
+        "properties": {
+          "method": {
+            "type": "keyword"
+          },
+          "url": {
+            "type": "keyword"
+          },
+          "user_agent": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "client_ip": {
+            "type": "ip"
+          },
+          "request_id": {
+            "type": "keyword"
+          },
+          "status_code": {
+            "type": "integer"
+          },
+          "response_time": {
+            "type": "float"
+          }
+        }
+      },
+      "error": {
+        "properties": {
+          "type": {
+            "type": "keyword"
+          },
+          "message": {
+            "type": "text"
+          },
+          "stack": {
+            "type": "text"
+          },
+          "code": {
+            "type": "keyword"
+          }
+        }
+      },
+      "performance": {
+        "properties": {
+          "duration": {
+            "type": "float"
+          },
+          "memory_usage": {
+            "type": "long"
+          },
+          "cpu_usage": {
+            "type": "object"
+          }
+        }
+      },
+      "security": {
+        "properties": {
+          "threat_level": {
+            "type": "keyword"
+          },
+          "action": {
+            "type": "keyword"
+          },
+          "blocked": {
+            "type": "boolean"
+          }
+        }
+      },
+      "database": {
+        "properties": {
+          "query": {
+            "type": "text"
+          },
+          "query_duration": {
+            "type": "float"
+          }
+        }
+      },
+      "user_id": {
+        "type": "keyword"
+      },
+      "action": {
+        "type": "keyword"
+      },
+      "success": {
+        "type": "boolean"
+      }
+    }
+  }
+}

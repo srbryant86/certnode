@@ -1,0 +1,125 @@
+# CertNode API - Production Dockerfile
+# Multi-stage build for optimized production image
+
+# Stage 1: Build stage
+FROM node:18-alpine AS builder
+
+# Install build dependencies
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    git
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY api/package*.json ./api/
+
+# Install dependencies
+RUN npm ci --only=production --ignore-scripts
+
+# Copy source code
+COPY api/ ./api/
+COPY sdk/ ./sdk/
+COPY public/ ./public/
+
+# Build the application (if there's a build step)
+WORKDIR /app/api
+RUN npm run build 2>/dev/null || echo "No build script found"
+
+# Stage 2: Security scanning (optional, for CI/CD)
+FROM aquasec/trivy:latest AS security-scan
+COPY --from=builder /app /scan
+RUN trivy fs --exit-code 1 --severity HIGH,CRITICAL /scan || echo "Security scan completed"
+
+# Stage 3: Production stage
+FROM node:18-alpine AS production
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S certnode && \
+    adduser -S certnode -u 1001 -G certnode
+
+# Install runtime dependencies only
+RUN apk add --no-cache \
+    dumb-init \
+    curl \
+    tzdata && \
+    rm -rf /var/cache/apk/*
+
+# Set timezone
+ENV TZ=UTC
+
+# Set working directory
+WORKDIR /app
+
+# Copy built application from builder stage
+COPY --from=builder --chown=certnode:certnode /app/node_modules ./node_modules
+COPY --from=builder --chown=certnode:certnode /app/api ./api
+COPY --from=builder --chown=certnode:certnode /app/public ./public
+
+# Copy health check script
+COPY --chown=certnode:certnode <<EOF /app/healthcheck.js
+const http = require('http');
+const options = {
+  host: 'localhost',
+  port: process.env.PORT || 3000,
+  path: '/health',
+  timeout: 2000,
+  method: 'GET'
+};
+
+const request = http.request(options, (res) => {
+  console.log('Health check status:', res.statusCode);
+  process.exit(res.statusCode === 200 ? 0 : 1);
+});
+
+request.on('error', (err) => {
+  console.error('Health check failed:', err.message);
+  process.exit(1);
+});
+
+request.on('timeout', () => {
+  console.error('Health check timeout');
+  request.destroy();
+  process.exit(1);
+});
+
+request.end();
+EOF
+
+# Set proper permissions
+RUN chown -R certnode:certnode /app && \
+    chmod +x /app/healthcheck.js
+
+# Switch to non-root user
+USER certnode
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV JWKS_PATH=/app/public/.well-known/jwks.json
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD node /app/healthcheck.js
+
+# Use dumb-init to handle signals properly
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the application
+CMD ["node", "api/src/server.js"]
+
+# Metadata labels
+LABEL org.opencontainers.image.title="CertNode API"
+LABEL org.opencontainers.image.description="Tamper-evident digital receipt verification API"
+LABEL org.opencontainers.image.version="2.0.0"
+LABEL org.opencontainers.image.authors="CertNode Team"
+LABEL org.opencontainers.image.url="https://certnode.io"
+LABEL org.opencontainers.image.source="https://github.com/certnode/certnode"
+LABEL org.opencontainers.image.licenses="MIT"

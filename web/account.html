@@ -5,30 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="/web/assets/site.css" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'none'; frame-ancestors 'self'" />
-  <title>Research Platform Dashboard � CertNode</title>
+  <title>Account Dashboard — CertNode Enterprise Platform</title>
+  <link rel="canonical" href="https://certnode.io/account" />
+  <meta property="og:title" content="Account Dashboard — CertNode Enterprise Platform" />
+  <meta property="og:description" content="Enterprise account dashboard for cryptographic receipt infrastructure. Manage subscriptions, API keys, and usage analytics." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://certnode.io/account" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Account Dashboard — CertNode" />
+  <meta name="twitter:description" content="Enterprise account dashboard for cryptographic receipts." />
+  <meta name="description" content="Enterprise account dashboard for cryptographic receipt infrastructure with subscription management, API keys, and usage analytics.">
+
+  <!-- Enterprise Design System -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
+    /* CertNode Enterprise Design System */
     :root {
-      --bg: #fafbfc;
-      --bg-primary: #475569;
+      --primary-50: #eff6ff;
+      --primary-100: #dbeafe;
+      --primary-500: #3b82f6;
+      --primary-600: #2563eb;
+      --primary-700: #1d4ed8;
+      --primary-800: #1e40af;
+      --primary-900: #1e3a8a;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --success-500: #10b981;
+      --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+      /* Legacy variable mapping */
+      --bg: var(--gray-50);
+      --bg-primary: var(--primary-600);
       --panel: #ffffff;
-      --border: #e1e5e9;
-      --border-light: #f1f5f9;
-      --text: #1e293b;
-      --text-muted: #64748b;
+      --border: var(--gray-200);
+      --border-light: var(--gray-100);
+      --text: var(--gray-800);
+      --text-muted: var(--gray-600);
       --text-light: #94a3b8;
-      --primary: #475569;
-      --primary-dark: #334155;
-      --accent: #6366f1;
+      --primary: var(--primary-600);
+      --primary-dark: var(--primary-700);
+      --accent: var(--primary-500);
     }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Georgia', 'Times New Roman', serif;
+      font-family: var(--font-inter);
       margin: 0;
       padding: 0;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.7;
+      line-height: 1.6;
       letter-spacing: -0.01em;
+      -webkit-font-smoothing: antialiased;
     }
 
     header {
@@ -333,15 +371,16 @@
   </style>
 </head>
 <body>
-  <header>
+  <!-- Enterprise Navigation -->
+  <header class="header" style="background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
     <div class="header-container">
-      <a href="/" class="logo">CertNode</a>
+      <a href="/" class="logo" style="font-family: var(--font-inter); font-size: 1.75rem; font-weight: 700; color: var(--primary); text-decoration: none; letter-spacing: -0.025em; transition: all 0.2s ease;">CertNode</a>
       <nav class="nav">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/verify" class="nav-link">Verify</a>
+        <a href="/verify" class="nav-link">Validator</a>
+        <a href="/openapi" class="nav-link">Documentation</a>
+        <a href="/enterprise" class="nav-link">Enterprise</a>
         <a href="/pricing" class="nav-link">Pricing</a>
-        <a href="/openapi" class="nav-link">API</a>
-        <a href="/trust" class="nav-link">Trust</a>
+        <a href="/trust" class="nav-link">Security</a>
         <a href="/account" aria-current="page">Dashboard</a>
       </nav>
     </div>

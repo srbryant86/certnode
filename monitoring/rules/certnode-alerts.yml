@@ -1,0 +1,277 @@
+# CertNode Alerting Rules for Prometheus
+groups:
+  - name: certnode-api
+    interval: 30s
+    rules:
+      # High error rate alert
+      - alert: CertNodeHighErrorRate
+        expr: |
+          (
+            rate(certnode_requests_total{status!~"2.."}[5m]) /
+            rate(certnode_requests_total[5m])
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: certnode-api
+          team: platform
+        annotations:
+          summary: "CertNode API high error rate"
+          description: "CertNode API error rate is {{ $value | humanizePercentage }} over the last 5 minutes"
+          runbook_url: "https://docs.certnode.io/runbooks/high-error-rate"
+
+      # Critical error rate alert
+      - alert: CertNodeCriticalErrorRate
+        expr: |
+          (
+            rate(certnode_requests_total{status!~"2.."}[5m]) /
+            rate(certnode_requests_total[5m])
+          ) > 0.10
+        for: 2m
+        labels:
+          severity: critical
+          service: certnode-api
+          team: platform
+        annotations:
+          summary: "CertNode API critical error rate"
+          description: "CertNode API error rate is {{ $value | humanizePercentage }} over the last 5 minutes"
+          runbook_url: "https://docs.certnode.io/runbooks/critical-error-rate"
+
+      # High latency alert
+      - alert: CertNodeHighLatency
+        expr: |
+          histogram_quantile(0.95,
+            rate(certnode_request_duration_seconds_bucket[5m])
+          ) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+          service: certnode-api
+          team: platform
+        annotations:
+          summary: "CertNode API high latency"
+          description: "95th percentile latency is {{ $value | humanizeDuration }} over the last 5 minutes"
+          runbook_url: "https://docs.certnode.io/runbooks/high-latency"
+
+      # Critical latency alert
+      - alert: CertNodeCriticalLatency
+        expr: |
+          histogram_quantile(0.95,
+            rate(certnode_request_duration_seconds_bucket[5m])
+          ) > 1.0
+        for: 2m
+        labels:
+          severity: critical
+          service: certnode-api
+          team: platform
+        annotations:
+          summary: "CertNode API critical latency"
+          description: "95th percentile latency is {{ $value | humanizeDuration }} over the last 5 minutes"
+          runbook_url: "https://docs.certnode.io/runbooks/critical-latency"
+
+      # Low request volume (potential issue)
+      - alert: CertNodeLowRequestVolume
+        expr: |
+          rate(certnode_requests_total[5m]) < 0.1
+        for: 10m
+        labels:
+          severity: warning
+          service: certnode-api
+          team: platform
+        annotations:
+          summary: "CertNode API low request volume"
+          description: "Request rate is {{ $value | humanize }} requests/second over the last 5 minutes"
+          runbook_url: "https://docs.certnode.io/runbooks/low-request-volume"
+
+      # Memory usage alert
+      - alert: CertNodeHighMemoryUsage
+        expr: |
+          (
+            process_resident_memory_bytes{job="certnode-api"} /
+            container_spec_memory_limit_bytes{container="certnode-api"}
+          ) > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          service: certnode-api
+          team: platform
+        annotations:
+          summary: "CertNode API high memory usage"
+          description: "Memory usage is {{ $value | humanizePercentage }} of the limit"
+          runbook_url: "https://docs.certnode.io/runbooks/high-memory-usage"
+
+      # CPU usage alert
+      - alert: CertNodeHighCPUUsage
+        expr: |
+          rate(process_cpu_seconds_total{job="certnode-api"}[5m]) > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          service: certnode-api
+          team: platform
+        annotations:
+          summary: "CertNode API high CPU usage"
+          description: "CPU usage is {{ $value | humanizePercentage }}"
+          runbook_url: "https://docs.certnode.io/runbooks/high-cpu-usage"
+
+  - name: certnode-verification
+    interval: 30s
+    rules:
+      # Verification failure rate
+      - alert: CertNodeHighVerificationFailureRate
+        expr: |
+          (
+            rate(certnode_verification_total{result="failed"}[5m]) /
+            rate(certnode_verification_total[5m])
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: certnode-api
+          team: platform
+        annotations:
+          summary: "High receipt verification failure rate"
+          description: "{{ $value | humanizePercentage }} of receipt verifications are failing"
+          runbook_url: "https://docs.certnode.io/runbooks/verification-failures"
+
+      # JWKS fetch failures
+      - alert: CertNodeJWKSFetchFailures
+        expr: |
+          rate(certnode_jwks_fetch_total{result="failed"}[5m]) > 0.01
+        for: 5m
+        labels:
+          severity: warning
+          service: certnode-api
+          team: platform
+        annotations:
+          summary: "JWKS fetch failures detected"
+          description: "{{ $value | humanize }} JWKS fetch failures per second"
+          runbook_url: "https://docs.certnode.io/runbooks/jwks-fetch-failures"
+
+      # Circuit breaker open
+      - alert: CertNodeCircuitBreakerOpen
+        expr: |
+          certnode_circuit_breaker_state{state="open"} == 1
+        for: 1m
+        labels:
+          severity: critical
+          service: certnode-api
+          team: platform
+        annotations:
+          summary: "Circuit breaker is open"
+          description: "Circuit breaker {{ $labels.name }} is in open state"
+          runbook_url: "https://docs.certnode.io/runbooks/circuit-breaker-open"
+
+  - name: certnode-infrastructure
+    interval: 30s
+    rules:
+      # Database connection issues
+      - alert: CertNodeDatabaseDown
+        expr: |
+          up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: postgres
+          team: platform
+        annotations:
+          summary: "PostgreSQL database is down"
+          description: "PostgreSQL database is not responding"
+          runbook_url: "https://docs.certnode.io/runbooks/database-down"
+
+      # Redis connection issues
+      - alert: CertNodeRedisDown
+        expr: |
+          up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: redis
+          team: platform
+        annotations:
+          summary: "Redis cache is down"
+          description: "Redis cache is not responding"
+          runbook_url: "https://docs.certnode.io/runbooks/redis-down"
+
+      # Container restart rate
+      - alert: CertNodeHighRestartRate
+        expr: |
+          rate(kube_pod_container_status_restarts_total{container="certnode-api"}[1h]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: certnode-api
+          team: platform
+        annotations:
+          summary: "High container restart rate"
+          description: "Container restart rate is {{ $value | humanize }} per hour"
+          runbook_url: "https://docs.certnode.io/runbooks/high-restart-rate"
+
+      # Disk space alert
+      - alert: CertNodeLowDiskSpace
+        expr: |
+          (
+            node_filesystem_avail_bytes{mountpoint="/"} /
+            node_filesystem_size_bytes{mountpoint="/"}
+          ) < 0.1
+        for: 5m
+        labels:
+          severity: critical
+          service: node
+          team: platform
+        annotations:
+          summary: "Low disk space"
+          description: "Available disk space is {{ $value | humanizePercentage }}"
+          runbook_url: "https://docs.certnode.io/runbooks/low-disk-space"
+
+  - name: certnode-sli-slo
+    interval: 30s
+    rules:
+      # SLI: Availability (based on successful responses)
+      - record: certnode:availability:rate5m
+        expr: |
+          rate(certnode_requests_total{status=~"2.."}[5m]) /
+          rate(certnode_requests_total[5m])
+
+      # SLI: Latency (95th percentile)
+      - record: certnode:latency:p95:rate5m
+        expr: |
+          histogram_quantile(0.95,
+            rate(certnode_request_duration_seconds_bucket[5m])
+          )
+
+      # SLI: Error rate
+      - record: certnode:error_rate:rate5m
+        expr: |
+          rate(certnode_requests_total{status!~"2.."}[5m]) /
+          rate(certnode_requests_total[5m])
+
+      # SLO: Availability target (99.9%)
+      - alert: CertNodeSLOAvailabilityBreach
+        expr: |
+          certnode:availability:rate5m < 0.999
+        for: 5m
+        labels:
+          severity: critical
+          service: certnode-api
+          team: platform
+          slo: availability
+        annotations:
+          summary: "SLO availability breach"
+          description: "Availability is {{ $value | humanizePercentage }}, below 99.9% SLO"
+          runbook_url: "https://docs.certnode.io/runbooks/slo-breach"
+
+      # SLO: Latency target (500ms for 95th percentile)
+      - alert: CertNodeSLOLatencyBreach
+        expr: |
+          certnode:latency:p95:rate5m > 0.5
+        for: 5m
+        labels:
+          severity: critical
+          service: certnode-api
+          team: platform
+          slo: latency
+        annotations:
+          summary: "SLO latency breach"
+          description: "95th percentile latency is {{ $value | humanizeDuration }}, above 500ms SLO"
+          runbook_url: "https://docs.certnode.io/runbooks/slo-breach"

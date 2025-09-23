@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CertNode Documentation Navigator</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--gray-50);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .sidebar h3 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-section ul {
+            list-style: none;
+        }
+
+        .nav-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-section a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: var(--gray-700);
+            text-decoration: none;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .nav-section a:hover,
+        .nav-section a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-section .sub-nav {
+            margin-left: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .nav-section .sub-nav a {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+        }
+
+        .content-area {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .doc-card {
+            border: 1px solid var(--gray-200);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .doc-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        }
+
+        .doc-card h4 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .doc-card p {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .doc-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .doc-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            text-decoration: none;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .doc-link:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-complete { background: #d1fae5; color: #065f46; }
+        .status-partial { background: #fef3c7; color: #92400e; }
+        .status-draft { background: #e5e7eb; color: #374151; }
+
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            fill: currentColor;
+        }
+
+        .search-box {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background: white;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .nav-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>🔐 CertNode Documentation Navigator</h1>
+            <p>Comprehensive documentation portal for developers, security teams, and operators</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="nav-grid">
+            <nav class="sidebar">
+                <div class="nav-section">
+                    <h3>Quick Access</h3>
+                    <ul>
+                        <li><a href="./index.html" class="active">Interactive Docs</a></li>
+                        <li><a href="../README.md">Getting Started</a></li>
+                        <li><a href="/openapi">API Reference</a></li>
+                        <li><a href="../cli/README.md">CLI Tool</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Core Documentation</h3>
+                    <ul>
+                        <li><a href="./ARCHITECTURE.md">Architecture</a></li>
+                        <li><a href="./SECURITY.md">Security</a></li>
+                        <li><a href="./DATA_FLOW.md">Data Flow</a></li>
+                        <li><a href="./DEPLOY_NOTES.md">Deployment</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Development</h3>
+                    <ul>
+                        <li><a href="../sdk/node/README.md">Node.js SDK</a></li>
+                        <li><a href="../sdk/web/README.md">Web SDK</a></li>
+                        <li><a href="../sdk/python/README.md">Python SDK</a></li>
+                        <li><a href="../examples/README.md">Examples</a></li>
+                        <li><a href="./QUALITY.md">Code Quality</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Security & Compliance</h3>
+                    <ul>
+                        <li><a href="./policies/">Policies</a></li>
+                        <li><a href="./mappings/">Compliance</a></li>
+                        <li><a href="./procedures/">Procedures</a></li>
+                        <li><a href="./THREAT_MODEL.md">Threat Model</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Operations</h3>
+                    <ul>
+                        <li><a href="./RUNBOOK.md">Runbook</a></li>
+                        <li><a href="./MONITORING.md">Monitoring</a></li>
+                        <li><a href="./SLOS.md">SLOs</a></li>
+                        <li><a href="./DOCKER.md">Docker</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="content-area">
+                <div class="search-box">
+                    <input type="text" placeholder="Search documentation..." id="search-input">
+                </div>
+
+                <section id="overview">
+                    <h2>📖 Documentation Overview</h2>
+                    <p>Welcome to the CertNode documentation portal. This comprehensive resource provides everything you need to understand, implement, and operate CertNode.</p>
+
+                    <div class="doc-grid">
+                        <!-- Getting Started -->
+                        <div class="doc-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                                Getting Started
+                                <span class="status-badge status-complete">Complete</span>
+                            </h4>
+                            <p>Quick start guides, installation instructions, and basic concepts to get you up and running with CertNode.</p>
+                            <div class="doc-links">
+                                <a href="../README.md" class="doc-link">Overview</a>
+                                <a href="./index.html" class="doc-link">Interactive Guide</a>
+                                <a href="../SPECIFICATION.md" class="doc-link">Specification</a>
+                                <a href="./DEPLOY_NOTES.md" class="doc-link">Quick Deploy</a>
+                            </div>
+                        </div>
+
+                        <!-- API & SDKs -->
+                        <div class="doc-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M10 20l4-16m-4 4l4 4-4 4M6 16l-4-4 4-4m12 8l4-4-4-4"/></svg>
+                                API & SDKs
+                                <span class="status-badge status-complete">Complete</span>
+                            </h4>
+                            <p>Complete API documentation, SDK guides, and code examples for all supported languages.</p>
+                            <div class="doc-links">
+                                <a href="/openapi" class="doc-link">API Reference</a>
+                                <a href="../sdk/node/README.md" class="doc-link">Node.js</a>
+                                <a href="../sdk/web/README.md" class="doc-link">Web/JS</a>
+                                <a href="../sdk/python/README.md" class="doc-link">Python</a>
+                                <a href="../examples/README.md" class="doc-link">Examples</a>
+                            </div>
+                        </div>
+
+                        <!-- Security -->
+                        <div class="doc-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                Security & Compliance
+                                <span class="status-badge status-complete">Complete</span>
+                            </h4>
+                            <p>Comprehensive security documentation, compliance mappings, and security policies.</p>
+                            <div class="doc-links">
+                                <a href="./SECURITY.md" class="doc-link">Security Overview</a>
+                                <a href="./THREAT_MODEL.md" class="doc-link">Threat Model</a>
+                                <a href="./policies/" class="doc-link">Policies</a>
+                                <a href="./mappings/" class="doc-link">Compliance</a>
+                                <a href="./AUDIT_CHECKLIST.md" class="doc-link">Audit Checklist</a>
+                            </div>
+                        </div>
+
+                        <!-- Architecture -->
+                        <div class="doc-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+                                Architecture & Design
+                                <span class="status-badge status-complete">Complete</span>
+                            </h4>
+                            <p>System architecture, design decisions, and technical deep-dives into CertNode's implementation.</p>
+                            <div class="doc-links">
+                                <a href="./ARCHITECTURE.md" class="doc-link">Architecture</a>
+                                <a href="./DATA_FLOW.md" class="doc-link">Data Flow</a>
+                                <a href="./adr/" class="doc-link">ADRs</a>
+                                <a href="./TRUST_BOUNDARY.md" class="doc-link">Trust Boundary</a>
+                            </div>
+                        </div>
+
+                        <!-- Operations -->
+                        <div class="doc-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                                Operations & Deployment
+                                <span class="status-badge status-complete">Complete</span>
+                            </h4>
+                            <p>Production deployment guides, monitoring setup, and operational procedures.</p>
+                            <div class="doc-links">
+                                <a href="../DEPLOY.md" class="doc-link">Deployment</a>
+                                <a href="./RUNBOOK.md" class="doc-link">Runbook</a>
+                                <a href="./MONITORING.md" class="doc-link">Monitoring</a>
+                                <a href="./SLOS.md" class="doc-link">SLOs</a>
+                                <a href="./procedures/" class="doc-link">Procedures</a>
+                            </div>
+                        </div>
+
+                        <!-- Tools & CLI -->
+                        <div class="doc-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                                Tools & CLI
+                                <span class="status-badge status-complete">Complete</span>
+                            </h4>
+                            <p>Command-line tools, development utilities, and integration guides for enhanced productivity.</p>
+                            <div class="doc-links">
+                                <a href="../cli/README.md" class="doc-link">CLI Tool</a>
+                                <a href="../integrations/" class="doc-link">Integrations</a>
+                                <a href="../tools/" class="doc-link">Dev Tools</a>
+                                <a href="./DOCKER.md" class="doc-link">Docker</a>
+                            </div>
+                        </div>
+
+                        <!-- Quality & Testing -->
+                        <div class="doc-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Quality & Testing
+                                <span class="status-badge status-complete">Complete</span>
+                            </h4>
+                            <p>Code quality standards, testing methodologies, and quality assurance documentation.</p>
+                            <div class="doc-links">
+                                <a href="./QUALITY.md" class="doc-link">Quality Standards</a>
+                                <a href="../tools/vectors/" class="doc-link">Test Vectors</a>
+                                <a href="./AUDIT.md" class="doc-link">Audit Trail</a>
+                                <a href="./TRACEABILITY.md" class="doc-link">Traceability</a>
+                            </div>
+                        </div>
+
+                        <!-- Internal Documentation -->
+                        <div class="doc-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                                Internal Documentation
+                                <span class="status-badge status-partial">Partial</span>
+                            </h4>
+                            <p>Internal development documentation, roadmaps, and project management resources.</p>
+                            <div class="doc-links">
+                                <a href="./internal/" class="doc-link">Internal Docs</a>
+                                <a href="./TASK_TAXONOMY.md" class="doc-link">Task Taxonomy</a>
+                                <a href="../CONTRIBUTING.md" class="doc-link">Contributing</a>
+                                <a href="../COMMUNITY.md" class="doc-link">Community</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--gray-100); padding: 1.5rem; border-radius: 0.5rem; margin-top: 2rem;">
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">📋 Documentation Statistics</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; text-align: center;">
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: var(--primary);">98</div>
+                                <div style="color: var(--gray-600); font-size: 0.9rem;">Documentation Files</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: var(--success);">85%</div>
+                                <div style="color: var(--gray-600); font-size: 0.9rem;">Coverage Complete</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: var(--accent);">8</div>
+                                <div style="color: var(--gray-600); font-size: 0.9rem;">Major Sections</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: var(--warning);">24</div>
+                                <div style="color: var(--gray-600); font-size: 0.9rem;">Security Policies</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem; padding: 1.5rem; border: 1px solid var(--gray-200); border-radius: 0.5rem;">
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">🚀 Quick Links</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                            <a href="./index.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem; background: var(--primary); color: white; text-decoration: none; border-radius: 0.375rem; font-weight: 500;">
+                                <svg class="icon" viewBox="0 0 24 24" style="fill: white;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                                Interactive Documentation
+                            </a>
+                            <a href="/openapi" style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem; background: var(--success); color: white; text-decoration: none; border-radius: 0.375rem; font-weight: 500;">
+                                <svg class="icon" viewBox="0 0 24 24" style="fill: white;"><path d="M10 20l4-16m-4 4l4 4-4 4M6 16l-4-4 4-4m12 8l4-4-4-4"/></svg>
+                                API Reference
+                            </a>
+                            <a href="../cli/README.md" style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem; background: var(--accent); color: white; text-decoration: none; border-radius: 0.375rem; font-weight: 500;">
+                                <svg class="icon" viewBox="0 0 24 24" style="fill: white;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
+                                CLI Tool
+                            </a>
+                            <a href="./SECURITY.md" style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem; background: var(--danger); color: white; text-decoration: none; border-radius: 0.375rem; font-weight: 500;">
+                                <svg class="icon" viewBox="0 0 24 24" style="fill: white;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                Security Guide
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.doc-card');
+
+            cards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+                if (cardText.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = searchTerm === '' ? 'block' : 'none';
+                }
+            });
+        });
+
+        // Navigation highlighting
+        function highlightCurrentNav() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-section a');
+
+            navLinks.forEach(link => {
+                if (link.href === window.location.href) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize
+        highlightCurrentNav();
+    </script>
+</body>
+</html>

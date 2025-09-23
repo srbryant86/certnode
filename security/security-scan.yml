@@ -1,0 +1,345 @@
+# Security Scanning Configuration for CertNode
+# Comprehensive security assessment including SAST, DAST, dependency scanning, and container security
+
+security_scan:
+  version: "1.0"
+  metadata:
+    name: "CertNode Security Assessment"
+    description: "Multi-layered security scanning for CertNode API and infrastructure"
+    last_updated: "2024-09-22"
+
+# Static Application Security Testing (SAST)
+sast:
+  enabled: true
+  tools:
+    - name: "SonarQube"
+      enabled: true
+      config:
+        quality_gate: "Sonar way"
+        coverage_threshold: 80
+        duplication_threshold: 3
+        maintainability_rating: "A"
+        reliability_rating: "A"
+        security_rating: "A"
+      rules:
+        - "javascript:S2068"  # Hardcoded credentials
+        - "javascript:S4507"  # Delivering code in production with debug features activated
+        - "javascript:S5122"  # CORS should be restrictive
+        - "javascript:S5332"  # Clear-text protocols are security-sensitive
+        - "javascript:S5344"  # Password encoders should use secure hashing algorithms
+
+    - name: "Semgrep"
+      enabled: true
+      config:
+        rulesets:
+          - "p/security-audit"
+          - "p/secrets"
+          - "p/owasp-top-ten"
+          - "p/nodejs"
+          - "p/dockerfile"
+        severity_threshold: "ERROR"
+        exclude_patterns:
+          - "node_modules/**"
+          - "coverage/**"
+          - "*.test.js"
+          - "*.spec.js"
+
+    - name: "ESLint Security"
+      enabled: true
+      config:
+        extends:
+          - "plugin:security/recommended"
+        rules:
+          "security/detect-object-injection": "error"
+          "security/detect-non-literal-regexp": "error"
+          "security/detect-non-literal-fs-filename": "error"
+          "security/detect-eval-with-expression": "error"
+          "security/detect-pseudoRandomBytes": "error"
+
+# Dynamic Application Security Testing (DAST)
+dast:
+  enabled: true
+  tools:
+    - name: "OWASP ZAP"
+      enabled: true
+      config:
+        scan_type: "baseline"
+        target_url: "http://localhost:3000"
+        additional_urls:
+          - "http://localhost:3000/health"
+          - "http://localhost:3000/.well-known/jwks.json"
+          - "http://localhost:3000/api/v1/verify"
+        auth:
+          type: "api_key"
+          header: "X-API-Key"
+        rules:
+          passive_scan: true
+          active_scan: true
+          spider: true
+        exclude_patterns:
+          - ".*logout.*"
+          - ".*admin.*"
+
+    - name: "Nuclei"
+      enabled: true
+      config:
+        templates:
+          - "cves"
+          - "exposed-panels"
+          - "misconfiguration"
+          - "network"
+          - "vulnerabilities"
+        severity_threshold: "medium"
+        rate_limit: 150
+        bulk_size: 25
+
+# Dependency Scanning
+dependency_scan:
+  enabled: true
+  tools:
+    - name: "npm audit"
+      enabled: true
+      config:
+        audit_level: "moderate"
+        production_only: true
+        skip_dev: false
+
+    - name: "Snyk"
+      enabled: true
+      config:
+        severity_threshold: "high"
+        monitor: true
+        fail_on: "upgradable"
+        include_dev_deps: false
+
+    - name: "OSSF Scorecard"
+      enabled: true
+      config:
+        checks:
+          - "Signed-Releases"
+          - "Branch-Protection"
+          - "Code-Review"
+          - "Vulnerabilities"
+          - "Dependency-Update-Tool"
+
+# Container Security Scanning
+container_scan:
+  enabled: true
+  tools:
+    - name: "Trivy"
+      enabled: true
+      config:
+        scan_types:
+          - "vuln"
+          - "config"
+          - "secret"
+        severity_levels:
+          - "CRITICAL"
+          - "HIGH"
+          - "MEDIUM"
+        ignore_unfixed: false
+        format: "sarif"
+
+    - name: "Grype"
+      enabled: true
+      config:
+        scope: "all-layers"
+        fail_on: "high"
+        output_format: "json"
+
+    - name: "Docker Bench"
+      enabled: true
+      config:
+        checks:
+          - "1.1.1"  # Ensure a separate partition for containers
+          - "2.1"    # Restrict network traffic between containers
+          - "4.1"    # Ensure that a user for the container has been created
+          - "4.5"    # Enable Content trust for Docker
+          - "5.7"    # Ensure privileged ports are not mapped
+
+# Infrastructure as Code (IaC) Security
+iac_scan:
+  enabled: true
+  tools:
+    - name: "Checkov"
+      enabled: true
+      config:
+        frameworks:
+          - "dockerfile"
+          - "kubernetes"
+          - "terraform"
+        skip_checks: []
+        severity_threshold: "MEDIUM"
+
+    - name: "kube-score"
+      enabled: true
+      config:
+        ignore_tests:
+          - "pod-networkpolicy"
+        enable_optional_tests: true
+
+    - name: "Polaris"
+      enabled: true
+      config:
+        checks:
+          security: true
+          efficiency: true
+          reliability: true
+
+# Secret Scanning
+secret_scan:
+  enabled: true
+  tools:
+    - name: "GitLeaks"
+      enabled: true
+      config:
+        rules:
+          - "aws-access-token"
+          - "aws-secret-key"
+          - "github-pat"
+          - "slack-access-token"
+          - "private-key"
+          - "generic-api-key"
+        allowlist:
+          commits: []
+          paths:
+            - ".*test.*"
+            - ".*example.*"
+
+    - name: "TruffleHog"
+      enabled: true
+      config:
+        entropy_threshold: 3.0
+        regex_timeout: 10
+        include_paths:
+          - "."
+        exclude_paths:
+          - "node_modules/"
+          - ".git/"
+
+# Security Compliance Checks
+compliance:
+  enabled: true
+  frameworks:
+    - name: "OWASP Top 10"
+      version: "2021"
+      checks:
+        A01_2021: "Broken Access Control"
+        A02_2021: "Cryptographic Failures"
+        A03_2021: "Injection"
+        A04_2021: "Insecure Design"
+        A05_2021: "Security Misconfiguration"
+        A06_2021: "Vulnerable and Outdated Components"
+        A07_2021: "Identification and Authentication Failures"
+        A08_2021: "Software and Data Integrity Failures"
+        A09_2021: "Security Logging and Monitoring Failures"
+        A10_2021: "Server-Side Request Forgery"
+
+    - name: "CIS Controls"
+      version: "v8"
+      critical_controls:
+        - "CIS-1: Inventory and Control of Enterprise Assets"
+        - "CIS-2: Inventory and Control of Software Assets"
+        - "CIS-3: Data Protection"
+        - "CIS-4: Secure Configuration of Enterprise Assets"
+        - "CIS-5: Account Management"
+        - "CIS-6: Access Control Management"
+
+# Reporting Configuration
+reporting:
+  formats:
+    - "sarif"
+    - "json"
+    - "html"
+    - "pdf"
+
+  destinations:
+    - "github_security_tab"
+    - "slack_channel"
+    - "email"
+    - "file_system"
+
+  thresholds:
+    critical: 0
+    high: 5
+    medium: 20
+    low: 50
+
+  notifications:
+    on_failure: true
+    on_new_vulnerabilities: true
+    on_threshold_breach: true
+
+# Scan Scheduling
+schedule:
+  full_scan:
+    frequency: "weekly"
+    day: "sunday"
+    time: "02:00"
+    timezone: "UTC"
+
+  incremental_scan:
+    frequency: "daily"
+    time: "01:00"
+    timezone: "UTC"
+
+  critical_scan:
+    triggers:
+      - "on_push_main"
+      - "on_pull_request"
+      - "on_release"
+
+# Integration Settings
+integrations:
+  github:
+    security_advisories: true
+    code_scanning: true
+    secret_scanning: true
+    dependency_graph: true
+
+  slack:
+    webhook_url: "${SLACK_SECURITY_WEBHOOK}"
+    channel: "#security-alerts"
+    mention_on_critical: true
+
+  jira:
+    enabled: false
+    project_key: "SEC"
+    issue_type: "Security Vulnerability"
+
+# Exclusions and Allowlist
+exclusions:
+  files:
+    - "*.md"
+    - "*.txt"
+    - "LICENSE"
+    - "CHANGELOG.md"
+
+  directories:
+    - "node_modules/"
+    - "coverage/"
+    - "logs/"
+    - ".git/"
+
+  vulnerabilities:
+    # Example: CVE-2021-44228 (Log4j) - Not applicable to Node.js
+    - "CVE-2021-44228"
+
+# Custom Security Rules
+custom_rules:
+  - name: "No hardcoded secrets in environment files"
+    pattern: ".*\\.(env|config).*"
+    rule: "(?i)(password|secret|key|token)\\s*=\\s*['\"][^'\"]{8,}['\"]"
+    severity: "HIGH"
+
+  - name: "Secure HTTP headers required"
+    file: "server.js"
+    rule: "helmet\\(\\)"
+    severity: "MEDIUM"
+    required: true
+
+  - name: "Input validation required"
+    pattern: ".*routes.*\\.js"
+    rule: "joi\\.|validator\\.|express-validator"
+    severity: "HIGH"
+    required: true

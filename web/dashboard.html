@@ -1,11 +1,127 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CertNode Analytics Dashboard</title>
-    <link rel="stylesheet" href="/web/assets/site.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <title>Analytics Dashboard — CertNode Enterprise Platform</title>
+    <link rel="canonical" href="https://certnode.io/dashboard" />
+    <meta property="og:title" content="Analytics Dashboard — CertNode Enterprise Platform" />
+    <meta property="og:description" content="Enterprise analytics dashboard for cryptographic receipt infrastructure. Real-time metrics and compliance reporting." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://certnode.io/dashboard" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Analytics Dashboard — CertNode" />
+    <meta name="twitter:description" content="Enterprise analytics dashboard for cryptographic receipts." />
+    <meta name="description" content="Enterprise analytics dashboard for cryptographic receipt infrastructure with real-time metrics, compliance reporting, and operational insights.">
+
+    <!-- Enterprise Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* CertNode Enterprise Design System */
+        :root {
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            --primary-500: #3b82f6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --primary-800: #1e40af;
+            --primary-900: #1e3a8a;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --success-500: #10b981;
+            --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-inter);
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--gray-50);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Enterprise Navigation */
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .logo {
+            font-family: var(--font-inter);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-600);
+            text-decoration: none;
+            letter-spacing: -0.025em;
+            transition: all 0.2s ease;
+        }
+
+        .logo:hover {
+            color: var(--primary-700);
+            transform: translateY(-1px);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            font-size: 15px;
+            color: var(--gray-600);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-600);
+            background: var(--primary-50);
+        }
+
+        .nav-links a[aria-current="page"] {
+            color: var(--primary-600);
+            background: var(--primary-50);
+            font-weight: 600;
+        }
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -24,7 +140,7 @@
         .metric-value {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #1e40af;
+            color: var(--primary-600);
             margin-bottom: 0.5rem;
         }
 
@@ -115,17 +231,19 @@
         .status-expired { background: #ef4444; }
 
         .refresh-btn {
-            background: #3b82f6;
+            background: var(--primary-600);
             color: white;
             border: none;
             padding: 0.5rem 1rem;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
+            transition: all 0.2s ease;
         }
 
         .refresh-btn:hover {
-            background: #2563eb;
+            background: var(--primary-700);
+            transform: translateY(-1px);
         }
 
         .loading {
@@ -135,16 +253,17 @@
     </style>
 </head>
 <body>
-    <header>
+    <!-- Enterprise Navigation -->
+    <header class="header">
         <div class="container">
             <nav class="nav">
                 <a href="/" class="logo">CertNode</a>
                 <div class="nav-links">
-                    <a href="/">Home</a>
                     <a href="/verify">Validator</a>
-                    <a href="/openapi">Specification</a>
-                    <a href="/trust">Trust</a>
+                    <a href="/openapi">Documentation</a>
+                    <a href="/enterprise">Enterprise</a>
                     <a href="/pricing">Pricing</a>
+                    <a href="/trust">Security</a>
                     <a href="/dashboard" aria-current="page">Dashboard</a>
                 </div>
             </nav>
@@ -254,5 +373,49 @@
     </main>
 
     <script src="/web/js/dashboard.js"></script>
+
+    <!-- Enterprise Footer -->
+    <footer style="background: var(--gray-900); color: white; padding: 3rem 0 1rem 0; margin-top: 4rem;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <div>
+                    <h4 style="color: white; font-weight: 600; margin-bottom: 1rem;">Enterprise Platform</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/enterprise" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Enterprise Solutions</a>
+                        <a href="/pricing" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Enterprise Pricing</a>
+                        <a href="/trust" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Security Center</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; font-weight: 600; margin-bottom: 1rem;">Platform</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/openapi" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">API Documentation</a>
+                        <a href="/verify" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Receipt Validator</a>
+                        <a href="/status" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">System Status</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; font-weight: 600; margin-bottom: 1rem;">Analytics</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/dashboard" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Analytics Dashboard</a>
+                        <a href="/trust" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Compliance Reports</a>
+                        <a href="/pricing" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Usage Metrics</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; font-weight: 600; margin-bottom: 1rem;">Enterprise Support</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <a href="/enterprise" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Request Demo</a>
+                        <a href="/pricing" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Enterprise Pricing</a>
+                        <a href="/trust" style="color: #9ca3af; text-decoration: none; transition: color 0.2s ease;">Security Documentation</a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; padding-top: 2rem; border-top: 1px solid var(--gray-700);">
+                <p style="color: #9ca3af;">&copy; 2025 CertNode. Enterprise cryptographic receipt platform. All rights reserved.</p>
+                <p style="font-size: 0.8rem; color: var(--primary-400); margin-top: 0.5rem; font-weight: 500;">🔐 SOC 2 TYPE II READY • FORTUNE 500 ENTERPRISE SECURITY</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

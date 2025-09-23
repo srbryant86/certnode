@@ -1,0 +1,41 @@
+apiVersion: v2
+name: certnode
+description: A Helm chart for CertNode - Tamper-evident digital receipt verification platform
+version: 2.0.0
+appVersion: 2.0.0
+type: application
+home: https://certnode.io
+icon: https://certnode.io/favicon.ico
+sources:
+  - https://github.com/certnode/certnode
+maintainers:
+  - name: CertNode Team
+    email: team@certnode.io
+    url: https://certnode.io
+keywords:
+  - certnode
+  - receipt
+  - verification
+  - security
+  - cryptography
+  - tamper-evident
+annotations:
+  category: Security
+  licenses: MIT
+dependencies:
+  - name: postgresql
+    version: 12.x.x
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: redis
+    version: 17.x.x
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled
+  - name: prometheus
+    version: 15.x.x
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: monitoring.prometheus.enabled
+  - name: grafana
+    version: 6.x.x
+    repository: https://grafana.github.io/helm-charts
+    condition: monitoring.grafana.enabled

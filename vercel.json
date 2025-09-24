@@ -89,7 +89,7 @@
     { "source": "/.well-known/jwks.json", "destination": "/public/.well-known/jwks.json" },
     { "source": "/trust/keys.jsonl", "destination": "/public/trust/keys.jsonl" },
     { "source": "/api/(.*)", "destination": "/api/src/index.js" },
-    { "source": "/trust", "destination": "/public/trust/index.fixed.html" },
+    { "source": "/trust", "destination": "/web/trust.html" },
     { "source": "/status", "destination": "/public/status/index.html" },
     { "source": "/usage", "destination": "/public/usage/index.html" },
     { "source": "/showcase", "destination": "/public/showcase/index.html" },

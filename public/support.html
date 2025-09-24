@@ -3,70 +3,134 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Support — CertNode Platform</title>
+  <title>Documentation & Support — CertNode Platform</title>
   <meta name="description" content="Documentation, API reference, and support resources for CertNode platform.">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 2rem; text-align: center; }
-    .container { max-width: 600px; margin: 0 auto; }
-    h1 { color: #1e40af; margin-bottom: 1rem; }
-    p { color: #6b7280; line-height: 1.6; margin-bottom: 1.5rem; }
-    .nav { margin-bottom: 2rem; }
-    .nav a { margin: 0 1rem; color: #3b82f6; text-decoration: none; }
-    .nav a:hover { text-decoration: underline; }
-    .support-sections { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin: 2rem 0; text-align: left; }
-    .section { background: #f9fafb; padding: 1.5rem; border-radius: 8px; border: 1px solid #e5e7eb; }
-    .section h2 { color: #1e40af; margin: 0 0 0.5rem 0; font-size: 1.25rem; }
-    .section p { margin: 0 0 1rem 0; font-size: 0.95rem; }
-    .btn-primary { display: inline-block; padding: 0.6rem 1.2rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 4px; font-weight: 500; }
-    .btn-primary:hover { background: #2563eb; }
-    .guides { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
-    .guide-link { display: inline-block; padding: 0.4rem 0.8rem; background: #e5e7eb; color: #374151; text-decoration: none; border-radius: 4px; font-size: 0.85rem; }
-    .guide-link:hover { background: #d1d5db; }
+    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 0; background: #f9fafb; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    h1 { color: #1e40af; margin-bottom: 1rem; font-size: 2.5rem; text-align: center; }
+    .subtitle { color: #6b7280; line-height: 1.6; margin-bottom: 3rem; text-align: center; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .nav { margin-bottom: 3rem; padding: 1rem 0; background: white; border-bottom: 1px solid #e5e7eb; }
+    .nav a { margin: 0 1.5rem; color: #3b82f6; text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 0.2s; }
+    .nav a:hover { background: #eff6ff; }
+    .nav a[aria-current="page"] { background: #eff6ff; color: #1d4ed8; font-weight: 600; }
+    .support-sections { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin: 3rem 0; }
+    .section { background: white; padding: 2rem; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.2s; }
+    .section:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .section h2 { color: #1e40af; margin: 0 0 1rem 0; font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem; }
+    .section p { margin: 0 0 1.5rem 0; font-size: 0.95rem; color: #6b7280; line-height: 1.6; }
+    .btn-primary { display: inline-block; padding: 0.75rem 1.5rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.2s; }
+    .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
+    .guides { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; }
+    .guide-link { display: inline-block; padding: 0.5rem 1rem; background: #f3f4f6; color: #374151; text-decoration: none; border-radius: 6px; font-size: 0.9rem; transition: all 0.2s; }
+    .guide-link:hover { background: #e5e7eb; }
+    .resources-list { list-style: none; padding: 0; margin: 1rem 0; }
+    .resources-list li { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0; color: #374151; }
+    .resources-list li::before { content: "📄"; flex-shrink: 0; }
+    .cta-section { background: #1e40af; color: white; padding: 3rem 0; margin-top: 4rem; text-align: center; }
+    .cta-section h2 { font-size: 2rem; margin-bottom: 1rem; }
+    .cta-section p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem; }
+    .btn-white { display: inline-block; padding: 1rem 2rem; background: white; color: #1e40af; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.2s; }
+    .btn-white:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,255,255,0.2); }
   </style>
 </head>
 <body>
-  <div class="container">
-    <nav class="nav">
+  <nav class="nav">
+    <div class="container" style="text-align: center;">
       <a href="/platform">Platform</a>
       <a href="/solutions">Solutions</a>
       <a href="/pricing">Pricing</a>
-      <a href="/support">Support</a>
+      <a href="/support" aria-current="page">Support</a>
       <a href="/trust">Security</a>
-    </nav>
+    </div>
+  </nav>
+
+  <div class="container">
     <h1>Documentation & Support</h1>
-    <p>Everything you need to implement, integrate, and optimize CertNode in your environment.</p>
+    <p class="subtitle">Everything you need to implement, integrate, and optimize CertNode in your environment.</p>
 
     <div class="support-sections">
       <div class="section">
-        <h2>API Documentation</h2>
-        <p>Complete API reference with interactive examples and authentication details.</p>
+        <h2>📚 API Documentation</h2>
+        <p>Complete API reference with interactive examples, authentication details, and comprehensive code samples.</p>
         <a href="/openapi" class="btn-primary">View API Docs</a>
       </div>
 
       <div class="section">
-        <h2>Implementation Guide</h2>
-        <p>Step-by-step integration guides for popular frameworks and languages.</p>
+        <h2>⚡ Quick Start Guide</h2>
+        <p>Get up and running with CertNode in minutes. Step-by-step integration guides for popular frameworks.</p>
         <div class="guides">
-          <a href="#node" class="guide-link">Node.js SDK</a>
-          <a href="#python" class="guide-link">Python SDK</a>
-          <a href="#java" class="guide-link">Java SDK</a>
-          <a href="#curl" class="guide-link">REST API</a>
+          <a href="#node" class="guide-link">Node.js</a>
+          <a href="#python" class="guide-link">Python</a>
+          <a href="#curl" class="guide-link">cURL</a>
+          <a href="#postman" class="guide-link">Postman</a>
         </div>
       </div>
 
       <div class="section">
-        <h2>Tools & Utilities</h2>
-        <p>Validation tools and utilities to verify receipts and test your integration.</p>
+        <h2>🔧 SDKs & Libraries</h2>
+        <p>Official SDKs and libraries for seamless integration across different programming languages.</p>
+        <ul class="resources-list">
+          <li>Node.js SDK with TypeScript support</li>
+          <li>Python SDK with async/await</li>
+          <li>REST API with OpenAPI 3.1 spec</li>
+          <li>Webhook integration examples</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>✅ Validation Tools</h2>
+        <p>Tools and utilities to verify receipts, test your integration, and validate cryptographic signatures.</p>
         <a href="/verify" class="btn-primary">Receipt Validator</a>
       </div>
 
       <div class="section">
-        <h2>Security & Compliance</h2>
-        <p>Security audit details, compliance certifications, and trust information.</p>
-        <a href="/trust" class="btn-primary">View Security Details</a>
+        <h2>🔒 Security & Compliance</h2>
+        <p>Security audit details, compliance certifications, and comprehensive trust documentation.</p>
+        <a href="/trust" class="btn-primary">Security Center</a>
+      </div>
+
+      <div class="section">
+        <h2>📊 Implementation Examples</h2>
+        <p>Real-world examples and use cases across different industries and implementation patterns.</p>
+        <ul class="resources-list">
+          <li>E-commerce receipt integration</li>
+          <li>Financial services compliance</li>
+          <li>Healthcare data integrity</li>
+          <li>Multi-tenant SaaS examples</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>💬 Support Channels</h2>
+        <p>Get help from our technical support team and developer community.</p>
+        <ul class="resources-list">
+          <li>Technical documentation portal</li>
+          <li>Community support forum</li>
+          <li>Email support for technical issues</li>
+          <li>Enterprise support SLA</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>🚀 Migration Guides</h2>
+        <p>Step-by-step guides for migrating from other receipt systems or upgrading your implementation.</p>
+        <ul class="resources-list">
+          <li>Legacy system migration</li>
+          <li>API version upgrade guides</li>
+          <li>Data migration best practices</li>
+          <li>Testing and validation</li>
+        </ul>
       </div>
     </div>
-    <p><a href="/" style="color: #3b82f6;">← Back to Home</a></p>
   </div>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Need Additional Support?</h2>
+      <p>Our technical team is here to help you implement and optimize your CertNode integration.</p>
+      <a href="/pricing" class="btn-white">View Support Plans</a>
+    </div>
+  </section>
 </body>
 </html>

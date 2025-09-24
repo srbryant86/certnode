@@ -3,30 +3,128 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Solutions — CertNode Platform</title>
+  <title>Industry Solutions — CertNode Platform</title>
   <meta name="description" content="Industry solutions for cryptographic receipts. Financial services, healthcare, e-commerce, and compliance use cases.">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 2rem; text-align: center; }
-    .container { max-width: 600px; margin: 0 auto; }
-    h1 { color: #1e40af; margin-bottom: 1rem; }
-    p { color: #6b7280; line-height: 1.6; margin-bottom: 1.5rem; }
-    .nav { margin-bottom: 2rem; }
-    .nav a { margin: 0 1rem; color: #3b82f6; text-decoration: none; }
-    .nav a:hover { text-decoration: underline; }
+    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 0; background: #f9fafb; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    h1 { color: #1e40af; margin-bottom: 1rem; font-size: 2.5rem; text-align: center; }
+    .subtitle { color: #6b7280; line-height: 1.6; margin-bottom: 3rem; text-align: center; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .nav { margin-bottom: 3rem; padding: 1rem 0; background: white; border-bottom: 1px solid #e5e7eb; }
+    .nav a { margin: 0 1.5rem; color: #3b82f6; text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 0.2s; }
+    .nav a:hover { background: #eff6ff; }
+    .nav a[aria-current="page"] { background: #eff6ff; color: #1d4ed8; font-weight: 600; }
+    .solutions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0; }
+    .solution-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.2s; }
+    .solution-card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .solution-card h3 { color: #1e40af; font-size: 1.3rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .solution-card p { color: #6b7280; line-height: 1.6; margin-bottom: 1.5rem; }
+    .use-cases { list-style: none; padding: 0; margin: 0; }
+    .use-cases li { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.5rem 0; color: #374151; }
+    .use-cases li::before { content: "✓"; color: #10b981; font-weight: 600; flex-shrink: 0; }
+    .cta-section { background: #1e40af; color: white; padding: 3rem 0; margin-top: 4rem; text-align: center; }
+    .cta-section h2 { font-size: 2rem; margin-bottom: 1rem; }
+    .cta-section p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem; }
+    .btn { display: inline-block; padding: 1rem 2rem; background: white; color: #1e40af; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.2s; }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,255,255,0.2); }
   </style>
 </head>
 <body>
-  <div class="container">
-    <nav class="nav">
+  <nav class="nav">
+    <div class="container" style="text-align: center;">
       <a href="/platform">Platform</a>
-      <a href="/solutions">Solutions</a>
+      <a href="/solutions" aria-current="page">Solutions</a>
       <a href="/pricing">Pricing</a>
       <a href="/support">Support</a>
       <a href="/trust">Security</a>
-    </nav>
+    </div>
+  </nav>
+
+  <div class="container">
     <h1>Industry Solutions</h1>
-    <p>This page is under construction. Industry-specific solutions for financial services, healthcare, e-commerce, and compliance use cases coming soon.</p>
-    <p><a href="/" style="color: #3b82f6;">← Back to Home</a></p>
+    <p class="subtitle">Discover how organizations across industries use CertNode's cryptographic receipt platform to ensure compliance, security, and operational excellence.</p>
+
+    <div class="solutions-grid">
+      <div class="solution-card">
+        <h3>🏦 Financial Services</h3>
+        <p>Meet regulatory requirements with tamper-evident transaction records and comprehensive audit trails.</p>
+        <ul class="use-cases">
+          <li>Payment processing verification</li>
+          <li>Trade settlement documentation</li>
+          <li>Regulatory compliance reporting</li>
+          <li>Customer transaction receipts</li>
+          <li>Anti-fraud audit trails</li>
+        </ul>
+      </div>
+
+      <div class="solution-card">
+        <h3>🏥 Healthcare</h3>
+        <p>Ensure HIPAA compliance and maintain secure, verifiable medical records and patient interactions.</p>
+        <ul class="use-cases">
+          <li>Patient record integrity</li>
+          <li>Prescription verification</li>
+          <li>Medical device data validation</li>
+          <li>Insurance claim processing</li>
+          <li>Clinical trial documentation</li>
+        </ul>
+      </div>
+
+      <div class="solution-card">
+        <h3>🛒 E-commerce</h3>
+        <p>Build customer trust with verifiable purchase receipts and transparent transaction histories.</p>
+        <ul class="use-cases">
+          <li>Purchase receipt verification</li>
+          <li>Warranty and return processing</li>
+          <li>Loyalty program tracking</li>
+          <li>Supply chain transparency</li>
+          <li>Digital product licensing</li>
+        </ul>
+      </div>
+
+      <div class="solution-card">
+        <h3>⚖️ Legal & Compliance</h3>
+        <p>Create legally admissible digital evidence with cryptographic proof of document integrity.</p>
+        <ul class="use-cases">
+          <li>Contract execution verification</li>
+          <li>Digital signature validation</li>
+          <li>Evidence chain of custody</li>
+          <li>Notarization services</li>
+          <li>Regulatory filing documentation</li>
+        </ul>
+      </div>
+
+      <div class="solution-card">
+        <h3>🏢 Enterprise SaaS</h3>
+        <p>Add cryptographic verification to your platform with simple API integration and compliance features.</p>
+        <ul class="use-cases">
+          <li>User action verification</li>
+          <li>Data integrity assurance</li>
+          <li>Audit log generation</li>
+          <li>Compliance reporting</li>
+          <li>Third-party integrations</li>
+        </ul>
+      </div>
+
+      <div class="solution-card">
+        <h3>📊 Data & Analytics</h3>
+        <p>Ensure data integrity and provide verifiable analytics with cryptographic proof of accuracy.</p>
+        <ul class="use-cases">
+          <li>Data pipeline verification</li>
+          <li>Report integrity validation</li>
+          <li>Analytics audit trails</li>
+          <li>ML model versioning</li>
+          <li>Research data integrity</li>
+        </ul>
+      </div>
+    </div>
   </div>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Ready to Implement Your Solution?</h2>
+      <p>Discover how CertNode can meet your industry's specific compliance and security requirements.</p>
+      <a href="/pricing" class="btn">View Pricing Plans</a>
+    </div>
+  </section>
 </body>
 </html>

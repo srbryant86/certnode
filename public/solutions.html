@@ -2,129 +2,495 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Industry Solutions — CertNode Platform</title>
-  <meta name="description" content="Industry solutions for cryptographic receipts. Financial services, healthcare, e-commerce, and compliance use cases.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1e40af">
+  <title>Industry Solutions — CertNode Cryptographic Receipt Infrastructure</title>
+  <meta name="description" content="Industry solutions for cryptographic receipts. Financial services, healthcare, e-commerce, and compliance use cases for tamper-evident digital transaction records.">
+  <link rel="canonical" href="https://certnode.io/solutions" />
+
+  <!-- Performance Optimization -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 0; background: #f9fafb; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-    h1 { color: #1e40af; margin-bottom: 1rem; font-size: 2.5rem; text-align: center; }
-    .subtitle { color: #6b7280; line-height: 1.6; margin-bottom: 3rem; text-align: center; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto; }
-    .nav { margin-bottom: 3rem; padding: 1rem 0; background: white; border-bottom: 1px solid #e5e7eb; }
-    .nav a { margin: 0 1.5rem; color: #3b82f6; text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 0.2s; }
-    .nav a:hover { background: #eff6ff; }
-    .nav a[aria-current="page"] { background: #eff6ff; color: #1d4ed8; font-weight: 600; }
-    .solutions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0; }
-    .solution-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.2s; }
-    .solution-card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.1); transform: translateY(-2px); }
-    .solution-card h3 { color: #1e40af; font-size: 1.3rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-    .solution-card p { color: #6b7280; line-height: 1.6; margin-bottom: 1.5rem; }
-    .use-cases { list-style: none; padding: 0; margin: 0; }
-    .use-cases li { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.5rem 0; color: #374151; }
-    .use-cases li::before { content: "✓"; color: #10b981; font-weight: 600; flex-shrink: 0; }
-    .cta-section { background: #1e40af; color: white; padding: 3rem 0; margin-top: 4rem; text-align: center; }
-    .cta-section h2 { font-size: 2rem; margin-bottom: 1rem; }
-    .cta-section p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem; }
-    .btn { display: inline-block; padding: 1rem 2rem; background: white; color: #1e40af; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.2s; }
-    .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,255,255,0.2); }
+    /* CertNode Design System */
+    :root {
+      --primary-50: #eff6ff;
+      --primary-100: #dbeafe;
+      --primary-500: #3b82f6;
+      --primary-600: #2563eb;
+      --primary-700: #1d4ed8;
+      --primary-800: #1e40af;
+      --primary-900: #1e3a8a;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --success-500: #10b981;
+      --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-inter);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navigation */
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 72px;
+    }
+
+    .logo {
+      font-family: var(--font-inter);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-600);
+      text-decoration: none;
+      letter-spacing: -0.025em;
+      transition: all 0.2s ease;
+    }
+
+    .logo:hover {
+      color: var(--primary-700);
+      transform: translateY(-1px);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--gray-600);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-600);
+      background: var(--primary-50);
+    }
+
+    .nav-links a[aria-current="page"] {
+      color: var(--primary-600);
+      background: var(--primary-50);
+      font-weight: 600;
+    }
+
+    /* Mobile Navigation */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--gray-600);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu-toggle:hover {
+      color: var(--primary-600);
+    }
+
+    /* Hero Section */
+    .solutions-hero {
+      background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .solutions-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='60' cy='60' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .solutions-hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.025em;
+      position: relative;
+    }
+
+    .solutions-hero p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Solutions Grid */
+    .solutions-section {
+      padding: 4rem 0;
+      background: white;
+    }
+
+    .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .solution-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .solution-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
+    }
+
+    .solution-card:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+    }
+
+    .solution-card h3 {
+      color: var(--primary-600);
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .solution-card p {
+      color: var(--gray-600);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .use-cases {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .use-cases li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      color: var(--gray-700);
+    }
+
+    .use-cases li::before {
+      content: "✓";
+      color: var(--success-500);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: var(--gray-900);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .cta-btn {
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+
+    .cta-btn.primary {
+      background: var(--primary-600);
+      color: white;
+    }
+
+    .cta-btn.primary:hover {
+      background: var(--primary-700);
+      transform: translateY(-1px);
+    }
+
+    .cta-btn.secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .cta-btn.secondary:hover {
+      background: white;
+      color: var(--gray-900);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid var(--gray-200);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        flex-direction: column;
+        padding: 1rem 0;
+      }
+
+      .nav-links.mobile-open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 1rem 1.5rem;
+        border-radius: 0;
+      }
+
+      .solutions-hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .solutions-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 <body>
-  <nav class="nav">
-    <div class="container" style="text-align: center;">
-      <a href="/platform">Platform</a>
-      <a href="/solutions" aria-current="page">Solutions</a>
-      <a href="/pricing">Pricing</a>
-      <a href="/support">Support</a>
-      <a href="/trust">Security</a>
-    </div>
-  </nav>
-
-  <div class="container">
-    <h1>Industry Solutions</h1>
-    <p class="subtitle">Discover how organizations across industries use CertNode's cryptographic receipt platform to ensure compliance, security, and operational excellence.</p>
-
-    <div class="solutions-grid">
-      <div class="solution-card">
-        <h3>🏦 Financial Services</h3>
-        <p>Meet regulatory requirements with tamper-evident transaction records and comprehensive audit trails.</p>
-        <ul class="use-cases">
-          <li>Payment processing verification</li>
-          <li>Trade settlement documentation</li>
-          <li>Regulatory compliance reporting</li>
-          <li>Customer transaction receipts</li>
-          <li>Anti-fraud audit trails</li>
-        </ul>
-      </div>
-
-      <div class="solution-card">
-        <h3>🏥 Healthcare</h3>
-        <p>Ensure HIPAA compliance and maintain secure, verifiable medical records and patient interactions.</p>
-        <ul class="use-cases">
-          <li>Patient record integrity</li>
-          <li>Prescription verification</li>
-          <li>Medical device data validation</li>
-          <li>Insurance claim processing</li>
-          <li>Clinical trial documentation</li>
-        </ul>
-      </div>
-
-      <div class="solution-card">
-        <h3>🛒 E-commerce</h3>
-        <p>Build customer trust with verifiable purchase receipts and transparent transaction histories.</p>
-        <ul class="use-cases">
-          <li>Purchase receipt verification</li>
-          <li>Warranty and return processing</li>
-          <li>Loyalty program tracking</li>
-          <li>Supply chain transparency</li>
-          <li>Digital product licensing</li>
-        </ul>
-      </div>
-
-      <div class="solution-card">
-        <h3>⚖️ Legal & Compliance</h3>
-        <p>Create legally admissible digital evidence with cryptographic proof of document integrity.</p>
-        <ul class="use-cases">
-          <li>Contract execution verification</li>
-          <li>Digital signature validation</li>
-          <li>Evidence chain of custody</li>
-          <li>Notarization services</li>
-          <li>Regulatory filing documentation</li>
-        </ul>
-      </div>
-
-      <div class="solution-card">
-        <h3>🏢 Enterprise SaaS</h3>
-        <p>Add cryptographic verification to your platform with simple API integration and compliance features.</p>
-        <ul class="use-cases">
-          <li>User action verification</li>
-          <li>Data integrity assurance</li>
-          <li>Audit log generation</li>
-          <li>Compliance reporting</li>
-          <li>Third-party integrations</li>
-        </ul>
-      </div>
-
-      <div class="solution-card">
-        <h3>📊 Data & Analytics</h3>
-        <p>Ensure data integrity and provide verifiable analytics with cryptographic proof of accuracy.</p>
-        <ul class="use-cases">
-          <li>Data pipeline verification</li>
-          <li>Report integrity validation</li>
-          <li>Analytics audit trails</li>
-          <li>ML model versioning</li>
-          <li>Research data integrity</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <section class="cta-section">
+  <!-- Navigation -->
+  <header class="header">
     <div class="container">
-      <h2>Ready to Implement Your Solution?</h2>
-      <p>Discover how CertNode can meet your industry's specific compliance and security requirements.</p>
-      <a href="/pricing" class="btn">View Pricing Plans</a>
+      <nav class="nav">
+        <a href="/" class="logo">CertNode</a>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="nav-links">
+          <a href="/platform">Platform</a>
+          <a href="/solutions" aria-current="page">Solutions</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/support">Support</a>
+          <a href="/trust">Security</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="solutions-hero">
+    <div class="container">
+      <h1>Industry Solutions</h1>
+      <p>Discover how organizations across industries use CertNode's cryptographic receipt platform to ensure compliance, security, and operational excellence.</p>
     </div>
   </section>
+
+  <!-- Solutions Grid -->
+  <section class="solutions-section">
+    <div class="container">
+      <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: var(--gray-900);">Built for Every Industry</h2>
+      <p style="text-align: center; color: var(--gray-600); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">From financial services to healthcare, our cryptographic receipt platform adapts to your industry's specific compliance and security requirements.</p>
+
+      <div class="solutions-grid">
+        <div class="solution-card">
+          <h3>🏦 Financial Services</h3>
+          <p>Meet regulatory requirements with tamper-evident transaction records and comprehensive audit trails for payment processing and compliance.</p>
+          <ul class="use-cases">
+            <li>Payment processing verification</li>
+            <li>Trade settlement documentation</li>
+            <li>Regulatory compliance reporting</li>
+            <li>Customer transaction receipts</li>
+            <li>Anti-fraud audit trails</li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <h3>🏥 Healthcare</h3>
+          <p>Ensure HIPAA compliance and maintain secure, verifiable medical records and patient interactions with cryptographic integrity.</p>
+          <ul class="use-cases">
+            <li>Patient record integrity</li>
+            <li>Prescription verification</li>
+            <li>Medical device data validation</li>
+            <li>Insurance claim processing</li>
+            <li>Clinical trial documentation</li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <h3>🛒 E-commerce</h3>
+          <p>Build customer trust with verifiable purchase receipts and transparent transaction histories that customers can independently verify.</p>
+          <ul class="use-cases">
+            <li>Purchase receipt verification</li>
+            <li>Warranty and return processing</li>
+            <li>Loyalty program tracking</li>
+            <li>Supply chain transparency</li>
+            <li>Digital product licensing</li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <h3>⚖️ Legal & Compliance</h3>
+          <p>Create legally admissible digital evidence with cryptographic proof of document integrity and tamper-evident audit trails.</p>
+          <ul class="use-cases">
+            <li>Contract execution verification</li>
+            <li>Digital signature validation</li>
+            <li>Evidence chain of custody</li>
+            <li>Notarization services</li>
+            <li>Regulatory filing documentation</li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <h3>🏢 SaaS Platforms</h3>
+          <p>Add cryptographic verification to your platform with simple API integration and compliance features that scale with your business.</p>
+          <ul class="use-cases">
+            <li>User action verification</li>
+            <li>Data integrity assurance</li>
+            <li>Audit log generation</li>
+            <li>Compliance reporting</li>
+            <li>Third-party integrations</li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <h3>📊 Data & Analytics</h3>
+          <p>Ensure data integrity and provide verifiable analytics with cryptographic proof of accuracy across your data pipeline.</p>
+          <ul class="use-cases">
+            <li>Data pipeline verification</li>
+            <li>Report integrity validation</li>
+            <li>Analytics audit trails</li>
+            <li>ML model versioning</li>
+            <li>Research data integrity</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Ready to Implement Your Solution?</h2>
+      <p style="font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Discover how CertNode can meet your industry's specific compliance and security requirements.</p>
+
+      <div class="cta-buttons">
+        <a href="/pricing" class="cta-btn primary">View Pricing Plans</a>
+        <a href="/platform" class="cta-btn secondary">Explore Platform</a>
+        <a href="/support" class="cta-btn secondary">View Documentation</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Mobile Navigation Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileToggle = document.querySelector('.mobile-menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+
+      if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', function() {
+          navLinks.classList.toggle('mobile-open');
+
+          // Update ARIA label for accessibility
+          const isOpen = navLinks.classList.contains('mobile-open');
+          mobileToggle.setAttribute('aria-label', isOpen ? 'Close mobile menu' : 'Toggle mobile menu');
+          mobileToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('.nav') && navLinks.classList.contains('mobile-open')) {
+            navLinks.classList.remove('mobile-open');
+            mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Close mobile menu on window resize (if going back to desktop)
+        window.addEventListener('resize', function() {
+          if (window.innerWidth > 768 && navLinks.classList.contains('mobile-open')) {
+            navLinks.classList.remove('mobile-open');
+            mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

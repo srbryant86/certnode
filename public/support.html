@@ -2,135 +2,534 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Documentation & Support — CertNode Platform</title>
-  <meta name="description" content="Documentation, API reference, and support resources for CertNode platform.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1e40af">
+  <title>Documentation & Support — CertNode Cryptographic Receipt Infrastructure</title>
+  <meta name="description" content="Documentation, API reference, and support resources for CertNode platform. Everything you need to implement and integrate cryptographic receipts.">
+  <link rel="canonical" href="https://certnode.io/support" />
+
+  <!-- Performance Optimization -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 0; background: #f9fafb; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-    h1 { color: #1e40af; margin-bottom: 1rem; font-size: 2.5rem; text-align: center; }
-    .subtitle { color: #6b7280; line-height: 1.6; margin-bottom: 3rem; text-align: center; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto; }
-    .nav { margin-bottom: 3rem; padding: 1rem 0; background: white; border-bottom: 1px solid #e5e7eb; }
-    .nav a { margin: 0 1.5rem; color: #3b82f6; text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: all 0.2s; }
-    .nav a:hover { background: #eff6ff; }
-    .nav a[aria-current="page"] { background: #eff6ff; color: #1d4ed8; font-weight: 600; }
-    .support-sections { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin: 3rem 0; }
-    .section { background: white; padding: 2rem; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.2s; }
-    .section:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.1); transform: translateY(-2px); }
-    .section h2 { color: #1e40af; margin: 0 0 1rem 0; font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem; }
-    .section p { margin: 0 0 1.5rem 0; font-size: 0.95rem; color: #6b7280; line-height: 1.6; }
-    .btn-primary { display: inline-block; padding: 0.75rem 1.5rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.2s; }
-    .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
-    .guides { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; }
-    .guide-link { display: inline-block; padding: 0.5rem 1rem; background: #f3f4f6; color: #374151; text-decoration: none; border-radius: 6px; font-size: 0.9rem; transition: all 0.2s; }
-    .guide-link:hover { background: #e5e7eb; }
-    .resources-list { list-style: none; padding: 0; margin: 1rem 0; }
-    .resources-list li { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0; color: #374151; }
-    .resources-list li::before { content: "📄"; flex-shrink: 0; }
-    .cta-section { background: #1e40af; color: white; padding: 3rem 0; margin-top: 4rem; text-align: center; }
-    .cta-section h2 { font-size: 2rem; margin-bottom: 1rem; }
-    .cta-section p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem; }
-    .btn-white { display: inline-block; padding: 1rem 2rem; background: white; color: #1e40af; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.2s; }
-    .btn-white:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,255,255,0.2); }
+    /* CertNode Design System */
+    :root {
+      --primary-50: #eff6ff;
+      --primary-100: #dbeafe;
+      --primary-500: #3b82f6;
+      --primary-600: #2563eb;
+      --primary-700: #1d4ed8;
+      --primary-800: #1e40af;
+      --primary-900: #1e3a8a;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --success-500: #10b981;
+      --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-inter);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navigation */
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 72px;
+    }
+
+    .logo {
+      font-family: var(--font-inter);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-600);
+      text-decoration: none;
+      letter-spacing: -0.025em;
+      transition: all 0.2s ease;
+    }
+
+    .logo:hover {
+      color: var(--primary-700);
+      transform: translateY(-1px);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--gray-600);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-600);
+      background: var(--primary-50);
+    }
+
+    .nav-links a[aria-current="page"] {
+      color: var(--primary-600);
+      background: var(--primary-50);
+      font-weight: 600;
+    }
+
+    /* Mobile Navigation */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--gray-600);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu-toggle:hover {
+      color: var(--primary-600);
+    }
+
+    /* Hero Section */
+    .support-hero {
+      background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .support-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='60' cy='60' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .support-hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.025em;
+      position: relative;
+    }
+
+    .support-hero p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Support Sections */
+    .support-content {
+      padding: 4rem 0;
+      background: white;
+    }
+
+    .support-sections {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .section {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
+    }
+
+    .section:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+    }
+
+    .section h2 {
+      color: var(--primary-600);
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section p {
+      color: var(--gray-600);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: var(--primary-600);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-700);
+      transform: translateY(-1px);
+    }
+
+    .guides {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .guide-link {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: var(--gray-100);
+      color: var(--gray-700);
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .guide-link:hover {
+      background: var(--gray-200);
+    }
+
+    .resources-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+
+    .resources-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      color: var(--gray-700);
+    }
+
+    .resources-list li::before {
+      content: "✓";
+      color: var(--success-500);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: var(--gray-900);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .cta-btn {
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+
+    .cta-btn.primary {
+      background: var(--primary-600);
+      color: white;
+    }
+
+    .cta-btn.primary:hover {
+      background: var(--primary-700);
+      transform: translateY(-1px);
+    }
+
+    .cta-btn.secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .cta-btn.secondary:hover {
+      background: white;
+      color: var(--gray-900);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid var(--gray-200);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        flex-direction: column;
+        padding: 1rem 0;
+      }
+
+      .nav-links.mobile-open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 1rem 1.5rem;
+        border-radius: 0;
+      }
+
+      .support-hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .support-sections {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 <body>
-  <nav class="nav">
-    <div class="container" style="text-align: center;">
-      <a href="/platform">Platform</a>
-      <a href="/solutions">Solutions</a>
-      <a href="/pricing">Pricing</a>
-      <a href="/support" aria-current="page">Support</a>
-      <a href="/trust">Security</a>
-    </div>
-  </nav>
-
-  <div class="container">
-    <h1>Documentation & Support</h1>
-    <p class="subtitle">Everything you need to implement, integrate, and optimize CertNode in your environment.</p>
-
-    <div class="support-sections">
-      <div class="section">
-        <h2>📚 API Documentation</h2>
-        <p>Complete API reference with interactive examples, authentication details, and comprehensive code samples.</p>
-        <a href="/openapi" class="btn-primary">View API Docs</a>
-      </div>
-
-      <div class="section">
-        <h2>⚡ Quick Start Guide</h2>
-        <p>Get up and running with CertNode in minutes. Step-by-step integration guides for popular frameworks.</p>
-        <div class="guides">
-          <a href="#node" class="guide-link">Node.js</a>
-          <a href="#python" class="guide-link">Python</a>
-          <a href="#curl" class="guide-link">cURL</a>
-          <a href="#postman" class="guide-link">Postman</a>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2>🔧 SDKs & Libraries</h2>
-        <p>Official SDKs and libraries for seamless integration across different programming languages.</p>
-        <ul class="resources-list">
-          <li>Node.js SDK with TypeScript support</li>
-          <li>Python SDK with async/await</li>
-          <li>REST API with OpenAPI 3.1 spec</li>
-          <li>Webhook integration examples</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <h2>✅ Validation Tools</h2>
-        <p>Tools and utilities to verify receipts, test your integration, and validate cryptographic signatures.</p>
-        <a href="/verify" class="btn-primary">Receipt Validator</a>
-      </div>
-
-      <div class="section">
-        <h2>🔒 Security & Compliance</h2>
-        <p>Security audit details, compliance certifications, and comprehensive trust documentation.</p>
-        <a href="/trust" class="btn-primary">Security Center</a>
-      </div>
-
-      <div class="section">
-        <h2>📊 Implementation Examples</h2>
-        <p>Real-world examples and use cases across different industries and implementation patterns.</p>
-        <ul class="resources-list">
-          <li>E-commerce receipt integration</li>
-          <li>Financial services compliance</li>
-          <li>Healthcare data integrity</li>
-          <li>Multi-tenant SaaS examples</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <h2>💬 Support Channels</h2>
-        <p>Get help from our technical support team and developer community.</p>
-        <ul class="resources-list">
-          <li>Technical documentation portal</li>
-          <li>Community support forum</li>
-          <li>Email support for technical issues</li>
-          <li>Enterprise support SLA</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <h2>🚀 Migration Guides</h2>
-        <p>Step-by-step guides for migrating from other receipt systems or upgrading your implementation.</p>
-        <ul class="resources-list">
-          <li>Legacy system migration</li>
-          <li>API version upgrade guides</li>
-          <li>Data migration best practices</li>
-          <li>Testing and validation</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <section class="cta-section">
+  <!-- Navigation -->
+  <header class="header">
     <div class="container">
-      <h2>Need Additional Support?</h2>
-      <p>Our technical team is here to help you implement and optimize your CertNode integration.</p>
-      <a href="/pricing" class="btn-white">View Support Plans</a>
+      <nav class="nav">
+        <a href="/" class="logo">CertNode</a>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="nav-links">
+          <a href="/platform">Platform</a>
+          <a href="/solutions">Solutions</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/support" aria-current="page">Support</a>
+          <a href="/trust">Security</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="support-hero">
+    <div class="container">
+      <h1>Documentation & Support</h1>
+      <p>Everything you need to implement, integrate, and optimize CertNode in your environment.</p>
     </div>
   </section>
+
+  <!-- Support Content -->
+  <section class="support-content">
+    <div class="container">
+      <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: var(--gray-900);">Complete Developer Resources</h2>
+      <p style="text-align: center; color: var(--gray-600); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">From quick start guides to comprehensive API documentation, find everything you need to succeed with CertNode.</p>
+
+      <div class="support-sections">
+        <div class="section">
+          <h2>📚 API Documentation</h2>
+          <p>Complete API reference with interactive examples, authentication details, and comprehensive code samples for rapid integration.</p>
+          <a href="/openapi" class="btn-primary">View API Docs</a>
+        </div>
+
+        <div class="section">
+          <h2>⚡ Quick Start Guide</h2>
+          <p>Get up and running with CertNode in minutes. Step-by-step integration guides for popular frameworks and languages.</p>
+          <div class="guides">
+            <a href="#node" class="guide-link">Node.js</a>
+            <a href="#python" class="guide-link">Python</a>
+            <a href="#curl" class="guide-link">cURL</a>
+            <a href="#postman" class="guide-link">Postman</a>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>🔧 SDKs & Libraries</h2>
+          <p>Official SDKs and libraries for seamless integration across different programming languages with comprehensive examples.</p>
+          <ul class="resources-list">
+            <li>Node.js SDK with TypeScript support</li>
+            <li>Python SDK with async/await</li>
+            <li>REST API with OpenAPI 3.1 spec</li>
+            <li>Webhook integration examples</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>✅ Validation Tools</h2>
+          <p>Tools and utilities to verify receipts, test your integration, and validate cryptographic signatures in real-time.</p>
+          <a href="/verify" class="btn-primary">Receipt Validator</a>
+        </div>
+
+        <div class="section">
+          <h2>🔒 Security & Compliance</h2>
+          <p>Security audit details, compliance certifications, and comprehensive trust documentation for enterprise deployments.</p>
+          <a href="/trust" class="btn-primary">Security Center</a>
+        </div>
+
+        <div class="section">
+          <h2>📊 Implementation Examples</h2>
+          <p>Real-world examples and use cases across different industries and implementation patterns with complete code samples.</p>
+          <ul class="resources-list">
+            <li>E-commerce receipt integration</li>
+            <li>Financial services compliance</li>
+            <li>Healthcare data integrity</li>
+            <li>Multi-tenant SaaS examples</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>💬 Support Channels</h2>
+          <p>Get help from our technical support team and developer community with dedicated support resources.</p>
+          <ul class="resources-list">
+            <li>Technical documentation portal</li>
+            <li>Community support forum</li>
+            <li>Email support for technical issues</li>
+            <li>Professional support SLA</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>🚀 Migration Guides</h2>
+          <p>Step-by-step guides for migrating from other receipt systems or upgrading your existing CertNode implementation.</p>
+          <ul class="resources-list">
+            <li>Legacy system migration</li>
+            <li>API version upgrade guides</li>
+            <li>Data migration best practices</li>
+            <li>Testing and validation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Need Additional Support?</h2>
+      <p style="font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Our technical team is here to help you implement and optimize your CertNode integration.</p>
+
+      <div class="cta-buttons">
+        <a href="/pricing" class="cta-btn primary">View Support Plans</a>
+        <a href="/platform" class="cta-btn secondary">Explore Platform</a>
+        <a href="/solutions" class="cta-btn secondary">Industry Solutions</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Mobile Navigation Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileToggle = document.querySelector('.mobile-menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+
+      if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', function() {
+          navLinks.classList.toggle('mobile-open');
+
+          // Update ARIA label for accessibility
+          const isOpen = navLinks.classList.contains('mobile-open');
+          mobileToggle.setAttribute('aria-label', isOpen ? 'Close mobile menu' : 'Toggle mobile menu');
+          mobileToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('.nav') && navLinks.classList.contains('mobile-open')) {
+            navLinks.classList.remove('mobile-open');
+            mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Close mobile menu on window resize (if going back to desktop)
+        window.addEventListener('resize', function() {
+          if (window.innerWidth > 768 && navLinks.classList.contains('mobile-open')) {
+            navLinks.classList.remove('mobile-open');
+            mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

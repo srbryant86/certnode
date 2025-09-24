@@ -86,15 +86,10 @@ const server = http.createServer(async (req, res) => {
   await runMiddleware(performanceMiddleware.etagMiddleware);
   await runMiddleware(performanceMiddleware.pushHintsMiddleware);
 
-  // Apply security hardening middleware
-  if (securityMiddleware) {
-    await runMiddleware(securityMiddleware.middleware());
-  }
-
   // Apply other middleware
   timeoutMiddleware.middleware()(req, res, () => {});
   monitoring.middleware()(req, res, () => {});
-  
+
   // Emit completion metric once per request
   res.once('finish', () => {
     try {
@@ -106,6 +101,18 @@ const server = http.createServer(async (req, res) => {
   try {
   const url = new URL(req.url, `http://${req.headers.host}`);
   pathname = url.pathname;
+
+  // Apply security hardening middleware (skip for billing endpoints to avoid JSON false positives)
+  const isBillingEndpoint = url.pathname.startsWith('/api/') && (
+    url.pathname === '/api/create-checkout' ||
+    url.pathname === '/api/create-portal' ||
+    url.pathname === '/api/pricing' ||
+    url.pathname === '/api/account'
+  );
+
+  if (securityMiddleware && !isBillingEndpoint) {
+    await runMiddleware(securityMiddleware.middleware());
+  }
 
   // Apply CORS middleware first
   const corsResult = corsMiddleware(req, res);

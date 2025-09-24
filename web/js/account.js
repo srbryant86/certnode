@@ -1,9 +1,17 @@
-document.addEventListener(''DOMContentLoaded'', function(){
+document.addEventListener('DOMContentLoaded', function(){
   let currentApiKey = null;
 
+  // Handle successful subscription redirect
   const urlParams = new URLSearchParams(window.location.search);
   const sessionId = urlParams.get('session_id');
-  if (sessionId) console.log('Welcome to CertNode! Your technical access is now active.');
+  const isSuccess = urlParams.get('success') === 'true';
+
+  if (sessionId || isSuccess) {
+    // Show success notification
+    showSuccessNotification('Welcome to CertNode! Your subscription is now active. API keys are delivered within 4 hours.');
+    // Clean URL without refreshing
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
 
   const savedApiKey = localStorage.getItem('certnode_api_key');
   if (savedApiKey) { currentApiKey = savedApiKey; loadAccountData(); }
@@ -15,6 +23,28 @@ document.addEventListener(''DOMContentLoaded'', function(){
   function showLogin(){ $('#loading').style.display='none'; $('#login-prompt').style.display='block'; $('#dashboard').style.display='none'; $('#error-message').style.display='none'; }
   function showDashboard(){ $('#loading').style.display='none'; $('#login-prompt').style.display='none'; $('#dashboard').style.display='block'; $('#error-message').style.display='none'; }
   function showError(msg){ const e=$('#error-message'); e.textContent=msg; e.style.display='block'; $('#loading').style.display='none'; }
+
+  function showSuccessNotification(msg) {
+    // Create success notification element if it doesn't exist
+    let successEl = document.getElementById('success-notification');
+    if (!successEl) {
+      successEl = document.createElement('div');
+      successEl.id = 'success-notification';
+      successEl.className = 'success';
+      successEl.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 1000; max-width: 400px; animation: slideIn 0.3s ease;';
+      document.body.appendChild(successEl);
+    }
+    successEl.textContent = msg;
+    successEl.style.display = 'block';
+
+    // Auto-hide after 8 seconds
+    setTimeout(() => {
+      if (successEl) {
+        successEl.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => successEl.remove(), 300);
+      }
+    }, 8000);
+  }
 
   async function loadAccountData(){ if(!currentApiKey){ showLogin(); return;} showLoading(); try{
     const response = await fetch('/api/account', { headers: { 'Authorization': `Bearer ${currentApiKey}` } });

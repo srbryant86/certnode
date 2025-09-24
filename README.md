@@ -14,6 +14,7 @@ Tamper-evident receipt service using ES256 (P-256) and RFC 8785 JCS.
 - Node SDK: `sdk/node` (package: `@certnode/sdk`)
 - Web SDK (ESM): `sdk/web` (package: `@certnode/sdk-web`)
 - CLI verifier: `tools/verify-receipt.js`
+- **Deployment workflow: `DEPLOYMENT.md`**
 - Rotation/integrity: `docs/ROTATION.md`, tools in `tools/`
 - Monitoring: `docs/MONITORING.md`
 - Release checklist: `docs/RELEASE.md`

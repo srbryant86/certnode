@@ -13,8 +13,16 @@ document.addEventListener('DOMContentLoaded', function(){
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 
-  const savedApiKey = localStorage.getItem('certnode_api_key');
-  if (savedApiKey) { currentApiKey = savedApiKey; loadAccountData(); }
+  const savedApiKey = localStorage.getItem('certnode_api_key') || sessionStorage.getItem('certnode_api_key');
+  if (savedApiKey) {
+    currentApiKey = savedApiKey;
+    // Move from sessionStorage to localStorage for persistence
+    if (sessionStorage.getItem('certnode_api_key')) {
+      localStorage.setItem('certnode_api_key', savedApiKey);
+      sessionStorage.removeItem('certnode_api_key');
+    }
+    loadAccountData();
+  }
   else { showLogin(); }
 
   const $ = (s) => document.querySelector(s);
@@ -47,23 +55,22 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   async function loadAccountData(){ if(!currentApiKey){ showLogin(); return;} showLoading(); try{
-    const response = await fetch('/api/account', { headers: { 'Authorization': `Bearer ${currentApiKey}` } });
+    const response = await fetch('/api/users/me', { headers: { 'Authorization': `Bearer ${currentApiKey}` } });
     if (response.status === 401) { localStorage.removeItem('certnode_api_key'); showError('Invalid API key. Please check and try again.'); showLogin(); return; }
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json(); displayAccountData(data.customer); showDashboard();
+    const data = await response.json(); displayAccountData(data.user); showDashboard();
   } catch(e){ console.error('Account loading error:', e); showError('Unable to load account data. Please try again later.'); } }
 
-  function displayAccountData(customer){
-    const usageUsed = Math.floor(Math.random() * (customer.monthly_limit || 1000));
-    const usagePercent = customer.monthly_limit ? (usageUsed / customer.monthly_limit) * 100 : 0;
-    $('#usage-used').textContent = usageUsed.toLocaleString();
-    $('#usage-limit').textContent = customer.monthly_limit?.toLocaleString() || 'Unlimited';
-    $('#usage-remaining').textContent = customer.monthly_limit ? (customer.monthly_limit - usageUsed).toLocaleString() : 'Unlimited';
+  function displayAccountData(user){
+    const usagePercent = user.limit ? (user.usage / user.limit) * 100 : 0;
+    $('#usage-used').textContent = user.usage.toLocaleString();
+    $('#usage-limit').textContent = user.limit?.toLocaleString() || 'Unlimited';
+    $('#usage-remaining').textContent = user.limit ? (user.limit - user.usage).toLocaleString() : 'Unlimited';
     $('#usage-bar').style.width = `${Math.min(100, usagePercent)}%`;
-    $('#current-tier').textContent = customer.tier;
-    $('#subscription-status').textContent = customer.subscription_status === 'active' ? 'Active' : 'Inactive';
-    $('#customer-email').textContent = customer.email;
-    $('#api-key-display').textContent = customer.api_key;
+    $('#current-tier').textContent = user.plan || 'Developer';
+    $('#subscription-status').textContent = 'Active';
+    $('#customer-email').textContent = user.email;
+    $('#api-key-display').textContent = currentApiKey; // Show the current API key
   }
 
   function copyApiKey(){ const apiKey = $('#api-key-display').textContent; navigator.clipboard.writeText(apiKey).then(()=>{}).catch(()=>{}); }

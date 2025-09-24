@@ -282,6 +282,12 @@ const server = http.createServer(async (req, res) => {
     return billingHandler(req, res);
   }
 
+  // User management endpoints
+  if (url.pathname.startsWith("/api/users/")) {
+    const { handle: usersHandler } = require("./routes/users");
+    return usersHandler(req, res);
+  }
+
   // Security endpoints (admin only)
   if (url.pathname.startsWith("/api/security/")) {
     const { handle: securityHandler } = require("./routes/security");

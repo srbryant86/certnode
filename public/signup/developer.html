@@ -208,36 +208,57 @@
   </div>
 
   <script>
-    function submitSignup(event) {
+    async function submitSignup(event) {
       event.preventDefault();
 
-      const formData = new FormData(event.target);
-      const data = Object.fromEntries(formData);
+      const submitBtn = event.target.querySelector('.submit-btn');
+      const originalText = submitBtn.textContent;
 
-      // Create email content
-      const emailBody = `
-New CertNode Developer Account Request
+      // Show loading state
+      submitBtn.textContent = 'Creating Account...';
+      submitBtn.disabled = true;
 
-Email: ${data.email}
-Name: ${data.name}
-Company: ${data.company || 'Not specified'}
-Use Case: ${data.useCase || 'Not specified'}
+      try {
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData);
+        data.plan = 'developer';
 
-Please create a free developer account for this user.
+        const response = await fetch('/api/users/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
 
-Account Details:
-- Plan: Developer (Free)
-- Includes: 5,000 receipts/month
-- Support: Community
-      `.trim();
+        const result = await response.json();
 
-      // Open email client
-      const subject = 'Developer Account Request - ' + data.name;
-      const mailto = `mailto:contact@certnode.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
-      window.location.href = mailto;
+        if (response.ok) {
+          // Success! Show the user their API key and redirect to dashboard
+          alert(`🎉 Account created successfully!
 
-      // Show success message
-      alert('Thank you! Your account request has been prepared. Please send the email to complete your signup.');
+Your API Key: ${result.user.apiKey}
+
+Save this key securely - you'll need it to make API calls.
+
+Redirecting to your dashboard...`);
+
+          // Store API key temporarily and redirect
+          sessionStorage.setItem('certnode_api_key', result.user.apiKey);
+          window.location.href = '/account';
+
+        } else {
+          throw new Error(result.error || 'Account creation failed');
+        }
+
+      } catch (error) {
+        console.error('Signup error:', error);
+        alert('Failed to create account: ' + error.message + '. Please try again.');
+
+        // Reset button
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
     }
   </script>
 </body>

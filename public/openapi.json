@@ -3,11 +3,11 @@
   "info": {
     "title": "CertNode Standard API",
     "version": "1.1.0",
-    "description": "Open standard for tamper-evident digital receipts. This reference implementation generates RFC-compliant cryptographic receipts using JWS detached signatures with ES256 (ECDSA P-256) or EdDSA (Ed25519) and JSON Canonicalization Scheme (RFC 8785). CertNode aims to become the universal standard for digital receipt infrastructure - like HTTPS for security or JSON for data exchange.",
+    "description": "Enterprise cryptographic receipt platform providing irrefutable proof of digital transactions. Built for organizations requiring compliance-ready audit trails, tamper-evident records, and bulletproof verification systems. This implementation generates RFC-compliant cryptographic receipts using JWS detached signatures with ES256 (ECDSA P-256) or EdDSA (Ed25519) for Fortune 500 enterprise security standards.",
     "contact": {
-      "name": "CertNode Standard Committee",
-      "url": "https://certnode.io/trust",
-      "email": "standards@certnode.io"
+      "name": "CertNode Enterprise Support",
+      "url": "https://certnode.io/enterprise",
+      "email": "enterprise@certnode.io"
     },
     "license": {
       "name": "MIT",
@@ -17,7 +17,7 @@
   "servers": [
     {
       "url": "https://api.certnode.io",
-      "description": "Reference implementation - managed signing service for rapid prototyping"
+      "description": "Production enterprise API - managed cryptographic signing service"
     },
     {
       "url": "http://localhost:3000",
@@ -25,8 +25,8 @@
     }
   ],
   "externalDocs": {
-    "description": "CertNode Standard Documentation & Open Source Libraries",
-    "url": "https://github.com/certnode/certnode"
+    "description": "Enterprise Documentation & Implementation Guide",
+    "url": "https://certnode.io/enterprise"
   },
   "paths": {
     "/health": {

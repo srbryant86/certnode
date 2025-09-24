@@ -158,7 +158,12 @@ async function createCheckoutSession(email, priceId, successUrl, cancelUrl) {
         line_items: [{ price: cleanPriceId, quantity: 1 }],
         success_url: successUrl,
         cancel_url: cancelUrl,
-        metadata: { customer_email: cleanEmail }
+        metadata: { customer_email: cleanEmail },
+        custom_text: {
+          submit: {
+            message: 'Subscribe to CertNode - Enterprise cryptographic receipt platform'
+          }
+        }
       });
       return { checkout_url: session.url, session_id: session.id, customer_id: customer.id };
     } catch (e) {
@@ -173,7 +178,12 @@ async function createCheckoutSession(email, priceId, successUrl, cancelUrl) {
     payment_method_types: ['card'],
     line_items: [{ price: cleanPriceId, quantity: 1 }],
     success_url: successUrl,
-    cancel_url: cancelUrl
+    cancel_url: cancelUrl,
+    custom_text: {
+      submit: {
+        message: 'Subscribe to CertNode - Enterprise cryptographic receipt platform'
+      }
+    }
   });
   return { checkout_url: session.url, session_id: session.id };
 }

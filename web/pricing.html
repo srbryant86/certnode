@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <!-- Performance Optimization -->
   <meta name="theme-color" content="#1e40af">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style">
+  <link rel="preconnect" href="https://js.stripe.com">
+  <link rel="dns-prefetch" href="https://api.stripe.com">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' https://js.stripe.com; img-src 'self' data: https:; connect-src 'self' https: https://api.stripe.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; frame-src https://js.stripe.com;">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
@@ -208,6 +211,22 @@
       .nav-links a {
         padding: 1rem 1.5rem;
         border-radius: 0;
+      }
+
+      /* Mobile touch optimization */
+      .pricing-grid {
+        gap: 1.5rem;
+        margin: 2rem auto;
+      }
+
+      .pricing-card {
+        padding: 2rem;
+      }
+
+      .subscribe-btn {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        min-height: 48px; /* Minimum touch target */
       }
     }
     .pricing-hero {

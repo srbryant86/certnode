@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1e40af">
+  <title>Platform Overview — CertNode Cryptographic Receipt Infrastructure</title>
+  <meta name="description" content="Comprehensive platform for cryptographic receipt generation, verification, and compliance. Built for organizations requiring tamper-evident digital transaction records.">
+  <link rel="canonical" href="https://certnode.io/platform" />
+
+  <!-- Performance Optimization -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* CertNode Design System */
+    :root {
+      --primary-50: #eff6ff;
+      --primary-100: #dbeafe;
+      --primary-500: #3b82f6;
+      --primary-600: #2563eb;
+      --primary-700: #1d4ed8;
+      --primary-800: #1e40af;
+      --primary-900: #1e3a8a;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --success-500: #10b981;
+      --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-inter);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navigation */
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 72px;
+    }
+
+    .logo {
+      font-family: var(--font-inter);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-600);
+      text-decoration: none;
+      letter-spacing: -0.025em;
+      transition: all 0.2s ease;
+    }
+
+    .logo:hover {
+      color: var(--primary-700);
+      transform: translateY(-1px);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--gray-600);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-600);
+      background: var(--primary-50);
+    }
+
+    .nav-links a[aria-current="page"] {
+      color: var(--primary-600);
+      background: var(--primary-50);
+      font-weight: 600;
+    }
+
+    /* Mobile Navigation */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--gray-600);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu-toggle:hover {
+      color: var(--primary-600);
+    }
+
+    /* Hero Section */
+    .platform-hero {
+      background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .platform-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='60' cy='60' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .platform-hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.025em;
+      position: relative;
+    }
+
+    .platform-hero p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Features Grid */
+    .features-section {
+      padding: 4rem 0;
+      background: white;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .feature-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
+    }
+
+    .feature-card:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+    }
+
+    .feature-card h3 {
+      color: var(--primary-600);
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .feature-card p {
+      color: var(--gray-600);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      color: var(--gray-700);
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      color: var(--success-500);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* Capabilities Section */
+    .capabilities-section {
+      background: var(--gray-50);
+      padding: 4rem 0;
+    }
+
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .capability-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.2s ease;
+      border: 1px solid var(--gray-200);
+    }
+
+    .capability-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+
+    .capability-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .capability-card h4 {
+      color: var(--primary-600);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .capability-card p {
+      color: var(--gray-600);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* Architecture Section */
+    .architecture-section {
+      background: white;
+      padding: 4rem 0;
+    }
+
+    .architecture-diagram {
+      background: var(--gray-50);
+      border: 2px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    .arch-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .arch-step {
+      padding: 1rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 1px solid var(--gray-200);
+    }
+
+    .arch-step h5 {
+      color: var(--primary-600);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .arch-step p {
+      color: var(--gray-600);
+      font-size: 0.9rem;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: var(--gray-900);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .cta-btn {
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+
+    .cta-btn.primary {
+      background: var(--primary-600);
+      color: white;
+    }
+
+    .cta-btn.primary:hover {
+      background: var(--primary-700);
+      transform: translateY(-1px);
+    }
+
+    .cta-btn.secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .cta-btn.secondary:hover {
+      background: white;
+      color: var(--gray-900);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid var(--gray-200);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        flex-direction: column;
+        padding: 1rem 0;
+      }
+
+      .nav-links.mobile-open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 1rem 1.5rem;
+        border-radius: 0;
+      }
+
+      .platform-hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/" class="logo">CertNode</a>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="nav-links">
+          <a href="/platform" aria-current="page">Platform</a>
+          <a href="/solutions">Solutions</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/trust">Security</a>
+          <a href="/support">Support</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="platform-hero">
+    <div class="container">
+      <h1>Cryptographic Receipt Platform</h1>
+      <p>Complete infrastructure for generating, verifying, and managing tamper-evident digital transaction records. Built for organizations requiring compliance-ready audit trails and bulletproof verification.</p>
+    </div>
+  </section>
+
+  <!-- Core Features -->
+  <section class="features-section">
+    <div class="container">
+      <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: var(--gray-900);">Core Platform Features</h2>
+      <p style="text-align: center; color: var(--gray-600); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">Everything you need for cryptographic receipt infrastructure in one comprehensive platform.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>🔐 Cryptographic Signing</h3>
+          <p>Industry-standard ECDSA P-256 signatures with RFC 7515 (JWS) compliance for maximum security and interoperability.</p>
+          <ul class="feature-list">
+            <li>ES256 cryptographic algorithm</li>
+            <li>Detached JWS signatures</li>
+            <li>JSON Canonicalization Scheme (RFC 8785)</li>
+            <li>Hardware security module (HSM) support</li>
+            <li>Key rotation and lifecycle management</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <h3>⚡ Real-time Verification</h3>
+          <p>Instant receipt validation with comprehensive verification APIs and user-friendly validation tools.</p>
+          <ul class="feature-list">
+            <li>Sub-second verification response times</li>
+            <li>Batch verification for high-volume processing</li>
+            <li>Public key validation via JWKS endpoint</li>
+            <li>Tamper detection and integrity checking</li>
+            <li>Web-based validator interface</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <h3>📊 Analytics & Monitoring</h3>
+          <p>Comprehensive usage analytics, performance monitoring, and audit trail generation for compliance reporting.</p>
+          <ul class="feature-list">
+            <li>Real-time usage dashboards</li>
+            <li>Compliance audit trail generation</li>
+            <li>Performance metrics and SLA monitoring</li>
+            <li>Custom reporting and data export</li>
+            <li>Anomaly detection and alerting</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <h3>🛡️ Security & Compliance</h3>
+          <p>Bank-grade security with SOC 2 Type II compliance and comprehensive regulatory framework support.</p>
+          <ul class="feature-list">
+            <li>SOC 2 Type II security controls</li>
+            <li>FIPS 186-4 cryptographic standards</li>
+            <li>HIPAA, SOX, and GDPR support</li>
+            <li>Zero-knowledge architecture</li>
+            <li>Continuous security monitoring</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <h3>⚙️ Developer Experience</h3>
+          <p>Comprehensive SDKs, detailed documentation, and developer tools for rapid integration and deployment.</p>
+          <ul class="feature-list">
+            <li>Multi-language SDKs (Python, Node.js, Rust, Go)</li>
+            <li>Interactive API documentation</li>
+            <li>Test vectors and examples</li>
+            <li>Sandbox environment</li>
+            <li>Integration support and consulting</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <h3>🔄 Scalable Infrastructure</h3>
+          <p>Cloud-native architecture designed to handle millions of receipts with 99.9% uptime SLA guarantees.</p>
+          <ul class="feature-list">
+            <li>Auto-scaling to handle traffic spikes</li>
+            <li>Multi-region deployment</li>
+            <li>99.9% uptime SLA</li>
+            <li>Disaster recovery and failover</li>
+            <li>Load balancing and caching</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Capabilities -->
+  <section class="capabilities-section">
+    <div class="container">
+      <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: var(--gray-900);">Technical Capabilities</h2>
+      <p style="text-align: center; color: var(--gray-600); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">Built on proven cryptographic standards and modern cloud infrastructure.</p>
+
+      <div class="capabilities-grid">
+        <div class="capability-card">
+          <div class="capability-icon">🚀</div>
+          <h4>High Performance</h4>
+          <p>Sub-100ms API response times with auto-scaling infrastructure to handle traffic spikes seamlessly.</p>
+        </div>
+
+        <div class="capability-card">
+          <div class="capability-icon">🔗</div>
+          <h4>REST API</h4>
+          <p>Simple, well-documented REST API with OpenAPI 3.1 specification and interactive documentation.</p>
+        </div>
+
+        <div class="capability-card">
+          <div class="capability-icon">📱</div>
+          <h4>Multi-Platform SDKs</h4>
+          <p>Native SDKs for Python, Node.js, Rust, and Go with consistent interfaces and comprehensive examples.</p>
+        </div>
+
+        <div class="capability-card">
+          <div class="capability-icon">🏗️</div>
+          <h4>Flexible Deployment</h4>
+          <p>Cloud SaaS, on-premise deployment, or hybrid configurations to meet your security requirements.</p>
+        </div>
+
+        <div class="capability-card">
+          <div class="capability-icon">📋</div>
+          <h4>Comprehensive Logging</h4>
+          <p>Detailed audit logs, compliance reporting, and integration with your existing monitoring tools.</p>
+        </div>
+
+        <div class="capability-card">
+          <div class="capability-icon">🔧</div>
+          <h4>Easy Integration</h4>
+          <p>Simple API integration with existing systems, comprehensive documentation, and professional support.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Overview -->
+  <section class="architecture-section">
+    <div class="container">
+      <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: var(--gray-900);">Platform Architecture</h2>
+      <p style="text-align: center; color: var(--gray-600); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">Simple, secure, and scalable architecture designed for reliability and performance.</p>
+
+      <div class="architecture-diagram">
+        <div class="arch-flow">
+          <div class="arch-step">
+            <h5>1. Generate Receipt</h5>
+            <p>Your application sends transaction data to CertNode API for cryptographic signing.</p>
+          </div>
+          <div class="arch-step">
+            <h5>2. Cryptographic Signing</h5>
+            <p>CertNode signs the data using ECDSA P-256 and returns a JWS detached signature.</p>
+          </div>
+          <div class="arch-step">
+            <h5>3. Store & Verify</h5>
+            <p>Receipt can be verified instantly using public keys from our JWKS endpoint.</p>
+          </div>
+          <div class="arch-step">
+            <h5>4. Audit & Compliance</h5>
+            <p>Access comprehensive audit trails and compliance reports through our dashboard.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 2rem;">
+        <p style="color: var(--gray-600); margin-bottom: 1rem;"><strong>Key Benefits:</strong></p>
+        <div style="display: inline-flex; gap: 2rem; flex-wrap: wrap; justify-content: center;">
+          <span style="color: var(--success-500); font-weight: 600;">✓ Zero-knowledge design</span>
+          <span style="color: var(--success-500); font-weight: 600;">✓ Private keys never leave your environment</span>
+          <span style="color: var(--success-500); font-weight: 600;">✓ Instant verification</span>
+          <span style="color: var(--success-500); font-weight: 600;">✓ Standards compliant</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Ready to Get Started?</h2>
+      <p style="font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Join organizations building bulletproof digital transaction infrastructure with CertNode.</p>
+
+      <div class="cta-buttons">
+        <a href="/pricing" class="cta-btn primary">View Pricing</a>
+        <a href="/verify" class="cta-btn secondary">Try Validator</a>
+        <a href="/support" class="cta-btn secondary">View Documentation</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Mobile Navigation Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileToggle = document.querySelector('.mobile-menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+
+      if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', function() {
+          navLinks.classList.toggle('mobile-open');
+
+          // Update ARIA label for accessibility
+          const isOpen = navLinks.classList.contains('mobile-open');
+          mobileToggle.setAttribute('aria-label', isOpen ? 'Close mobile menu' : 'Toggle mobile menu');
+          mobileToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('.nav') && navLinks.classList.contains('mobile-open')) {
+            navLinks.classList.remove('mobile-open');
+            mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Close mobile menu on window resize (if going back to desktop)
+        window.addEventListener('resize', function() {
+          if (window.innerWidth > 768 && navLinks.classList.contains('mobile-open')) {
+            navLinks.classList.remove('mobile-open');
+            mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

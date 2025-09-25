@@ -520,10 +520,77 @@
       font-size: 0.9rem;
       white-space: pre-wrap;
     }
+
+    /* Conversion CTA Styles */
+    .conversion-cta {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 2px solid #e2e8f0;
+      animation: slideInUp 0.6s ease-out 0.5s both;
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .cta-content {
+      text-align: center;
+    }
+
+    .cta-content h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+    }
+
+    .cta-content p {
+      font-size: 1.1rem;
+      color: var(--gray-600);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .cta-benefits {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .benefit {
+      color: var(--success-500);
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
     @media (max-width: 768px) {
       .validation-area {
         grid-template-columns: 1fr;
       }
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      .cta-benefits {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
       .actions {
         flex-direction: column;
         align-items: center;
@@ -631,6 +698,22 @@ Example format:
       </div>
       <div id="result-details" class="result-details" style="display: none;">
         <pre id="result-text"></pre>
+      </div>
+      <!-- Conversion Bridge CTA - appears on successful verification -->
+      <div id="conversion-cta" class="conversion-cta" style="display: none;">
+        <div class="cta-content">
+          <h3>🚀 Ready to Build Your Own Receipts?</h3>
+          <p>You've seen how powerful cryptographic receipts can be. Now create your own with our API - <strong>free up to 1,000 receipts per month</strong>.</p>
+          <div class="cta-buttons">
+            <a href="/pricing" class="btn btn-primary">Get Free API Key</a>
+            <a href="/support" class="btn btn-secondary">View Documentation</a>
+          </div>
+          <div class="cta-benefits">
+            <div class="benefit">✓ Instant setup</div>
+            <div class="benefit">✓ No credit card required</div>
+            <div class="benefit">✓ Enterprise-grade security</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

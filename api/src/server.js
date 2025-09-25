@@ -265,6 +265,31 @@ const server = http.createServer(async (req, res) => {
     return leadsHandler(req, res);
   }
 
+  // Demo completion tracking endpoint
+  if (req.method === "POST" && url.pathname === "/api/track-demo") {
+    const { trackDemoCompletion } = require("./plugins/customer-analytics");
+    const { readJsonLimited } = require("./plugins/validation");
+
+    try {
+      const data = await readJsonLimited(req, { limitBytes: 512 });
+      const success = data?.success !== false; // default to true
+
+      trackDemoCompletion(req, success);
+
+      res.writeHead(200, {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      });
+      return res.end(JSON.stringify({
+        tracked: true,
+        timestamp: new Date().toISOString()
+      }));
+    } catch (error) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: 'Invalid request' }));
+    }
+  }
+
   // Billing endpoints
   if (url.pathname.startsWith("/api/") && (
     url.pathname === "/api/create-checkout" ||
@@ -312,6 +337,8 @@ const server = http.createServer(async (req, res) => {
       filePath = path.join(process.cwd(), "web", "pricing.html");
     } else if (url.pathname === "/account") {
       filePath = path.join(process.cwd(), "web", "account.html");
+    } else if (url.pathname === "/subscription-success") {
+      filePath = path.join(process.cwd(), "web", "subscription-success.html");
     } else if (url.pathname === "/dashboard") {
       filePath = path.join(process.cwd(), "web", "dashboard.html");
     } else if (url.pathname === "/compliance-calculator") {

@@ -59,6 +59,37 @@ function getCustomerProfile(customerId) {
 }
 
 /**
+ * Track demo completion for conversion funnel
+ */
+function trackDemoCompletion(req, isSuccessful = true) {
+  const customerId = generateCustomerId(req);
+  const profile = getCustomerProfile(customerId);
+
+  // Add demo completion signal
+  if (isSuccessful) {
+    profile.conversion_signals.push('demo_completed');
+    profile.demo_completions = (profile.demo_completions || 0) + 1;
+  }
+
+  const event = {
+    timestamp: new Date().toISOString(),
+    customer_id: customerId,
+    event_type: 'demo_completed',
+    successful: isSuccessful,
+    completion_count: profile.demo_completions || 0,
+    conversion_signals: profile.conversion_signals
+  };
+
+  analytics.events.push(event);
+  emit('demo_completion', 1, event);
+
+  // Mark as conversion-ready after successful demo
+  if (isSuccessful && !profile.conversion_signals.includes('conversion_ready')) {
+    profile.conversion_signals.push('conversion_ready');
+  }
+}
+
+/**
  * Track API request for analytics
  */
 function trackApiRequest(req, res, endpoint, payload = null) {
@@ -230,6 +261,7 @@ module.exports = {
   trackApiRequest,
   trackUsageLimitHit,
   trackLeadCapture,
+  trackDemoCompletion,
   getAnalyticsDashboard,
   shouldTriggerEnterpriseOutreach
 };

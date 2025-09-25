@@ -408,6 +408,41 @@ function showResult(success, message, details = null) {
     resultDetails.style.display = 'none';
   }
 
+  // Show conversion CTA on successful verification
+  const conversionCta = document.getElementById('conversion-cta');
+  if (success && conversionCta) {
+    setTimeout(() => {
+      conversionCta.style.display = 'block';
+
+      // Track demo completion event for analytics
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'demo_completed', {
+          'event_category': 'engagement',
+          'event_label': 'verify_receipt_success'
+        });
+      }
+
+      // Log for server-side analytics
+      console.log('[CONVERSION] Demo completed successfully - showing signup CTA');
+
+      // Send tracking data to server
+      fetch('/api/track-demo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          success: true,
+          source: 'verify_demo',
+          timestamp: new Date().toISOString()
+        })
+      }).catch(err => console.log('Analytics tracking failed:', err));
+
+    }, 1000);
+  } else if (conversionCta) {
+    conversionCta.style.display = 'none';
+  }
+
   // Scroll to result
   resultArea.scrollIntoView({ behavior: 'smooth' });
 }

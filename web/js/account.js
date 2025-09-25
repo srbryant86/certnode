@@ -68,9 +68,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
     const usagePercent = user.limit ? (user.usage / user.limit) * 100 : 0;
     $('#usage-used').textContent = user.usage.toLocaleString();
-    $('#usage-limit').textContent = user.limit?.toLocaleString() || 'Unlimited';
+    $('#usage-limit').textContent = user.limit ? user.limit.toLocaleString() : 'Unlimited';
     $('#usage-remaining').textContent = user.limit ? (user.limit - user.usage).toLocaleString() : 'Unlimited';
-    $('#usage-bar').style.width = `${Math.min(100, usagePercent)}%`;
+    $('#usage-bar').style.width = Math.min(100, usagePercent) + '%';
     $('#current-tier').textContent = user.plan || 'Developer';
     $('#subscription-status').textContent = 'Active';
     $('#customer-email').textContent = user.email;
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function(){
           return;
         }
 
-        showSuccessNotification(`Account created successfully! Your API key is: ${data.apiKey}`);
+        showSuccessNotification('Account created successfully! Your API key is: ' + data.apiKey);
 
         // Redirect to account dashboard instead of causing 404
         setTimeout(() => {

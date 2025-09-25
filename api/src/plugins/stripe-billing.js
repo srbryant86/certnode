@@ -275,6 +275,24 @@ function handleCheckoutCompleted(session) {
     checkout_completed_at: new Date().toISOString()
   });
 
+  // Send API key via email (simple console.log for now - would integrate with email service)
+  console.log('='.repeat(60));
+  console.log('🎉 NEW PAID CUSTOMER API KEY GENERATED');
+  console.log('='.repeat(60));
+  console.log(`Email: ${customerEmail}`);
+  console.log(`API Key: ${apiKey}`);
+  console.log(`Customer ID: ${customerId}`);
+  console.log(`Time: ${new Date().toISOString()}`);
+  console.log('='.repeat(60));
+  console.log('📧 EMAIL CONTENT (send to user):');
+  console.log('Subject: Your CertNode API Key is Ready! 🚀');
+  console.log('Body:');
+  console.log(`Welcome to CertNode! Your subscription is now active.`);
+  console.log(`Your API Key: ${apiKey}`);
+  console.log(`Dashboard: https://certnode.io/account`);
+  console.log(`Documentation: https://certnode.io/support`);
+  console.log('='.repeat(60));
+
   // Emit revenue tracking event
   require('./metrics').emit('revenue_event', session.amount_total / 100, {
     type: 'subscription_started',

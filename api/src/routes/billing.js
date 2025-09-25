@@ -85,7 +85,7 @@ async function handle(req, res) {
         ? 'http://localhost:3000'
         : `https://${req.headers.host}`;
 
-      const successUrl = `${baseUrl}/account?session_id={CHECKOUT_SESSION_ID}`;
+      const successUrl = `${baseUrl}/subscription-success?session_id={CHECKOUT_SESSION_ID}`;
       const cancelUrl = `${baseUrl}/pricing`;
 
       try {

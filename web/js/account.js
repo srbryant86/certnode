@@ -27,9 +27,10 @@ document.addEventListener('DOMContentLoaded', function(){
 
   const $ = (s) => document.querySelector(s);
 
-  function showLoading(){ $('#loading').style.display='block'; $('#login-prompt').style.display='none'; $('#dashboard').style.display='none'; $('#error-message').style.display='none'; }
-  function showLogin(){ $('#loading').style.display='none'; $('#login-prompt').style.display='block'; $('#dashboard').style.display='none'; $('#error-message').style.display='none'; }
-  function showDashboard(){ $('#loading').style.display='none'; $('#login-prompt').style.display='none'; $('#dashboard').style.display='block'; $('#error-message').style.display='none'; }
+  function showLoading(){ $('#loading').style.display='block'; $('#login-prompt').style.display='none'; $('#signup-form').style.display='none'; $('#dashboard').style.display='none'; $('#error-message').style.display='none'; }
+  function showLogin(){ $('#loading').style.display='none'; $('#login-prompt').style.display='block'; $('#signup-form').style.display='none'; $('#dashboard').style.display='none'; $('#error-message').style.display='none'; }
+  function showSignup(){ $('#loading').style.display='none'; $('#login-prompt').style.display='none'; $('#signup-form').style.display='block'; $('#dashboard').style.display='none'; $('#error-message').style.display='none'; }
+  function showDashboard(){ $('#loading').style.display='none'; $('#login-prompt').style.display='none'; $('#signup-form').style.display='none'; $('#dashboard').style.display='block'; $('#error-message').style.display='none'; }
   function showError(msg){ const e=$('#error-message'); e.textContent=msg; e.style.display='block'; $('#loading').style.display='none'; }
 
   function showSuccessNotification(msg) {
@@ -81,7 +82,59 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function loadAccount(){ const apiKey = $('#api-key-input').value.trim(); if(!apiKey){ showError('Please enter a valid API key'); return;} currentApiKey = apiKey; localStorage.setItem('certnode_api_key', apiKey); loadAccountData(); }
 
+  // Registration functionality
+  async function registerAccount() {
+    const email = $('#signup-email').value.trim();
+    const company = $('#signup-company').value.trim();
+
+    if (!email) {
+      showError('Please enter your email address');
+      return;
+    }
+
+    const registerBtn = $('#register-btn');
+    const originalText = registerBtn.textContent;
+    registerBtn.textContent = 'Creating Account...';
+    registerBtn.disabled = true;
+
+    try {
+      const response = await fetch('/api/users/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, company })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Store API key and redirect to dashboard
+        currentApiKey = data.apiKey;
+        localStorage.setItem('certnode_api_key', data.apiKey);
+
+        showSuccessNotification(`Account created successfully! Your API key is: ${data.apiKey}`);
+
+        // Redirect to account dashboard instead of causing 404
+        setTimeout(() => {
+          loadAccountData();
+        }, 1000);
+      } else {
+        showError(data.message || 'Account creation failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      showError('Account creation failed. Please check your connection and try again.');
+    }
+
+    registerBtn.textContent = originalText;
+    registerBtn.disabled = false;
+  }
+
   const loadBtn = document.getElementById('load-account-btn'); if(loadBtn) loadBtn.addEventListener('click', loadAccount);
   const copyBtn = document.getElementById('copy-api-key-btn'); if(copyBtn) copyBtn.addEventListener('click', copyApiKey);
   const portalBtn = document.getElementById('open-portal-btn'); if(portalBtn) portalBtn.addEventListener('click', openCustomerPortal);
+
+  // Registration form handlers
+  const showSignupBtn = document.getElementById('show-signup-btn'); if(showSignupBtn) showSignupBtn.addEventListener('click', showSignup);
+  const backToLoginBtn = document.getElementById('back-to-login-btn'); if(backToLoginBtn) backToLoginBtn.addEventListener('click', showLogin);
+  const registrationForm = document.getElementById('registration-form'); if(registrationForm) registrationForm.addEventListener('submit', (e) => { e.preventDefault(); registerAccount(); });
 });

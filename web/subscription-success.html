@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Subscription Successful — CertNode</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-600: #2563eb;
+      --success-500: #10b981;
+      --success-50: #ecfdf5;
+      --gray-100: #f3f4f6;
+      --gray-800: #1f2937;
+      --gray-600: #4b5563;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, var(--success-50) 0%, #f0f9ff 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-800);
+    }
+
+    .success-container {
+      background: white;
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      max-width: 500px;
+      width: 100%;
+      margin: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--success-500);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem auto;
+      animation: checkmark 0.6s ease-in-out;
+    }
+
+    @keyframes checkmark {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .success-icon svg {
+      width: 40px;
+      height: 40px;
+      color: white;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--gray-600);
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .info-box {
+      background: var(--gray-100);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      text-align: left;
+    }
+
+    .info-box h3 {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--gray-800);
+    }
+
+    .info-box ol {
+      padding-left: 1.5rem;
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    .info-box li {
+      margin-bottom: 0.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary-600);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--primary-600);
+      border: 2px solid var(--primary-600);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary-600);
+      color: white;
+    }
+
+    .help-text {
+      margin-top: 2rem;
+      color: var(--gray-600);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-container">
+    <div class="success-icon">
+      <svg fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+      </svg>
+    </div>
+
+    <h1>🎉 Payment Successful!</h1>
+    <p class="subtitle">
+      Welcome to CertNode! Your subscription is now active and your API key has been automatically generated.
+    </p>
+
+    <div class="info-box">
+      <h3>🔑 Next Steps to Access Your API Key:</h3>
+      <ol>
+        <li><strong>Check your email</strong> for your API key (arrives within 2-3 minutes)</li>
+        <li><strong>Or access your dashboard</strong> using the button below</li>
+        <li><strong>Copy your API key</strong> and start making API calls immediately</li>
+        <li><strong>View documentation</strong> and code examples to get started</li>
+      </ol>
+    </div>
+
+    <div>
+      <a href="/account" class="btn btn-primary">Access My Dashboard</a>
+      <a href="/support" class="btn btn-secondary">View Documentation</a>
+    </div>
+
+    <p class="help-text">
+      Need help? Your API key was automatically created when payment completed.
+      If you don't see your key within 5 minutes, contact <a href="mailto:support@certnode.io" style="color: var(--primary-600);">support@certnode.io</a>
+    </p>
+  </div>
+
+  <script>
+    // Auto-redirect to dashboard after 30 seconds
+    setTimeout(() => {
+      window.location.href = '/account?auto_redirect=true';
+    }, 30000);
+  </script>
+</body>
+</html>

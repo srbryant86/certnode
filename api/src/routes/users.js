@@ -40,10 +40,14 @@ function handle(req, res) {
         const userData = JSON.parse(body);
         const { name, email, company, plan = 'developer' } = userData;
 
-        if (!name || !email) {
+        // Use company name as name if name is not provided
+        const userName = name || company || 'Developer User';
+
+        if (!email) {
           res.writeHead(400, { 'Content-Type': 'application/json' });
           return res.end(JSON.stringify({
-            error: 'Name and email are required'
+            success: false,
+            message: 'Email address is required'
           }));
         }
 
@@ -51,7 +55,8 @@ function handle(req, res) {
         if (users.has(email)) {
           res.writeHead(409, { 'Content-Type': 'application/json' });
           return res.end(JSON.stringify({
-            error: 'User already exists'
+            success: false,
+            message: 'An account with this email already exists'
           }));
         }
 
@@ -60,14 +65,14 @@ function handle(req, res) {
         const apiKey = generateApiKey('ck');
         const user = {
           id: userId,
-          name,
+          name: userName,
           email,
           company,
           plan,
           apiKey,
           createdAt: new Date().toISOString(),
           usage: 0,
-          limits: {
+          limit: {
             developer: 1000,
             professional: 50000,
             business: 2000000
@@ -83,22 +88,26 @@ function handle(req, res) {
         });
         res.end(JSON.stringify({
           success: true,
+          apiKey,
           user: {
             id: userId,
-            name,
+            name: userName,
             email,
             company,
             plan,
-            apiKey,
             createdAt: user.createdAt
           },
           message: 'Account created successfully'
         }));
 
       } catch (error) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.writeHead(400, {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        });
         res.end(JSON.stringify({
-          error: 'Invalid JSON data'
+          success: false,
+          message: 'Invalid registration data'
         }));
       }
     });
@@ -138,7 +147,7 @@ function handle(req, res) {
         plan: user.plan,
         createdAt: user.createdAt,
         usage: user.usage,
-        limit: user.limits
+        limit: user.limit
       }
     }));
     return;

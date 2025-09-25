@@ -28,8 +28,8 @@
         async function startCheckout(tier) {
             // For developer tier (free), just redirect to signup/onboarding
             if (tier === 'developer') {
-                // Redirect to developer signup/onboarding
-                try { window.location.href = '/signup/developer'; } catch(_) {}
+                // Redirect to account page where they can register for free
+                try { window.location.href = '/account'; } catch(_) {}
                 return;
             }
 

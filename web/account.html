@@ -511,6 +511,37 @@ console.log('receipt_id', receipt.receipt_id);
         <p>Please enter your enterprise API key to access your compliance dashboard:</p>
         <input type="password" id="api-key-input" placeholder="Enter your API key..." style="width: 100%; margin: 1rem 0; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; background: white; color: #111827; font-size: 1rem;">
         <button id="load-account-btn" class="button">Access Dashboard</button>
+
+        <div style="text-align: center; margin: 2rem 0; color: #64748b;">
+          <hr style="border: none; border-top: 1px solid #e1e5e9; margin: 1rem 0;">
+          <p>Don't have an API key yet?</p>
+          <button id="show-signup-btn" class="button" style="background: #10b981; width: 100%;">Create Free Account</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="signup-form" style="display: none;">
+      <div class="panel">
+        <h2>Create Free Developer Account</h2>
+        <p>Get your free API key and start building with 1,000 receipts per month.</p>
+
+        <form id="registration-form">
+          <div style="margin-bottom: 1rem;">
+            <label for="signup-email" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #1e293b;">Email Address *</label>
+            <input type="email" id="signup-email" name="email" required placeholder="your@company.com" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; background: white; color: #111827; font-size: 1rem;">
+          </div>
+
+          <div style="margin-bottom: 1rem;">
+            <label for="signup-company" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #1e293b;">Company/Organization</label>
+            <input type="text" id="signup-company" name="company" placeholder="Your Company Name" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; background: white; color: #111827; font-size: 1rem;">
+          </div>
+
+          <button type="submit" id="register-btn" class="button" style="background: #10b981; width: 100%;">Create Account & Get API Key</button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1rem;">
+          <button id="back-to-login-btn" class="button" style="background: transparent; color: #64748b; border: 1px solid #d1d5db; width: 100%;">Back to Login</button>
+        </div>
       </div>
     </div>
 

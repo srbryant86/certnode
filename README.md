@@ -146,3 +146,4 @@ docker compose up --build
 - See `CONTRIBUTING.md` for contribution guidelines and optional auto-push hook instructions.
  - CI posts a Benchmark Summary table (P50/P95/P99) on PRs for quick performance visibility.
 Force push test Thu, Sep 25, 2025  2:36:42 PM
+# Force complete rebuild Thu, Sep 25, 2025  6:09:40 PM

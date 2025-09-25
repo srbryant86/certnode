@@ -97,25 +97,77 @@ export default function PricingPage() {
 
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-16">
-          <div className="max-w-7xl mx-auto px-6">
+        <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white py-20 overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <svg className="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                  <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5"/>
+                </pattern>
+              </defs>
+              <rect width="100" height="100" fill="url(#grid)" />
+            </svg>
+          </div>
+
+          <div className="relative max-w-7xl mx-auto px-6">
             <div className="text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Protect every sale. Build trust with customers, affiliates, and banks.
+              <div className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 text-blue-100 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                🔐 SOC 2 Type II Compliant
+              </div>
+
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                Protect every sale.<br />
+                <span className="text-transparent bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text">
+                  Build unshakeable trust.
+                </span>
               </h1>
-              <p className="text-xl text-blue-100 max-w-3xl mx-auto mb-6">
-                Contracts convince lawyers. CertNode receipts convince banks.
+
+              <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-8 leading-relaxed">
+                Contracts convince lawyers. <strong className="text-white">CertNode receipts convince banks.</strong>
               </p>
 
-              {/* Analytics Dashboard Link */}
-              <div className="mt-6">
+              {/* Key Benefits */}
+              <div className="flex flex-wrap justify-center gap-6 mb-10 text-sm">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>Instant API access</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>99.9% uptime SLA</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>Free developer sandbox</span>
+                </div>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <a
+                  href="#pricing-table"
+                  className="bg-white text-blue-700 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 shadow-lg"
+                >
+                  View Pricing Plans
+                </a>
                 <a
                   href="/analytics"
-                  className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-lg font-semibold text-lg transition-all flex items-center justify-center gap-2"
                 >
-                  📊 View Analytics Dashboard
+                  📊 Analytics Dashboard
                 </a>
               </div>
+
+              <p className="text-blue-200 text-sm">
+                Trusted by developers and enterprises • Secure checkout by Stripe
+              </p>
             </div>
           </div>
         </section>

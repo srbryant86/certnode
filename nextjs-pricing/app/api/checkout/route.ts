@@ -15,9 +15,7 @@ export async function POST(request: Request) {
     }
 
     // Call your existing billing API
-    const apiUrl = process.env.NODE_ENV === 'production'
-      ? 'https://certnode.io/api/checkout'
-      : 'http://localhost:3000/api/checkout';
+    const apiUrl = 'https://certnode.io/api/checkout';
 
     const response = await fetch(apiUrl, {
       method: 'POST',

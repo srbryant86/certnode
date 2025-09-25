@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create Free Account — CertNode</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
+    button { background: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; width: 100%; }
+    button:hover { background: #0056b3; }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 4px; margin: 20px 0; border: 1px solid #c3e6cb; }
+    .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; margin: 20px 0; border: 1px solid #f5c6cb; }
+    .api-key { font-family: monospace; font-size: 14px; word-break: break-all; background: #f8f9fa; padding: 10px; border-radius: 4px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Create Free CertNode Account</h1>
+  <p>Get your free API key and start building with 1,000 receipts per month.</p>
+
+  <form id="registrationForm">
+    <div class="form-group">
+      <label for="email">Email Address *</label>
+      <input type="email" id="email" name="email" required placeholder="your@company.com">
+    </div>
+
+    <div class="form-group">
+      <label for="company">Company/Organization</label>
+      <input type="text" id="company" name="company" placeholder="Your Company Name">
+    </div>
+
+    <button type="submit" id="submitBtn">Create Account & Get API Key</button>
+  </form>
+
+  <div id="result" style="display: none;"></div>
+
+  <script>
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var submitBtn = document.getElementById('submitBtn');
+      var result = document.getElementById('result');
+      var email = document.getElementById('email').value.trim();
+      var company = document.getElementById('company').value.trim();
+
+      if (!email) {
+        result.innerHTML = '<div class="error">Please enter your email address.</div>';
+        result.style.display = 'block';
+        return;
+      }
+
+      submitBtn.textContent = 'Creating Account...';
+      submitBtn.disabled = true;
+      result.style.display = 'none';
+
+      // Use XMLHttpRequest for maximum compatibility
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/users/register', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          submitBtn.textContent = 'Create Account & Get API Key';
+          submitBtn.disabled = false;
+
+          if (xhr.status === 201) {
+            try {
+              var data = JSON.parse(xhr.responseText);
+              if (data.success && data.apiKey) {
+                result.innerHTML =
+                  '<div class="success">' +
+                  '<h3>Account Created Successfully!</h3>' +
+                  '<p><strong>Your API Key:</strong></p>' +
+                  '<div class="api-key">' + data.apiKey + '</div>' +
+                  '<p style="margin-top: 15px;"><strong>Important:</strong> Save this API key securely. You can use it to access your account at <a href="/account">/account</a>.</p>' +
+                  '<p><strong>Usage Limit:</strong> 1,000 receipts per month</p>' +
+                  '</div>';
+                result.style.display = 'block';
+              } else {
+                result.innerHTML = '<div class="error">Account created but API key is missing. Server response: ' + xhr.responseText + '</div>';
+                result.style.display = 'block';
+              }
+            } catch (err) {
+              result.innerHTML = '<div class="error">Invalid server response: ' + xhr.responseText + '</div>';
+              result.style.display = 'block';
+            }
+          } else {
+            var errorMsg = 'Registration failed (' + xhr.status + ')';
+            try {
+              var errorData = JSON.parse(xhr.responseText);
+              if (errorData.message) errorMsg = errorData.message;
+            } catch (err) {}
+
+            result.innerHTML = '<div class="error">' + errorMsg + '</div>';
+            result.style.display = 'block';
+          }
+        }
+      };
+
+      xhr.onerror = function() {
+        submitBtn.textContent = 'Create Account & Get API Key';
+        submitBtn.disabled = false;
+        result.innerHTML = '<div class="error">Network error. Please check your connection and try again.</div>';
+        result.style.display = 'block';
+      };
+
+      xhr.send(JSON.stringify({
+        email: email,
+        company: company
+      }));
+    });
+  </script>
+</body>
+</html>

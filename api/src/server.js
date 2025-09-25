@@ -344,6 +344,8 @@ const server = http.createServer(async (req, res) => {
       filePath = path.join(process.cwd(), "web", "subscription-success.html");
     } else if (url.pathname === "/dashboard") {
       filePath = path.join(process.cwd(), "web", "dashboard.html");
+    } else if (url.pathname === "/register") {
+      filePath = path.join(process.cwd(), "web", "register.html");
     } else if (url.pathname === "/compliance-calculator") {
       filePath = path.join(process.cwd(), "web", "compliance-calculator.html");
     } else if (url.pathname === "/pitch") {

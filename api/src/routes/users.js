@@ -73,10 +73,11 @@ function handle(req, res) {
           createdAt: new Date().toISOString(),
           usage: 0,
           limit: {
-            developer: 1000,
-            professional: 50000,
-            business: 2000000
-          }[plan] || 1000
+            developer: 500,
+            starter: 250,
+            pro: 1000,
+            business: 2500
+          }[plan] || 500
         };
 
         users.set(email, user);

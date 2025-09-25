@@ -1,13 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "cd nextjs-pricing && npm ci && npm run build",
   "builds": [
-    { "src": "nextjs-pricing/package.json", "use": "@vercel/next" },
+    {
+      "src": "nextjs-pricing/package.json",
+      "use": "@vercel/next",
+      "config": { "distDir": ".next" }
+    },
     { "src": "api/src/index.js", "use": "@vercel/node" },
     { "src": "web/**", "use": "@vercel/static" },
     { "src": "public/**", "use": "@vercel/static" }
   ],
-  "outputDirectory": "nextjs-pricing",
   "headers": [
     {
       "source": "/",
@@ -91,7 +93,7 @@
     }
   ],
   "rewrites": [
-    { "source": "/_next/static/(.*)", "destination": "/nextjs-pricing/_next/static/$1" },
+    { "source": "/_next/(.*)", "destination": "/nextjs-pricing/_next/$1" },
     { "source": "/openapi.html", "destination": "/public/openapi.html" },
     { "source": "/public/verify.html", "destination": "/web/verify.html" },
     { "source": "/public/pricing/index.html", "destination": "/web/pricing.html" },

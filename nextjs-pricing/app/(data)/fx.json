@@ -1,0 +1,10 @@
+{
+  "base": "USD",
+  "timestamp": "2025-09-25T00:00:00Z",
+  "rates": {
+    "USD": 1.0,
+    "EUR": 0.92,
+    "GBP": 0.79
+  },
+  "note": "Static conversion rates for pricing display only. Not for financial settlement. Update quarterly."
+}

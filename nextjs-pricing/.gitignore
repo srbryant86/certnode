@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+*.log*
+
+# Build outputs
+.next
+out
+
+# Environment files
+.env*
+
+# IDE files
+.vscode
+.idea
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# Runtime data
+pids
+*.pid
+*.seed

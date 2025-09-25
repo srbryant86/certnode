@@ -1,0 +1,99 @@
+{
+  "smbTiers": [
+    {
+      "id": "starter",
+      "name": "Starter",
+      "priceMonthly": 49,
+      "includedReceipts": 250,
+      "overagePerReceipt": 0.10,
+      "tagline": "For solopreneurs and small course sellers",
+      "features": [
+        "250 receipts/month included",
+        "$0.10 per additional receipt",
+        "Open-source SDKs (Python, Node.js, Rust, Go)",
+        "Community support",
+        "Basic analytics",
+        "Standard SLA (99.5% uptime)"
+      ]
+    },
+    {
+      "id": "growth",
+      "name": "Growth",
+      "priceMonthly": 199,
+      "includedReceipts": 1000,
+      "overagePerReceipt": 0.05,
+      "tagline": "For high-ticket coaches and boutique agencies",
+      "features": [
+        "1,000 receipts/month included",
+        "$0.05 per additional receipt",
+        "All Starter features",
+        "Email support",
+        "Advanced analytics",
+        "Enhanced SLA (99.7% uptime)",
+        "Custom subdomain"
+      ]
+    },
+    {
+      "id": "business",
+      "name": "Business",
+      "priceMonthly": 499,
+      "includedReceipts": 2500,
+      "overagePerReceipt": 0.02,
+      "tagline": "For 7–8 figure teams and mid-sized digital businesses",
+      "features": [
+        "2,500 receipts/month included",
+        "$0.02 per additional receipt",
+        "All Growth features",
+        "Priority support",
+        "Custom branding",
+        "Advanced integrations",
+        "Dedicated success manager",
+        "Premium SLA (99.9% uptime)"
+      ]
+    }
+  ],
+  "highTicket": [
+    {
+      "id": "pro",
+      "name": "Pro Dispute Protection",
+      "priceYearly": 12000,
+      "annualSalesCeiling": 2000000,
+      "features": [
+        "Unlimited receipts up to $2M annual sales",
+        "Priority dispute-deflection support",
+        "Dedicated merchant success manager",
+        "Advanced chargeback protection",
+        "Real-time fraud monitoring",
+        "Custom integration support"
+      ]
+    },
+    {
+      "id": "elite",
+      "name": "Elite Dispute Protection",
+      "priceYearly": 30000,
+      "annualSalesCeiling": 10000000,
+      "features": [
+        "Unlimited receipts up to $10M annual sales",
+        "SLA-backed dispute-deflection commitment",
+        "Affiliate attribution receipts included",
+        "White-glove onboarding",
+        "24/7 priority support",
+        "Custom compliance reporting",
+        "Revenue protection guarantee"
+      ]
+    }
+  ],
+  "platform": {
+    "perMerchantPerMonth": 5,
+    "gmvRate": 0.001,
+    "features": [
+      "Per-merchant pricing ($5-10/month)",
+      "0.1% GMV alternative pricing",
+      "Compliance reporting dashboard",
+      "Multi-tenant architecture",
+      "White-label options",
+      "Enterprise SLA",
+      "Dedicated technical support"
+    ]
+  }
+}

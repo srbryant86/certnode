@@ -120,26 +120,41 @@ document.addEventListener('DOMContentLoaded', function(){
       if (response.ok && data.success) {
         // Store API key and redirect to dashboard
         currentApiKey = data.apiKey;
-        localStorage.setItem('certnode_api_key', data.apiKey);
 
         if (!data.apiKey) {
           console.error('API key is missing from response:', data);
-          showError('Account created but API key is missing. Please try logging in.');
+          alert('Account created but API key is missing. Response: ' + JSON.stringify(data));
+          showError('Account created but API key is missing. Please contact support.');
           return;
         }
 
-        showSuccessNotification('Account created successfully! Your API key is: ' + data.apiKey);
+        // Store in localStorage
+        try {
+          localStorage.setItem('certnode_api_key', data.apiKey);
+        } catch(e) {
+          console.warn('LocalStorage not available:', e);
+        }
+
+        // Show success with fallback alert
+        try {
+          showSuccessNotification('Account created successfully! Your API key is: ' + data.apiKey);
+        } catch(e) {
+          alert('Account created successfully! Your API key is: ' + data.apiKey);
+        }
 
         // Redirect to account dashboard instead of causing 404
-        setTimeout(() => {
+        setTimeout(function() {
           loadAccountData();
         }, 1000);
       } else {
         console.error('Registration failed:', data);
-        showError(data.message || 'Account creation failed. Please try again.');
+        var errorMsg = (data && data.message) ? data.message : 'Account creation failed. Please try again.';
+        alert('Registration failed: ' + errorMsg);
+        showError(errorMsg);
       }
     } catch (error) {
       console.error('Registration error:', error);
+      alert('Network error during registration: ' + error.message);
       showError('Account creation failed. Please check your connection and try again.');
     }
 

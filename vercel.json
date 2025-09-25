@@ -89,6 +89,7 @@
     { "source": "/openapi.json", "destination": "/public/openapi.json" },
     { "source": "/.well-known/jwks.json", "destination": "/public/.well-known/jwks.json" },
     { "source": "/trust/keys.jsonl", "destination": "/public/trust/keys.jsonl" },
+    { "source": "/api/checkout", "destination": "/nextjs-pricing/api/checkout" },
     { "source": "/api/(.*)", "destination": "/api/src/index.js" },
     { "source": "/trust", "destination": "/web/trust.html" },
     { "source": "/status", "destination": "/public/status/index.html" },

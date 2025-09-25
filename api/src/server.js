@@ -102,15 +102,18 @@ const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   pathname = url.pathname;
 
-  // Apply security hardening middleware (skip for billing endpoints to avoid JSON false positives)
-  const isBillingEndpoint = url.pathname.startsWith('/api/') && (
+  // Apply security hardening middleware (skip for billing and user endpoints to avoid JSON false positives)
+  const isExcludedEndpoint = url.pathname.startsWith('/api/') && (
     url.pathname === '/api/create-checkout' ||
     url.pathname === '/api/create-portal' ||
     url.pathname === '/api/pricing' ||
-    url.pathname === '/api/account'
+    url.pathname === '/api/account' ||
+    url.pathname.startsWith('/api/users/') ||
+    url.pathname === '/api/track-demo' ||
+    url.pathname === '/api/track-lead'
   );
 
-  if (securityMiddleware && !isBillingEndpoint) {
+  if (securityMiddleware && !isExcludedEndpoint) {
     await runMiddleware(securityMiddleware.middleware());
   }
 

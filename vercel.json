@@ -1,6 +1,7 @@
 {
   "version": 2,
   "builds": [
+    { "src": "nextjs-pricing/package.json", "use": "@vercel/next" },
     { "src": "api/src/index.js", "use": "@vercel/node" },
     { "src": "web/**", "use": "@vercel/static" },
     { "src": "public/**", "use": "@vercel/static" }
@@ -102,7 +103,8 @@
     { "source": "/platform", "destination": "/public/platform.html" },
     { "source": "/solutions", "destination": "/public/solutions.html" },
     { "source": "/support", "destination": "/public/support.html" },
-    { "source": "/pricing", "destination": "/web/pricing.html" },
+    { "source": "/pricing", "destination": "/nextjs-pricing/pricing" },
+    { "source": "/analytics", "destination": "/nextjs-pricing/analytics" },
     { "source": "/enterprise", "destination": "/public/enterprise.html" },
     { "source": "/test-vectors", "destination": "/public/test-vectors/index.html" },
     { "source": "/signup/developer", "destination": "/public/signup/developer.html" },

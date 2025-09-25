@@ -42,6 +42,65 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
     });
   };
 
+  // Handle checkout
+  const handleCheckout = async (tierId: string) => {
+    // Track the checkout attempt
+    analytics.trackInteraction('checkout_start', {
+      planId: tierId,
+      billing: isYearly ? 'yearly' : 'monthly',
+      currency
+    });
+
+    // Map display tier names to API tiers
+    const tierMap: { [key: string]: string } = {
+      'starter': 'starter',
+      'growth': 'professional',
+      'business': 'business'
+    };
+
+    const mappedTier = tierMap[tierId];
+    if (!mappedTier) {
+      console.error('Invalid tier:', tierId);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tier: mappedTier,
+          email: null // Will be collected by Stripe
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Checkout failed');
+      }
+
+      const data = await response.json();
+
+      if (data.url) {
+        // Redirect to Stripe checkout
+        window.location.href = data.url;
+      } else if (data.payment_link) {
+        // Use payment link if configured
+        window.location.href = data.payment_link;
+      } else {
+        throw new Error('No checkout URL returned');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      analytics.trackInteraction('checkout_error', {
+        planId: tierId,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+      // Could show a user-friendly error message here
+    }
+  };
+
   // Track when plans come into view
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -156,6 +215,7 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
                 </div>
 
                 <button
+                  onClick={() => handleCheckout(tier.id)}
                   className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
                     isHighlighted
                       ? 'bg-blue-600 text-white hover:bg-blue-700'

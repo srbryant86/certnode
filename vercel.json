@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "cd nextjs-pricing && npm ci && npm run build",
   "builds": [
     { "src": "nextjs-pricing/package.json", "use": "@vercel/next" },
     { "src": "api/src/index.js", "use": "@vercel/node" },
@@ -51,6 +52,13 @@
     {
       "source": "/public/(.*)\\.html",
       "headers": [ { "key": "Cache-Control", "value": "public, max-age=3600" } ]
+    },
+    {
+      "source": "/pricing",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "Pragma", "value": "no-cache" }
+      ]
     },
     {
       "source": "/.well-known/jwks.json",

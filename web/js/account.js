@@ -63,6 +63,9 @@ document.addEventListener('DOMContentLoaded', function(){
   } catch(e){ console.error('Account loading error:', e); showError('Unable to load account data. Please try again later.'); } }
 
   function displayAccountData(user){
+    console.log('Displaying account data:', user);
+    console.log('Current API key:', currentApiKey);
+
     const usagePercent = user.limit ? (user.usage / user.limit) * 100 : 0;
     $('#usage-used').textContent = user.usage.toLocaleString();
     $('#usage-limit').textContent = user.limit?.toLocaleString() || 'Unlimited';
@@ -71,7 +74,14 @@ document.addEventListener('DOMContentLoaded', function(){
     $('#current-tier').textContent = user.plan || 'Developer';
     $('#subscription-status').textContent = 'Active';
     $('#customer-email').textContent = user.email;
-    $('#api-key-display').textContent = currentApiKey; // Show the current API key
+
+    // Show the current API key
+    const apiKeyElement = $('#api-key-display');
+    if (apiKeyElement) {
+      apiKeyElement.textContent = currentApiKey || 'undefined';
+    } else {
+      console.error('API key display element not found');
+    }
   }
 
   function copyApiKey(){ const apiKey = $('#api-key-display').textContent; navigator.clipboard.writeText(apiKey).then(()=>{}).catch(()=>{}); }
@@ -105,11 +115,18 @@ document.addEventListener('DOMContentLoaded', function(){
       });
 
       const data = await response.json();
+      console.log('Registration response:', data);
 
       if (response.ok && data.success) {
         // Store API key and redirect to dashboard
         currentApiKey = data.apiKey;
         localStorage.setItem('certnode_api_key', data.apiKey);
+
+        if (!data.apiKey) {
+          console.error('API key is missing from response:', data);
+          showError('Account created but API key is missing. Please try logging in.');
+          return;
+        }
 
         showSuccessNotification(`Account created successfully! Your API key is: ${data.apiKey}`);
 
@@ -118,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function(){
           loadAccountData();
         }, 1000);
       } else {
+        console.error('Registration failed:', data);
         showError(data.message || 'Account creation failed. Please try again.');
       }
     } catch (error) {

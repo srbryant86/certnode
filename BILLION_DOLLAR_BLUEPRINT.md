@@ -19,3 +19,4 @@
 - Checkout API bridge now targets the billing service directly, restoring Stripe redirects while keeping the Next.js experience seamless.
 - Navigation component now mirrors the core site links, reinforcing unified developer journeys across static and Next.js surfaces.
 - Mobile navigation interaction matches the static site experience with outside-click dismissal and overlay for consistent polish.
+- Desktop navigation typography and spacing now match the static site, maintaining brand consistency across every route.

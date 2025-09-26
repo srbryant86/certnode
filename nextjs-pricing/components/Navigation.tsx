@@ -60,18 +60,21 @@ export default function Navigation() {
   }, [mobileOpen])
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/95 backdrop-blur">
       <div
         ref={containerRef}
-        className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6"
+        className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 md:px-6"
       >
-        <Link href="/" className="text-lg font-semibold tracking-tight text-slate-900">
+        <Link
+          href="/"
+          className="logo text-[1.75rem] font-bold leading-none tracking-[-0.025em] text-blue-600 transition hover:-translate-y-px hover:text-blue-700"
+        >
           CertNode
         </Link>
 
         <button
           type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 md:hidden"
+          className="mobile-menu-toggle inline-flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 md:hidden"
           aria-label="Toggle navigation"
           aria-expanded={mobileOpen}
           aria-controls="primary-navigation"
@@ -92,17 +95,17 @@ export default function Navigation() {
           </svg>
         </button>
 
-        <nav className="hidden gap-6 md:flex">
+        <nav className="nav-links hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((link) => {
             const active = linkIsActive(pathname, link.href)
             return (
               <Link
                 key={link.href}
                 href={link.href as any}
-                className={`text-sm font-medium transition-colors ${
+                className={`rounded-lg px-4 py-2 text-[15px] font-medium transition-all ${
                   active
-                    ? 'text-blue-600'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-blue-50 text-blue-600 shadow-sm'
+                    : 'text-slate-600 hover:bg-blue-50/60 hover:text-blue-600'
                 }`}
                 aria-current={active ? 'page' : undefined}
               >

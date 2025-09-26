@@ -34,6 +34,7 @@ git push
 - **Timing:** Allow 1-2 minutes for deployment completion
 - **Verification:** Check production URL to confirm changes are live
 - **Next.js assets:** Pricing app uses the `/nextjs-pricing` asset prefix; a compatibility rewrite catches legacy `/_next/*` requests, but verify the prefixed path serves 200s after deploy.
+- **Styling pipeline:** Tailwind/PostCSS runs within the Next.js build; confirm `app/globals.css` loads in production so pricing renders with full design polish.
 
 ## Emergency Deployment Trigger
 

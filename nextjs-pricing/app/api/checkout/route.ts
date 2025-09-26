@@ -17,9 +17,9 @@ export async function POST(request: Request) {
     // For yearly billing, redirect directly to the new Stripe payment links
     if (billing === 'yearly') {
       const yearlyPaymentLinks = {
-        'starter': 'https://buy.stripe.com/28E8wOeMices0nYduZ',
-        'pro': 'https://buy.stripe.com/7sY28qdIe4M02w61Mh',
-        'business': 'https://buy.stripe.com/bJe4gyaw2fqE0nY76B'
+        'starter': 'https://buy.stripe.com/28E8wOeMices0nYduZbAs06',
+        'pro': 'https://buy.stripe.com/7sY28qdIe4M02w61MhbAs07',
+        'business': 'https://buy.stripe.com/bJe4gyaw2fqE0nY76BbAs08'
       };
 
       const paymentLink = yearlyPaymentLinks[mappedTier];

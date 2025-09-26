@@ -1,10 +1,15 @@
 /** @type {import('next').NextConfig} */
+const isVercelDeployment = Boolean(process.env.VERCEL);
+
 const nextConfig = {
   experimental: {
     typedRoutes: true,
   },
   // Enable standalone output for Docker
   output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
+
+  // Ensure assets resolve correctly when deployed from a subdirectory on Vercel
+  assetPrefix: isVercelDeployment ? '/nextjs-pricing' : undefined,
 
   // Force cache invalidation for deployment
   generateBuildId: async () => {

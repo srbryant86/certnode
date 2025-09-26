@@ -72,6 +72,7 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
         },
         body: JSON.stringify({
           tier: mappedTier,
+          billing: isYearly ? 'yearly' : 'monthly',
           email: null // Will be collected by Stripe
         })
       });

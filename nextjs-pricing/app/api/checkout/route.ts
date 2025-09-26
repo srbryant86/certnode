@@ -1,6 +1,6 @@
 export async function POST(request: Request) {
   try {
-    const { tier, email } = await request.json();
+    const { tier, billing = 'monthly', email } = await request.json();
 
     // Map Next.js pricing tiers to your API
     const tierMap: { [key: string]: string } = {
@@ -14,7 +14,21 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Invalid tier' }, { status: 400 });
     }
 
-    // Determine billing API base URL
+    // For yearly billing, redirect directly to the new Stripe payment links
+    if (billing === 'yearly') {
+      const yearlyPaymentLinks = {
+        'starter': 'https://buy.stripe.com/28E8wOeMices0nYduZ',
+        'pro': 'https://buy.stripe.com/7sY28qdIe4M02w61Mh',
+        'business': 'https://buy.stripe.com/bJe4gyaw2fqE0nY76B'
+      };
+
+      const paymentLink = yearlyPaymentLinks[mappedTier];
+      if (paymentLink) {
+        return Response.json({ url: paymentLink });
+      }
+    }
+
+    // For monthly billing, use existing API
     const host = request.headers.get('host') || '';
     const isLocal = host.includes('localhost');
     const defaultBase = isLocal ? 'http://localhost:3000' : `https://${host}`;
@@ -28,6 +42,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         tier: mappedTier,
+        billing,
         email,
         success_url: `${request.headers.get('origin') || defaultBase}/pricing?success=true`,
         cancel_url: `${request.headers.get('origin') || defaultBase}/pricing?canceled=true`

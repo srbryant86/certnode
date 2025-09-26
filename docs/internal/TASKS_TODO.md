@@ -9,6 +9,7 @@ You are operating **only** on the application layer. Do not change infra/secrets
 - [x] Provide legacy `/_next` compatibility rewrite while keeping canonical prefix routing
 - [x] Reinstate Tailwind/PostCSS styling pipeline so pricing renders with intended polish
 - [x] Repair checkout bridge so CTA buttons reach billing API without loops
+- [x] Mirror global navigation so pricing matches enterprise site links
 - [ ] Monitor live deployment for `/_next` asset 200 responses post-release
 
 ## Completed (from git)

@@ -4,6 +4,7 @@ You are operating **only** on the application layer. Do not change infra/secrets
 
 ## Session TODOs
 - [x] Restore Next.js pricing assets by removing conflicting `/_next` rewrite in `vercel.json`
+- [x] Extend analytics event schema to include checkout interactions for production builds
 - [ ] Monitor live deployment for `/_next` asset 200 responses post-release
 
 ## Completed (from git)

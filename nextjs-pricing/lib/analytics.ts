@@ -3,7 +3,7 @@ export interface UserInteraction {
   event: 'roi_calculation' | 'currency_change' | 'billing_toggle' | 'plan_view' | 'cta_click' |
         'social_proof_view' | 'urgency_shown' | 'urgency_cta_clicked' | 'urgency_dismissed' |
         'risk_reversal_clicked' | 'final_cta_clicked' | 'recommendation_clicked' | 'recommendation_dismissed' |
-        'ab_test_assignment';
+        'checkout_start' | 'checkout_error' | 'ab_test_assignment';
   data?: Record<string, any>;
 }
 

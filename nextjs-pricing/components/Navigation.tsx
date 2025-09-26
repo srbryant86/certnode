@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -26,14 +26,45 @@ const linkIsActive = (pathname: string, href: string) => {
 export default function Navigation() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     setMobileOpen(false)
   }, [pathname])
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!containerRef.current) return
+      if (containerRef.current.contains(event.target as Node)) return
+      setMobileOpen(false)
+    }
+
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileOpen(false)
+      }
+    }
+
+    if (mobileOpen) {
+      document.addEventListener('click', handleClickOutside)
+    } else {
+      document.removeEventListener('click', handleClickOutside)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [mobileOpen])
+
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6">
+      <div
+        ref={containerRef}
+        className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6"
+      >
         <Link href="/" className="text-lg font-semibold tracking-tight text-slate-900">
           CertNode
         </Link>
@@ -42,6 +73,8 @@ export default function Navigation() {
           type="button"
           className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 md:hidden"
           aria-label="Toggle navigation"
+          aria-expanded={mobileOpen}
+          aria-controls="primary-navigation"
           onClick={() => setMobileOpen((open) => !open)}
         >
           <svg
@@ -85,7 +118,7 @@ export default function Navigation() {
           mobileOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         } overflow-hidden border-t border-slate-200/60 bg-white/95 backdrop-blur-sm transition-all duration-300 ease-in-out`}
       >
-        <nav className="flex flex-col space-y-2 px-4 py-4">
+        <nav id="primary-navigation" className="flex flex-col space-y-2 px-4 py-4">
           {NAV_LINKS.map((link) => {
             const active = linkIsActive(pathname, link.href)
             return (
@@ -105,6 +138,9 @@ export default function Navigation() {
           })}
         </nav>
       </div>
+      {mobileOpen ? (
+        <div className="fixed inset-0 z-40 bg-slate-900/30 backdrop-blur-sm md:hidden" aria-hidden />
+      ) : null}
     </header>
   )
 }

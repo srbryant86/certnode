@@ -93,7 +93,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/_next/(.*)", "destination": "/nextjs-pricing/_next/$1" },
     { "source": "/openapi.html", "destination": "/public/openapi.html" },
     { "source": "/public/verify.html", "destination": "/web/verify.html" },
     { "source": "/public/pricing/index.html", "destination": "/web/pricing.html" },

@@ -33,6 +33,7 @@ git push
 - **Branch:** Deployments trigger from `main` branch pushes
 - **Timing:** Allow 1-2 minutes for deployment completion
 - **Verification:** Check production URL to confirm changes are live
+- **Next.js assets:** Keep `/_next/*` paths unmanaged; the Vercel Next builder serves framework bundles automatically and manual rewrites will break CSS/JS delivery.
 
 ## Emergency Deployment Trigger
 

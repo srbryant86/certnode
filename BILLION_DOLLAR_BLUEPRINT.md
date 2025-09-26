@@ -6,10 +6,11 @@
 - [ ] Next item - Automate asset health check in deployment validation
 
 ## Strategic Insights
-- Replacing the manual `/_next` rewrite with an explicit asset prefix keeps the Next.js builder in control of canonical bundle URLs, preventing ecosystem fragmentation.
+- Canonical asset delivery now flows through the `/nextjs-pricing` prefix while a compatibility rewrite catches legacy `/_next` requests, so we restore styling without compromising future multi-app separation.
 - Keeping business-route rewrites separate from framework internals protects infrastructure scale and credibility as we evolve into the universal receipt protocol owner.
-- Aligning Vercel asset delivery with an explicit Next.js asset prefix keeps the multi-app deployment resilient without entangling API and static layers.
+- Aligning Vercel asset delivery with the explicit Next.js asset prefix keeps the multi-app deployment resilient without entangling API and static layers.
 
 ## Execution Notes
 - Pricing experience at `certnode.io/pricing` now satisfies the professional site infrastructure objective with full styling and interactivity restored.
 - Checkout analytics events typed (`checkout_start`/`checkout_error`) so revenue instrumentation stays intact while passing production builds.
+- Legacy `/_next` requests now rewrite to the prefixed path so cached clients recover immediately while new builds stay standards-aligned.

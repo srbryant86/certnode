@@ -35,6 +35,7 @@ git push
 - **Verification:** Check production URL to confirm changes are live
 - **Next.js assets:** Pricing app uses the `/nextjs-pricing` asset prefix; a compatibility rewrite catches legacy `/_next/*` requests, but verify the prefixed path serves 200s after deploy.
 - **Styling pipeline:** Tailwind/PostCSS runs within the Next.js build; confirm `app/globals.css` loads in production so pricing renders with full design polish.
+- **Checkout bridge:** `/api/checkout` proxies to the billing service via `/api/create-checkout`; verify CTA redirects land on Stripe after deploy.
 
 ## Emergency Deployment Trigger
 

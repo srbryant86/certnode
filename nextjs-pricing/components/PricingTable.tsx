@@ -82,12 +82,9 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
 
       const data = await response.json();
 
-      if (data.url) {
-        // Redirect to Stripe checkout
-        window.location.href = data.url;
-      } else if (data.payment_link) {
-        // Use payment link if configured
-        window.location.href = data.payment_link;
+      const checkoutUrl = data.url || data.checkout_url || data.payment_link;
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl;
       } else {
         throw new Error('No checkout URL returned');
       }

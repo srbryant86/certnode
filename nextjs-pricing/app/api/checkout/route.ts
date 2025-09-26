@@ -14,8 +14,12 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Invalid tier' }, { status: 400 });
     }
 
-    // Call your existing billing API
-    const apiUrl = 'https://certnode.io/api/checkout';
+    // Determine billing API base URL
+    const host = request.headers.get('host') || '';
+    const isLocal = host.includes('localhost');
+    const defaultBase = isLocal ? 'http://localhost:3000' : `https://${host}`;
+    const billingBase = (process.env.BILLING_API_BASE_URL || defaultBase).replace(/\/$/, '');
+    const apiUrl = `${billingBase}/api/create-checkout`;
 
     const response = await fetch(apiUrl, {
       method: 'POST',
@@ -25,8 +29,8 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         tier: mappedTier,
         email,
-        success_url: `${request.headers.get('origin')}/pricing?success=true`,
-        cancel_url: `${request.headers.get('origin')}/pricing?canceled=true`
+        success_url: `${request.headers.get('origin') || defaultBase}/pricing?success=true`,
+        cancel_url: `${request.headers.get('origin') || defaultBase}/pricing?canceled=true`
       })
     });
 
@@ -37,7 +41,12 @@ export async function POST(request: Request) {
     }
 
     const data = await response.json();
-    return Response.json(data);
+    const normalized = {
+      ...data,
+      url: data.url || data.checkout_url || data.payment_link || null,
+    };
+
+    return Response.json(normalized);
 
   } catch (error) {
     console.error('Checkout error:', error);

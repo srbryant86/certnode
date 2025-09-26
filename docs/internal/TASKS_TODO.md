@@ -8,6 +8,7 @@ You are operating **only** on the application layer. Do not change infra/secrets
 - [x] Align Next.js asset prefix with Vercel subdirectory deployment
 - [x] Provide legacy `/_next` compatibility rewrite while keeping canonical prefix routing
 - [x] Reinstate Tailwind/PostCSS styling pipeline so pricing renders with intended polish
+- [x] Repair checkout bridge so CTA buttons reach billing API without loops
 - [ ] Monitor live deployment for `/_next` asset 200 responses post-release
 
 ## Completed (from git)

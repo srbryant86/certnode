@@ -16,3 +16,4 @@
 - Checkout analytics events typed (`checkout_start`/`checkout_error`) so revenue instrumentation stays intact while passing production builds.
 - Legacy `/_next` requests now rewrite to the prefixed path so cached clients recover immediately while new builds stay standards-aligned.
 - Tailwind globals load through `app/globals.css`, keeping typography, gradients, and layout utilities consistent with our enterprise positioning.
+- Checkout API bridge now targets the billing service directly, restoring Stripe redirects while keeping the Next.js experience seamless.

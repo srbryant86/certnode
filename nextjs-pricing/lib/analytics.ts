@@ -189,9 +189,9 @@ export class PricingAnalytics {
         return 'business';
       }
 
-      // Medium-volume, medium-revenue → Growth (500+ receipts, $25k+ monthly revenue)
+      // Medium-volume, medium-revenue → Professional (500+ receipts, $25k+ monthly revenue)
       if (monthlyVolume >= 500 || monthlyRevenue >= 25000 || ticketSize >= 100) {
-        return 'growth';
+        return 'professional';
       }
 
       // Low-volume, getting started → Starter (under 500 receipts, under $25k monthly revenue)
@@ -206,14 +206,14 @@ export class PricingAnalytics {
     const isEngaged = sessionDuration > 2 * 60 * 1000; // 2+ minutes
     const hasViewedMultiplePlans = viewedPlans.length >= 2;
 
-    // Highly engaged users likely need Growth or Business
+    // Highly engaged users likely need Professional or Business
     if (isEngaged && calculationCount >= 3 && hasViewedMultiplePlans) {
-      return viewedPlans.includes('business') ? 'business' : 'growth';
+      return viewedPlans.includes('business') ? 'business' : 'professional';
     }
 
-    // Medium engagement → Growth
+    // Medium engagement → Professional
     if (isEngaged || calculationCount >= 2) {
-      return 'growth';
+      return 'professional';
     }
 
     // Low engagement, new users → Starter

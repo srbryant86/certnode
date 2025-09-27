@@ -33,10 +33,10 @@ export default function RiskReversalSection() {
       feature: "security_compliance"
     },
     {
-      title: "First Month 50% Off",
-      description: "Launch with half-price billing on your first month - applied automatically at checkout.",
-      icon: "50%",
-      feature: "intro_discount"
+      title: "Transparent Pricing",
+      description: "No hidden fees, setup costs, or surprise charges. What you see is what you pay.",
+      icon: "💰",
+      feature: "transparent_pricing"
     },
     {
       title: "No Long-term Contracts",

@@ -61,12 +61,12 @@ export default function UrgencyTrigger() {
           textColor: 'text-green-800'
         },
         {
-          type: 'discount',
-          message: 'First Month 50% Off',
-          subtext: 'New customer exclusive - expires soon',
+          type: 'risk_reversal',
+          message: 'Enterprise-Ready Security',
+          subtext: 'SOX compliant, audit-ready from day one',
           urgencyLevel: 'medium',
-          icon: '💰',
-          ctaText: 'Get Discount',
+          icon: '🔐',
+          ctaText: 'Start Secure',
           backgroundColor: 'bg-purple-50 border-purple-200',
           textColor: 'text-purple-800'
         }
@@ -77,7 +77,7 @@ export default function UrgencyTrigger() {
       const hasHighTicket = session.calculatorUsage >= 3;
 
       // Never show fake scarcity triggers for legal compliance
-      if (recommended === 'growth' && session.engagementLevel === 'high') {
+      if (recommended === 'professional' && session.engagementLevel === 'high') {
         return triggers[1]; // Use value-focused message instead of fake scarcity
       }
 
@@ -93,7 +93,7 @@ export default function UrgencyTrigger() {
         return triggers[2]; // Risk reversal for hesitant users
       }
 
-      return triggers[3]; // Default discount
+      return triggers[3]; // Default enterprise security message
     };
 
     const urgencyData = generateUrgencyData();

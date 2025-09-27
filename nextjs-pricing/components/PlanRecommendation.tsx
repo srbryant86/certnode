@@ -90,8 +90,8 @@ function buildEnterpriseMessage(payload: RecommendationPayload): string | null {
     return `With about ${receipts} receipts monthly, the Business plan unlocks ${formattedSavings} in annual savings and enterprise-grade compliance out of the box.`;
   }
 
-  if (planId === 'growth') {
-    return `Your current volume (~${receipts} receipts monthly) maps to the Growth plan. Expect roughly ${formattedSavings} in annual savings once receipts are automated.`;
+  if (planId === 'professional') {
+    return `Your current volume (~${receipts} receipts monthly) maps to the Professional plan. Expect roughly ${formattedSavings} in annual savings once receipts are automated.`;
   }
 
   if (planId === 'starter') {
@@ -109,7 +109,7 @@ function buildLegacyMessage(ticket: number, monthlySales: number): string | null
   }
 
   if (monthlySales <= 600 || (ticket >= 1000 && ticket <= 5000)) {
-    return 'The Growth plan is ideal for your business size and transaction values.';
+    return 'The Professional plan is ideal for your business size and transaction values.';
   }
 
   if (monthlySales >= 100 && ticket >= 5000) {

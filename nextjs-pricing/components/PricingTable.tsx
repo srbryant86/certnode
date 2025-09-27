@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { formatCurrency, formatPriceWithPeriod, calculateYearlyPrice } from '@/lib/currency';
+import { formatCurrency, calculateYearlyPrice } from '@/lib/currency';
 import { PricingAnalytics } from '@/lib/analytics';
 
 interface PricingTier {
@@ -18,6 +18,12 @@ interface PricingTableProps {
   tiers: PricingTier[];
   highlightTier?: string;
 }
+
+const TIER_API_MAP: Record<string, string> = {
+  foundation: 'foundation',
+  professional: 'professional',
+  enterprise: 'enterprise',
+};
 
 export default function PricingTable({ tiers, highlightTier = 'growth' }: PricingTableProps) {
   const [isYearly, setIsYearly] = useState(false);
@@ -52,13 +58,7 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
     });
 
     // Map display tier names to API tiers
-    const tierMap: { [key: string]: string } = {
-      'foundation': 'foundation',
-      'professional': 'professional',
-      'enterprise': 'enterprise'
-    };
-
-    const mappedTier = tierMap[tierId];
+    const mappedTier = TIER_API_MAP[tierId];
     if (!mappedTier) {
       console.error('Invalid tier:', tierId);
       return;
@@ -264,3 +264,5 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
     </div>
   );
 }
+
+

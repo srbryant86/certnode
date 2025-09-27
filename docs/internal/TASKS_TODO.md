@@ -6,6 +6,7 @@ You are operating **only** on the application layer. Do not change infra/secrets
 - [x] Restore Next.js pricing assets by removing conflicting `/_next` rewrite in `vercel.json`
 - [x] Route yearly pricing toggle through the correct Stripe payment links
 - [x] Sunset the public analytics CTA until we have authenticated dashboards
+- [x] Publish contact@certnode.io for analytics access requests
 - [x] Extend analytics event schema to include checkout interactions for production builds
 - [x] Align Next.js asset prefix with Vercel subdirectory deployment
 - [x] Provide legacy `/_next` compatibility rewrite while keeping canonical prefix routing

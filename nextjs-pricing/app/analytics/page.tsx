@@ -17,11 +17,25 @@ export default function AnalyticsPage() {
           <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Analytics access is limited to enrolled customers.</h1>
           <p className="text-lg text-gray-600">
             We are finalizing authenticated reporting backed by real telemetry. Once ready, signed-in customers will be able to review revenue, conversion, and usage insights in this space.
+            {' '}Reach our team anytime at{' '}
+            <a
+              className="text-blue-600 underline decoration-blue-200 transition hover:text-blue-700 hover:decoration-blue-400"
+              href="mailto:contact@certnode.io"
+            >
+              contact@certnode.io
+            </a>
+            .
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+            <a
+              href="mailto:contact@certnode.io"
+              className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
+            >
+              Email Us
+            </a>
             <Link
               href={'/support' as Route}
-              className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
+              className="inline-flex items-center justify-center rounded-lg border border-blue-300 px-6 py-3 text-sm font-semibold text-blue-700 transition hover:border-blue-400 hover:bg-blue-50"
             >
               Visit Support
             </Link>

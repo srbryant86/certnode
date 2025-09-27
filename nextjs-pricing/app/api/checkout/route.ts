@@ -22,6 +22,12 @@ const monthlyPriceIds: Record<string, string | undefined> = {
   business: process.env.STRIPE_BUSINESS_PRICE_ID,
 };
 
+const monthlyPaymentLinks: Record<string, string | undefined> = {
+  starter: 'https://buy.stripe.com/eVqbJ0cEa2DS2w69eJbAs03',
+  pro: 'https://buy.stripe.com/dRmbJ0gUq6U8gmW62xbAs04',
+  business: 'https://buy.stripe.com/7sYbJ0dIe0vK3Aa2QlbAs05',
+};
+
 const stripeSecret = process.env.STRIPE_SECRET_KEY;
 const stripe = stripeSecret
   ? new Stripe(stripeSecret, {
@@ -169,7 +175,13 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Yearly billing is not configured for this tier' }, { status: 400 });
     }
 
-    // For monthly billing, fall through to use the billing API
+    if (billing === 'monthly') {
+      const paymentLink = monthlyPaymentLinks[mappedTier];
+      if (paymentLink) {
+        return Response.json({ url: paymentLink });
+      }
+      // Otherwise fall through to billing API / Stripe session
+    }
 
     const baseUrl = resolveBaseUrl(request);
     const billingBase = resolveBillingApiBase(request);

@@ -93,7 +93,8 @@ export const authConfig: NextAuthConfig = {
     },
   },
   events: {
-    async signOut({ token }) {
+    async signOut(message) {
+      const token = (message as { token?: { sub?: string | null } }).token;
       if (token?.sub) {
         await prisma.session.deleteMany({ where: { userId: token.sub } });
       }

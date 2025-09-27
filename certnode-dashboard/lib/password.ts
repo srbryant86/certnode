@@ -1,6 +1,6 @@
 import argon2 from "argon2";
 
-const HASH_CONFIG: argon2.Options & { type: argon2.Type } = {
+const HASH_CONFIG: argon2.Options & { type: number } = {
   type: argon2.argon2id,
   memoryCost: 2 ** 16,
   timeCost: 3,

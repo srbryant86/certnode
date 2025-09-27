@@ -18,10 +18,14 @@ enum UserRole {
 }
 
 enum PlanTier {
-  STARTER    @map("starter")
-  GROWTH     @map("growth")
-  BUSINESS   @map("business")
-  ENTERPRISE @map("enterprise")
+  STARTER          @map("starter")
+  GROWTH           @map("growth")
+  BUSINESS         @map("business")
+  ENTERPRISE       @map("enterprise")
+  FOUNDATION       @map("foundation")
+  PROFESSIONAL     @map("professional")
+  LEGAL_SHIELD     @map("legal-shield")
+  DISPUTE_FORTRESS @map("dispute-fortress")
 
   @@map("plan_tier")
 }
@@ -128,8 +132,10 @@ model UsageMetric {
   periodStart         DateTime    @map("period_start") @db.Date
   periodEnd           DateTime    @map("period_end") @db.Date
   receiptsGenerated   Int         @default(0) @map("receipts_generated")
-  overageReceipts     Int         @default(0) @map("overage_receipts")
-  overageChargesCents BigInt      @default(0) @map("overage_charges_cents")
+  overageReceipts           Int         @default(0) @map("overage_receipts")
+  overageChargesCents     BigInt      @default(0) @map("overage_charges_cents")
+  transactionValueCents   BigInt      @default(0) @map("transaction_value_cents")
+  transactionOverageCents BigInt      @default(0) @map("transaction_overage_cents")
   createdAt           DateTime    @default(now()) @map("created_at") @db.Timestamp(6)
   enterprise          Enterprise? @relation(fields: [enterpriseId], references: [id])
 

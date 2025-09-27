@@ -10,8 +10,9 @@ You are operating **only** on the application layer. Do not change infra/secrets
 - [x] Build overview dashboard module shell
 - [x] Document Phase 1 dashboard progress across docs
 - [x] Stand up API key management UI + CRUD flows
-- [ ] Wire Stripe billing portal and plan snapshot into dashboard
+- [x] Wire Stripe billing portal and plan snapshot into dashboard
 - [ ] Implement per-key usage analytics charts for API management
+- [ ] Integrate transaction validation guardrails into receipt issuance flows
 - [x] Build enterprise savings calculator widget for pricing sidebar
 - [ ] Validate enterprise_calc_update analytics stream in production
 - [x] Restore Next.js pricing assets by removing conflicting `/_next` rewrite in `vercel.json`

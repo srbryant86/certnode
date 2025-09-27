@@ -6,16 +6,20 @@ const prisma = new PrismaClient();
 const DEFAULT_OWNER_PASSWORD = process.env.SEED_OWNER_PASSWORD ?? "ChangeMe@2025!";
 
 async function main() {
-  const enterprise = await prisma.enterprise.upsert({
+  let enterprise = await prisma.enterprise.findFirst({
     where: { domain: "reference.certnode.io" },
-    update: {},
-    create: {
-      name: "CertNode Reference Enterprise",
-      domain: "reference.certnode.io",
-      billingTier: PlanTier.STARTER,
-      settings: {},
-    },
   });
+
+  if (!enterprise) {
+    enterprise = await prisma.enterprise.create({
+      data: {
+        name: "CertNode Reference Enterprise",
+        domain: "reference.certnode.io",
+        billingTier: PlanTier.FOUNDATION,
+        settings: {},
+      },
+    });
+  }
 
   const ownerPasswordHash = await hashPassword(DEFAULT_OWNER_PASSWORD);
 
@@ -97,7 +101,7 @@ async function seedReceipts(enterpriseId: string, apiKeyId: string) {
           },
           verificationStatus:
             index % 5 === 0 ? VerificationStatus.FAILED : VerificationStatus.VERIFIED,
-          amountCents: BigInt(120000 + index * 5000),
+          amountCents: BigInt((index % 4 === 0 ? 120000 : 80000) + index * 2500),
           currency: "USD",
           createdAt: new Date(now - index * 1000 * 60 * 60 * 6),
         },
@@ -172,7 +176,7 @@ async function seedUsageMetrics(enterpriseId: string) {
       },
     },
     update: {
-      receiptsGenerated: 3200,
+      receiptsGenerated: 230,
       overageReceipts: 0,
       overageChargesCents: BigInt(0),
     },
@@ -180,7 +184,7 @@ async function seedUsageMetrics(enterpriseId: string) {
       enterpriseId,
       periodStart,
       periodEnd,
-      receiptsGenerated: 3200,
+      receiptsGenerated: 230,
       overageReceipts: 0,
       overageChargesCents: BigInt(0),
     },

@@ -33,23 +33,27 @@ export default function SmartRecommendationBanner() {
 
       const planId = analytics.getRecommendation();
       const planNames: Record<string, string> = {
-        starter: 'Starter',
-        growth: 'Growth',
-        business: 'Business',
+        starter: 'Foundation',
+        foundation: 'Foundation',
+        growth: 'Professional',
+        professional: 'Professional',
+        business: 'Enterprise',
         enterprise: 'Enterprise Custom'
       };
 
       const reasons: Record<string, string> = {
         starter: 'Best fit for getting an audit-ready foundation in place quickly.',
-        growth: 'Transaction volume aligns with our Growth plan coverage and SLA.',
-        business: 'High-volume operations need Business plan scale and dedicated support.',
+        foundation: 'Best fit for getting an audit-ready foundation in place quickly.',
+        growth: 'Transaction volume aligns with our Professional plan coverage and SLA.',
+        professional: 'Transaction volume aligns with our Professional plan coverage and SLA.',
+        business: 'High-volume operations need Enterprise plan scale and dedicated support.',
         enterprise: 'Your volume belongs in our enterprise rollout — team will tailor pricing.'
       };
 
       setRecommendation({
         planId,
-        label: planNames[planId] ?? 'Growth',
-        reason: reasons[planId] ?? reasons.growth,
+        label: planNames[planId] ?? 'Professional',
+        reason: reasons[planId] ?? reasons.professional,
         confidence: summary.calculatorUsage >= 2 ? 85 : 65,
         urgency: summary.engagementLevel === 'high' ? 'high' : 'medium',
         isEnterprise: planId === 'enterprise'

@@ -60,9 +60,14 @@ Enterprise-grade customer dashboard for the CertNode receipt infrastructure. Thi
 
 ## Current Focus
 
-- Build the overview dashboard metrics and live activity feed shell.
-- Connect Stripe billing context (plan snapshot, customer portal link).
-- Implement API key and receipt management surfaces backed by Prisma queries.
+- Wire Stripe billing portal access and plan telemetry into the dashboard experience.
+- Expand API key analytics with per-key usage insights and rotation tooling.
+- Integrate dual-axis transaction validation into receipt issuance flows.
 
 The implementation must remain enterprise credible (access controls, auditability, and performance). Use the architecture spec as the source of truth for data contracts and UI modules.
 
+## Pricing & Validation
+
+- Dual-axis pricing model enforced: per-receipt volume and per-transaction value limits.
+- Overage calculations include $0.50/receipt (Foundation) and plan-specific transaction surcharges.
+- Upgrade prompts surface automatically as usage approaches configured thresholds.

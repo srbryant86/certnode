@@ -1,4 +1,5 @@
 import { KeyStatus, PlanTier, VerificationStatus } from "@prisma/client";
+import type { TierSlug, UpgradeRecommendation } from "@/lib/pricing";
 
 export type ActivityType =
   | "receipt_generated"
@@ -13,10 +14,44 @@ export interface ActivityItem {
   metadata?: Record<string, unknown>;
 }
 
+export interface ReceiptUsageSummary {
+  used: number;
+  limit: number | null;
+  remaining: number | null;
+  utilization: number;
+  overageCount: number;
+  overageCost: number;
+}
+
+export interface TransactionUsageSummary {
+  usedCents: number;
+  limitCents: number | null;
+  remainingCents: number | null;
+  utilization: number;
+  overageCents: number;
+  overageCost: number;
+}
+
+export interface UsageSummary {
+  receipts: ReceiptUsageSummary;
+  transactionValue: TransactionUsageSummary;
+  upgradeRecommendation: UpgradeRecommendation | null;
+}
+
+export interface PlanSummary {
+  slug: TierSlug;
+  name: string;
+  retentionYears: number | null;
+  pricing: {
+    monthly?: number;
+    yearly?: number;
+  };
+  featureHighlights: string[];
+}
+
 export interface DashboardMetrics {
-  receiptsThisMonth: number;
-  remainingQuota: number;
-  quotaUtilization: number;
+  usage: UsageSummary;
+  plan: PlanSummary;
   uptimePercentage: number;
   avgResponseTime: number;
   errorRate: number;
@@ -24,6 +59,7 @@ export interface DashboardMetrics {
   projectedCosts: number;
   savings: number;
   totalReceipts: number;
+  totalTransactionValueCents: number;
   recentActivity: ActivityItem[];
 }
 
@@ -36,6 +72,7 @@ export interface DashboardApiKey {
   rateLimitWindow: RateLimitWindow;
   lastUsed: Date | null;
   usageCount: number;
+  monthlyUsageCount: number;
   created: Date;
   expiresAt: Date | null;
   status: Extract<KeyStatus, "active" | "revoked" | "expired">;

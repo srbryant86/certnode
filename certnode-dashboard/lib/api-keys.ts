@@ -21,7 +21,10 @@ export async function listApiKeys(enterpriseId: string) {
     return [];
   }
 
-  const [keys, usage] = await Promise.all([
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const [keys, usage, monthlyUsage] = await Promise.all([
     prisma.apiKey.findMany({
       where: { enterpriseId },
       orderBy: { createdAt: "desc" },
@@ -31,12 +34,28 @@ export async function listApiKeys(enterpriseId: string) {
       where: { enterpriseId, apiKeyId: { not: null } },
       _count: { apiKeyId: true },
     }),
+    prisma.receipt.groupBy({
+      by: ["apiKeyId"],
+      where: {
+        enterpriseId,
+        apiKeyId: { not: null },
+        createdAt: { gte: monthStart },
+      },
+      _count: { apiKeyId: true },
+    }),
   ]);
 
   const usageMap = new Map<string, number>();
   for (const row of usage) {
     if (row.apiKeyId) {
       usageMap.set(row.apiKeyId, row._count.apiKeyId ?? 0);
+    }
+  }
+
+  const monthlyUsageMap = new Map<string, number>();
+  for (const row of monthlyUsage) {
+    if (row.apiKeyId) {
+      monthlyUsageMap.set(row.apiKeyId, row._count.apiKeyId ?? 0);
     }
   }
 
@@ -53,6 +72,7 @@ export async function listApiKeys(enterpriseId: string) {
     createdAt: key.createdAt,
     expiresAt: key.expiresAt,
     usageCount: usageMap.get(key.id) ?? 0,
+    monthlyUsageCount: monthlyUsageMap.get(key.id) ?? 0,
   }));
 }
 

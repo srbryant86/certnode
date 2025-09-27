@@ -9,6 +9,8 @@
 - Seeded reference receipts/audit logs and exposed a Prisma-backed overview API.
 - Documented setup steps in the project README to align with the DASHBOARD_ARCHITECTURE playbook.
 - Shipped the API key management module with create/revoke flows, rate limits, and audit logging.
+- Implemented dual-axis pricing limits with transaction validation, analytics, and upgrade messaging.
+- Connected Stripe billing portal entry point and plan telemetry into the dashboard experience.
 
 ## Next Targets
 - Expose API key rotation and per-key usage analytics dashboards.

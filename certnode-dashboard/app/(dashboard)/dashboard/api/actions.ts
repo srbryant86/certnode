@@ -128,3 +128,7 @@ export async function revokeApiKeyAction(_prevState: unknown, formData: FormData
 
   revalidatePath("/dashboard/api");
 }
+
+export async function revokeApiKeyFormAction(formData: FormData) {
+  return revokeApiKeyAction(undefined, formData);
+}

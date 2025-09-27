@@ -127,7 +127,7 @@ export default function PricingTabs() {
               {/* Pro Dispute Protection */}
               <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-lg">
                 <div className="text-center mb-6">
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">Pro Dispute Protection</h4>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">Legal Shield</h4>
                   <div className="text-3xl font-bold text-blue-600 mb-1">$12,000</div>
                   <div className="text-sm text-gray-600">per year</div>
                   <div className="text-sm text-blue-600 font-medium mt-1">Up to $2M annual sales</div>
@@ -172,7 +172,7 @@ export default function PricingTabs() {
                 </div>
 
                 <div className="text-center mb-6">
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">Elite Dispute Protection</h4>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">Dispute Fortress</h4>
                   <div className="text-3xl font-bold text-purple-600 mb-1">$30,000</div>
                   <div className="text-sm text-gray-600">per year</div>
                   <div className="text-sm text-purple-600 font-medium mt-1">Up to $10M annual sales</div>

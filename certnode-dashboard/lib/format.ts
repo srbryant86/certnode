@@ -5,7 +5,8 @@ const numberFormatter = new Intl.NumberFormat("en-US", {
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
-  maximumFractionDigits: 0,
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
 });
 
 const percentageFormatter = new Intl.NumberFormat("en-US", {
@@ -24,3 +25,4 @@ export function formatCurrency(value: number): string {
 export function formatPercentage(value: number): string {
   return percentageFormatter.format(value);
 }
+

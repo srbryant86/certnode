@@ -22,6 +22,8 @@
 - Hardened the authentication perimeter with NextAuth v5, Argon2id hashing, and App Router guards so only verified enterprises reach Phase 1 surfaces.
 - Brought the overview telemetry online with Prisma aggregation, API surface, and seeded audit/receipt data to showcase the enterprise heartbeat.
 - Activated the API management module with rate limits, IP allowlisting, and audit trail generation for every key lifecycle event.
+- Enforced dual-axis pricing (receipts + transaction value) with analytics, overage billing, and upgrade cues inside the dashboard.
+- Connected Stripe portal access with plan telemetry so billing acts as part of the dashboard narrative.
 - Captured the enterprise schema via Prisma with scripts for migrations, seeds, and environment scaffolding, aligning the dashboard with billion-transaction resilience goals.
 - Initialized the Next.js 14 certnode-dashboard repo with strict TypeScript, Tailwind, and Prisma tooling so the authenticated experience can ship on enterprise-ready rails.
 - Launched an enterprise-scale savings calculator that showcases bulk receipt automation ROI and routes high-volume leads to contact@certnode.io.

@@ -14,6 +14,7 @@ type RecommendationPayload = {
   handlingCost: number;
   projectedAnnualSavings: number;
   planId: string;
+  deflectionRate?: number;
 };
 
 type LegacyPayload = {
@@ -66,7 +67,7 @@ export default function PlanRecommendation() {
   return (
     <div className="mt-8 rounded-lg border border-yellow-200 bg-yellow-50 p-6">
       <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-200 text-xl">📊</div>
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-200 text-xl">[CALC]</div>
         <div>
           <h3 className="text-lg font-semibold text-yellow-800">Recommended Next Step</h3>
           <p className="mt-2 text-sm text-yellow-700">{message}</p>
@@ -82,7 +83,7 @@ function buildEnterpriseMessage(payload: RecommendationPayload): string | null {
   const receipts = new Intl.NumberFormat('en-US').format(monthlyReceipts);
 
   if (planId === 'enterprise') {
-    return `You process roughly ${receipts} receipts each month. Engage our enterprise team at contact@certnode.io to activate a custom rollout — you're positioned to unlock ${formattedSavings} in annual savings.`;
+    return `You process roughly ${receipts} receipts each month. Engage our enterprise team at contact@certnode.io to activate a custom rollout - you're positioned to unlock ${formattedSavings} in annual savings.`;
   }
 
   if (planId === 'business') {

@@ -116,9 +116,9 @@ export default function SmartRecommendationBanner() {
   } as const;
 
   const urgencyIcons = {
-    low: '📘',
-    medium: '📈',
-    high: '⚡️'
+    low: 'LOW',
+    medium: 'MID',
+    high: 'HIGH'
   } as const;
 
   return (

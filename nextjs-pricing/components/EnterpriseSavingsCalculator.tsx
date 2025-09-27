@@ -8,7 +8,9 @@ import { formatCurrency } from '@/lib/currency';
 import { PricingAnalytics } from '@/lib/analytics';
 
 const BASE_DISPUTE_RATE = 0.012; // 1.2% default dispute rate for large processors
-const DEFLECTION_RATE = 0.7; // CertNode deflects 70% of disputes
+const DEFLECTION_MIN = 0.3;
+const DEFLECTION_MAX = 0.8;
+const DEFAULT_DEFLECTION = 0.5; // Conservative baseline until we have live data
 const HANDLING_REDUCTION = 0.65; // Automation removes 65% of manual handling effort
 
 const numberFormatter = new Intl.NumberFormat('en-US');
@@ -65,8 +67,8 @@ function choosePlan(monthlyReceipts: number) {
   };
 }
 
-function computeSavings(params: { monthlyReceipts: number; averageDisputeCost: number; handlingCost: number; }): SavingsResults {
-  const { monthlyReceipts, averageDisputeCost, handlingCost } = params;
+function computeSavings(params: { monthlyReceipts: number; averageDisputeCost: number; handlingCost: number; deflectionRate: number; }): SavingsResults {
+  const { monthlyReceipts, averageDisputeCost, handlingCost, deflectionRate } = params;
   const plan = choosePlan(monthlyReceipts);
 
   const manualOpsAnnual = monthlyReceipts * handlingCost * 12;
@@ -75,7 +77,7 @@ function computeSavings(params: { monthlyReceipts: number; averageDisputeCost: n
 
   const automatedHandlingCost = handlingCost * (1 - HANDLING_REDUCTION);
   const certnodeOpsAnnual = monthlyReceipts * automatedHandlingCost * 12;
-  const certnodeDisputeAnnual = monthlyReceipts * BASE_DISPUTE_RATE * (1 - DEFLECTION_RATE) * averageDisputeCost * 12;
+  const certnodeDisputeAnnual = monthlyReceipts * BASE_DISPUTE_RATE * (1 - deflectionRate) * averageDisputeCost * 12;
   const certnodeAnnualCost = certnodeOpsAnnual + certnodeDisputeAnnual + plan.annualCost;
 
   const annualSavings = Math.max(0, manualAnnualCost - certnodeAnnualCost);
@@ -98,6 +100,7 @@ export default function EnterpriseSavingsCalculator() {
   const [monthlyReceipts, setMonthlyReceipts] = useState(750);
   const [averageDisputeCost, setAverageDisputeCost] = useState(150);
   const [handlingCost, setHandlingCost] = useState(1.25);
+  const [deflectionRate, setDeflectionRate] = useState(DEFAULT_DEFLECTION);
   const [analytics] = useState(() => PricingAnalytics.getInstance());
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -111,13 +114,14 @@ export default function EnterpriseSavingsCalculator() {
         if (typeof parsed.monthlyReceipts === 'number') setMonthlyReceipts(parsed.monthlyReceipts);
         if (typeof parsed.averageDisputeCost === 'number') setAverageDisputeCost(parsed.averageDisputeCost);
         if (typeof parsed.handlingCost === 'number') setHandlingCost(parsed.handlingCost);
+        if (typeof parsed.deflectionRate === 'number') setDeflectionRate(parsed.deflectionRate);
       }
     } catch (error) {
       console.warn('Failed to restore enterprise calculator settings', error);
     }
   }, []);
 
-  const results = useMemo(() => computeSavings({ monthlyReceipts, averageDisputeCost, handlingCost }), [monthlyReceipts, averageDisputeCost, handlingCost]);
+  const results = useMemo(() => computeSavings({ monthlyReceipts, averageDisputeCost, handlingCost, deflectionRate }), [monthlyReceipts, averageDisputeCost, handlingCost, deflectionRate]);
 
   useEffect(() => {
     if (!isHydrated) return;
@@ -127,6 +131,7 @@ export default function EnterpriseSavingsCalculator() {
       monthlyReceipts,
       averageDisputeCost,
       handlingCost,
+      deflectionRate,
       projectedAnnualSavings: results.annualSavings,
       planId: results.recommendedPlan.planId,
     };
@@ -226,6 +231,7 @@ export default function EnterpriseSavingsCalculator() {
   const planCoverageText = plan.isEnterprise
     ? 'Custom enterprise rollout'
     : `${numberFormatter.format(plan.receiptsIncluded)} receipts included`;
+  const deflectionPercentage = Math.round(deflectionRate * 100);
 
   return (
     <div id="enterprise-savings-calculator" className="overflow-hidden rounded-2xl border border-blue-100 shadow-lg bg-white">
@@ -276,29 +282,53 @@ export default function EnterpriseSavingsCalculator() {
           </label>
         </div>
 
-        <div className="space-y-3 rounded-xl border border-blue-100 bg-blue-50 p-4">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-blue-700">Annual manual cost</span>
-            <span className="font-semibold text-blue-900">{formatUSD(results.manualAnnualCost)}</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-blue-700">Annual with CertNode</span>
-            <span className="font-semibold text-blue-900">{formatUSD(results.certnodeAnnualCost)}</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-blue-700">Monthly savings</span>
-            <span className="font-semibold text-green-700">{formatUSD(results.monthlySavings)}</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-blue-700">ROI</span>
-            <span className="font-semibold text-green-700">{results.effectiveROI.toFixed(1)}%</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-blue-700">Plan covers itself in</span>
-            <span className="font-semibold text-blue-900">{Number.isFinite(results.paybackDays) ? `${Math.max(0, Math.round(results.paybackDays))} days` : '—'}</span>
+        <div className="space-y-6">
+          <label className="block rounded-xl border border-blue-100 bg-blue-50 p-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Dispute deflection assumption</span>
+              <span className="text-xs text-gray-500">{deflectionPercentage}%</span>
+            </div>
+            <div className="mt-3 flex items-center gap-3">
+              <input
+                type="range"
+                min={DEFLECTION_MIN}
+                max={DEFLECTION_MAX}
+                step={0.05}
+                value={deflectionRate}
+                onChange={(event) => setDeflectionRate(Number(event.target.value))}
+                className="flex-1"
+                aria-describedby="deflection-help"
+              />
+              <span className="w-14 text-right text-xs text-gray-600">{deflectionPercentage}%</span>
+            </div>
+            <p id="deflection-help" className="mt-2 text-xs text-gray-500">
+              Higher percentages assume CertNode receipts deliver "compelling evidence." Start conservative, then model best-case wins.
+            </p>
+          </label>
+
+          <div className="space-y-3 rounded-xl border border-blue-100 bg-blue-50 p-4">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-blue-700">Annual manual cost</span>
+              <span className="font-semibold text-blue-900">{formatUSD(results.manualAnnualCost)}</span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-blue-700">Annual with CertNode</span>
+              <span className="font-semibold text-blue-900">{formatUSD(results.certnodeAnnualCost)}</span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-blue-700">Monthly savings</span>
+              <span className="font-semibold text-green-700">{formatUSD(results.monthlySavings)}</span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-blue-700">ROI</span>
+              <span className="font-semibold text-green-700">{results.effectiveROI.toFixed(1)}%</span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-blue-700">Plan covers itself in</span>
+              <span className="font-semibold text-blue-900">{Number.isFinite(results.paybackDays) ? `${Math.max(0, Math.round(results.paybackDays))} days` : 'N/A'}</span>
+            </div>
           </div>
         </div>
-
         <div className="rounded-xl border border-purple-200 bg-purple-50 p-4">
           <p className="text-sm font-semibold text-purple-900">Suggested Plan</p>
           <p className="mt-1 text-lg font-bold text-purple-900">{plan.label}</p>

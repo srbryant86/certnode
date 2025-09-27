@@ -1,8 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contentReceiptService } from "@/lib/content/service";
+import { applyRateLimit, createRateLimitHeaders } from "@/lib/rate-limiting";
 
 export async function POST(request: NextRequest) {
   try {
+    // Apply rate limiting
+    const apiKey = request.headers.get('x-api-key');
+    const rateLimitResult = await applyRateLimit(request, apiKey || undefined);
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded", retryAfter: rateLimitResult.retryAfter },
+        {
+          status: 429,
+          headers: createRateLimitHeaders(rateLimitResult)
+        }
+      );
+    }
+
     // Parse request body
     const body = await request.json();
 
@@ -41,7 +56,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       receipt: result,
-    }, { status: 201 });
+    }, {
+      status: 201,
+      headers: createRateLimitHeaders(rateLimitResult)
+    });
 
   } catch (error) {
     console.error("Content certification error:", error);

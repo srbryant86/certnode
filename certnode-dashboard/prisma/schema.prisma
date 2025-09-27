@@ -19,6 +19,13 @@ enum VerificationStatus {
   FAILED    @map("failed")
 }
 
+enum EnterpriseTier {
+  FREE        @map("free")
+  STARTER     @map("starter")
+  PRO         @map("pro")
+  ENTERPRISE  @map("enterprise")
+}
+
 model Receipt {
   id                   String             @id @default(cuid())
   enterpriseId         String             @map("enterprise_id")
@@ -47,8 +54,45 @@ model Receipt {
   currency             String?
   createdAt            DateTime           @default(now()) @map("created_at")
 
+  // Relations
+  enterprise           Enterprise?        @relation(fields: [enterpriseId], references: [id])
+  apiKey               ApiKey?            @relation(fields: [apiKeyId], references: [id])
+  apiKeyId             String?            @map("api_key_id")
+
   @@map("receipts")
   @@index([enterpriseId, type])
   @@index([contentHash])
   @@index([type, subtype])
+  @@index([apiKeyId])
+}
+
+model Enterprise {
+  id                   String             @id @default(cuid())
+  name                 String
+  tier                 EnterpriseTier     @default(FREE)
+  createdAt            DateTime           @default(now()) @map("created_at")
+  updatedAt            DateTime           @updatedAt @map("updated_at")
+
+  // Relations
+  receipts             Receipt[]
+  apiKeys              ApiKey[]
+
+  @@map("enterprises")
+}
+
+model ApiKey {
+  id                   String             @id @default(cuid())
+  name                 String
+  key                  String             @unique
+  enterpriseId         String             @map("enterprise_id")
+  isActive             Boolean            @default(true) @map("is_active")
+  createdAt            DateTime           @default(now()) @map("created_at")
+  lastUsedAt           DateTime?          @map("last_used_at")
+
+  // Relations
+  enterprise           Enterprise         @relation(fields: [enterpriseId], references: [id])
+  receipts             Receipt[]
+
+  @@map("api_keys")
+  @@index([enterpriseId])
 }

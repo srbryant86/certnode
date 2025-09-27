@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import PricingTable from '@/components/PricingTable';
-import EnterpriseSavingsCalculator from '@/components/EnterpriseSavingsCalculator';
+import PricingTabs from '@/components/PricingTabs';
 import Pillars from '@/components/Pillars';
 import CTAGroup from '@/components/CTAGroup';
 import ConsentBanner from '@/components/ConsentBanner';
@@ -169,7 +168,7 @@ export default function PricingPage() {
 
         {/* Social Proof disabled - no real customers yet */}
 
-        {/* Pricing Table */}
+        {/* Pricing Tabs */}
         <section className="py-16 bg-white" id="pricing-table">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-12">
@@ -181,19 +180,7 @@ export default function PricingPage() {
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-4 gap-8">
-              <div className="lg:col-span-3">
-                <Suspense fallback={<div className="animate-pulse bg-gray-200 h-96 rounded-lg"></div>}>
-                  <PricingTable tiers={pricingData.smbTiers} highlightTier="growth" />
-                </Suspense>
-              </div>
-
-              <div className="lg:col-span-1">
-                <div className="sticky top-6">
-                  <EnterpriseSavingsCalculator />
-                </div>
-              </div>
-            </div>
+            <PricingTabs />
 
             <Suspense fallback={null}>
               <PlanRecommendation />

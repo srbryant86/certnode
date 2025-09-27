@@ -3,6 +3,8 @@
 You are operating **only** on the application layer. Do not change infra/secrets.
 
 ## Session TODOs
+- [x] Build enterprise savings calculator widget for pricing sidebar
+- [ ] Validate enterprise_calc_update analytics stream in production
 - [x] Restore Next.js pricing assets by removing conflicting `/_next` rewrite in `vercel.json`
 - [x] Route yearly pricing toggle through the correct Stripe payment links
 - [x] Sunset the public analytics CTA until we have authenticated dashboards

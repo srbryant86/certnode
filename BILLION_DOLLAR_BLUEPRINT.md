@@ -13,6 +13,7 @@
 - Re-establishing the Tailwind/PostCSS pipeline ensures the premium pricing experience ships with the intended visual polish across every deploy.
 
 ## Execution Notes
+- Launched an enterprise-scale savings calculator that showcases bulk receipt automation ROI and routes high-volume leads to contact@certnode.io.
 - Pricing experience at `certnode.io/pricing` now satisfies the professional site infrastructure objective with full styling and interactivity restored.
 - Yearly billing toggle now routes Starter, Growth, and Business plans to the correct Stripe payment links, eliminating accidental monthly subscriptions.
 - Removed the public analytics dashboard route (`/analytics`) and now surface contact@certnode.io and Support links while preserving analytics library architecture for future authenticated release.

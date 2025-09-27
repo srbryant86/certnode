@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import PricingTable from '@/components/PricingTable';
-import ROIWidget from '@/components/ROIWidget';
+import EnterpriseSavingsCalculator from '@/components/EnterpriseSavingsCalculator';
 import Pillars from '@/components/Pillars';
 import CTAGroup from '@/components/CTAGroup';
 import ConsentBanner from '@/components/ConsentBanner';
@@ -179,12 +179,7 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* Social Proof - Temporarily disabled to remove fake metrics */}
-        {/* <section className="py-8">
-          <div className="max-w-7xl mx-auto px-6">
-            <SocialProofWidget />
-          </div>
-        </section> */}
+        {/* Social Proof disabled - no real customers yet */}
 
         {/* Pricing Table */}
         <section className="py-16 bg-white" id="pricing-table">
@@ -207,7 +202,7 @@ export default function PricingPage() {
 
               <div className="lg:col-span-1">
                 <div className="sticky top-6">
-                  <ROIWidget />
+                  <EnterpriseSavingsCalculator />
                 </div>
               </div>
             </div>

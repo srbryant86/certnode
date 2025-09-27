@@ -3,7 +3,7 @@ export interface UserInteraction {
   event: 'roi_calculation' | 'currency_change' | 'billing_toggle' | 'plan_view' | 'cta_click' |
         'social_proof_view' | 'urgency_shown' | 'urgency_cta_clicked' | 'urgency_dismissed' |
         'risk_reversal_clicked' | 'final_cta_clicked' | 'recommendation_clicked' | 'recommendation_dismissed' |
-        'checkout_start' | 'checkout_error' | 'ab_test_assignment';
+        'checkout_start' | 'checkout_error' | 'ab_test_assignment' | 'enterprise_calc_update';
   data?: Record<string, any>;
 }
 
@@ -15,6 +15,13 @@ export interface UserSession {
     avgTicket?: number;
     monthlySales?: number;
     disputeRate?: number;
+  };
+  enterpriseCalculator?: {
+    monthlyReceipts: number;
+    averageDisputeCost: number;
+    handlingCost: number;
+    projectedAnnualSavings: number;
+    planId: string;
   };
   viewedPlans: string[];
   recommendedPlan?: string;
@@ -107,6 +114,16 @@ export class PricingAnalytics {
     this.session.interactions.push(interaction);
 
     // Update calculator inputs if relevant
+    if (event === 'enterprise_calc_update' && data) {
+      this.session.enterpriseCalculator = {
+        monthlyReceipts: data.monthlyReceipts,
+        averageDisputeCost: data.averageDisputeCost,
+        handlingCost: data.handlingCost,
+        projectedAnnualSavings: data.projectedAnnualSavings,
+        planId: data.planId,
+      };
+    }
+
     if (event === 'roi_calculation' && data) {
       this.session.calculatorInputs = {
         avgTicket: data.avgTicket,
@@ -144,7 +161,21 @@ export class PricingAnalytics {
   }
 
   calculateSmartRecommendation(): string {
-    const { calculatorInputs, interactions, viewedPlans } = this.session;
+    const { calculatorInputs, interactions, viewedPlans, enterpriseCalculator } = this.session;
+
+    if (enterpriseCalculator) {
+      const { planId, monthlyReceipts } = enterpriseCalculator;
+      if (planId) {
+        return planId;
+      }
+      if (monthlyReceipts >= 2500) {
+        return 'business';
+      }
+      if (monthlyReceipts >= 1000) {
+        return 'growth';
+      }
+      return 'starter';
+    }
 
     // Base recommendation on ROI calculations
     if (calculatorInputs) {

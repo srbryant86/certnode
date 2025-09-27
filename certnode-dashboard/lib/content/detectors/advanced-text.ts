@@ -38,7 +38,13 @@ const AI_MODEL_SIGNATURES = {
     'while it\'s true that',
     'on the other hand',
     'furthermore',
-    'in addition to this'
+    'in addition to this',
+    'as an ai language model',
+    'i don\'t have personal opinions',
+    'from my perspective',
+    'it\'s also worth noting',
+    'building upon this',
+    'to put it simply'
   ],
   'claude': [
     'i\'d be happy to help',
@@ -46,7 +52,13 @@ const AI_MODEL_SIGNATURES = {
     'here\'s what i think',
     'to clarify',
     'alternatively',
-    'it\'s worth considering'
+    'it\'s worth considering',
+    'i\'d be glad to assist',
+    'let me explain this',
+    'to elaborate on this',
+    'i appreciate your question',
+    'that\'s an excellent question',
+    'i\'d suggest considering'
   ],
   'gemini': [
     'according to my knowledge',
@@ -54,7 +66,25 @@ const AI_MODEL_SIGNATURES = {
     'it\'s generally accepted',
     'research suggests',
     'experts recommend',
-    'studies indicate'
+    'studies indicate',
+    'current understanding suggests',
+    'the consensus among experts',
+    'evidence points to',
+    'scholarly research indicates',
+    'data demonstrates that',
+    'empirical evidence shows'
+  ],
+  'chatgpt': [
+    'i\'m an ai developed by openai',
+    'as chatgpt',
+    'i\'m here to help',
+    'my training data',
+    'i don\'t have the ability to',
+    'i can\'t provide real-time',
+    'as of my last update',
+    'i don\'t have access to',
+    'my knowledge cutoff',
+    'i\'m not able to browse'
   ],
   'generic-ai': [
     'in conclusion',
@@ -64,7 +94,15 @@ const AI_MODEL_SIGNATURES = {
     'facilitate',
     'utilize',
     'implement',
-    'optimize'
+    'optimize',
+    'leverage',
+    'methodology',
+    'framework',
+    'paradigm',
+    'utilize best practices',
+    'ensure optimal results',
+    'strategic approach',
+    'systematic methodology'
   ]
 };
 

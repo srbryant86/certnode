@@ -217,15 +217,15 @@ export default function PricingPage() {
         <RiskReversalSection />
 
         {/* High-Ticket CTA */}
-        <section className="py-16 bg-gray-900 text-white">
+        <section className="py-16 bg-gradient-to-br from-blue-700 via-blue-800 to-purple-900 text-white">
           <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold mb-4">
               High-Ticket Dispute Protection
             </h2>
-            <p className="text-xl text-gray-300 mb-6">
+            <p className="text-xl text-blue-100 mb-6">
               One saved $10,000 dispute pays for 4 months.
             </p>
-            <p className="text-gray-400 mb-8">
+            <p className="text-blue-200 mb-8">
               Specialized plans for businesses with high-value transactions and significant chargeback risk.
             </p>
             <CTAGroup />

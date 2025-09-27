@@ -103,14 +103,17 @@ export default function Navigation() {
               <Link
                 key={link.href}
                 href={link.href as any}
-                className={`rounded-lg px-4 py-2 text-[15px] font-normal transition-all ${
+                className={`px-4 py-2 text-[15px] font-normal transition-all relative ${
                   active
-                    ? 'bg-blue-50 text-blue-600 shadow-sm'
-                    : 'text-slate-600 hover:bg-blue-50/60 hover:text-blue-600'
+                    ? 'text-blue-600'
+                    : 'text-gray-600 hover:text-blue-600'
                 }`}
                 aria-current={active ? 'page' : undefined}
               >
                 {link.label}
+                {active && (
+                  <div className="absolute bottom-0 left-4 right-4 h-px bg-blue-600"></div>
+                )}
               </Link>
             )
           })}

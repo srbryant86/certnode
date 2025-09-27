@@ -40,15 +40,22 @@ export function formatCurrency(
   locale: string = 'en-US'
 ): string {
   try {
+    // For amounts less than 1, show 2 decimal places (e.g., $0.10)
+    // For amounts 1 or greater, show no decimal places (e.g., $49)
+    const minimumFractionDigits = amount < 1 ? 2 : 0;
+    const maximumFractionDigits = amount < 1 ? 2 : 0;
+
     return new Intl.NumberFormat(locale, {
       style: 'currency',
       currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(Math.round(amount));
+      minimumFractionDigits,
+      maximumFractionDigits,
+    }).format(amount);
   } catch (error) {
     console.warn(`Failed to format currency ${currency}:`, error);
-    return `${currency} ${Math.round(amount)}`;
+    // Fallback formatting that preserves decimals for small amounts
+    const formatted = amount < 1 ? amount.toFixed(2) : Math.round(amount).toString();
+    return `${currency} ${formatted}`;
   }
 }
 

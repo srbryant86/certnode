@@ -41,14 +41,14 @@ export default function UrgencyTrigger() {
           textColor: 'text-orange-800'
         },
         {
-          type: 'scarcity',
-          message: 'Only 3 Growth Plan Spots Remaining',
-          subtext: 'For this onboarding cycle',
-          urgencyLevel: 'high',
-          icon: '🔥',
-          ctaText: 'Reserve Spot',
-          backgroundColor: 'bg-red-50 border-red-200',
-          textColor: 'text-red-800'
+          type: 'value_focus',
+          message: 'Start Protecting Revenue Today',
+          subtext: 'Join businesses reducing chargebacks by 70%',
+          urgencyLevel: 'medium',
+          icon: '📈',
+          ctaText: 'See Results',
+          backgroundColor: 'bg-blue-50 border-blue-200',
+          textColor: 'text-blue-800'
         },
         {
           type: 'risk_reversal',
@@ -77,7 +77,7 @@ export default function UrgencyTrigger() {
       const hasHighTicket = session.calculatorUsage >= 3;
 
       if (session.engagementLevel === 'high' && recommended === 'business') {
-        return triggers[1]; // Scarcity for high-value prospects
+        return triggers[1]; // Value focus for high-value prospects
       }
 
       if (hasHighTicket && session.engagementLevel === 'medium') {

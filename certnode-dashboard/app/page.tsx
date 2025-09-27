@@ -192,7 +192,7 @@ export default async function HomePage() {
       <footer className="border-t border-slate-800/80 mt-20">
         <div className="mx-auto max-w-6xl px-6 py-8">
           <div className="text-center text-slate-400">
-            <p>&copy; 2025 CertNode. Building trust in the digital age.</p>
+            <p>&copy; 2025 CertNode. Building trust in the digital age. v2.0</p>
           </div>
         </div>
       </footer>

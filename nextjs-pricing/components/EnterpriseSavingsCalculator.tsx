@@ -16,6 +16,30 @@ const HANDLING_REDUCTION = 0.65; // Automation removes 65% of manual handling ef
 const numberFormatter = new Intl.NumberFormat('en-US');
 const formatUSD = (amount: number) => formatCurrency(amount, 'USD');
 
+const presets = [
+  {
+    id: 'saas',
+    label: 'SaaS (40k receipts)',
+    monthlyReceipts: 40000,
+    averageDisputeCost: 75,
+    handlingCost: 0.85,
+  },
+  {
+    id: 'highTicket',
+    label: 'High-ticket (100 deals)',
+    monthlyReceipts: 100,
+    averageDisputeCost: 10000,
+    handlingCost: 2.5,
+  },
+  {
+    id: 'creator',
+    label: 'Digital creator (2k sales)',
+    monthlyReceipts: 2000,
+    averageDisputeCost: 200,
+    handlingCost: 1.1,
+  },
+] as const;
+
 const tierById = new Map(pricingData.smbTiers.map((tier) => [tier.id, tier]));
 
 interface SavingsResults {
@@ -103,6 +127,7 @@ export default function EnterpriseSavingsCalculator() {
   const [deflectionRate, setDeflectionRate] = useState(DEFAULT_DEFLECTION);
   const [analytics] = useState(() => PricingAnalytics.getInstance());
   const [isHydrated, setIsHydrated] = useState(false);
+  const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
 
   useEffect(() => {
     setIsHydrated(true);
@@ -233,6 +258,20 @@ export default function EnterpriseSavingsCalculator() {
     : `${numberFormatter.format(plan.receiptsIncluded)} receipts included`;
   const deflectionPercentage = Math.round(deflectionRate * 100);
 
+  const applyPreset = (presetId: string) => {
+    const preset = presets.find((item) => item.id === presetId);
+    if (!preset) return;
+    setMonthlyReceipts(preset.monthlyReceipts);
+    setAverageDisputeCost(preset.averageDisputeCost);
+    setHandlingCost(preset.handlingCost);
+    setSelectedPreset(presetId);
+
+    analytics.trackInteraction('enterprise_calc_update', {
+      presetId,
+      presetLabel: preset.label,
+    });
+  };
+
   return (
     <div id="enterprise-savings-calculator" className="overflow-hidden rounded-2xl border border-blue-100 shadow-lg bg-white">
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-5">
@@ -244,6 +283,23 @@ export default function EnterpriseSavingsCalculator() {
       </div>
 
       <div className="px-6 py-6 space-y-6">
+        <div className="flex flex-wrap gap-2">
+          {presets.map((preset) => (
+            <button
+              key={preset.id}
+              onClick={() => applyPreset(preset.id)}
+              className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+                selectedPreset === preset.id
+                  ? 'border-blue-600 bg-blue-100 text-blue-800'
+                  : 'border-gray-300 text-gray-600 hover:border-blue-300 hover:text-blue-700'
+              }`}
+            >
+              {preset.label}
+            </button>
+          ))}
+        </div>
+
+
         <div className="space-y-4">
           <label className="block">
             <span className="text-sm font-medium text-gray-700">Monthly receipts processed</span>

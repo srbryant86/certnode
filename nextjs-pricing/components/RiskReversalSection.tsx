@@ -27,8 +27,8 @@ export default function RiskReversalSection() {
       feature: "uptime_guarantee"
     },
     {
-      title: "SOC 2 Type II Compliance",
-      description: "Bank-level security audited annually. Your transaction data is protected with military-grade encryption.",
+      title: "Enterprise Security",
+      description: "Your transaction data is protected with industry-standard encryption and security practices.",
       icon: "🔒",
       feature: "security_compliance"
     },
@@ -82,35 +82,35 @@ export default function RiskReversalSection() {
           ))}
         </div>
 
-        {/* Trust Badges */}
+        {/* Security Features */}
         <div className="mt-12 pt-8 border-t border-gray-200">
           <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <span className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
                 <span className="w-2 h-2 bg-green-500 rounded-full"></span>
               </span>
-              PCI DSS Compliant
+              Encrypted Data Storage
             </div>
 
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <span className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
                 <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
               </span>
-              GDPR Ready
+              Privacy Focused
             </div>
 
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <span className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
                 <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
               </span>
-              ISO 27001 Certified
+              Security Best Practices
             </div>
 
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <span className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center">
                 <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
               </span>
-              AICPA Audited
+              Regular Security Reviews
             </div>
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function RiskReversalSection() {
               Ready to Protect Your Revenue?
             </h3>
             <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-              Join 2,800+ businesses who trust CertNode to deflect disputes and protect their sales.
+              Join businesses who trust CertNode to deflect disputes and protect their sales.
               Start your risk-free trial today.
             </p>
 

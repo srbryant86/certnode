@@ -5,7 +5,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'CertNode Receipt Infrastructure',
-  description: 'Enterprise-grade cryptographic receipt infrastructure with transparent pricing and developer-first experience.',
+  description: 'Cryptographic receipt infrastructure with transparent pricing and developer-first experience.',
 }
 
 export default function RootLayout({

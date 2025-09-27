@@ -18,7 +18,7 @@ import fxData from '../(data)/fx.json';
 
 export const metadata: Metadata = {
   title: 'Pricing — CertNode Cryptographic Receipt Platform',
-  description: 'Transparent pricing for CertNode cryptographic receipt platform. Developer plans start free, Professional solutions from $199/month. SOC 2 Type II ready.',
+  description: 'Transparent pricing for CertNode cryptographic receipt platform. Developer plans start free, Professional solutions from $199/month. Enterprise security standards.',
   openGraph: {
     title: 'Pricing — CertNode Cryptographic Receipt Platform',
     description: 'Transparent pricing for cryptographic receipt infrastructure. Free developer tier, professional plans, and business solutions.',
@@ -179,12 +179,12 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* Social Proof */}
-        <section className="py-8">
+        {/* Social Proof - Temporarily disabled to remove fake metrics */}
+        {/* <section className="py-8">
           <div className="max-w-7xl mx-auto px-6">
             <SocialProofWidget />
           </div>
-        </section>
+        </section> */}
 
         {/* Pricing Table */}
         <section className="py-16 bg-white" id="pricing-table">

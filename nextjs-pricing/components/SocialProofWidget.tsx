@@ -48,7 +48,7 @@ export default function SocialProofWidget() {
         revenueProtected: `$${Math.floor(businessesProtected * 1.2)}M`, // ~1.2M per business avg
         recentSignups: shuffledSignups,
         trustIndicators: [
-          "SOC 2 Type II Compliant",
+          "Enterprise Security Standards",
           "99.9% Uptime SLA",
           "Trusted by 500+ Businesses",
           "Zero Data Breaches"

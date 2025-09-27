@@ -151,36 +151,42 @@ export class PricingAnalytics {
       const { avgTicket = 0, monthlySales = 0 } = calculatorInputs;
       const monthlyVolume = monthlySales;
       const ticketSize = avgTicket;
+      const monthlyRevenue = ticketSize * monthlyVolume;
 
-      // High-ticket, high-volume → Business
-      if (ticketSize >= 200 && monthlyVolume >= 1000) {
+      // High-volume, high-revenue → Business (2500+ receipts, $100k+ monthly revenue)
+      if (monthlyVolume >= 2500 || monthlyRevenue >= 100000) {
         return 'business';
       }
 
-      // Medium-ticket, medium-volume → Growth
-      if (ticketSize >= 50 && monthlyVolume >= 500) {
+      // Medium-volume, medium-revenue → Growth (500+ receipts, $25k+ monthly revenue)
+      if (monthlyVolume >= 500 || monthlyRevenue >= 25000 || ticketSize >= 100) {
         return 'growth';
       }
 
-      // High-ticket, lower-volume → Growth (dispute protection value)
-      if (ticketSize >= 100) {
-        return 'growth';
+      // Low-volume, getting started → Starter (under 500 receipts, under $25k monthly revenue)
+      if (monthlyVolume < 500 && monthlyRevenue < 25000 && ticketSize < 100) {
+        return 'starter';
       }
     }
 
-    // Behavioral indicators
-    const hasMultipleCalculations = interactions.filter(i => i.event === 'roi_calculation').length >= 3;
-    const hasViewedHigherPlans = viewedPlans.includes('business') || viewedPlans.includes('growth');
+    // Behavioral indicators for users without calculator data
+    const calculationCount = interactions.filter(i => i.event === 'roi_calculation').length;
     const sessionDuration = Date.now() - this.session.startTime;
     const isEngaged = sessionDuration > 2 * 60 * 1000; // 2+ minutes
+    const hasViewedMultiplePlans = viewedPlans.length >= 2;
 
-    // Engaged users likely need more than Starter
-    if (isEngaged && hasMultipleCalculations) {
-      return hasViewedHigherPlans ? 'business' : 'growth';
+    // Highly engaged users likely need Growth or Business
+    if (isEngaged && calculationCount >= 3 && hasViewedMultiplePlans) {
+      return viewedPlans.includes('business') ? 'business' : 'growth';
     }
 
-    // Default recommendation
-    return 'growth';
+    // Medium engagement → Growth
+    if (isEngaged || calculationCount >= 2) {
+      return 'growth';
+    }
+
+    // Low engagement, new users → Starter
+    return 'starter';
   }
 
   getRecommendation(): string {

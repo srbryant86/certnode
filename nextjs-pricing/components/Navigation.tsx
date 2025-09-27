@@ -60,7 +60,7 @@ export default function Navigation() {
   }, [mobileOpen])
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
       <div
         ref={containerRef}
         className="mx-auto flex w-full max-w-[1200px] items-center justify-between px-6"
@@ -68,13 +68,14 @@ export default function Navigation() {
         <Link
           href="/"
           className="logo text-[28px] font-semibold leading-none tracking-[-0.02em] text-blue-600 transition hover:text-blue-700"
+          style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
         >
           CertNode
         </Link>
 
         <button
           type="button"
-          className="mobile-menu-toggle inline-flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 md:hidden"
+          className="mobile-menu-toggle inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-600 transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 md:hidden"
           aria-label="Toggle navigation"
           aria-expanded={mobileOpen}
           aria-controls="primary-navigation"
@@ -119,30 +120,33 @@ export default function Navigation() {
       <div
         className={`md:hidden ${
           mobileOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        } overflow-hidden border-t border-slate-200/60 bg-white/95 backdrop-blur-sm transition-all duration-300 ease-in-out`}
+        } overflow-hidden border-t border-gray-200 bg-white shadow-lg transition-all duration-300 ease-in-out`}
       >
-        <nav id="primary-navigation" className="flex flex-col space-y-2 px-4 py-4">
+        <nav id="primary-navigation" className="flex flex-col space-y-1 px-6 py-4">
           {NAV_LINKS.map((link) => {
             const active = linkIsActive(pathname, link.href)
             return (
               <Link
                 key={link.href}
                 href={link.href as any}
-                className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`rounded-lg px-4 py-3 text-[15px] font-normal transition-colors relative ${
                   active
-                    ? 'bg-blue-50 text-blue-700'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                    ? 'text-blue-600 bg-blue-50'
+                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50/60'
                 }`}
                 aria-current={active ? 'page' : undefined}
               >
                 {link.label}
+                {active && (
+                  <div className="absolute bottom-0 left-4 right-4 h-px bg-blue-600"></div>
+                )}
               </Link>
             )
           })}
         </nav>
       </div>
       {mobileOpen ? (
-        <div className="fixed inset-0 z-40 bg-slate-900/30 backdrop-blur-sm md:hidden" aria-hidden />
+        <div className="fixed inset-0 z-40 bg-gray-900/30 backdrop-blur-sm md:hidden" aria-hidden />
       ) : null}
     </header>
   )

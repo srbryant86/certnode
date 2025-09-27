@@ -7,7 +7,11 @@
 }
 
 body {
-  @apply bg-gray-50 text-gray-900 font-sans antialiased;
+  @apply bg-gray-50 text-gray-900 antialiased;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  line-height: 1.7;
+  font-size: 16px;
+  letter-spacing: -0.01em;
 }
 
 a {

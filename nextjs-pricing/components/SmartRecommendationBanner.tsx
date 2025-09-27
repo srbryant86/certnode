@@ -17,6 +17,12 @@ export default function SmartRecommendationBanner() {
 
   useEffect(() => {
     const updateRecommendation = () => {
+      // Check if user has actually interacted with the ROI calculator
+      if (typeof window !== 'undefined') {
+        const hasInteracted = localStorage.getItem('certnode_roi_interacted');
+        if (!hasInteracted) return;
+      }
+
       const summary = analytics.getSessionSummary();
       const recommendedPlan = analytics.getRecommendation();
 

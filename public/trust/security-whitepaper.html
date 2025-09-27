@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CertNode Security Whitepaper - Transparent Cryptographic Infrastructure</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --gray-900: #111827;
+            --gray-800: #1f2937;
+            --gray-700: #374151;
+            --gray-600: #4b5563;
+            --gray-100: #f3f4f6;
+            --text-muted: #6b7280;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: var(--gray-900);
+            color: white;
+            padding: 20px 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav a {
+            color: #d1d5db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover, .nav a[aria-current="page"] {
+            color: white;
+        }
+
+        .whitepaper-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .whitepaper-hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .whitepaper-hero p {
+            font-size: 20px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content {
+            padding: 60px 0;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin: 30px 0 15px 0;
+        }
+
+        .section p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: var(--gray-700);
+        }
+
+        .technical-box {
+            background: var(--gray-100);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        .technical-box h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--gray-900);
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .spec-table th {
+            background: var(--primary);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .spec-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .spec-table tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: var(--gray-700);
+        }
+
+        .cta-section {
+            background: var(--gray-100);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .cta-section h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--gray-900);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 10px;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-light);
+        }
+
+        footer {
+            background: var(--gray-900);
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-container">
+                <a href="/" class="logo">CertNode</a>
+                <nav class="nav">
+                    <a href="/verify">Validator</a>
+                    <a href="/openapi">Documentation</a>
+                    <a href="/enterprise">Enterprise</a>
+                    <a href="/pricing">Pricing</a>
+                    <a href="/trust" aria-current="page">Security</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="whitepaper-hero">
+        <div class="container">
+            <h1>Security Whitepaper</h1>
+            <p>Transparent cryptographic specifications for enterprise audit requirements. Proprietary implementation with open standards compliance.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content">
+
+            <section class="section">
+                <h2>Executive Summary</h2>
+                <p>CertNode provides enterprise-grade cryptographic receipt infrastructure using a transparent proprietary approach. While our implementation is proprietary to protect competitive advantages, our cryptographic methods are fully transparent and auditable to meet enterprise compliance requirements.</p>
+
+                <div class="technical-box">
+                    <h4>Key Principles</h4>
+                    <ul>
+                        <li><strong>Transparent Cryptography:</strong> All algorithms and specifications are fully documented</li>
+                        <li><strong>Standards Compliance:</strong> RFC 7515 (JWS) and RFC 8785 (JSON Canonicalization)</li>
+                        <li><strong>Auditable Implementation:</strong> Cryptographic operations can be independently verified</li>
+                        <li><strong>Enterprise Security:</strong> Proprietary implementation with enterprise support</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Cryptographic Specifications</h2>
+
+                <h3>Digital Signature Algorithm</h3>
+                <p>CertNode uses ECDSA with the P-256 curve and SHA-256 hash function, providing 128-bit security strength as recommended by NIST.</p>
+
+                <table class="spec-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Specification</th>
+                            <th>Standard</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Elliptic Curve</td>
+                            <td>P-256 (secp256r1)</td>
+                            <td>FIPS 186-4</td>
+                        </tr>
+                        <tr>
+                            <td>Hash Function</td>
+                            <td>SHA-256</td>
+                            <td>FIPS 180-4</td>
+                        </tr>
+                        <tr>
+                            <td>Signature Format</td>
+                            <td>JSON Web Signature (JWS)</td>
+                            <td>RFC 7515</td>
+                        </tr>
+                        <tr>
+                            <td>JSON Canonicalization</td>
+                            <td>RFC 8785</td>
+                            <td>RFC 8785</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Receipt Structure</h3>
+                <p>Each CertNode receipt contains the following cryptographically protected fields:</p>
+
+                <div class="code-block">
+{
+  "header": {
+    "alg": "ES256",
+    "kid": "certnode-2025-01",
+    "typ": "JWT"
+  },
+  "payload": {
+    "iss": "https://certnode.io",
+    "iat": 1672531200,
+    "transaction_id": "txn_abc123",
+    "amount": "99.99",
+    "currency": "USD",
+    "merchant_id": "merchant_xyz789"
+  },
+  "signature": "MEUCIQDxxx...xxx"
+}
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Key Management Infrastructure</h2>
+
+                <h3>JWKS Endpoint</h3>
+                <p>Our JSON Web Key Set (JWKS) endpoint provides real-time access to public keys for signature verification:</p>
+
+                <div class="technical-box">
+                    <h4>Live Infrastructure</h4>
+                    <ul>
+                        <li><strong>Endpoint:</strong> <code>https://certnode.io/.well-known/jwks.json</code></li>
+                        <li><strong>Cache TTL:</strong> 5 minutes</li>
+                        <li><strong>High Availability:</strong> CDN distribution with 99.9% uptime SLA</li>
+                        <li><strong>Key Rotation:</strong> Automated rotation with overlap periods</li>
+                    </ul>
+                </div>
+
+                <h3>Key Rotation Policy</h3>
+                <p>Keys are rotated according to enterprise security best practices:</p>
+                <ul>
+                    <li>Regular rotation every 90 days</li>
+                    <li>Emergency rotation capability within 15 minutes</li>
+                    <li>Immutable rotation log for audit trails</li>
+                    <li>Overlap periods to prevent service disruption</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2>Security Audit Framework</h2>
+
+                <h3>Independent Verification</h3>
+                <p>Enterprise customers can independently verify our cryptographic claims through:</p>
+
+                <div class="technical-box">
+                    <h4>Verification Methods</h4>
+                    <ul>
+                        <li><strong>Test Vectors:</strong> Comprehensive test suites for implementation validation</li>
+                        <li><strong>Reference Implementation:</strong> Minimal implementation for verification</li>
+                        <li><strong>Mathematical Proofs:</strong> Cryptographic security proofs available</li>
+                        <li><strong>Third-party Audit:</strong> Annual security assessments by certified auditors</li>
+                    </ul>
+                </div>
+
+                <h3>Compliance Standards</h3>
+                <table class="spec-table">
+                    <thead>
+                        <tr>
+                            <th>Standard</th>
+                            <th>Status</th>
+                            <th>Scope</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SOC 2 Type II</td>
+                            <td>Planned Q1 2026</td>
+                            <td>Security, Availability, Confidentiality</td>
+                        </tr>
+                        <tr>
+                            <td>RFC 7515 (JWS)</td>
+                            <td>Fully Compliant</td>
+                            <td>JSON Web Signature</td>
+                        </tr>
+                        <tr>
+                            <td>RFC 8785</td>
+                            <td>Fully Compliant</td>
+                            <td>JSON Canonicalization</td>
+                        </tr>
+                        <tr>
+                            <td>FIPS 186-4</td>
+                            <td>Compliant</td>
+                            <td>Digital Signature Standard</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="section">
+                <h2>Enterprise Implementation</h2>
+
+                <h3>Proprietary Advantages</h3>
+                <p>Our proprietary implementation provides enterprise advantages while maintaining cryptographic transparency:</p>
+
+                <ul>
+                    <li><strong>Performance Optimization:</strong> High-throughput receipt generation optimized for enterprise scale</li>
+                    <li><strong>Enterprise Integration:</strong> Native support for enterprise authentication and authorization systems</li>
+                    <li><strong>Dedicated Support:</strong> Enterprise-grade SLA with dedicated technical support</li>
+                    <li><strong>Custom Features:</strong> Tailored functionality for specific compliance requirements</li>
+                    <li><strong>Professional Services:</strong> Implementation consulting and integration support</li>
+                </ul>
+
+                <h3>SDK Architecture</h3>
+                <p>Enterprise SDKs provide production-ready implementations with transparent cryptographic operations:</p>
+
+                <div class="technical-box">
+                    <h4>Available SDKs</h4>
+                    <ul>
+                        <li><strong>Python SDK:</strong> Enterprise implementation with FastAPI integration</li>
+                        <li><strong>Node.js SDK:</strong> Express middleware and standalone enterprise library</li>
+                        <li><strong>Rust SDK:</strong> High-performance library with WASM support</li>
+                        <li><strong>Go SDK:</strong> Lightweight library for cloud infrastructure</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Threat Model & Security Analysis</h2>
+
+                <h3>Attack Vectors Considered</h3>
+                <ul>
+                    <li><strong>Signature Forgery:</strong> Protected by ECDSA cryptographic security</li>
+                    <li><strong>Key Compromise:</strong> Mitigated by regular key rotation and secure key storage</li>
+                    <li><strong>Replay Attacks:</strong> Prevented by timestamp validation and unique transaction IDs</li>
+                    <li><strong>Man-in-the-Middle:</strong> Mitigated by TLS encryption and certificate pinning</li>
+                    <li><strong>Implementation Attacks:</strong> Protected by secure coding practices and regular audits</li>
+                </ul>
+
+                <h3>Security Assumptions</h3>
+                <p>Our security model is based on the following cryptographic assumptions:</p>
+                <ul>
+                    <li>ECDSA with P-256 curve provides 128-bit security strength</li>
+                    <li>SHA-256 hash function is collision-resistant</li>
+                    <li>Private keys are securely generated and stored</li>
+                    <li>TLS provides secure transport layer protection</li>
+                </ul>
+            </section>
+
+            <div class="cta-section">
+                <h3>Ready for Enterprise Implementation?</h3>
+                <p>Contact our security team for detailed technical specifications and enterprise onboarding.</p>
+                <a href="mailto:security@certnode.io" class="cta-button">Contact Security Team</a>
+                <a href="/pricing" class="cta-button">View Enterprise Plans</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 CertNode. Enterprise cryptographic infrastructure for audit-ready transaction records.</p>
+        </div>
+    </footer>
+</body>
+</html>

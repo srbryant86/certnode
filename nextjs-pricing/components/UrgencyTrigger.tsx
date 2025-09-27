@@ -43,7 +43,7 @@ export default function UrgencyTrigger() {
         {
           type: 'risk_reversal',
           message: 'Start Protecting Revenue Today',
-          subtext: 'Join businesses reducing chargebacks by 70%',
+          subtext: 'Cryptographic receipts for revenue protection',
           urgencyLevel: 'medium',
           icon: '📈',
           ctaText: 'See Results',

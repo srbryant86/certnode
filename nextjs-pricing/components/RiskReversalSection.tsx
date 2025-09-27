@@ -128,7 +128,7 @@ export default function RiskReversalSection() {
               Ready to Protect Your Revenue?
             </h3>
             <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-              Join businesses who trust CertNode to deflect disputes and protect their sales.
+              Enterprise-grade cryptographic receipt technology designed for revenue protection.
               Start your risk-free trial today.
             </p>
 

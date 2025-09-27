@@ -24,6 +24,13 @@ export default function ROIWidget({
   const [deflectionRatePct, setDeflectionRatePct] = useState(35);
   const [planPrice, setPlanPrice] = useState(defaultPlanPrice);
 
+  // Helper function to mark user interaction
+  const markUserInteraction = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('certnode_roi_interacted', 'true');
+    }
+  };
+
   // Hydration and localStorage
   useEffect(() => {
     setIsHydrated(true);
@@ -140,7 +147,10 @@ export default function ROIWidget({
             type="number"
             id="ticket"
             value={ticket}
-            onChange={(e) => setTicket(Math.max(0, parseInt(e.target.value) || 0))}
+            onChange={(e) => {
+              setTicket(Math.max(0, parseInt(e.target.value) || 0));
+              markUserInteraction();
+            }}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             aria-describedby="ticket-help"
           />
@@ -158,7 +168,10 @@ export default function ROIWidget({
             type="number"
             id="monthlySales"
             value={monthlySales}
-            onChange={(e) => setMonthlySales(Math.max(0, parseInt(e.target.value) || 0))}
+            onChange={(e) => {
+              setMonthlySales(Math.max(0, parseInt(e.target.value) || 0));
+              markUserInteraction();
+            }}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             aria-describedby="sales-help"
           />
@@ -179,7 +192,10 @@ export default function ROIWidget({
             max="20"
             step="0.5"
             value={disputeRatePct}
-            onChange={(e) => setDisputeRatePct(parseFloat(e.target.value))}
+            onChange={(e) => {
+              setDisputeRatePct(parseFloat(e.target.value));
+              markUserInteraction();
+            }}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             aria-describedby="dispute-help"
           />
@@ -200,7 +216,10 @@ export default function ROIWidget({
             max="60"
             step="5"
             value={deflectionRatePct}
-            onChange={(e) => setDeflectionRatePct(parseFloat(e.target.value))}
+            onChange={(e) => {
+              setDeflectionRatePct(parseFloat(e.target.value));
+              markUserInteraction();
+            }}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             aria-describedby="deflection-help"
           />

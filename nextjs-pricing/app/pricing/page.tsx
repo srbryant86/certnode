@@ -113,7 +113,7 @@ export default function PricingPage() {
           <div className="relative max-w-7xl mx-auto px-6">
             <div className="text-center">
               <div className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 text-blue-100 px-4 py-2 rounded-full text-sm font-medium mb-6">
-                🔐 SOC 2 Type II Compliant
+                🔐 Enterprise Security & Compliance
               </div>
 
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">

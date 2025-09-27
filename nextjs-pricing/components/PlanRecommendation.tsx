@@ -10,7 +10,10 @@ export default function PlanRecommendation() {
     // Get ROI settings from localStorage
     if (typeof window !== 'undefined') {
       const settings = localStorage.getItem('certnode_roi_settings');
-      if (settings) {
+      const hasInteracted = localStorage.getItem('certnode_roi_interacted');
+
+      // Only show recommendations if user has actually interacted with the ROI widget
+      if (settings && hasInteracted === 'true') {
         try {
           const { ticket, monthlySales } = JSON.parse(settings);
           const rec = getRecommendation(ticket || 0, monthlySales || 0);

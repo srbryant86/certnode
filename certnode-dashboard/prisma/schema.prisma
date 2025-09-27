@@ -1,0 +1,195 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  OWNER     @map("owner")
+  ADMIN     @map("admin")
+  DEVELOPER @map("developer")
+  VIEWER    @map("viewer")
+  MEMBER    @map("member")
+
+  @@map("user_role")
+}
+
+enum PlanTier {
+  STARTER    @map("starter")
+  GROWTH     @map("growth")
+  BUSINESS   @map("business")
+  ENTERPRISE @map("enterprise")
+
+  @@map("plan_tier")
+}
+
+enum KeyStatus {
+  ACTIVE  @map("active")
+  REVOKED @map("revoked")
+  EXPIRED @map("expired")
+
+  @@map("key_status")
+}
+
+enum VerificationStatus {
+  PENDING  @map("pending")
+  VERIFIED @map("verified")
+  FAILED   @map("failed")
+
+  @@map("verification_status")
+}
+
+model User {
+  id           String      @id @default(uuid()) @db.Uuid
+  email        String      @unique
+  name         String
+  role         UserRole    @default(MEMBER)
+  enterpriseId String?     @map("enterprise_id") @db.Uuid
+  passwordHash String?     @map("password_hash")
+  mfaSecret    String?     @map("mfa_secret")
+  lastLogin    DateTime?   @map("last_login") @db.Timestamp(6)
+  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt    DateTime    @updatedAt @map("updated_at") @db.Timestamp(6)
+  enterprise   Enterprise? @relation(fields: [enterpriseId], references: [id])
+  apiKeys      ApiKey[]
+  auditLogs    AuditLog[]
+  accounts     Account[]
+  sessions     Session[]
+
+  @@map("users")
+}
+
+model Enterprise {
+  id             String        @id @default(uuid()) @db.Uuid
+  name           String
+  domain         String?
+  billingTier    PlanTier      @map("billing_tier")
+  subscriptionId String?       @map("subscription_id")
+  settings       Json          @default("{}")
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamp(6)
+  users          User[]
+  apiKeys        ApiKey[]
+  receipts       Receipt[]
+  usageMetrics   UsageMetric[]
+  auditLogs      AuditLog[]
+
+  @@map("enterprises")
+}
+
+model ApiKey {
+  id              String      @id @default(uuid()) @db.Uuid
+  userId          String?     @map("user_id") @db.Uuid
+  enterpriseId    String?     @map("enterprise_id") @db.Uuid
+  name            String
+  keyHash         String      @unique @map("key_hash")
+  keyPreview      String      @map("key_preview")
+  permissions     String[]    @default(["receipts:read", "receipts:write"])
+  rateLimit       Int         @default(1000) @map("rate_limit")
+  rateLimitWindow String      @default("1m") @map("rate_limit_window")
+  ipRestrictions  String[]    @default([]) @map("ip_restrictions")
+  lastUsed        DateTime?   @map("last_used") @db.Timestamp(6)
+  expiresAt       DateTime?   @map("expires_at") @db.Timestamp(6)
+  status          KeyStatus   @default(ACTIVE)
+  createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamp(6)
+  user            User?       @relation(fields: [userId], references: [id])
+  enterprise      Enterprise? @relation(fields: [enterpriseId], references: [id])
+  receipts        Receipt[]
+
+  @@map("api_keys")
+}
+
+model Receipt {
+  id                 String             @id @default(uuid()) @db.Uuid
+  apiKeyId           String?            @map("api_key_id") @db.Uuid
+  enterpriseId       String?            @map("enterprise_id") @db.Uuid
+  transactionId      String             @map("transaction_id")
+  transactionData    Json               @map("transaction_data")
+  cryptographicProof Json               @map("cryptographic_proof")
+  verificationStatus VerificationStatus @default(PENDING) @map("verification_status")
+  amountCents        BigInt?            @map("amount_cents")
+  currency           String             @default("USD")
+  createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamp(6)
+  apiKey             ApiKey?            @relation(fields: [apiKeyId], references: [id])
+  enterprise         Enterprise?        @relation(fields: [enterpriseId], references: [id])
+
+  @@index([enterpriseId, createdAt(sort: Desc)], map: "idx_receipts_enterprise_created")
+  @@index([apiKeyId], map: "idx_receipts_api_key")
+  @@index([transactionId], map: "idx_receipts_transaction_id")
+  @@map("receipts")
+}
+
+model UsageMetric {
+  id                  String      @id @default(uuid()) @db.Uuid
+  enterpriseId        String?     @map("enterprise_id") @db.Uuid
+  periodStart         DateTime    @map("period_start") @db.Date
+  periodEnd           DateTime    @map("period_end") @db.Date
+  receiptsGenerated   Int         @default(0) @map("receipts_generated")
+  overageReceipts     Int         @default(0) @map("overage_receipts")
+  overageChargesCents BigInt      @default(0) @map("overage_charges_cents")
+  createdAt           DateTime    @default(now()) @map("created_at") @db.Timestamp(6)
+  enterprise          Enterprise? @relation(fields: [enterpriseId], references: [id])
+
+  @@unique([enterpriseId, periodStart, periodEnd], map: "usage_metrics_enterprise_period_key")
+  @@map("usage_metrics")
+}
+
+model AuditLog {
+  id           String      @id @default(uuid()) @db.Uuid
+  userId       String?     @map("user_id") @db.Uuid
+  enterpriseId String?     @map("enterprise_id") @db.Uuid
+  action       String      @db.VarChar(100)
+  resourceType String?     @map("resource_type") @db.VarChar(50)
+  resourceId   String?     @map("resource_id")
+  details      Json?
+  ipAddress    String?     @map("ip_address") @db.Inet
+  userAgent    String?     @map("user_agent") @db.Text
+  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamp(6)
+  user         User?       @relation(fields: [userId], references: [id])
+  enterprise   Enterprise? @relation(fields: [enterpriseId], references: [id])
+
+  @@index([enterpriseId, createdAt(sort: Desc)], map: "idx_audit_logs_enterprise_created")
+  @@index([userId, createdAt(sort: Desc)], map: "idx_audit_logs_user_created")
+  @@map("audit_logs")
+}
+
+model Account {
+  id                String  @id @default(uuid()) @db.Uuid
+  userId            String  @map("user_id") @db.Uuid
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        BigInt?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId], map: "accounts_provider_provider_account_id_key")
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(uuid()) @db.Uuid
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id") @db.Uuid
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token], map: "verification_token_identifier_token_key")
+  @@map("verification_tokens")
+}

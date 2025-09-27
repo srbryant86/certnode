@@ -3,17 +3,33 @@ import Stripe from 'stripe';
 export const dynamic = 'force-dynamic';
 
 const tierMap: Record<string, string> = {
+  // Legacy mapping (keep for backwards compatibility)
   starter: 'starter',
-  professional: 'pro',
   growth: 'pro',
-  pro: 'pro',
   business: 'business',
+
+  // New tier mapping
+  foundation: 'starter',
+  professional: 'pro',
+  enterprise: 'business',
+  'legal-shield': 'legal_shield',
+  'dispute-fortress': 'dispute_fortress',
+
+  // Alternative naming
+  pro: 'pro',
+  legal_shield: 'legal_shield',
+  dispute_fortress: 'dispute_fortress'
 };
 
 const yearlyPaymentLinks: Record<string, string | undefined> = {
+  // Standard tiers (existing)
   starter: 'https://buy.stripe.com/28E8wOeMices0nYduZbAs06',
   pro: 'https://buy.stripe.com/7sY28qdIe4M02w61MhbAs07',
   business: 'https://buy.stripe.com/bJe4gyaw2fqE0nY76BbAs08',
+
+  // Premium tiers (new)
+  legal_shield: 'https://buy.stripe.com/28E7sK9rYces1s2fD7bAs09',
+  dispute_fortress: 'https://buy.stripe.com/aFa7sK8nU1zO9YycqVbAs0b',
 };
 
 const monthlyPriceIds: Record<string, string | undefined> = {

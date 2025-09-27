@@ -3,6 +3,15 @@
 You are operating **only** on the application layer. Do not change infra/secrets.
 
 ## Session TODOs
+
+- [x] Initialize certnode-dashboard Next.js 14 workspace
+- [x] Implement Prisma schema aligned with dashboard architecture
+- [x] Scaffold NextAuth authentication foundation
+- [x] Build overview dashboard module shell
+- [x] Document Phase 1 dashboard progress across docs
+- [x] Stand up API key management UI + CRUD flows
+- [ ] Wire Stripe billing portal and plan snapshot into dashboard
+- [ ] Implement per-key usage analytics charts for API management
 - [x] Build enterprise savings calculator widget for pricing sidebar
 - [ ] Validate enterprise_calc_update analytics stream in production
 - [x] Restore Next.js pricing assets by removing conflicting `/_next` rewrite in `vercel.json`

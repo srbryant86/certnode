@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import EnterpriseVolumeCalculator from '@/components/EnterpriseVolumeCalculator';
 
 export const metadata: Metadata = {
   title: 'Enterprise Platforms — CertNode',
@@ -61,6 +62,21 @@ export default function PlatformsPage() {
             </ul>
           </div>
         </div>
+
+        {/* Volume Calculator */}
+        <section className="py-16">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Calculate Your Enterprise Pricing
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                See real-time pricing based on your monthly receipt volume. Drag the slider to find the perfect plan for your business scale.
+              </p>
+            </div>
+            <EnterpriseVolumeCalculator />
+          </div>
+        </section>
 
         <div className="bg-gradient-to-br from-blue-600 to-purple-700 text-white rounded-lg p-12 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready for Enterprise Scale?</h2>

@@ -117,14 +117,14 @@ export default function PricingPage() {
               </div>
 
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Protect every sale.<br />
+                Enterprise-grade transaction records.<br />
                 <span className="text-transparent bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text">
-                  Build unshakeable trust.
+                  Audit-ready from day one.
                 </span>
               </h1>
 
               <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-8 leading-relaxed">
-                Contracts convince lawyers. <strong className="text-white">CertNode receipts convince banks.</strong>
+                Cryptographic receipts that satisfy compliance teams, <strong className="text-white">CFOs, and external auditors.</strong>
               </p>
 
               {/* Key Benefits */}
@@ -133,7 +133,7 @@ export default function PricingPage() {
                   <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span>Instant API access</span>
+                  <span>SOX & SOC 2 compliant</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
@@ -145,7 +145,7 @@ export default function PricingPage() {
                   <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span>Free developer sandbox</span>
+                  <span>Enterprise SSO ready</span>
                 </div>
               </div>
 
@@ -166,7 +166,7 @@ export default function PricingPage() {
               </div>
 
               <p className="text-blue-200 text-sm">
-                Trusted by developers and enterprises • Secure checkout by Stripe
+                Enterprise-grade infrastructure • SOX compliant • Secure payments by Stripe
               </p>
             </div>
           </div>
@@ -191,10 +191,10 @@ export default function PricingPage() {
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Simple, transparent pricing
+                Enterprise-ready compliance infrastructure
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Choose the plan that fits your business size. All plans include our core cryptographic receipt technology.
+                Cryptographic receipt technology that scales with your business. SOX compliant, audit-ready, enterprise-grade security from day one.
               </p>
             </div>
 

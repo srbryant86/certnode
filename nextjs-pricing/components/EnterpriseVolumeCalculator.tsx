@@ -229,26 +229,3 @@ export default function EnterpriseVolumeCalculator() {
     </div>
   );
 }
-
-<style jsx>{`
-  .slider::-webkit-slider-thumb {
-    appearance: none;
-    width: 24px;
-    height: 24px;
-    background: #3B82F6;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .slider::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
-    background: #3B82F6;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-`}</style>

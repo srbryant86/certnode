@@ -158,10 +158,10 @@ export default function PricingPage() {
                   View Pricing Plans
                 </a>
                 <a
-                  href="/analytics"
+                  href="/trust"
                   className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-lg font-semibold text-lg transition-all flex items-center justify-center gap-2"
                 >
-                  📊 Analytics Dashboard
+                  Visit the Trust Center
                 </a>
               </div>
 

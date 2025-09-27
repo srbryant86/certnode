@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { PricingAnalytics } from '@/lib/analytics';
 
 interface UrgencyData {
-  type: 'discount' | 'scarcity' | 'time_limited' | 'risk_reversal';
+  type: 'discount' | 'time_limited' | 'risk_reversal';
   message: string;
   subtext?: string;
   urgencyLevel: 'low' | 'medium' | 'high';
@@ -41,7 +41,7 @@ export default function UrgencyTrigger() {
           textColor: 'text-orange-800'
         },
         {
-          type: 'value_focus',
+          type: 'risk_reversal',
           message: 'Start Protecting Revenue Today',
           subtext: 'Join businesses reducing chargebacks by 70%',
           urgencyLevel: 'medium',
@@ -76,6 +76,11 @@ export default function UrgencyTrigger() {
       const recommended = session.recommendedPlan;
       const hasHighTicket = session.calculatorUsage >= 3;
 
+      // Never show fake scarcity triggers for legal compliance
+      if (recommended === 'growth' && session.engagementLevel === 'high') {
+        return triggers[1]; // Use value-focused message instead of fake scarcity
+      }
+
       if (session.engagementLevel === 'high' && recommended === 'business') {
         return triggers[1]; // Value focus for high-value prospects
       }
@@ -92,6 +97,7 @@ export default function UrgencyTrigger() {
     };
 
     const urgencyData = generateUrgencyData();
+    console.log('UrgencyTrigger generated:', urgencyData);
     setUrgencyData(urgencyData);
 
     // Show after some engagement

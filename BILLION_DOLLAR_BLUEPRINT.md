@@ -1,11 +1,12 @@
 # Billion Dollar Blueprint - Phase 1
 
 ## Roadmap Rollup
-- [x] Restore pricing asset delivery via Vercel multi-build alignment
-- [ ] CURRENT PRIORITY - Confirm production deploy serves `/_next` assets without rewrites
-- [ ] Next item - Automate asset health check in deployment validation
+- [x] Ship Stripe yearly payment link routing for the pricing toggle
+- [x] CURRENT PRIORITY — Remove public access to demo analytics until telemetry is production-ready
+- [ ] Next item — Stand up an authenticated analytics dashboard with real conversion data
 
 ## Strategic Insights
+- Directing yearly checkouts through dedicated Stripe payment links protects enterprise billing flows while unlocking higher ACV conversions immediately.
 - Canonical asset delivery now flows through the `/nextjs-pricing` prefix while a compatibility rewrite catches legacy `/_next` requests, so we restore styling without compromising future multi-app separation.
 - Keeping business-route rewrites separate from framework internals protects infrastructure scale and credibility as we evolve into the universal receipt protocol owner.
 - Aligning Vercel asset delivery with the explicit Next.js asset prefix keeps the multi-app deployment resilient without entangling API and static layers.
@@ -13,6 +14,8 @@
 
 ## Execution Notes
 - Pricing experience at `certnode.io/pricing` now satisfies the professional site infrastructure objective with full styling and interactivity restored.
+- Yearly billing toggle now routes Starter, Growth, and Business plans to the correct Stripe payment links, eliminating accidental monthly subscriptions.
+- Removed the public analytics dashboard route (`/analytics`) and replaced any CTAs with Trust Center links while preserving analytics library architecture for future authenticated release.
 - Checkout analytics events typed (`checkout_start`/`checkout_error`) so revenue instrumentation stays intact while passing production builds.
 - Legacy `/_next` requests now rewrite to the prefixed path so cached clients recover immediately while new builds stay standards-aligned.
 - Tailwind globals load through `app/globals.css`, keeping typography, gradients, and layout utilities consistent with our enterprise positioning.

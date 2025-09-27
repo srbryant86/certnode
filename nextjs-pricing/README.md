@@ -83,7 +83,7 @@ disputesToPayPlan = ceil(planPrice / avgTicket)
 
 ### Sales Psychology
 - [ ] Social proof widgets ("X businesses protected")
-- [ ] Scarcity triggers ("3 slots remaining")
+- [x] ~~Scarcity triggers ("3 slots remaining")~~ (Removed for legal compliance)
 - [ ] Risk reversal guarantees
 - [ ] Authority positioning
 

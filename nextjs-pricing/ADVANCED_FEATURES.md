@@ -87,9 +87,9 @@ const generateUrgencyData = (): UrgencyData => {
   // Low engagement: No urgency (not pushy)
   if (session.engagementLevel === 'low') return null;
 
-  // High engagement + Business plan → Scarcity
+  // High engagement + Business plan → Value-focused message (scarcity removed for legal compliance)
   if (session.engagementLevel === 'high' && recommended === 'business') {
-    return scarcityTrigger; // "Only 3 Growth Plan spots remaining"
+    return valueFocusedTrigger; // "Start Protecting Revenue Today"
   }
 
   // 10+ minute sessions → Risk reversal

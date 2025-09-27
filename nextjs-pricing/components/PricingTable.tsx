@@ -210,6 +210,11 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
                       Save {formatCurrency((monthlyPrice - yearlyPrice / 12) * 12, currency)} annually
                     </div>
                   )}
+                  {!isYearly && (
+                    <div className="text-xs font-semibold text-green-600 mt-2">
+                      First month 50% off applied automatically
+                    </div>
+                  )}
                 </div>
 
                 <button

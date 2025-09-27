@@ -1,53 +1,78 @@
 'use client';
 
-export default function CTAGroup() {
-  const handleSandboxClick = () => {
-    // Link to Starter plan (free sandbox)
-    const pricingSection = document.getElementById('pricing-table');
-    if (pricingSection) {
-      pricingSection.scrollIntoView({ behavior: 'smooth' });
+import { useState } from 'react';
 
-      // Highlight the Starter plan
-      setTimeout(() => {
-        const starterCard = document.querySelector('[data-plan-id="starter"]');
-        if (starterCard) {
-          starterCard.classList.add('ring-2', 'ring-green-500', 'ring-offset-2');
-          setTimeout(() => {
-            starterCard.classList.remove('ring-2', 'ring-green-500', 'ring-offset-2');
-          }, 3000);
-        }
-      }, 500);
+const STARTER_TIER = 'starter';
+const BUSINESS_TIER = 'business';
+
+async function launchCheckout(tier: string) {
+  try {
+    const response = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        tier,
+        billing: 'monthly',
+        email: null,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Checkout request failed');
     }
+
+    const data = await response.json();
+    const checkoutUrl = data.url || data.checkout_url || data.payment_link;
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl;
+    }
+  } catch (error) {
+    console.error('CTA checkout error:', error);
+  }
+}
+
+function highlightPlan(planId: string) {
+  const pricingSection = document.getElementById('pricing-table');
+  pricingSection?.scrollIntoView({ behavior: 'smooth' });
+
+  setTimeout(() => {
+    const card = document.querySelector(`[data-plan-id="${planId}"]`);
+    if (card) {
+      card.classList.add('ring-2', 'ring-blue-500', 'ring-offset-2');
+      setTimeout(() => {
+        card.classList.remove('ring-2', 'ring-blue-500', 'ring-offset-2');
+      }, 3000);
+    }
+  }, 400);
+}
+
+export default function CTAGroup() {
+  const [isLaunching, setIsLaunching] = useState(false);
+
+  const handleSandboxClick = async () => {
+    if (isLaunching) return;
+    setIsLaunching(true);
+    highlightPlan(STARTER_TIER);
+    await launchCheckout(STARTER_TIER);
+    setIsLaunching(false);
   };
 
   const handleSalesClick = () => {
-    // For high-ticket sales - could link to custom form or calendar
-    // For now, scroll to pricing with Business plan highlighted
-    const pricingSection = document.getElementById('pricing-table');
-    if (pricingSection) {
-      pricingSection.scrollIntoView({ behavior: 'smooth' });
-
-      // Highlight the Business plan for enterprise sales
-      setTimeout(() => {
-        const businessCard = document.querySelector('[data-plan-id="business"]');
-        if (businessCard) {
-          businessCard.classList.add('ring-2', 'ring-purple-500', 'ring-offset-2');
-          setTimeout(() => {
-            businessCard.classList.remove('ring-2', 'ring-purple-500', 'ring-offset-2');
-          }, 3000);
-        }
-      }, 500);
-    }
+    highlightPlan(BUSINESS_TIER);
+    window.location.href = 'mailto:contact@certnode.io?subject=Talk%20to%20CertNode%20Sales&body=Hi%20CertNode%20team,%20we%20would%20like%20to%20discuss%20enterprise%20options.';
   };
 
   return (
     <div className="flex flex-col sm:flex-row gap-4 justify-center">
       <button
         onClick={handleSandboxClick}
-        className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+        disabled={isLaunching}
+        className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors disabled:opacity-70"
         data-analytics="cta-sandbox"
       >
-        Start Free Sandbox
+        {isLaunching ? 'Launching...' : 'Start Free Sandbox'}
       </button>
       <button
         onClick={handleSalesClick}

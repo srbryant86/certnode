@@ -285,7 +285,7 @@ export default function EnterpriseSavingsCalculator() {
         <div className="space-y-6">
           <label className="block rounded-xl border border-blue-100 bg-blue-50 p-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700">Evidence success assumption</span>
+              <span className="text-sm font-medium text-gray-700">Evidence acceptance rate</span>
               <span className="text-xs text-gray-500">{deflectionPercentage}%</span>
             </div>
             <div className="mt-3 flex items-center gap-3">

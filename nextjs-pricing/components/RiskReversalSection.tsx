@@ -33,6 +33,12 @@ export default function RiskReversalSection() {
       feature: "security_compliance"
     },
     {
+      title: "First Month 50% Off",
+      description: "Launch with half-price billing on your first month - applied automatically at checkout.",
+      icon: "50%",
+      feature: "intro_discount"
+    },
+    {
       title: "No Long-term Contracts",
       description: "Cancel anytime with 30 days notice. No setup fees, no hidden costs, no commitments.",
       icon: "📋",

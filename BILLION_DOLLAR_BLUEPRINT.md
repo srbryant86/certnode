@@ -1,9 +1,9 @@
 # Billion Dollar Blueprint - Phase 1
 
 ## Roadmap Rollup
-- [x] Ship Stripe yearly payment link routing for the pricing toggle
-- [x] CURRENT PRIORITY — Remove public access to demo analytics until telemetry is production-ready
-- [ ] Next item — Stand up an authenticated analytics dashboard with real conversion data
+- [x] Completed item — Ship Stripe yearly payment link routing for the pricing toggle
+- [ ] CURRENT PRIORITY — Stand up an authenticated analytics dashboard with real conversion data
+- [ ] Next item — Define the authentication and data pipeline needed to reopen analytics to customers
 
 ## Strategic Insights
 - Directing yearly checkouts through dedicated Stripe payment links protects enterprise billing flows while unlocking higher ACV conversions immediately.

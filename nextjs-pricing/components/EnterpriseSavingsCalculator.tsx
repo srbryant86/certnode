@@ -285,7 +285,7 @@ export default function EnterpriseSavingsCalculator() {
         <div className="space-y-6">
           <label className="block rounded-xl border border-blue-100 bg-blue-50 p-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700">Dispute deflection assumption</span>
+              <span className="text-sm font-medium text-gray-700">Evidence success assumption</span>
               <span className="text-xs text-gray-500">{deflectionPercentage}%</span>
             </div>
             <div className="mt-3 flex items-center gap-3">
@@ -302,7 +302,7 @@ export default function EnterpriseSavingsCalculator() {
               <span className="w-14 text-right text-xs text-gray-600">{deflectionPercentage}%</span>
             </div>
             <p id="deflection-help" className="mt-2 text-xs text-gray-500">
-              Higher percentages assume CertNode receipts deliver "compelling evidence." Start conservative, then model best-case wins.
+              Higher percentages assume CertNode evidence wins more disputes or audit challenges. Start conservative, then model best-case outcomes.
             </p>
           </label>
 

@@ -12,7 +12,7 @@ const tierMap: Record<string, string> = {
 
 const yearlyPaymentLinks: Record<string, string | undefined> = {
   starter: 'https://buy.stripe.com/28E8wOeMices0nYduZbAs06',
-  professional: 'https://buy.stripe.com/7sY28qdIe4M02w61MhbAs07',
+  pro: 'https://buy.stripe.com/7sY28qdIe4M02w61MhbAs07',
   business: 'https://buy.stripe.com/bJe4gyaw2fqE0nY76BbAs08',
 };
 

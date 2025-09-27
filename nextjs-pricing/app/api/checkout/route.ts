@@ -25,7 +25,7 @@ const monthlyPriceIds: Record<string, string | undefined> = {
 const stripeSecret = process.env.STRIPE_SECRET_KEY;
 const stripe = stripeSecret
   ? new Stripe(stripeSecret, {
-      apiVersion: '2023-10-16',
+      apiVersion: '2025-08-27.basil',
     })
   : null;
 

@@ -68,7 +68,6 @@ export default function Navigation() {
         <Link
           href="/"
           className="logo text-[28px] font-semibold leading-none tracking-[-0.02em] text-blue-600 transition hover:text-blue-700"
-          style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
         >
           CertNode
         </Link>

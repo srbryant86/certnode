@@ -192,7 +192,7 @@ export default function PricingPage() {
         <RiskReversalSection />
 
         {/* High-Ticket CTA */}
-        <section className="py-16 bg-gradient-to-br from-blue-700 via-blue-800 to-purple-900 text-white">
+        <section className="py-16 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white">
           <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold mb-4">
               High-Ticket Dispute Protection

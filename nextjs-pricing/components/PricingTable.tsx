@@ -210,11 +210,6 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
                       Save {formatCurrency((monthlyPrice - yearlyPrice / 12) * 12, currency)} annually
                     </div>
                   )}
-                  {!isYearly && (
-                    <div className="text-xs font-semibold text-green-600 mt-2">
-                      First month 50% off applied automatically
-                    </div>
-                  )}
                 </div>
 
                 <button
@@ -228,13 +223,6 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
                 >
                   Get Started
                 </button>
-
-                <a
-                  href={`/signup/${tier.id === 'growth' ? 'professional' : tier.id}`}
-                  className="block w-full py-2 px-6 text-center border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors text-sm mt-3"
-                >
-                  Create Account First
-                </a>
               </div>
 
               <div className="mt-8 space-y-3">

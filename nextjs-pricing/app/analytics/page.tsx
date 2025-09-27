@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { type Route } from 'next';
 
 const analyticsEnabled = process.env.NEXT_PUBLIC_ENABLE_ANALYTICS_DASHBOARD === 'true';
 
@@ -19,13 +20,13 @@ export default function AnalyticsPage() {
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
             <Link
-              href="/trust"
+              href={'/support' as Route}
               className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
             >
-              Visit the Trust Center
+              Visit Support
             </Link>
             <Link
-              href="/pricing"
+              href={'/pricing' as Route}
               className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
             >
               Back to Pricing

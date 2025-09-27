@@ -15,7 +15,7 @@
 ## Execution Notes
 - Pricing experience at `certnode.io/pricing` now satisfies the professional site infrastructure objective with full styling and interactivity restored.
 - Yearly billing toggle now routes Starter, Growth, and Business plans to the correct Stripe payment links, eliminating accidental monthly subscriptions.
-- Removed the public analytics dashboard route (`/analytics`) and replaced any CTAs with Trust Center links while preserving analytics library architecture for future authenticated release.
+- Removed the public analytics dashboard route (`/analytics`) and replaced any CTAs with Support links while preserving analytics library architecture for future authenticated release.
 - Checkout analytics events typed (`checkout_start`/`checkout_error`) so revenue instrumentation stays intact while passing production builds.
 - Legacy `/_next` requests now rewrite to the prefixed path so cached clients recover immediately while new builds stay standards-aligned.
 - Tailwind globals load through `app/globals.css`, keeping typography, gradients, and layout utilities consistent with our enterprise positioning.

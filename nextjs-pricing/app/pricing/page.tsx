@@ -228,7 +228,7 @@ export default function PricingPage() {
               High-Ticket Dispute Protection
             </h2>
             <p className="text-xl text-gray-300 mb-6">
-              One saved $6,000 dispute pays for half a year.
+              One saved $10,000 dispute pays for 4 months.
             </p>
             <p className="text-gray-400 mb-8">
               Specialized plans for businesses with high-value transactions and significant chargeback risk.

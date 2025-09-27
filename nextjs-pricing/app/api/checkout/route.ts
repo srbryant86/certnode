@@ -17,9 +17,9 @@ const yearlyPaymentLinks: Record<string, string | undefined> = {
 };
 
 const monthlyPaymentLinks: Record<string, string | undefined> = {
-  starter: 'https://buy.stripe.com/placeholder-monthly-starter',
-  pro: 'https://buy.stripe.com/placeholder-monthly-pro',
-  business: 'https://buy.stripe.com/placeholder-monthly-business',
+  starter: 'https://buy.stripe.com/eVqbJ0cEa2DS2w69eJbAs03',
+  pro: 'https://buy.stripe.com/dRmbJ0gUq6U8gmW62xbAs04',
+  business: 'https://buy.stripe.com/7sYbJ0dIe0vK3Aa2QlbAs05',
 };
 
 const monthlyPriceIds: Record<string, string | undefined> = {

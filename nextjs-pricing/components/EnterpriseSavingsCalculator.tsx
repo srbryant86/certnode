@@ -18,25 +18,25 @@ const formatUSD = (amount: number) => formatCurrency(amount, 'USD');
 
 const presets = [
   {
-    id: 'saas',
-    label: 'SaaS (40k receipts)',
-    monthlyReceipts: 40000,
-    averageDisputeCost: 75,
-    handlingCost: 0.85,
+    id: 'growth',
+    label: 'Growing SaaS (1k receipts)',
+    monthlyReceipts: 1000,
+    averageDisputeCost: 120,
+    handlingCost: 0.95,
+  },
+  {
+    id: 'business',
+    label: 'Enterprise (3k receipts)',
+    monthlyReceipts: 3000,
+    averageDisputeCost: 180,
+    handlingCost: 1.25,
   },
   {
     id: 'highTicket',
-    label: 'High-ticket (100 deals)',
-    monthlyReceipts: 100,
-    averageDisputeCost: 10000,
-    handlingCost: 2.5,
-  },
-  {
-    id: 'creator',
-    label: 'Digital creator (2k sales)',
-    monthlyReceipts: 2000,
-    averageDisputeCost: 200,
-    handlingCost: 1.1,
+    label: 'High-ticket (150 deals)',
+    monthlyReceipts: 150,
+    averageDisputeCost: 8500,
+    handlingCost: 3.0,
   },
 ] as const;
 

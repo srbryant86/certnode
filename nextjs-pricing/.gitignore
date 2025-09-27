@@ -24,3 +24,4 @@ Thumbs.db
 pids
 *.pid
 *.seed
+.vercel

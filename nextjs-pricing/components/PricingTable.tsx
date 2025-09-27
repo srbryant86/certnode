@@ -53,9 +53,9 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
 
     // Map display tier names to API tiers
     const tierMap: { [key: string]: string } = {
-      'starter': 'starter',
-      'growth': 'professional',
-      'business': 'business'
+      'foundation': 'foundation',
+      'professional': 'professional',
+      'enterprise': 'enterprise'
     };
 
     const mappedTier = tierMap[tierId];

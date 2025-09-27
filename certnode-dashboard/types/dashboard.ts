@@ -210,7 +210,9 @@ export interface SubscriptionData {
   invoices: Invoice[];
   paymentMethods: PaymentMethod[];
   availableUpgrades: PlanOption[];
+  availableDowngrades: PlanOption[];
   downgradeLimitations: string[];
+  upgradeRecommendation: UpgradeRecommendation | null;
 }
 
 export interface Invoice {

@@ -109,42 +109,65 @@ export default function SmartRecommendationBanner() {
 
   if (!isVisible || !recommendation) return null;
 
-  const urgencyStyles = {
-    low: 'bg-blue-50 border-blue-200 text-blue-800',
-    medium: 'bg-indigo-50 border-indigo-200 text-indigo-800',
-    high: 'bg-purple-50 border-purple-200 text-purple-800'
+  const themes = {
+    low: {
+      container: 'bg-blue-50 border-blue-200 text-blue-900',
+      badge: 'bg-blue-100 text-blue-700',
+      badgeLabel: 'Low urgency',
+      cta: 'bg-blue-600 hover:bg-blue-700'
+    },
+    medium: {
+      container: 'bg-indigo-50 border-indigo-200 text-indigo-900',
+      badge: 'bg-indigo-100 text-indigo-700',
+      badgeLabel: 'Act soon',
+      cta: 'bg-indigo-600 hover:bg-indigo-700'
+    },
+    high: {
+      container: 'bg-purple-50 border-purple-200 text-purple-900',
+      badge: 'bg-purple-100 text-purple-700',
+      badgeLabel: 'Act now',
+      cta: 'bg-purple-600 hover:bg-purple-700'
+    }
   } as const;
 
-  const urgencyIcons = {
-    low: 'LOW',
-    medium: 'MID',
-    high: 'HIGH'
-  } as const;
+  const theme = themes[recommendation.urgency];
+  const urgencyLabel = recommendation.urgency === 'high' ? 'HIGH' : recommendation.urgency === 'medium' ? 'MED' : 'LOW';
+  const confidenceLabel = recommendation.confidence >= 80 ? 'High confidence' : 'Working recommendation';
 
   return (
-    <div className={`fixed top-4 right-4 z-50 max-w-sm transform rounded-lg border-2 p-4 shadow-lg transition-all duration-500 ease-in-out ${urgencyStyles[recommendation.urgency]}`}>
+    <div className={`fixed top-4 right-4 z-50 max-w-sm transform rounded-lg border-2 p-4 shadow-lg transition-all duration-500 ease-in-out ${theme.container}`}>
       <div className="flex items-start gap-3">
-        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl">
-          {urgencyIcons[recommendation.urgency]}
-        </span>
+        <div className={`flex h-10 w-14 items-center justify-center rounded-full px-3 text-xs font-semibold uppercase ${theme.badge}`}>
+          {urgencyLabel}
+        </div>
         <div className="flex-1">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold">{recommendation.label} Plan</p>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-sm font-semibold">Recommended: {recommendation.label} Plan</p>
+              <p className="mt-1 text-xs uppercase tracking-wide text-current opacity-70">{confidenceLabel} • {theme.badgeLabel}</p>
+            </div>
             <button
               onClick={handleDismiss}
               aria-label="Dismiss recommendation"
-              className="text-sm text-current opacity-70 hover:opacity-100"
+              className="text-sm font-semibold text-current opacity-60 hover:opacity-100"
             >
               ×
             </button>
           </div>
           <p className="mt-2 text-sm">{recommendation.reason}</p>
-          <button
-            onClick={handleClick}
-            className="mt-3 inline-flex items-center rounded-md bg-current px-3 py-2 text-sm font-semibold text-white transition hover:opacity-90"
-          >
-            Explore Recommendation
-          </button>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              onClick={handleClick}
+              className={`inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-white transition ${theme.cta}`}>
+              Review Recommendation
+            </button>
+            <button
+              onClick={handleDismiss}
+              className="inline-flex items-center rounded-md border border-current px-3 py-2 text-sm font-semibold text-current transition hover:bg-white/30"
+            >
+              Dismiss
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -95,7 +95,7 @@ function computeSavings(params: { monthlyReceipts: number; averageDisputeCost: n
 }
 
 export default function EnterpriseSavingsCalculator() {
-  const [monthlyReceipts, setMonthlyReceipts] = useState(250_000);
+  const [monthlyReceipts, setMonthlyReceipts] = useState(750);
   const [averageDisputeCost, setAverageDisputeCost] = useState(150);
   const [handlingCost, setHandlingCost] = useState(1.25);
   const [analytics] = useState(() => PricingAnalytics.getInstance());
@@ -244,7 +244,7 @@ export default function EnterpriseSavingsCalculator() {
             <input
               type="number"
               min={0}
-              step={1000}
+              step={100}
               value={monthlyReceipts}
               onChange={(event) => setMonthlyReceipts(Math.max(0, Number(event.target.value) || 0))}
               className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"

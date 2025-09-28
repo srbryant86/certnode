@@ -122,7 +122,7 @@ export async function listReceipts(
     amountCents: Number(receipt.amountCents ?? BigInt(0)),
     currency: receipt.currency,
     createdAt: receipt.createdAt,
-    apiKeyName: receipt.apiKey?.name ?? "—",
+    apiKeyName: receipt.apiKey?.name ?? "Â—",
     transactionData: receipt.transactionData as Record<string, unknown>,
   }));
 

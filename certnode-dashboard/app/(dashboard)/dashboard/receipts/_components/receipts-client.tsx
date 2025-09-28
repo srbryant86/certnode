@@ -405,7 +405,7 @@ export function ReceiptsClient({ initialData, initialFilter }: ReceiptsClientPro
       <section className="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-lg shadow-blue-500/5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="text-sm text-slate-400">
-            {formatNumber(data.total)} receipts • Page {data.page} of {totalPages}
+            {formatNumber(data.total)} receipts Â• Page {data.page} of {totalPages}
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <button

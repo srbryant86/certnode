@@ -20,7 +20,7 @@ export default function AuthLayout({
         </div>
       </main>
       <footer className="px-6 pb-6 text-sm text-slate-500">
-        Built for enterprise trust • Universal receipt protocol
+        Built for enterprise trust Â• Universal receipt protocol
       </footer>
     </div>
   );

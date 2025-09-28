@@ -65,7 +65,7 @@ export default async function BillingPage() {
       ? "Unlimited receipts"
       : `${formatNumber(option.receiptsIncluded)} receipts`;
     const priceLabel = option.yearlyPrice
-      ? `${formatCurrency(option.monthlyPrice)} / mo • ${formatCurrency(option.yearlyPrice)} / yr`
+      ? `${formatCurrency(option.monthlyPrice)} / mo Â• ${formatCurrency(option.yearlyPrice)} / yr`
       : `${formatCurrency(option.monthlyPrice)} / mo`;
 
     return (
@@ -108,7 +108,7 @@ export default async function BillingPage() {
                 {overview.plan.name} plan
               </span>
               <p className="text-3xl font-semibold text-white">{planPriceLabel}</p>
-              <p className="text-sm text-slate-400">{overview.plan.featureHighlights.join(" • ")}</p>
+              <p className="text-sm text-slate-400">{overview.plan.featureHighlights.join(" Â• ")}</p>
             </div>
             <BillingPortalButton />
           </div>

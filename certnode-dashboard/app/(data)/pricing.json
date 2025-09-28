@@ -1,0 +1,192 @@
+{
+  "smbTiers": [
+    {
+      "id": "foundation",
+      "name": "Foundation",
+      "priceMonthly": 49,
+      "includedReceipts": 250,
+      "overagePerReceipt": 0.50,
+      "transactionLimit": 1000,
+      "transactionOverageRate": 5.00,
+      "tagline": "Complete protection for growing businesses",
+      "features": [
+        "250 receipts/month included",
+        "Up to $1,000 per transaction",
+        "$0.50 per additional receipt",
+        "$5 per $1K transaction value over limit",
+        "Basic cryptographic protection",
+        "5-year retention",
+        "Email support (24-hour SLA)",
+        "Self-service dashboard",
+        "Standard API access"
+      ]
+    },
+    {
+      "id": "professional",
+      "name": "Professional",
+      "priceMonthly": 199,
+      "includedReceipts": 1000,
+      "overagePerReceipt": 0.25,
+      "transactionLimit": 10000,
+      "transactionOverageRate": 2.00,
+      "tagline": "Enhanced security for established operations",
+      "features": [
+        "1,000 receipts/month included",
+        "Up to $10,000 per transaction",
+        "$0.25 per additional receipt",
+        "$2 per $10K transaction value over limit",
+        "Enhanced cryptographic proofs",
+        "IP geolocation tracking",
+        "Device fingerprinting",
+        "7-year retention",
+        "Priority email support (12-hour SLA)",
+        "Advanced analytics dashboard",
+        "API rate limit: 10,000 requests/hour"
+      ]
+    },
+    {
+      "id": "enterprise",
+      "name": "Enterprise",
+      "priceMonthly": 499,
+      "includedReceipts": 2500,
+      "overagePerReceipt": 0.15,
+      "transactionLimit": 50000,
+      "transactionOverageRate": 1.00,
+      "tagline": "Compliance-ready infrastructure for serious businesses",
+      "features": [
+        "2,500 receipts/month included",
+        "Up to $50,000 per transaction",
+        "$0.15 per additional receipt",
+        "$1 per $50K transaction value over limit",
+        "Multi-source timestamps",
+        "Enhanced audit trails",
+        "Compliance reporting (SOX, SOC 2)",
+        "10-year retention",
+        "Priority support (4-hour SLA)",
+        "Custom receipt templates",
+        "API rate limit: 50,000 requests/hour",
+        "Monthly protection reports"
+      ]
+    }
+  ],
+  "highTicket": [
+    {
+      "id": "legal-shield",
+      "name": "Legal Shield",
+      "priceYearly": 12000,
+      "annualSalesCeiling": 2000000,
+      "tagline": "Courtroom-ready protection • One prevented $25K dispute = 2+ years free",
+      "valueProposition": "Protection per $1M: $6-12 • Average dispute prevented: $25K-100K",
+      "features": [
+        "Unlimited receipts • Unlimited transaction value",
+        "Courtroom-ready affidavits automatically generated",
+        "Blockchain anchoring for additional immutability",
+        "Multi-witness cryptographic validation",
+        "Legal export formats optimized for litigation",
+        "Enhanced metadata: Full session recording, multi-IP validation",
+        "Sub-100ms API response guarantee",
+        "Dedicated processing infrastructure",
+        "25-year lifetime retention",
+        "4-hour email SLA",
+        "Monthly legal-grade protection audit",
+        "Custom integration assistance (5 hours included)",
+        "Dispute response documentation support"
+      ]
+    },
+    {
+      "id": "dispute-fortress",
+      "name": "Dispute Fortress",
+      "priceYearly": 30000,
+      "annualSalesCeiling": 10000000,
+      "tagline": "Ultimate dispute insurance • ROI: 300-3000% when disputes prevented",
+      "valueProposition": "Cost per $1M protected: $3-30 • ROI: 300-3000% when disputes prevented",
+      "features": [
+        "Everything in Legal Shield +",
+        "White-glove onboarding (dedicated setup)",
+        "Custom compliance reporting for specific industries",
+        "Revenue protection analysis and recommendations",
+        "Advanced fraud detection with real-time monitoring",
+        "Custom branding on all documentation",
+        "Dedicated IP ranges for reputation management",
+        "Multi-region backup processing",
+        "Lifetime retention + legal archiving",
+        "2-hour email SLA",
+        "Quarterly business review calls",
+        "Custom integration assistance (20 hours included)",
+        "Priority feature requests",
+        "Direct communication channel"
+      ]
+    }
+  ],
+  "tierLimits": {
+    "foundation": {
+      "receipts": 250,
+      "transactionValue": 1000,
+      "overageRates": {
+        "receipts": 0.50,
+        "transactionValue": 5.00
+      }
+    },
+    "professional": {
+      "receipts": 1000,
+      "transactionValue": 10000,
+      "overageRates": {
+        "receipts": 0.25,
+        "transactionValue": 2.00
+      }
+    },
+    "enterprise": {
+      "receipts": 2500,
+      "transactionValue": 50000,
+      "overageRates": {
+        "receipts": 0.15,
+        "transactionValue": 1.00
+      }
+    },
+    "legal-shield": {
+      "receipts": null,
+      "transactionValue": null,
+      "overageRates": null
+    },
+    "dispute-fortress": {
+      "receipts": null,
+      "transactionValue": null,
+      "overageRates": null
+    }
+  },
+  "upgradeIncentives": {
+    "foundation": {
+      "targetTier": "professional",
+      "message": "Save 60% by upgrading to Professional",
+      "discount": 0.60
+    },
+    "professional": {
+      "targetTier": "enterprise",
+      "message": "Save 40% by upgrading to Enterprise",
+      "discount": 0.40
+    },
+    "enterprise": {
+      "targetTier": "legal-shield",
+      "message": "Legal Shield eliminates all limits",
+      "discount": null
+    }
+  },
+  "legacy": {
+    "starter": "foundation",
+    "growth": "professional",
+    "business": "enterprise"
+  },
+  "platform": {
+    "perMerchantPerMonth": 5,
+    "gmvRate": 0.001,
+    "features": [
+      "Per-merchant pricing ($5-10/month)",
+      "0.1% GMV alternative pricing",
+      "Compliance reporting dashboard",
+      "Multi-tenant architecture",
+      "White-label options",
+      "Enterprise SLA",
+      "Dedicated technical support"
+    ]
+  }
+}

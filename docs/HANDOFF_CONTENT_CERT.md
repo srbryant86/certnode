@@ -1,96 +1,50 @@
-﻿# Content Authenticity Implementation Handoff
+﻿# Content Authenticity Handoff (Weeks 1-4 Complete)
 
-## Product Scope: Content Authenticity (Media)
-**Part of CertNode's clean taxonomy:**
-- **Content Authenticity (media)** → Assets with a file hash you intend to publish/share
-- **Transactions (commerce)** → Events around a sale or payout
-- **Operational Trust (compliance/dev)** → Controls & system integrity
+_Last updated: 2025-09-27_
 
-### Content Authenticity Features
-- Image/video/audio/text/document certification
-- C2PA manifests / provenance chains
-- AI detector scores (advisory)
-- File hash verification with cryptographic receipts
+## Scope
+Deliver end-to-end content certification (hashing, provenance, AI scoring) within CertNode across Prisma, services, API, dashboard, and background processing.
 
-## Current Implementation Status (2025-09-27)
+## What’s Done (Weeks 1–4)
+- **Schema & data layer** — `Receipt.type` discriminator plus content fields live in `certnode-dashboard/prisma/schema.prisma:10`; migration staged under `certnode-dashboard/prisma/migrations/20240927_add_content_receipts/`.
+- **Core services** — `ContentReceiptService` handles hash/metadata/provenance + signing + persistence (`certnode-dashboard/lib/content/service.ts:1`).
+- **Detectors (MVP + advanced heuristics)** — Text/image analysers with 80%+ baseline detection in `certnode-dashboard/lib/content/detectors/advanced-text.ts:1` and `.../image-metadata.ts:1`.
+- **API surface** — Content intake & verification routes shipped:
+  - `POST /api/v1/receipts/content` (`certnode-dashboard/app/api/v1/receipts/content/route.ts:1`)
+  - `GET /api/v1/verify/content/:id` (`.../verify/content/[id]/route.ts:1`)
+  - `GET /api/v1/verify/content?hash=` (`.../verify/content/route.ts:1`)
+- **Dashboard UX** — Dedicated content view with analytics + detail modal (`certnode-dashboard/app/(dashboard)/dashboard/content/page.tsx:1` and `_components/content-receipts-client.tsx:1`).
+- **Background processing** — In-memory detection queue with async workers (`certnode-dashboard/lib/queue/detection-jobs.ts:1`).
 
-### ✅ Phase 0 Complete - Foundation Ready
-- **Database schema** - `Receipt.type` discriminator with content-specific fields
-- **Content helpers** - Hash generation, metadata extraction, provenance handling
-- **Service layer** - `ContentReceiptService` orchestrates signing + database insert
-- **Migration ready** - Database changes prepared for execution
+## Gaps & Risks
+- **AuthN/AuthZ** — API still hardcodes `enterpriseId` and lacks API-key enforcement; need middleware integration with `@/lib/auth`.
+- **Signing service** — `lib/signing.ts:1` expects `SIGNING_SERVICE_URL`; ensure Docker/local signer is running for e2e tests.
+- **Persistence for queue** — Detection queue is in-memory; replace with Redis/BullMQ plus persistence before prod.
+- **Testing debt** — No Jest/Playwright coverage yet for content flows.
+- **Detector validation** — Heuristics need calibration datasets + benchmark harness to hit 90% precision/recall targets.
 
-### 🔄 Phase 1 In Progress - Critical Path Items
-- **API endpoints** - Need `POST /api/v1/receipts/content` and verification routes
-- **Basic AI detection** - Heuristic detectors for 80% accuracy baseline
-- **Signing service** - Must spin up locally for development/testing
+## Remaining Roadmap
+1. **Week 5 (Phase 5: SDK & Integration)**
+   - Extend CLI/SDK + OpenAPI examples for content endpoints.
+   - Publish developer docs + sample apps.
+2. **Week 6 (Phase 6: Launch & polish)**
+   - Swap detection queue to BullMQ/Redis; add retries + metrics export.
+   - Harden rate limiting, auth, audit logging (align with existing receipts APIs).
+   - Add regression + load tests (large file perf, concurrent uploads).
+   - Prep compliance package (data retention, threat model refresh).
+3. **Backlog / Future Enhancements**
+   - Provenance chaining & verification portal V2.
+   - Additional modality detectors (audio/video, watermarking).
+   - Analytics KPIs surfaced in exec dashboard + alerts.
 
-### ⏳ Pending Implementation
-- **Dashboard integration** - Content receipt views, filters, analytics
-- **Advanced AI detection** - Proprietary algorithms for competitive advantage
-- **SDK/CLI extensions** - Developer tools for content certification
-- **Performance optimization** - Background processing, caching, monitoring
+## Immediate Next Steps
+- Run Prisma migration against dev/stage DBs (`npm run db:migrate`).
+- Stand up signing service locally (Docker Compose or node) and verify signing workflow.
+- Replace dev-only enterprise stub with authenticated API keys (update `applyRateLimit` integration).
+- Begin test harness: unit tests for `lib/content/*`, integration tests for `app/api/v1/receipts/content`.
 
-## Implementation Roadmap (v2.0 Optimized)
-
-### Week 1: Immediate Value Stream
-**Critical path to basic functionality:**
-1. **Execute database migration** - Apply content receipt schema changes
-2. **Spin up signing service** - Local Docker/node process for development
-3. **Implement API endpoints:**
-   - `POST /api/v1/receipts/content` - Content certification using existing service
-   - `GET /api/v1/verify/content/:id` - Receipt lookup by ID
-   - `GET /api/v1/verify/content?hash=` - Content verification by hash
-4. **Basic heuristic AI detection:**
-   - Text pattern analysis (repetition, vocabulary, syntax)
-   - Image metadata inconsistency detection
-   - Document statistical analysis
-   - **Target:** 80% accuracy baseline, zero vendor dependencies
-
-### Week 2-3: Enhanced Detection & UX (Parallel)
-**Stream A: Advanced AI Detection (In-house)**
-- Proprietary text AI detection (linguistic patterns, perplexity, fingerprints)
-- Advanced image analysis (EXIF, compression artifacts, pixel distribution)
-- Multi-modal detection scoring and confidence calibration
-
-**Stream B: Dashboard Integration**
-- Content receipt listing with type filters and confidence scores
-- Detail modals showing metadata, provenance, AI analysis breakdown
-- Analytics cards for certifications/day, detection metrics
-
-### Week 4-6: Production Readiness & Launch
-- Background processing queue for large files
-- Performance optimization and caching layer
-- SDK/CLI extensions for developer adoption
-- Security audit and compliance review
-- Pilot customer onboarding and feedback
-
-## Current Blockers (Immediate Attention)
-1. **Signing service unavailable** - Need `SIGNING_SERVICE_URL` endpoint responding
-   - **Solution:** Spin up local signing service (Docker or node process)
-   - **Impact:** Blocks all content certification functionality
-2. **Database migration pending** - Schema changes not applied
-   - **Solution:** Execute `npm run db:migrate` with proper DATABASE_URL
-   - **Impact:** API endpoints will fail without content receipt fields
-
-## Eliminated Dependencies (v2.0 Optimization)
-- ~~Detector vendor access keys~~ → **Replaced with in-house AI detection**
-- ~~External API dependencies~~ → **Proprietary algorithms for competitive advantage**
-- ~~Data residency concerns~~ → **All processing stays in-house**
-
-## Immediate Next Actions (Week 1)
-1. **Resolve signing service blocker** - Critical for any testing/development
-2. **Execute database migration** - Enable content receipt storage
-3. **Implement API endpoints** - Ship basic certification functionality
-4. **Build heuristic detectors** - Achieve 80% accuracy without external deps
-
-## Testing Notes
-- No automated coverage yet for new content helpers; plan to add Jest tests under `certnode-dashboard/lib/content/__tests__`.
-- After API routes land, add integration tests in `certnode-dashboard/app/api/receipts/__tests__` (new directory) to exercise content flows.
-- Monitor for breaking changes to existing transaction receipts; perform regression suite once new routes enabled.
-
-## References
-- Strategic plan: `docs/CONTENT_CERTIFICATION_PLAN.md`.
-- Pending migration: `certnode-dashboard/prisma/migrations/20240927_add_content_receipts`.
-- Core service implementation: `certnode-dashboard/lib/content/service.ts`.
-- Blocked on signing service: `certnode-dashboard/lib/signing.ts`.
+## Reference Files
+- Plan: `docs/CONTENT_CERTIFICATION_PLAN.md`
+- UI spec: `certnode-dashboard/app/(dashboard)/dashboard/content/_components/content-receipts-client.tsx`
+- Detection queue: `certnode-dashboard/lib/queue/detection-jobs.ts`
+- Service contract: `certnode-dashboard/lib/content/service.ts`

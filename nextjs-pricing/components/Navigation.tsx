@@ -1,8 +1,8 @@
-'use client'
+﻿"use client"
 
-import { useState, useEffect, useRef } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useState, useEffect, useRef } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 type NavLink = {
   href: string
@@ -10,23 +10,23 @@ type NavLink = {
 }
 
 const NAV_LINKS: NavLink[] = [
-  { href: '/platform', label: 'Platform' },
-  { href: '/solutions', label: 'Solutions' },
-  { href: '/pricing', label: 'Pricing' },
-  { href: '/support', label: 'Support' },
-  { href: '/trust', label: 'Security' },
-  { href: '/verify', label: 'Validator' },
+  { href: "/platform", label: "Platform" },
+  { href: "/solutions", label: "Solutions" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/support", label: "Support" },
+  { href: "/trust", label: "Security" },
+  { href: "/verify", label: "Validator" },
 ]
 
 const linkIsActive = (pathname: string, href: string) => {
-  if (href === '/') return pathname === '/'
+  if (href === "/") return pathname === "/"
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
 export default function Navigation() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
-  const containerRef = useRef<HTMLDivElement | null>(null)
+  const containerRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     setMobileOpen(false)
@@ -46,28 +46,28 @@ export default function Navigation() {
     }
 
     if (mobileOpen) {
-      document.addEventListener('click', handleClickOutside)
+      document.addEventListener("click", handleClickOutside)
     } else {
-      document.removeEventListener('click', handleClickOutside)
+      document.removeEventListener("click", handleClickOutside)
     }
 
-    window.addEventListener('resize', handleResize)
+    window.addEventListener("resize", handleResize)
 
     return () => {
-      document.removeEventListener('click', handleClickOutside)
-      window.removeEventListener('resize', handleResize)
+      document.removeEventListener("click", handleClickOutside)
+      window.removeEventListener("resize", handleResize)
     }
   }, [mobileOpen])
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
-      <div
-        ref={containerRef}
-        className="mx-auto flex w-full max-w-[1200px] items-center justify-between px-6"
-      >
+    <header
+      ref={containerRef}
+      className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm"
+    >
+      <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between px-6 py-3">
         <Link
           href="/"
-          className="logo text-[28px] font-semibold leading-none tracking-[-0.02em] text-blue-600 transition hover:text-blue-700"
+          className="logo text-2xl font-semibold leading-none tracking-tight text-gray-900 transition-colors hover:text-blue-600"
         >
           CertNode
         </Link>
@@ -95,23 +95,21 @@ export default function Navigation() {
           </svg>
         </button>
 
-        <nav className="nav-links hidden items-center gap-10 md:flex">
+        <nav className="nav-links hidden items-center gap-6 md:flex">
           {NAV_LINKS.map((link) => {
             const active = linkIsActive(pathname, link.href)
             return (
               <Link
                 key={link.href}
-                href={link.href as any}
-                className={`px-4 py-2 text-[15px] font-normal transition-all relative ${
-                  active
-                    ? 'text-blue-600'
-                    : 'text-gray-600 hover:text-blue-600'
+                href={link.href}
+                className={`relative px-3 py-2 text-sm font-medium tracking-tight transition-colors ${
+                  active ? "text-blue-600" : "text-gray-700 hover:text-blue-600"
                 }`}
-                aria-current={active ? 'page' : undefined}
+                aria-current={active ? "page" : undefined}
               >
                 {link.label}
                 {active && (
-                  <div className="absolute bottom-0 left-4 right-4 h-px bg-blue-600"></div>
+                  <span className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-blue-600" />
                 )}
               </Link>
             )
@@ -121,7 +119,7 @@ export default function Navigation() {
 
       <div
         className={`md:hidden ${
-          mobileOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          mobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         } overflow-hidden border-t border-gray-200 bg-white shadow-lg transition-all duration-300 ease-in-out`}
       >
         <nav id="primary-navigation" className="flex flex-col space-y-1 px-6 py-4">
@@ -130,17 +128,18 @@ export default function Navigation() {
             return (
               <Link
                 key={link.href}
-                href={link.href as any}
-                className={`rounded-lg px-4 py-3 text-[15px] font-normal transition-colors relative ${
+                href={link.href}
+                className={`relative rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                   active
-                    ? 'text-blue-600 bg-blue-50'
-                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50/60'
+                    ? "bg-blue-50 text-blue-600"
+                    : "text-gray-700 hover:text-blue-600 hover:bg-blue-50/60"
                 }`}
-                aria-current={active ? 'page' : undefined}
+                aria-current={active ? "page" : undefined}
+                onClick={() => setMobileOpen(false)}
               >
                 {link.label}
                 {active && (
-                  <div className="absolute bottom-0 left-4 right-4 h-px bg-blue-600"></div>
+                  <span className="absolute bottom-0 left-4 right-4 h-0.5 rounded-full bg-blue-600" />
                 )}
               </Link>
             )

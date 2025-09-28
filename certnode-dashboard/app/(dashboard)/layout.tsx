@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { href: "/dashboard/api", label: "API Keys" },
   { href: "/dashboard/receipts", label: "Receipts" },
   { href: "/dashboard/content", label: "Content Authenticity" },
+  { href: "/dashboard/analytics", label: "Analytics" },
   { href: "/dashboard/billing", label: "Billing" },
 ];
 

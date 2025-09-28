@@ -1,0 +1,131 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "nextjs-pricing/package.json",
+      "use": "@vercel/next",
+      "config": { "distDir": ".next" }
+    },
+    { "src": "api/src/index.js", "use": "@vercel/node" },
+    { "src": "web/**", "use": "@vercel/static" },
+    { "src": "public/**", "use": "@vercel/static" }
+  ],
+  "headers": [
+    {
+      "source": "/",
+      "headers": [
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https: https://api.stripe.com; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; frame-src https://js.stripe.com" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https: https://api.stripe.com; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; frame-src https://js.stripe.com" }
+      ]
+    },
+    
+    {
+      "source": "/web/(.*)\\.html",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" } ]
+    },
+    {
+      "source": "/web/(.*)\\.css",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/web/(.*)\\.js",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/web/assets/(.*)",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/public/(.*)\\.css",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/public/(.*)\\.js",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    },
+    {
+      "source": "/public/(.*)\\.html",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=3600" } ]
+    },
+    {
+      "source": "/pricing",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "Pragma", "value": "no-cache" }
+      ]
+    },
+    {
+      "source": "/.well-known/jwks.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/jwk-set+json" },
+        { "key": "Cache-Control", "value": "public, max-age=300, immutable" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
+    {
+      "source": "/openapi.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
+    {
+      "source": "/trust/keys.jsonl",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" },
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
+    {
+      "source": "/vendor/(.*)",
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/_next/(.*)", "destination": "/nextjs-pricing/_next/$1" },
+    { "source": "/openapi.html", "destination": "/public/openapi.html" },
+    { "source": "/public/verify.html", "destination": "/web/verify.html" },
+    { "source": "/public/pricing/index.html", "destination": "/web/pricing.html" },
+    { "source": "/public/trust/index.html", "destination": "/web/trust.html" },
+    { "source": "/openapi.json", "destination": "/public/openapi.json" },
+    { "source": "/.well-known/jwks.json", "destination": "/public/.well-known/jwks.json" },
+    { "source": "/trust/keys.jsonl", "destination": "/public/trust/keys.jsonl" },
+    { "source": "/api/checkout", "destination": "/nextjs-pricing/api/checkout" },
+    { "source": "/api/(.*)", "destination": "/api/src/index.js" },
+    { "source": "/trust", "destination": "/web/trust.html" },
+    { "source": "/status", "destination": "/public/status/index.html" },
+    { "source": "/usage", "destination": "/public/usage/index.html" },
+    { "source": "/showcase", "destination": "/public/showcase/index.html" },
+    { "source": "/trust/governance", "destination": "/public/trust/governance.html" },
+    { "source": "/validator", "destination": "/web/verify.html" },
+    { "source": "/verify", "destination": "/web/verify.html" },
+    { "source": "/implementation", "destination": "/web/pricing.html" },
+    { "source": "/specification", "destination": "/public/openapi.html" },
+    { "source": "/openapi", "destination": "/public/openapi.html" },
+    { "source": "/platform", "destination": "/public/platform.html" },
+    { "source": "/solutions", "destination": "/public/solutions.html" },
+    { "source": "/support", "destination": "/public/support.html" },
+    { "source": "/pricing", "destination": "/nextjs-pricing/pricing" },
+    { "source": "/analytics", "destination": "/nextjs-pricing/analytics" },
+    { "source": "/enterprise", "destination": "/public/enterprise.html" },
+    { "source": "/test-vectors", "destination": "/public/test-vectors/index.html" },
+    { "source": "/signup/developer", "destination": "/public/signup/developer.html" },
+    { "source": "/signup/starter", "destination": "/public/signup/starter.html" },
+    { "source": "/signup/professional", "destination": "/public/signup/professional.html" },
+    { "source": "/dashboard", "destination": "/web/dashboard.html" },
+    { "source": "/account", "destination": "/web/account.html" },
+    { "source": "/register", "destination": "/web/register.html" },
+    { "source": "/", "destination": "/web/index.html" }
+  ]
+}

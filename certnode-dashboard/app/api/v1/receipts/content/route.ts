@@ -3,24 +3,80 @@ import { contentReceiptService } from "@/lib/content/service";
 import { applyRateLimit, createRateLimitHeaders } from "@/lib/rate-limiting";
 import { authenticateApiKey, hasPermission } from "@/lib/api-auth";
 import { detectionQueue } from "@/lib/queue";
+import { validateRequest, ValidationLayer } from "@/lib/validation/validation-middleware";
+import crypto from "crypto";
 
 export async function POST(request: NextRequest) {
+  const requestId = crypto.randomUUID();
+
   try {
-    // Authenticate API key
+    // Parse request body first for validation
+    const body = await request.json();
+    const { searchParams } = new URL(request.url);
+
+    // Step 1: Comprehensive 10/10 validation system
+    const validationResult = await validateRequest(
+      request,
+      body,
+      '/api/v1/receipts/content',
+      {
+        layers: [
+          ValidationLayer.SCHEMA,
+          ValidationLayer.SANITIZATION,
+          ValidationLayer.BUSINESS,
+          ValidationLayer.CRYPTOGRAPHIC,
+          ValidationLayer.INTEGRITY,
+          ValidationLayer.AUTHORIZATION,
+          ValidationLayer.RATE_LIMIT,
+          ValidationLayer.CONTENT,
+          ValidationLayer.TEMPORAL,
+          ValidationLayer.COMPLIANCE
+        ],
+        failFast: true,
+        logResults: true,
+        returnValidationDetails: process.env.NODE_ENV === 'development'
+      }
+    );
+
+    if (!validationResult.success) {
+      console.error('Content certification validation failed:', {
+        requestId,
+        errors: validationResult.errors,
+        endpoint: '/api/v1/receipts/content',
+        timestamp: new Date().toISOString()
+      });
+
+      return validationResult.response!;
+    }
+
+    // Step 2: Authenticate API key
     const authResult = await authenticateApiKey(request);
     if (!authResult.success) {
       return NextResponse.json(
-        { error: authResult.error },
+        {
+          success: false,
+          error: authResult.error,
+          code: 'AUTHENTICATION_FAILED',
+          requestId,
+          timestamp: new Date().toISOString()
+        },
         { status: 401 }
       );
     }
 
-    // Apply rate limiting
+    // Step 3: Apply rate limiting
     const rateLimitResult = await applyRateLimit(request, authResult.apiKeyId);
 
     if (!rateLimitResult.success) {
       return NextResponse.json(
-        { error: "Rate limit exceeded", retryAfter: rateLimitResult.retryAfter },
+        {
+          success: false,
+          error: "Rate limit exceeded",
+          code: 'RATE_LIMIT_EXCEEDED',
+          retryAfter: rateLimitResult.retryAfter,
+          requestId,
+          timestamp: new Date().toISOString()
+        },
         {
           status: 429,
           headers: createRateLimitHeaders(rateLimitResult)
@@ -28,17 +84,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Parse request body
-    const body = await request.json();
-    const { searchParams } = new URL(request.url);
-
-    // Basic validation
-    if (!body.contentBase64 && !body.contentHash) {
-      return NextResponse.json(
-        { error: "Either contentBase64 or contentHash must be provided" },
-        { status: 400 }
-      );
-    }
+    // Note: Basic validation is now handled by the comprehensive validation system above
 
     const { contentBase64, contentHash, contentType, metadata, provenance, detectorResults } = body;
 
@@ -104,30 +150,49 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       receipt: result,
+      validation: {
+        passed: true,
+        layers: 10,
+        validationId: requestId
+      },
       backgroundJob: backgroundJobId ? {
         id: backgroundJobId,
         status: 'queued',
         message: 'AI detection running in background. Check job status for updates.'
       } : undefined,
+      requestId,
+      timestamp: new Date().toISOString()
     }, {
       status: 201,
       headers: createRateLimitHeaders(rateLimitResult)
     });
 
   } catch (error) {
-    console.error("Content certification error:", error);
+    console.error("Content certification system error:", {
+      requestId,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      endpoint: '/api/v1/receipts/content',
+      timestamp: new Date().toISOString()
+    });
 
-    if (error instanceof Error) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 500 }
-      );
+    // Enhanced error response with validation context
+    const errorResponse = {
+      success: false,
+      error: error instanceof Error ? error.message : "Internal server error",
+      code: 'SYSTEM_ERROR',
+      layer: 'system',
+      severity: 'critical',
+      requestId,
+      timestamp: new Date().toISOString()
+    };
+
+    // Include stack trace in development
+    if (process.env.NODE_ENV === 'development' && error instanceof Error) {
+      errorResponse.stack = error.stack;
     }
 
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json(errorResponse, { status: 500 });
   }
 }
 

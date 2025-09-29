@@ -16,7 +16,7 @@ export async function GET(request: Request) {
   const idsParam = searchParams.get("ids");
   const search = searchParams.get("search");
 
-  const where: Parameters<typeof prisma.receipt.findMany>[0]["where"] = {
+  const where: any = {
     enterpriseId: session.user.enterpriseId,
   };
 
@@ -41,7 +41,6 @@ export async function GET(request: Request) {
   const serialized = receipts.map((receipt) => ({
     id: receipt.id,
     transactionId: receipt.transactionId,
-    amount: Number(receipt.amountCents ?? BigInt(0)) / 100,
     currency: receipt.currency,
     status: receipt.verificationStatus,
     createdAt: receipt.createdAt.toISOString(),
@@ -57,12 +56,11 @@ export async function GET(request: Request) {
     });
   }
 
-  const header = "id,transaction_id,amount,currency,status,created_at";
+  const header = "id,transaction_id,currency,status,created_at";
   const rows = serialized.map((receipt) => {
     const cells = [
       escapeCsv(receipt.id),
       escapeCsv(receipt.transactionId),
-      receipt.amount.toFixed(2),
       receipt.currency,
       receipt.status,
       receipt.createdAt,

@@ -78,6 +78,16 @@ function choosePlan(monthlyReceipts: number) {
   }
 
   const business = ordered[ordered.length - 1];
+  if (!business) {
+    return {
+      planId: 'enterprise',
+      label: 'Enterprise Custom',
+      monthlyCost: 0,
+      annualCost: 0,
+      receiptsIncluded: 0,
+      isEnterprise: true,
+    };
+  }
   const overage = Math.max(0, monthlyReceipts - business.includedReceipts);
   const monthlyCost = business.priceMonthly + overage * business.overagePerReceipt;
 
@@ -102,11 +112,11 @@ function computeSavings(params: { monthlyReceipts: number; averageDisputeCost: n
   const automatedHandlingCost = handlingCost * (1 - HANDLING_REDUCTION);
   const certnodeOpsAnnual = monthlyReceipts * automatedHandlingCost * 12;
   const certnodeDisputeAnnual = monthlyReceipts * BASE_DISPUTE_RATE * (1 - deflectionRate) * averageDisputeCost * 12;
-  const certnodeAnnualCost = certnodeOpsAnnual + certnodeDisputeAnnual + plan.annualCost;
+  const certnodeAnnualCost = certnodeOpsAnnual + certnodeDisputeAnnual + (plan.annualCost ?? 0);
 
   const annualSavings = Math.max(0, manualAnnualCost - certnodeAnnualCost);
   const monthlySavings = annualSavings / 12;
-  const paybackDays = annualSavings > 0 ? Math.max(0, (plan.annualCost / annualSavings) * 365) : Infinity;
+  const paybackDays = annualSavings > 0 ? Math.max(0, ((plan.annualCost ?? 0) / annualSavings) * 365) : Infinity;
   const effectiveROI = certnodeAnnualCost > 0 ? (annualSavings / certnodeAnnualCost) * 100 : 0;
 
   return {

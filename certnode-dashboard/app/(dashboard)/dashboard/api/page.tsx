@@ -195,7 +195,7 @@ export default async function ApiKeyManagementPage() {
                       <div className="text-xs text-slate-500">Created {formatDistanceToNow(key.createdAt, { addSuffix: true })}</div>
                     </td>
                     <td className="px-4 py-4 text-right">
-                      {key.status === KeyStatus.REVOKED ? (
+                      {key.status === "REVOKED" ? (
                         <span className="text-xs text-slate-500">Revoked</span>
                       ) : (
                         <form action={revokeApiKeyFormAction} className="inline-flex">
@@ -290,7 +290,6 @@ function StatusBadge({ status }: { status: KeyStatus }) {
   const styles = {
     [KeyStatus.ACTIVE]: "bg-emerald-500/10 text-emerald-200 border-emerald-400/30",
     [KeyStatus.REVOKED]: "bg-red-500/10 text-red-200 border-red-400/30",
-    [KeyStatus.EXPIRED]: "bg-amber-500/10 text-amber-200 border-amber-400/30",
   } satisfies Record<KeyStatus, string>;
 
   return (

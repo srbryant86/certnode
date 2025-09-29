@@ -6,13 +6,15 @@ const validSample = {
   receipt: {
     "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjBGWnFCeERxT2xZRDBGNWx4eERDbWhzTzhvUnBkd0tZR1pPVzctcUdzRzAifQ",
     "payload": {
-      "message": "Hello, CertNode! This receipt will verify successfully.",
+      "transaction_id": "txn_1QZ2oP4uVuHHrku5mNwXyZ",
+      "merchant": "Demo Electronics Store",
       "timestamp": "2025-01-15T10:00:00Z",
       "amount": 42.00,
       "currency": "USD",
+      "customer_email": "demo@example.com",
       "demo": true
     },
-    "signature": "DEMO_VALID_SIGNATURE_FOR_UI_TESTING",
+    "signature": "DEMO_VALID_SIGNATURE_yJ8kLp9XqR4mNcVb3Pz7Ks2Hf6Wg1Dt5Qx9Er8Nv0",
     "kid": "0FZqBxDqOlYD0F5lxxDCmhsO8oRpdwKYGZOW7-qGsG0"
   },
   jwks: {
@@ -34,13 +36,15 @@ const invalidSample = {
   receipt: {
     "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjBGWnFCeERxT2xZRDBGNWx4eERDbWhzTzhvUnBkd0tZR1pPVzctcUdzRzAifQ",
     "payload": {
-      "message": "Hello, CertNode! This receipt will verify successfully.",
+      "transaction_id": "txn_1QZ2oP4uVuHHrku5mNwXyZ",
+      "merchant": "Demo Electronics Store",
       "timestamp": "2025-01-15T10:00:00Z",
       "amount": 999999.00,  // FRAUD: Changed from 42.00 to 999999.00
       "currency": "USD",
+      "customer_email": "demo@example.com",
       "demo": true
     },
-    "signature": "DEMO_INVALID_SIGNATURE_FOR_UI_TESTING",  // Same signature as valid, but content changed
+    "signature": "DEMO_INVALID_SIGNATURE_yJ8kLp9XqR4mNcVb3Pz7Ks2Hf6Wg1Dt5Qx9Er8Nv0",  // Same signature as valid, but content changed
     "kid": "0FZqBxDqOlYD0F5lxxDCmhsO8oRpdwKYGZOW7-qGsG0"
   },
   jwks: {
@@ -224,9 +228,49 @@ async function verifyReceipt() {
 
     // Handle demo data specially to show expected outcomes
     if (receipt.signature && receipt.signature.includes('DEMO_')) {
-      const isValid = receipt.signature.includes('DEMO_VALID') && !receipt.signature.includes('DEMO_INVALID');
       console.log('Demo signature detected:', receipt.signature);
-      console.log('Is valid?', isValid);
+
+      // Check if content matches the original valid sample
+      const originalPayload = validSample.receipt.payload;
+      const currentPayload = receipt.payload;
+
+      // Compare payload content to detect manual tampering
+      const changes = [];
+      console.log('Comparing payloads:');
+      console.log('Original:', originalPayload);
+      console.log('Current:', currentPayload);
+
+      Object.keys(currentPayload).forEach(key => {
+        console.log(`Checking field ${key}: original=${originalPayload[key]}, current=${currentPayload[key]}`);
+        if (originalPayload[key] !== currentPayload[key]) {
+          console.log(`CHANGE DETECTED in ${key}: ${originalPayload[key]} -> ${currentPayload[key]}`);
+          changes.push({
+            field: key,
+            original: originalPayload[key],
+            tampered: currentPayload[key]
+          });
+        }
+      });
+
+      // Also check if any fields were removed
+      Object.keys(originalPayload).forEach(key => {
+        if (!(key in currentPayload)) {
+          changes.push({
+            field: key,
+            original: originalPayload[key],
+            tampered: '[REMOVED]'
+          });
+        }
+      });
+
+      // If content was manually changed, it's invalid regardless of the signature marker
+      const wasManuallyTampered = changes.length > 0;
+      const isValidSignature = receipt.signature.includes('DEMO_VALID') && !receipt.signature.includes('DEMO_INVALID');
+      const isValid = isValidSignature && !wasManuallyTampered;
+
+      console.log('Manual tampering detected:', wasManuallyTampered);
+      console.log('Is valid signature:', isValidSignature);
+      console.log('Overall valid?', isValid);
 
       if (isValid) {
         showResult(true, 'VALID', {
@@ -241,29 +285,15 @@ async function verifyReceipt() {
           }
         });
       } else {
-        // Show what was actually tampered with
-        const originalPayload = validSample.receipt.payload;
-        const tamperedPayload = receipt.payload;
-
-        const changes = [];
-        Object.keys(tamperedPayload).forEach(key => {
-          if (originalPayload[key] !== tamperedPayload[key]) {
-            changes.push({
-              field: key,
-              original: originalPayload[key],
-              tampered: tamperedPayload[key]
-            });
-          }
-        });
-
         showResult(false, 'INVALID', {
-          explanation: 'Receipt has been tampered with.',
+          explanation: wasManuallyTampered ? 'Receipt has been manually tampered with.' : 'Receipt has been tampered with.',
           tampering_details: {
             detected_at: new Date().toISOString(),
-            signature_status: 'Invalid - does not match content',
+            signature_status: wasManuallyTampered ? 'Invalid - content manually modified' : 'Invalid - does not match content',
             tampered_fields: changes,
             security_action: 'Transaction blocked',
-            threat_level: 'High - Data integrity compromised'
+            threat_level: 'High - Data integrity compromised',
+            detection_method: wasManuallyTampered ? 'Content comparison analysis' : 'Signature verification'
           }
         });
       }
@@ -288,38 +318,68 @@ async function verifyReceipt() {
       if (result.ok === true) {
         showResult(true, 'VALID', {
           explanation: 'Receipt is cryptographically authentic.',
-          algorithm: 'ES256',
-          key_id: receipt.kid,
-          verified_at: new Date().toISOString(),
-          status: 'Cryptographic verification passed'
+          verification_details: {
+            timestamp: new Date().toISOString(),
+            algorithm: 'ES256 (ECDSA P-256)',
+            key_id: receipt.kid,
+            signature_status: 'Valid',
+            content_hash: 'Verified',
+            issuer: 'CertNode Production Authority'
+          }
         });
       } else {
         showResult(false, 'INVALID', {
           explanation: 'Receipt failed verification.',
-          error: result.error || 'Verification failed',
-          details: result
+          tampering_details: {
+            detected_at: new Date().toISOString(),
+            signature_status: 'Invalid - signature does not match content',
+            security_action: 'Transaction blocked',
+            threat_level: 'High - Cryptographic integrity compromised',
+            error_code: result.error || 'verification_failed'
+          }
         });
       }
     } catch (verifyError) {
       console.error('Verification failed:', verifyError);
 
-      // More helpful error messages
-      let errorMessage = 'Verification failed';
+      // More helpful error messages with detailed tampering analysis
+      let errorMessage = 'INVALID';
+      let explanation = 'Receipt verification failed.';
+
       if (verifyError.message.includes('missing_fields')) {
-        errorMessage = 'Receipt is missing required fields';
+        errorMessage = 'INVALID - Missing Required Fields';
+        explanation = 'Receipt is missing required cryptographic fields and cannot be verified.';
       } else if (verifyError.message.includes('bad_protected')) {
-        errorMessage = 'Invalid protected header format';
+        errorMessage = 'INVALID - Corrupted Header';
+        explanation = 'Receipt header is corrupted or improperly formatted.';
       } else if (verifyError.message.includes('unsupported_alg')) {
-        errorMessage = 'Unsupported signature algorithm (only ES256 supported)';
+        errorMessage = 'INVALID - Unsupported Algorithm';
+        explanation = 'Receipt uses an unsupported signature algorithm (only ES256 supported).';
       } else if (verifyError.message.includes('kid_not_found')) {
-        errorMessage = 'No matching key found in JWKS for this receipt';
+        errorMessage = 'INVALID - Key Not Found';
+        explanation = 'No matching cryptographic key found for this receipt.';
       } else if (verifyError.message.includes('signature_invalid')) {
-        errorMessage = 'Cryptographic signature verification failed';
+        errorMessage = 'INVALID - Signature Mismatch';
+        explanation = 'Receipt has been tampered with - the cryptographic signature does not match the content.';
+      } else if (verifyError.message.includes('payload_hash_mismatch')) {
+        errorMessage = 'INVALID - Content Tampered';
+        explanation = 'Receipt content has been modified after signing.';
       } else {
-        errorMessage = 'Verification error: ' + verifyError.message;
+        errorMessage = 'INVALID - Verification Error';
+        explanation = 'Receipt failed cryptographic verification.';
       }
 
-      showResult(false, errorMessage, { error: verifyError.message });
+      showResult(false, errorMessage, {
+        explanation: explanation,
+        tampering_details: {
+          detected_at: new Date().toISOString(),
+          signature_status: 'Invalid - cryptographic verification failed',
+          security_action: 'Transaction blocked',
+          threat_level: 'High - Cryptographic integrity compromised',
+          error_code: verifyError.message,
+          technical_details: 'Any modification to the receipt content will cause signature verification to fail. This is evidence of tampering or corruption.'
+        }
+      });
     }
 
   } catch (error) {

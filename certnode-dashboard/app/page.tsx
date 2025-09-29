@@ -74,7 +74,7 @@ export default async function HomePage() {
             </div>
             <h3 className="text-xl font-semibold text-white mb-4">Transaction Receipts</h3>
             <p className="text-slate-400 mb-6">
-              Cryptographic verification for digital transactions with SOC 2 Type II compliance and hardware security modules.
+              Cryptographic verification for digital transactions with SOC 2 Type II readiness and hardware security modules.
             </p>
             <ul className="text-sm text-slate-300 space-y-2">
               <li>• Immutable transaction proofs</li>

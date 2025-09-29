@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <!-- Performance Optimization -->
+  <meta name="theme-color" content="#1e40af">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Support Metadata -->
+  <title>Enterprise Support — CertNode</title>
+  <link rel="canonical" href="https://certnode.io/support" />
+  <meta property="og:title" content="CertNode Support — Enterprise Technical Support" />
+  <meta property="og:description" content="Professional technical support, documentation, and resources for CertNode's cryptographic receipt platform with dedicated enterprise assistance." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://certnode.io/support" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CertNode Support — Enterprise Technical Support" />
+  <meta name="twitter:description" content="Professional support and documentation for enterprise cryptographic solutions." />
+  <meta name="description" content="Comprehensive technical support, documentation, and enterprise assistance for CertNode's cryptographic receipt platform with dedicated resources and expert guidance.">
+
+  <!-- Enterprise Design System - Optimized Font Loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+
+  <!-- Critical Resource Preloads for Performance -->
+  <link rel="dns-prefetch" href="//certnode.io">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+
+  <style>
+    /* CertNode Enterprise Design System - 10/10 Polish */
+    :root {
+      --primary-50: #eff6ff;
+      --primary-100: #dbeafe;
+      --primary-500: #3b82f6;
+      --primary-600: #2563eb;
+      --primary-700: #1d4ed8;
+      --primary-800: #1e40af;
+      --primary-900: #1e3a8a;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --success-500: #10b981;
+      --yellow-100: #fef3c7;
+      --yellow-600: #d97706;
+      --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-inter);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-display: swap;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* 10/10 Enterprise Navigation */
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 72px;
+    }
+
+    .logo {
+      font-family: var(--font-inter);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-600);
+      text-decoration: none;
+      letter-spacing: -0.025em;
+      transition: all 0.2s ease;
+    }
+
+    .logo:hover {
+      color: var(--primary-700);
+      transform: translateY(-1px);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--gray-600);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-600);
+      background: var(--primary-50);
+    }
+
+    .nav-links a[aria-current="page"] {
+      color: var(--primary-600);
+      background: var(--primary-50);
+      font-weight: 600;
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--gray-600);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-menu-toggle:hover {
+      color: var(--primary-600);
+      background: var(--primary-50);
+    }
+
+    /* Support Hero */
+    .support-hero {
+      background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .support-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='60' cy='60' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .support-hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.025em;
+      position: relative;
+    }
+
+    .support-hero p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 640px;
+      margin: 0 auto 3rem auto;
+      position: relative;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.75rem;
+      font-weight: 600;
+      font-size: 15px;
+      border-radius: 0.75rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 0;
+    }
+
+    .btn-primary {
+      background: white;
+      color: var(--primary-600);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .btn-primary:hover {
+      background: var(--gray-50);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.15);
+    }
+
+    /* Support Options */
+    .support-options {
+      padding: 6rem 0;
+      background: white;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+    }
+
+    .section-header p {
+      font-size: 1.25rem;
+      color: var(--gray-600);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .support-card {
+      text-align: center;
+      padding: 2rem;
+      border: 1px solid var(--gray-200);
+      border-radius: 1rem;
+      background: white;
+      transition: all 0.3s ease;
+    }
+
+    .support-card:hover {
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+      border-color: var(--primary-200);
+    }
+
+    .support-card.priority {
+      border-color: var(--primary-300);
+      background: linear-gradient(135deg, var(--primary-50) 0%, white 100%);
+    }
+
+    .support-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .support-card h3 {
+      font-size: 1.375rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+    }
+
+    .support-card p {
+      color: var(--gray-600);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .support-features {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+    }
+
+    .support-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .support-features li::before {
+      content: '✓';
+      color: var(--success-500);
+      font-weight: bold;
+    }
+
+    /* Resources Section */
+    .resources-section {
+      background: var(--gray-50);
+      padding: 6rem 0;
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .resource-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      border: 1px solid var(--gray-200);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .resource-card:hover {
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .resource-card h4 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .resource-card p {
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    /* Status Alert */
+    .status-alert {
+      background: var(--yellow-100);
+      border: 1px solid var(--yellow-600);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    .status-alert p {
+      color: var(--yellow-600);
+      font-weight: 500;
+      margin: 0;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      background: white;
+      padding: 6rem 0;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .faq-item {
+      padding: 1.5rem;
+      border: 1px solid var(--gray-200);
+      border-radius: 0.75rem;
+      background: white;
+    }
+
+    .faq-item h4 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 0.75rem;
+    }
+
+    .faq-item p {
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      background: var(--gray-900);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .contact-section h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-section p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto 2rem auto;
+    }
+
+    /* Enterprise Footer */
+    .footer {
+      background: var(--gray-900);
+      color: white;
+      padding: 3rem 0 1rem 0;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer h4 {
+      color: white;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer a {
+      color: #9ca3af;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--gray-700);
+    }
+
+    .footer-bottom p {
+      color: #9ca3af;
+    }
+
+    .footer-bottom .enterprise-badge {
+      font-size: 0.8rem;
+      color: var(--primary-400);
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem 0;
+        border-top: 1px solid var(--gray-200);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 50;
+      }
+
+      .nav-links.mobile-open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 1rem 1.5rem;
+        border-radius: 0;
+        border-bottom: 1px solid var(--gray-100);
+      }
+
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+
+      .support-hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .support-hero p {
+        font-size: 1.125rem;
+      }
+
+      .support-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .resources-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .faq-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .container {
+        padding: 0 1rem;
+      }
+    }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    .btn:focus-visible, .nav-links a:focus-visible {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 10/10 Enterprise Navigation -->
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/" class="logo">CertNode</a>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="nav-links">
+          <a href="/platform">Platform</a>
+          <a href="/solutions">Solutions</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/support" aria-current="page">Support</a>
+          <a href="/trust">Security</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Support Hero -->
+    <section class="support-hero">
+      <div class="container">
+        <h1>Enterprise Technical Support</h1>
+        <p>Professional support, comprehensive documentation, and dedicated enterprise assistance for your cryptographic verification needs with expert guidance and resources.</p>
+        <a href="/status" class="btn btn-primary">Check System Status</a>
+      </div>
+    </section>
+
+    <!-- Support Options -->
+    <section class="support-options">
+      <div class="container">
+        <div class="section-header">
+          <h2>Support Plans</h2>
+          <p>Choose the support level that matches your organization's needs, from self-service documentation to dedicated enterprise assistance.</p>
+        </div>
+
+        <div class="support-grid">
+          <div class="support-card">
+            <div class="support-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 21V19C19 17.8954 18.1046 17 17 17H7C5.89543 17 5 17.8954 5 19V21" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="7" r="4" stroke="#2563eb" stroke-width="2"/>
+              </svg>
+            </div>
+            <h3>Community Support</h3>
+            <p>Self-service resources and community-driven support for getting started with CertNode's platform.</p>
+            <ul class="support-features">
+              <li>Comprehensive documentation</li>
+              <li>API reference guides</li>
+              <li>Community forums</li>
+              <li>Video tutorials</li>
+              <li>Code examples</li>
+            </ul>
+          </div>
+
+          <div class="support-card priority">
+            <div class="support-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 12H18L15 21L9 3L6 12H2" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Enterprise Support</h3>
+            <p>Priority technical support with dedicated account management and SLA guarantees for mission-critical operations.</p>
+            <ul class="support-features">
+              <li>24/7 priority support</li>
+              <li>Dedicated account manager</li>
+              <li>99.9% SLA guarantee</li>
+              <li>Direct engineering escalation</li>
+              <li>Custom integration assistance</li>
+            </ul>
+          </div>
+
+          <div class="support-card">
+            <div class="support-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21L12 19L16 21Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Professional Services</h3>
+            <p>Expert consulting and implementation services for complex enterprise deployments and custom integrations.</p>
+            <ul class="support-features">
+              <li>Implementation consulting</li>
+              <li>Custom development</li>
+              <li>Security audits</li>
+              <li>Training programs</li>
+              <li>Migration assistance</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="status-alert">
+          <p>🟢 All systems operational - <a href="/status" style="color: inherit; font-weight: 600;">View detailed status</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resources -->
+    <section class="resources-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Resources & Documentation</h2>
+          <p>Comprehensive guides, API documentation, and resources to help you get the most out of CertNode's platform.</p>
+        </div>
+
+        <div class="resources-grid">
+          <a href="/openapi" class="resource-card">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21L12 19L16 21Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              API Documentation
+            </h4>
+            <p>Complete API reference with examples, authentication guides, and integration tutorials for developers.</p>
+          </a>
+
+          <a href="/verify" class="resource-card">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22S8 18 8 12V7L12 5L16 7V12C16 18 12 22 12 22Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 12L11 14L15 10" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Receipt Validator
+            </h4>
+            <p>Interactive tool to verify cryptographic receipts and test platform functionality with sample data.</p>
+          </a>
+
+          <a href="/status" class="resource-card">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="#2563eb" stroke-width="2"/>
+                <path d="M8 14S9.5 16 12 16S16 14 16 14" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 9H9.01" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 9H15.01" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              System Status
+            </h4>
+            <p>Real-time platform status, maintenance windows, and performance metrics for all CertNode services.</p>
+          </a>
+
+          <div class="resource-card">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 20V10" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 20V4" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 20V14" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Best Practices Guide
+            </h4>
+            <p>Security guidelines, performance optimization tips, and implementation best practices for enterprise deployments.</p>
+          </div>
+
+          <div class="resource-card">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.663 17H4.073C3.48 17 3 16.52 3 15.93V4.07C3 3.48 3.48 3 4.073 3H19.927C20.52 3 21 3.48 21 4.07V15.93C21 16.52 20.52 17 19.927 17H14.337L12 21L9.663 17Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Knowledge Base
+            </h4>
+            <p>Searchable knowledge base with troubleshooting guides, FAQ, and detailed explanations of platform features.</p>
+          </div>
+
+          <div class="resource-card">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="#2563eb" stroke-width="2"/>
+                <path d="M8 21L12 17L16 21" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Video Tutorials
+            </h4>
+            <p>Step-by-step video guides covering platform setup, integration patterns, and advanced configuration options.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Frequently Asked Questions</h2>
+          <p>Common questions about CertNode's platform, implementation, and enterprise features.</p>
+        </div>
+
+        <div class="faq-grid">
+          <div class="faq-item">
+            <h4>How do I get started with CertNode?</h4>
+            <p>Begin with our free trial account to explore the platform. Review the API documentation and use our receipt validator to test functionality. For enterprise deployments, contact our sales team for a personalized demo.</p>
+          </div>
+
+          <div class="faq-item">
+            <h4>What are the SLA guarantees for enterprise customers?</h4>
+            <p>Enterprise customers receive a 99.9% uptime SLA with 24/7 technical support, dedicated account management, and priority escalation to our engineering team for critical issues.</p>
+          </div>
+
+          <div class="faq-item">
+            <h4>How does CertNode ensure data security and compliance?</h4>
+            <p>We implement FIPS 140-2 Level 3+ HSM integration, enterprise security frameworks, and comprehensive audit trails. Our platform is designed for SOC 2 readiness, HIPAA compliance, and other regulatory requirements.</p>
+          </div>
+
+          <div class="faq-item">
+            <h4>Can CertNode integrate with existing enterprise systems?</h4>
+            <p>Yes, CertNode provides RESTful APIs, webhook integrations, and enterprise connectors. Our professional services team can assist with custom integrations and legacy system connections.</p>
+          </div>
+
+          <div class="faq-item">
+            <h4>What is the typical implementation timeline?</h4>
+            <p>Standard implementations take 2-4 weeks. Complex enterprise deployments with custom integrations may require 6-12 weeks. Our professional services team provides detailed project timelines during planning.</p>
+          </div>
+
+          <div class="faq-item">
+            <h4>How does pricing work for high-volume usage?</h4>
+            <p>We offer volume discounts for high-volume customers and custom enterprise pricing for specialized requirements. Contact our sales team to discuss your specific usage patterns and pricing needs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact-section">
+      <div class="container">
+        <h2>Need Additional Support?</h2>
+        <p>Our enterprise support team is ready to assist with technical questions, implementation guidance, and custom requirements.</p>
+        <a href="/pricing" class="btn btn-primary">Contact Enterprise Support</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Enterprise Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Support Resources</h4>
+          <div class="footer-links">
+            <a href="/support">Support Plans</a>
+            <a href="/openapi">API Documentation</a>
+            <a href="/status">System Status</a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <div class="footer-links">
+            <a href="/verify">Receipt Validator</a>
+            <a href="/platform">Platform Overview</a>
+            <a href="/solutions">Solutions</a>
+          </div>
+        </div>
+        <div>
+          <h4>Enterprise</h4>
+          <div class="footer-links">
+            <a href="/trust">Security Framework</a>
+            <a href="/pricing">Enterprise Pricing</a>
+            <a href="/support">Professional Services</a>
+          </div>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <div class="footer-links">
+            <a href="/support">Knowledge Base</a>
+            <a href="/support">Video Tutorials</a>
+            <a href="/support">Best Practices</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 CertNode. Cryptographic receipt platform. All rights reserved.</p>
+        <p class="enterprise-badge">🔐 ENTERPRISE SECURITY FRAMEWORK • FORTUNE 500 CRYPTOGRAPHIC INFRASTRUCTURE</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Navigation Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileToggle = document.querySelector('.mobile-menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+
+      if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', function() {
+          navLinks.classList.toggle('mobile-open');
+
+          // Update ARIA label for accessibility
+          const isOpen = navLinks.classList.contains('mobile-open');
+          mobileToggle.setAttribute('aria-label', isOpen ? 'Close mobile menu' : 'Toggle mobile menu');
+          mobileToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('.nav') && navLinks.classList.contains('mobile-open')) {
+            navLinks.classList.remove('mobile-open');
+            mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Close mobile menu on window resize (if going back to desktop) - throttled for performance
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(function() {
+            if (window.innerWidth > 768 && navLinks.classList.contains('mobile-open')) {
+              navLinks.classList.remove('mobile-open');
+              mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+              mobileToggle.setAttribute('aria-expanded', 'false');
+            }
+          }, 100);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

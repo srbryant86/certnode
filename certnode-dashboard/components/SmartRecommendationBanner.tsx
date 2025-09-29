@@ -53,7 +53,7 @@ export default function SmartRecommendationBanner() {
       setRecommendation({
         planId,
         label: planNames[planId] ?? 'Professional',
-        reason: reasons[planId] ?? reasons.professional,
+        reason: reasons[planId] ?? reasons.professional ?? 'Recommended for your usage',
         confidence: summary.calculatorUsage >= 2 ? 85 : 65,
         urgency: summary.engagementLevel === 'high' ? 'high' : 'medium',
         isEnterprise: planId === 'enterprise'

@@ -1,0 +1,941 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <!-- Performance Optimization -->
+  <meta name="theme-color" content="#1e40af">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Security Metadata -->
+  <title>Security Framework — CertNode</title>
+  <link rel="canonical" href="https://certnode.io/security" />
+  <meta property="og:title" content="CertNode Security — Enterprise Cryptographic Security Framework" />
+  <meta property="og:description" content="Comprehensive security framework with FIPS 140-2 Level 3+ compliance, HSM integration, and enterprise-grade cryptographic protection for Fortune 500 organizations." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://certnode.io/security" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CertNode Security — Enterprise Security Framework" />
+  <meta name="twitter:description" content="FIPS 140-2 Level 3+ compliance and enterprise cryptographic security." />
+  <meta name="description" content="Enterprise security framework with FIPS 140-2 Level 3+ HSM integration, comprehensive audit trails, and advanced cryptographic protection designed for Fortune 500 compliance requirements.">
+
+  <!-- Enterprise Design System - Optimized Font Loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+
+  <!-- Critical Resource Preloads for Performance -->
+  <link rel="dns-prefetch" href="//certnode.io">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+
+  <style>
+    /* CertNode Enterprise Design System - 10/10 Polish */
+    :root {
+      --primary-50: #eff6ff;
+      --primary-100: #dbeafe;
+      --primary-500: #3b82f6;
+      --primary-600: #2563eb;
+      --primary-700: #1d4ed8;
+      --primary-800: #1e40af;
+      --primary-900: #1e3a8a;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --success-500: #10b981;
+      --green-100: #dcfce7;
+      --green-600: #16a34a;
+      --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-inter);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-display: swap;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* 10/10 Enterprise Navigation */
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 72px;
+    }
+
+    .logo {
+      font-family: var(--font-inter);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-600);
+      text-decoration: none;
+      letter-spacing: -0.025em;
+      transition: all 0.2s ease;
+    }
+
+    .logo:hover {
+      color: var(--primary-700);
+      transform: translateY(-1px);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--gray-600);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-600);
+      background: var(--primary-50);
+    }
+
+    .nav-links a[aria-current="page"] {
+      color: var(--primary-600);
+      background: var(--primary-50);
+      font-weight: 600;
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--gray-600);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-menu-toggle:hover {
+      color: var(--primary-600);
+      background: var(--primary-50);
+    }
+
+    /* Security Hero */
+    .security-hero {
+      background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .security-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='60' cy='60' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .security-hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.025em;
+      position: relative;
+    }
+
+    .security-hero p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 640px;
+      margin: 0 auto 3rem auto;
+      position: relative;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.75rem;
+      font-weight: 600;
+      font-size: 15px;
+      border-radius: 0.75rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 0;
+    }
+
+    .btn-primary {
+      background: white;
+      color: var(--primary-600);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .btn-primary:hover {
+      background: var(--gray-50);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.15);
+    }
+
+    /* Security Features */
+    .security-features {
+      padding: 6rem 0;
+      background: white;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+    }
+
+    .section-header p {
+      font-size: 1.25rem;
+      color: var(--gray-600);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 2rem;
+      border: 1px solid var(--gray-200);
+      border-radius: 1rem;
+      background: white;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+      border-color: var(--primary-200);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.375rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+    }
+
+    .feature-card p {
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    /* Compliance Section */
+    .compliance-section {
+      background: var(--gray-50);
+      padding: 6rem 0;
+    }
+
+    .compliance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .compliance-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      border: 1px solid var(--gray-200);
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .compliance-card:hover {
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+
+    .compliance-card.certified {
+      border-color: var(--green-600);
+      background: linear-gradient(135deg, var(--green-100) 0%, white 100%);
+    }
+
+    .compliance-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--green-100);
+      color: var(--green-600);
+      border-radius: 2rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .compliance-card h4 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+    }
+
+    .compliance-card p {
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    /* Security Architecture */
+    .architecture-section {
+      background: white;
+      padding: 6rem 0;
+    }
+
+    .architecture-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .architecture-item {
+      padding: 1.5rem;
+      border: 1px solid var(--gray-200);
+      border-radius: 0.75rem;
+      background: white;
+    }
+
+    .architecture-item h4 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .architecture-item p {
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    .architecture-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 1rem;
+    }
+
+    .architecture-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .architecture-list li::before {
+      content: '•';
+      color: var(--primary-600);
+      font-weight: bold;
+    }
+
+    /* Call to Action Section */
+    .cta-section {
+      background: var(--gray-900);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-section p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto 2rem auto;
+    }
+
+    /* Enterprise Footer */
+    .footer {
+      background: var(--gray-900);
+      color: white;
+      padding: 3rem 0 1rem 0;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer h4 {
+      color: white;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer a {
+      color: #9ca3af;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--gray-700);
+    }
+
+    .footer-bottom p {
+      color: #9ca3af;
+    }
+
+    .footer-bottom .enterprise-badge {
+      font-size: 0.8rem;
+      color: var(--primary-400);
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem 0;
+        border-top: 1px solid var(--gray-200);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 50;
+      }
+
+      .nav-links.mobile-open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 1rem 1.5rem;
+        border-radius: 0;
+        border-bottom: 1px solid var(--gray-100);
+      }
+
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+
+      .security-hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .security-hero p {
+        font-size: 1.125rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .compliance-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .architecture-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .container {
+        padding: 0 1rem;
+      }
+    }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    .btn:focus-visible, .nav-links a:focus-visible {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 10/10 Enterprise Navigation -->
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/" class="logo">CertNode</a>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="nav-links">
+          <a href="/platform">Platform</a>
+          <a href="/solutions">Solutions</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/support">Support</a>
+          <a href="/security" aria-current="page">Security</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Security Hero -->
+    <section class="security-hero">
+      <div class="container">
+        <h1>Enterprise Security Framework</h1>
+        <p>FIPS 140-2 Level 3+ compliance with Hardware Security Modules, comprehensive audit trails, and advanced cryptographic protection designed for Fortune 500 security requirements.</p>
+        <a href="/trust" class="btn btn-primary">View Security Documentation</a>
+      </div>
+    </section>
+
+    <!-- Security Features -->
+    <section class="security-features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Advanced Security Controls</h2>
+          <p>Multi-layered security architecture with enterprise-grade cryptographic protection, audit controls, and compliance automation.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="11" width="18" height="10" rx="2" ry="2" stroke="#2563eb" stroke-width="2"/>
+                <circle cx="12" cy="16" r="1" fill="#2563eb"/>
+                <path d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 17V19" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Hardware Security Modules</h3>
+            <p>FIPS 140-2 Level 3+ certified HSMs with AWS CloudHSM and Thales Luna integration for hardware-based cryptographic operations and secure key storage.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22S8 18 8 12V7L12 5L16 7V12C16 18 12 22 12 22Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 12L11 14L15 10" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Zero-Trust Architecture</h3>
+            <p>Complete zero-trust security model with continuous verification, least-privilege access controls, and comprehensive monitoring across all system components.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21L12 19L16 21Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Comprehensive Audit Trails</h3>
+            <p>Immutable audit logs with cryptographic integrity verification, real-time monitoring, and compliance-ready reporting for all system activities and data access.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 8C18 8.79565 17.6839 9.55871 17.1213 10.1213C16.5587 10.6839 15.7956 11 15 11C14.2044 11 13.4413 10.6839 12.8787 10.1213C12.3161 9.55871 12 8.79565 12 8C12 7.20435 12.3161 6.44129 12.8787 5.87868C13.4413 5.31607 14.2044 5 15 5C15.7956 5 16.5587 5.31607 17.1213 5.87868C17.6839 6.44129 18 7.20435 18 8Z" stroke="#2563eb" stroke-width="2"/>
+                <path d="M9 8C9 8.79565 8.68393 9.55871 8.12132 10.1213C7.55871 10.6839 6.79565 11 6 11C5.20435 11 4.44129 10.6839 3.87868 10.1213C3.31607 9.55871 3 8.79565 3 8C3 7.20435 3.31607 6.44129 3.87868 5.87868C4.44129 5.31607 5.20435 5 6 5C6.79565 5 7.55871 5.31607 8.12132 5.87868C8.68393 6.44129 9 7.20435 9 8Z" stroke="#2563eb" stroke-width="2"/>
+                <path d="M6 11V15C6 16.0609 6.42143 17.0783 7.17157 17.8284C7.92172 18.5786 8.93913 19 10 19H14C15.0609 19 16.0783 18.5786 16.8284 17.8284C17.5786 17.0783 18 16.0609 18 15V11" stroke="#2563eb" stroke-width="2"/>
+                <path d="M15 11V15" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+                <path d="M9 11V15" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Data Encryption</h3>
+            <p>AES-256 encryption at rest and in transit with advanced key management, perfect forward secrecy, and quantum-resistant cryptographic algorithms.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89317 18.7122 8.75608 18.1676 9.45768C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Identity & Access Management</h3>
+            <p>Enterprise SSO integration, multi-factor authentication, role-based access controls, and automated provisioning with complete identity lifecycle management.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 12H18L15 21L9 3L6 12H2" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Threat Detection</h3>
+            <p>AI-powered threat detection with real-time monitoring, anomaly detection, automated incident response, and integration with enterprise SIEM platforms.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Compliance -->
+    <section class="compliance-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Compliance & Certifications</h2>
+          <p>Comprehensive compliance framework meeting the highest industry standards for security, privacy, and regulatory requirements.</p>
+        </div>
+
+        <div class="compliance-grid">
+          <div class="compliance-card certified">
+            <div class="compliance-badge">
+              ✓ Certified
+            </div>
+            <h4>FIPS 140-2 Level 3+</h4>
+            <p>Hardware Security Module integration with FIPS 140-2 Level 3+ certified cryptographic modules for maximum security assurance.</p>
+          </div>
+
+          <div class="compliance-card">
+            <div class="compliance-badge">
+              🔄 In Progress
+            </div>
+            <h4>SOC 2 Type II</h4>
+            <p>SOC 2 Type II readiness with comprehensive security controls framework in place. Certification audit scheduled for 2025.</p>
+          </div>
+
+          <div class="compliance-card certified">
+            <div class="compliance-badge">
+              ✓ Ready
+            </div>
+            <h4>HIPAA Compliance</h4>
+            <p>Healthcare compliance with HIPAA safeguards, business associate agreements, and comprehensive audit controls for protected health information.</p>
+          </div>
+
+          <div class="compliance-card certified">
+            <div class="compliance-badge">
+              ✓ Compliant
+            </div>
+            <h4>GDPR & CCPA</h4>
+            <p>Privacy compliance with data protection regulations, consent management, data subject rights, and automated compliance reporting.</p>
+          </div>
+
+          <div class="compliance-card">
+            <div class="compliance-badge">
+              🔄 In Progress
+            </div>
+            <h4>FedRAMP Authorization</h4>
+            <p>Federal risk and authorization management program certification for government cloud deployments and sensitive data processing.</p>
+          </div>
+
+          <div class="compliance-card certified">
+            <div class="compliance-badge">
+              ✓ Compliant
+            </div>
+            <h4>ISO 27001</h4>
+            <p>Information security management system certification with comprehensive security controls and continuous improvement processes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Security Architecture -->
+    <section class="architecture-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Security Architecture</h2>
+          <p>Multi-layered defense architecture with redundant security controls, comprehensive monitoring, and automated threat response capabilities.</p>
+        </div>
+
+        <div class="architecture-grid">
+          <div class="architecture-item">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L22 7V17C22 17.5304 21.7893 18.0391 21.4142 18.4142C21.0391 18.7893 20.5304 19 20 19H4C3.46957 19 2.96086 18.7893 2.58579 18.4142C2.21071 18.0391 2 17.5304 2 17V7L12 2Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Network Security
+            </h4>
+            <p>Comprehensive network protection with multiple security layers and advanced threat detection.</p>
+            <ul class="architecture-list">
+              <li>Web Application Firewall (WAF)</li>
+              <li>DDoS protection and mitigation</li>
+              <li>Network segmentation</li>
+              <li>Intrusion detection systems</li>
+              <li>VPN and secure tunneling</li>
+            </ul>
+          </div>
+
+          <div class="architecture-item">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="11" width="18" height="10" rx="2" ry="2" stroke="#2563eb" stroke-width="2"/>
+                <circle cx="12" cy="16" r="1" fill="#2563eb"/>
+              </svg>
+              Data Protection
+            </h4>
+            <p>Advanced data protection with encryption, access controls, and privacy safeguards.</p>
+            <ul class="architecture-list">
+              <li>AES-256 encryption at rest</li>
+              <li>TLS 1.3 encryption in transit</li>
+              <li>Key rotation and management</li>
+              <li>Data loss prevention (DLP)</li>
+              <li>Secure data destruction</li>
+            </ul>
+          </div>
+
+          <div class="architecture-item">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12L11 14L15 10" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#2563eb" stroke-width="2"/>
+              </svg>
+              Access Controls
+            </h4>
+            <p>Comprehensive identity and access management with advanced authentication.</p>
+            <ul class="architecture-list">
+              <li>Multi-factor authentication (MFA)</li>
+              <li>Single sign-on (SSO) integration</li>
+              <li>Role-based access control (RBAC)</li>
+              <li>Privileged access management</li>
+              <li>Session management</li>
+            </ul>
+          </div>
+
+          <div class="architecture-item">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 20V10" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 20V4" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 20V14" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Monitoring & Analytics
+            </h4>
+            <p>Real-time security monitoring with advanced analytics and automated response.</p>
+            <ul class="architecture-list">
+              <li>24/7 security operations center</li>
+              <li>SIEM integration and alerts</li>
+              <li>Behavioral analytics</li>
+              <li>Automated incident response</li>
+              <li>Compliance reporting</li>
+            </ul>
+          </div>
+
+          <div class="architecture-item">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22S8 18 8 12V7L12 5L16 7V12C16 18 12 22 12 22Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Business Continuity
+            </h4>
+            <p>Enterprise-grade business continuity with disaster recovery and high availability.</p>
+            <ul class="architecture-list">
+              <li>99.9% uptime SLA</li>
+              <li>Multi-region redundancy</li>
+              <li>Automated failover</li>
+              <li>Disaster recovery procedures</li>
+              <li>Business continuity planning</li>
+            </ul>
+          </div>
+
+          <div class="architecture-item">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21L12 19L16 21Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Audit & Compliance
+            </h4>
+            <p>Comprehensive audit controls and automated compliance reporting capabilities.</p>
+            <ul class="architecture-list">
+              <li>Immutable audit logs</li>
+              <li>Regulatory compliance automation</li>
+              <li>Third-party security assessments</li>
+              <li>Penetration testing</li>
+              <li>Vulnerability management</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Ready to Secure Your Enterprise?</h2>
+        <p>Contact our security team to discuss your specific compliance requirements and enterprise security needs.</p>
+        <a href="/pricing" class="btn btn-primary">Get Security Assessment</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Enterprise Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Security & Compliance</h4>
+          <div class="footer-links">
+            <a href="/security">Security Framework</a>
+            <a href="/trust">Trust Center</a>
+            <a href="/security">Compliance</a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <div class="footer-links">
+            <a href="/openapi">API Documentation</a>
+            <a href="/verify">Receipt Validator</a>
+            <a href="/status">System Status</a>
+          </div>
+        </div>
+        <div>
+          <h4>Enterprise</h4>
+          <div class="footer-links">
+            <a href="/platform">Platform Overview</a>
+            <a href="/solutions">Solutions</a>
+            <a href="/pricing">Enterprise Pricing</a>
+          </div>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <div class="footer-links">
+            <a href="/support">Enterprise Support</a>
+            <a href="/support">Professional Services</a>
+            <a href="/support">Documentation</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 CertNode. Cryptographic receipt platform. All rights reserved.</p>
+        <p class="enterprise-badge">🔐 ENTERPRISE SECURITY FRAMEWORK • FORTUNE 500 CRYPTOGRAPHIC INFRASTRUCTURE</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Navigation Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileToggle = document.querySelector('.mobile-menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+
+      if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', function() {
+          navLinks.classList.toggle('mobile-open');
+
+          // Update ARIA label for accessibility
+          const isOpen = navLinks.classList.contains('mobile-open');
+          mobileToggle.setAttribute('aria-label', isOpen ? 'Close mobile menu' : 'Toggle mobile menu');
+          mobileToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('.nav') && navLinks.classList.contains('mobile-open')) {
+            navLinks.classList.remove('mobile-open');
+            mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Close mobile menu on window resize (if going back to desktop) - throttled for performance
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(function() {
+            if (window.innerWidth > 768 && navLinks.classList.contains('mobile-open')) {
+              navLinks.classList.remove('mobile-open');
+              mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+              mobileToggle.setAttribute('aria-expanded', 'false');
+            }
+          }, 100);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

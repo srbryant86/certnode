@@ -15,7 +15,6 @@ export async function POST() {
       select: {
         id: true,
         name: true,
-        subscriptionId: true,
       },
     });
 
@@ -31,9 +30,6 @@ export async function POST() {
     let portalUrl: string;
     try {
       const url = new URL(basePortalUrl);
-      if (enterprise.subscriptionId) {
-        url.searchParams.set("subscription", enterprise.subscriptionId);
-      }
       if (session.user.email) {
         url.searchParams.set("prefilled_email", session.user.email);
       }
@@ -49,15 +45,15 @@ export async function POST() {
         userId: session.user.id,
         action: "billing.portal_requested",
         resourceType: "billing_portal",
-        resourceId: enterprise.subscriptionId ?? "portal",
-        details: {
+        resourceId: "portal",
+        details: JSON.stringify({
           email: session.user.email,
-        },
+        }),
       },
     });
 
     return NextResponse.json({ url: portalUrl });
-  } catch {
+  } catch (error) {
     console.error("billing portal error", error);
     return NextResponse.json({ error: "internal_error" }, { status: 500 });
   }

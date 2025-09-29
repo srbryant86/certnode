@@ -1,4 +1,4 @@
-import { PlanTier } from "@prisma/client";
+import { EnterpriseTier } from "@prisma/client";
 
 export type TierSlug =
   | "foundation"
@@ -20,7 +20,7 @@ export interface OverageRates {
 
 export interface TierMeta {
   id: TierSlug;
-  planTier: PlanTier | null;
+  planTier: EnterpriseTier | null;
   name: string;
   pricing: {
     monthly?: number;
@@ -41,7 +41,7 @@ export interface UpgradeRecommendation {
 const tierMetas: Record<TierSlug, TierMeta> = {
   foundation: {
     id: "foundation",
-    planTier: PlanTier.FOUNDATION,
+    planTier: EnterpriseTier.FOUNDATION,
     name: "Foundation",
     pricing: { monthly: 49 },
     limits: {
@@ -62,7 +62,7 @@ const tierMetas: Record<TierSlug, TierMeta> = {
   },
   professional: {
     id: "professional",
-    planTier: PlanTier.PROFESSIONAL,
+    planTier: EnterpriseTier.PROFESSIONAL,
     name: "Professional",
     pricing: { monthly: 199 },
     limits: {
@@ -83,7 +83,7 @@ const tierMetas: Record<TierSlug, TierMeta> = {
   },
   enterprise: {
     id: "enterprise",
-    planTier: PlanTier.ENTERPRISE,
+    planTier: EnterpriseTier.ENTERPRISE,
     name: "Enterprise",
     pricing: { monthly: 499 },
     limits: {
@@ -104,7 +104,7 @@ const tierMetas: Record<TierSlug, TierMeta> = {
   },
   "legal-shield": {
     id: "legal-shield",
-    planTier: PlanTier.LEGAL_SHIELD,
+    planTier: EnterpriseTier.LEGAL_SHIELD,
     name: "Legal Shield",
     pricing: { yearly: 12_000 },
     limits: {
@@ -122,7 +122,7 @@ const tierMetas: Record<TierSlug, TierMeta> = {
   },
   "dispute-fortress": {
     id: "dispute-fortress",
-    planTier: PlanTier.DISPUTE_FORTRESS,
+    planTier: EnterpriseTier.DISPUTE_FORTRESS,
     name: "Dispute Fortress",
     pricing: { yearly: 30_000 },
     limits: {
@@ -140,15 +140,15 @@ const tierMetas: Record<TierSlug, TierMeta> = {
   },
 };
 
-const planToTier: Record<PlanTier, TierSlug> = {
-  [PlanTier.STARTER]: "foundation",
-  [PlanTier.GROWTH]: "professional",
-  [PlanTier.BUSINESS]: "enterprise",
-  [PlanTier.ENTERPRISE]: "enterprise",
-  [PlanTier.FOUNDATION]: "foundation",
-  [PlanTier.PROFESSIONAL]: "professional",
-  [PlanTier.LEGAL_SHIELD]: "legal-shield",
-  [PlanTier.DISPUTE_FORTRESS]: "dispute-fortress",
+const planToTier: Record<EnterpriseTier, TierSlug> = {
+  [EnterpriseTier.STARTER]: "foundation",
+  [EnterpriseTier.GROWTH]: "professional",
+  [EnterpriseTier.BUSINESS]: "enterprise",
+  [EnterpriseTier.ENTERPRISE]: "enterprise",
+  [EnterpriseTier.FOUNDATION]: "foundation",
+  [EnterpriseTier.PROFESSIONAL]: "professional",
+  [EnterpriseTier.LEGAL_SHIELD]: "legal-shield",
+  [EnterpriseTier.DISPUTE_FORTRESS]: "dispute-fortress",
 };
 
 const upgradeRecommendations: Partial<Record<TierSlug, UpgradeRecommendation>> = {
@@ -172,7 +172,7 @@ export function getTierMetaBySlug(slug: TierSlug): TierMeta {
   return tierMetas[slug];
 }
 
-export function getTierMetaByPlan(plan: PlanTier | null | undefined): TierMeta {
+export function getTierMetaByPlan(plan: EnterpriseTier | null | undefined): TierMeta {
   const slug = plan ? planToTier[plan] : "foundation";
   return tierMetas[slug] ?? tierMetas.foundation;
 }

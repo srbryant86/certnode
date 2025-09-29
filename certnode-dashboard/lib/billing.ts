@@ -1,28 +1,19 @@
-import { PlanTier } from "@prisma/client";
+import { EnterpriseTier } from "@prisma/client";
 
-export function normalizePlanTier(plan: PlanTier | null | undefined): PlanTier {
+export function normalizePlanTier(plan: EnterpriseTier | null | undefined): EnterpriseTier {
   if (!plan) {
-    return PlanTier.FOUNDATION;
+    return EnterpriseTier.FREE;
   }
 
-  switch (plan) {
-    case PlanTier.STARTER:
-      return PlanTier.FOUNDATION;
-    case PlanTier.GROWTH:
-      return PlanTier.PROFESSIONAL;
-    case PlanTier.BUSINESS:
-      return PlanTier.ENTERPRISE;
-    default:
-      return plan;
-  }
+  return plan;
 }
 
 export function getBillingPortalUrl(): string | null {
   return process.env.STRIPE_CUSTOMER_PORTAL_URL ?? null;
 }
 
-export function formatBillingCycle(plan: PlanTier): "monthly" | "yearly" | "custom" {
-  if (plan === PlanTier.LEGAL_SHIELD || plan === PlanTier.DISPUTE_FORTRESS) {
+export function formatBillingCycle(plan: EnterpriseTier): "monthly" | "yearly" | "custom" {
+  if (plan === EnterpriseTier.ENTERPRISE) {
     return "yearly";
   }
 

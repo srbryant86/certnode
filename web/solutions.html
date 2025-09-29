@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <!-- Performance Optimization -->
+  <meta name="theme-color" content="#1e40af">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Solutions Metadata -->
+  <title>Enterprise Solutions — CertNode</title>
+  <link rel="canonical" href="https://certnode.io/solutions" />
+  <meta property="og:title" content="CertNode Solutions — Industry-Specific Cryptographic Security" />
+  <meta property="og:description" content="Enterprise solutions for financial services, healthcare, legal, and government sectors requiring cryptographic receipt verification and compliance." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://certnode.io/solutions" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CertNode Solutions — Industry-Specific Security" />
+  <meta name="twitter:description" content="Tailored cryptographic solutions for enterprise compliance and security." />
+  <meta name="description" content="Industry-specific cryptographic solutions for financial services, healthcare, legal, and government sectors requiring advanced security and compliance capabilities.">
+
+  <!-- Enterprise Design System - Optimized Font Loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+
+  <!-- Critical Resource Preloads for Performance -->
+  <link rel="dns-prefetch" href="//certnode.io">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+
+  <style>
+    /* CertNode Enterprise Design System - 10/10 Polish */
+    :root {
+      --primary-50: #eff6ff;
+      --primary-100: #dbeafe;
+      --primary-500: #3b82f6;
+      --primary-600: #2563eb;
+      --primary-700: #1d4ed8;
+      --primary-800: #1e40af;
+      --primary-900: #1e3a8a;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --success-500: #10b981;
+      --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-inter);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-display: swap;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* 10/10 Enterprise Navigation */
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 72px;
+    }
+
+    .logo {
+      font-family: var(--font-inter);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-600);
+      text-decoration: none;
+      letter-spacing: -0.025em;
+      transition: all 0.2s ease;
+    }
+
+    .logo:hover {
+      color: var(--primary-700);
+      transform: translateY(-1px);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--gray-600);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-600);
+      background: var(--primary-50);
+    }
+
+    .nav-links a[aria-current="page"] {
+      color: var(--primary-600);
+      background: var(--primary-50);
+      font-weight: 600;
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--gray-600);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-menu-toggle:hover {
+      color: var(--primary-600);
+      background: var(--primary-50);
+    }
+
+    /* Solutions Hero */
+    .solutions-hero {
+      background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .solutions-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='60' cy='60' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .solutions-hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.025em;
+      position: relative;
+    }
+
+    .solutions-hero p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      max-width: 640px;
+      margin: 0 auto 3rem auto;
+      position: relative;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.75rem;
+      font-weight: 600;
+      font-size: 15px;
+      border-radius: 0.75rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 0;
+    }
+
+    .btn-primary {
+      background: white;
+      color: var(--primary-600);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .btn-primary:hover {
+      background: var(--gray-50);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.15);
+    }
+
+    /* Industry Solutions */
+    .solutions-section {
+      padding: 6rem 0;
+      background: white;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+    }
+
+    .section-header p {
+      font-size: 1.25rem;
+      color: var(--gray-600);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .solution-card {
+      text-align: left;
+      padding: 2rem;
+      border: 1px solid var(--gray-200);
+      border-radius: 1rem;
+      background: white;
+      transition: all 0.3s ease;
+    }
+
+    .solution-card:hover {
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+      border-color: var(--primary-200);
+    }
+
+    .solution-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .solution-card h3 {
+      font-size: 1.375rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+    }
+
+    .solution-card p {
+      color: var(--gray-600);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .solution-features {
+      list-style: none;
+      padding: 0;
+    }
+
+    .solution-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .solution-features li::before {
+      content: '✓';
+      color: var(--success-500);
+      font-weight: bold;
+    }
+
+    /* Use Cases Section */
+    .use-cases-section {
+      background: var(--gray-50);
+      padding: 6rem 0;
+    }
+
+    .use-cases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .use-case-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      border: 1px solid var(--gray-200);
+      transition: all 0.3s ease;
+    }
+
+    .use-case-card:hover {
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+
+    .use-case-card h4 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+    }
+
+    .use-case-card p {
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    /* Call to Action Section */
+    .cta-section {
+      background: var(--gray-900);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-section p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto 2rem auto;
+    }
+
+    /* Enterprise Footer */
+    .footer {
+      background: var(--gray-900);
+      color: white;
+      padding: 3rem 0 1rem 0;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer h4 {
+      color: white;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer a {
+      color: #9ca3af;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--gray-700);
+    }
+
+    .footer-bottom p {
+      color: #9ca3af;
+    }
+
+    .footer-bottom .enterprise-badge {
+      font-size: 0.8rem;
+      color: var(--primary-400);
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem 0;
+        border-top: 1px solid var(--gray-200);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 50;
+      }
+
+      .nav-links.mobile-open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 1rem 1.5rem;
+        border-radius: 0;
+        border-bottom: 1px solid var(--gray-100);
+      }
+
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+
+      .solutions-hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .solutions-hero p {
+        font-size: 1.125rem;
+      }
+
+      .solutions-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .use-cases-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .container {
+        padding: 0 1rem;
+      }
+    }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    .btn:focus-visible, .nav-links a:focus-visible {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 10/10 Enterprise Navigation -->
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/" class="logo">CertNode</a>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="nav-links">
+          <a href="/platform">Platform</a>
+          <a href="/solutions" aria-current="page">Solutions</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/support">Support</a>
+          <a href="/trust">Security</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Solutions Hero -->
+    <section class="solutions-hero">
+      <div class="container">
+        <h1>Industry-Specific Solutions</h1>
+        <p>Tailored cryptographic verification solutions for financial services, healthcare, legal, and government sectors requiring advanced security and regulatory compliance.</p>
+        <a href="/pricing" class="btn btn-primary">Explore Solutions</a>
+      </div>
+    </section>
+
+    <!-- Industry Solutions -->
+    <section class="solutions-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Enterprise Solutions by Industry</h2>
+          <p>Comprehensive cryptographic verification solutions designed to meet the unique requirements and compliance standards of each industry.</p>
+        </div>
+
+        <div class="solutions-grid">
+          <div class="solution-card">
+            <div class="solution-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 4H18C18.5304 4 19.0391 4.21071 19.4142 4.58579C19.7893 4.96086 20 5.46957 20 6V20C20 20.5304 19.7893 21.0391 19.4142 21.4142C19.0391 21.7893 18.5304 22 18 22H6C5.46957 22 4.96086 21.7893 4.58579 21.4142C4.21071 21.0391 4 20.5304 4 20V6C4 5.46957 4.21071 4.96086 4.58579 4.58579C4.96086 4.21071 5.46957 4 6 4H8" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1" stroke="#2563eb" stroke-width="2"/>
+                <path d="M12 11H16" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 16H16" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 11H8.01" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 16H8.01" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Financial Services</h3>
+            <p>Comprehensive compliance solutions for banking, insurance, and fintech organizations requiring regulatory oversight and audit-ready documentation.</p>
+            <ul class="solution-features">
+              <li>PCI-DSS compliance automation</li>
+              <li>SOX audit trail generation</li>
+              <li>Anti-money laundering (AML) support</li>
+              <li>GDPR data protection controls</li>
+              <li>Real-time fraud detection integration</li>
+            </ul>
+          </div>
+
+          <div class="solution-card">
+            <div class="solution-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 12H18L15 21L9 3L6 12H2" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Healthcare</h3>
+            <p>HIPAA-compliant cryptographic verification for patient data, medical records, and pharmaceutical supply chain integrity.</p>
+            <ul class="solution-features">
+              <li>HIPAA compliance automation</li>
+              <li>Patient data encryption at rest</li>
+              <li>Medical device verification</li>
+              <li>Pharmaceutical traceability</li>
+              <li>Clinical trial data integrity</li>
+            </ul>
+          </div>
+
+          <div class="solution-card">
+            <div class="solution-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22S8 18 8 12V7L12 5L16 7V12C16 18 12 22 12 22Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 12L11 14L15 10" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Legal & Law Firms</h3>
+            <p>Litigation-ready evidence preservation with blockchain anchoring, legal affidavits, and court-admissible verification reports.</p>
+            <ul class="solution-features">
+              <li>Evidence chain of custody</li>
+              <li>Legal affidavit generation</li>
+              <li>Court-ready exports</li>
+              <li>25-year data retention</li>
+              <li>Attorney-client privilege protection</li>
+            </ul>
+          </div>
+
+          <div class="solution-card">
+            <div class="solution-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L22 7V17C22 17.5304 21.7893 18.0391 21.4142 18.4142C21.0391 18.7893 20.5304 19 20 19H4C3.46957 19 2.96086 18.7893 2.58579 18.4142C2.21071 18.0391 2 17.5304 2 17V7L12 2Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 7L12 12L22 7" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 22V12" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Government & Public Sector</h3>
+            <p>FedRAMP-authorized infrastructure with FIPS 140-2 Level 3+ compliance for sensitive government operations and citizen services.</p>
+            <ul class="solution-features">
+              <li>FedRAMP authorization ready</li>
+              <li>FIPS 140-2 Level 3+ compliance</li>
+              <li>FISMA security controls</li>
+              <li>Public records management</li>
+              <li>Citizen service verification</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="use-cases-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Common Use Cases</h2>
+          <p>Real-world applications across industries demonstrating the versatility and effectiveness of our cryptographic verification platform.</p>
+        </div>
+
+        <div class="use-cases-grid">
+          <div class="use-case-card">
+            <h4>Digital Contract Verification</h4>
+            <p>Ensure contract authenticity and prevent tampering with cryptographic signatures and immutable verification records for legal agreements.</p>
+          </div>
+
+          <div class="use-case-card">
+            <h4>Supply Chain Transparency</h4>
+            <p>Track product authenticity and movement through complex supply chains with verifiable receipts at each transfer point.</p>
+          </div>
+
+          <div class="use-case-card">
+            <h4>Payment Processing Security</h4>
+            <p>Add an extra layer of security to payment transactions with cryptographic receipts that prove payment authenticity and integrity.</p>
+          </div>
+
+          <div class="use-case-card">
+            <h4>Content Authenticity Verification</h4>
+            <p>Combat AI-generated content with advanced detection algorithms and cryptographic proof of content origin and authenticity.</p>
+          </div>
+
+          <div class="use-case-card">
+            <h4>Intellectual Property Protection</h4>
+            <p>Protect IP with timestamped, cryptographically-signed records that prove creation date and authorship for patents and copyrights.</p>
+          </div>
+
+          <div class="use-case-card">
+            <h4>Regulatory Compliance Automation</h4>
+            <p>Automate compliance reporting with cryptographic proof of data integrity, audit trails, and regulatory documentation generation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Ready to Implement Your Solution?</h2>
+        <p>Contact our enterprise team to discuss your specific industry requirements and compliance needs.</p>
+        <a href="/pricing" class="btn btn-primary">Get Industry Solution</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Enterprise Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Industry Solutions</h4>
+          <div class="footer-links">
+            <a href="/solutions">Financial Services</a>
+            <a href="/solutions">Healthcare</a>
+            <a href="/solutions">Legal & Law Firms</a>
+            <a href="/solutions">Government</a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <div class="footer-links">
+            <a href="/openapi">API Documentation</a>
+            <a href="/verify">Receipt Validator</a>
+            <a href="/status">System Status</a>
+          </div>
+        </div>
+        <div>
+          <h4>Compliance</h4>
+          <div class="footer-links">
+            <a href="/trust">Security Framework</a>
+            <a href="/platform">HSM Integration</a>
+            <a href="/pricing">FIPS 140-2 Level 3+</a>
+          </div>
+        </div>
+        <div>
+          <h4>Enterprise Support</h4>
+          <div class="footer-links">
+            <a href="/solutions">Industry Solutions</a>
+            <a href="/pricing">Enterprise Pricing</a>
+            <a href="/trust">Security Documentation</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 CertNode. Cryptographic receipt platform. All rights reserved.</p>
+        <p class="enterprise-badge">🔐 ENTERPRISE SECURITY FRAMEWORK • FORTUNE 500 CRYPTOGRAPHIC INFRASTRUCTURE</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Navigation Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileToggle = document.querySelector('.mobile-menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+
+      if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', function() {
+          navLinks.classList.toggle('mobile-open');
+
+          // Update ARIA label for accessibility
+          const isOpen = navLinks.classList.contains('mobile-open');
+          mobileToggle.setAttribute('aria-label', isOpen ? 'Close mobile menu' : 'Toggle mobile menu');
+          mobileToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('.nav') && navLinks.classList.contains('mobile-open')) {
+            navLinks.classList.remove('mobile-open');
+            mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Close mobile menu on window resize (if going back to desktop) - throttled for performance
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(function() {
+            if (window.innerWidth > 768 && navLinks.classList.contains('mobile-open')) {
+              navLinks.classList.remove('mobile-open');
+              mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
+              mobileToggle.setAttribute('aria-expanded', 'false');
+            }
+          }, 100);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

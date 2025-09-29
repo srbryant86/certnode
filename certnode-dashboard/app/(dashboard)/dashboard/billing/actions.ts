@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { PlanTier } from "@prisma/client";
+import { EnterpriseTier } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { normalizePlanTier } from "@/lib/billing";
@@ -19,7 +19,7 @@ export type PlanChangeState = {
 };
 
 const planSchema = z.object({
-  targetTier: z.nativeEnum(PlanTier),
+  targetTier: z.nativeEnum(EnterpriseTier),
 });
 
 export async function changePlanAction(
@@ -98,11 +98,11 @@ export async function changePlanAction(
       action: "billing.plan_changed",
       resourceType: "billing_plan",
       resourceId: targetNormalized,
-      details: {
+      details: JSON.stringify({
         from: currentNormalized,
         to: targetNormalized,
         actor: session.user.email,
-      },
+      }),
     },
   });
 
@@ -113,4 +113,8 @@ export async function changePlanAction(
     status: "success",
     message: `${isDowngrade ? "Downgraded" : "Upgraded"} to the ${targetMeta.name} plan.`,
   };
+}
+
+export async function changePlanFormAction(formData: FormData) {
+  await changePlanAction({ status: "idle" }, formData);
 }

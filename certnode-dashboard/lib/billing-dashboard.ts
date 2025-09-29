@@ -1,31 +1,30 @@
 import { addDays } from "date-fns";
-import { PlanTier } from "@prisma/client";
+import { EnterpriseTier } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getDashboardOverview } from "@/lib/dashboard";
-import { formatBillingCycle, normalizePlanTier } from "@/lib/billing";
+import { formatBillingCycle, normalizeEnterpriseTier } from "@/lib/billing";
 import { getTierMetaByPlan, listTierMetas, type TierMeta } from "@/lib/pricing";
 import type { Invoice, PlanOption, SubscriptionData } from "@/types";
 import type { DashboardMetrics } from "@/types/dashboard";
 
-const tierOrder: readonly PlanTier[] = [
-  PlanTier.FOUNDATION,
-  PlanTier.PROFESSIONAL,
-  PlanTier.ENTERPRISE,
-  PlanTier.LEGAL_SHIELD,
-  PlanTier.DISPUTE_FORTRESS,
+const tierOrder: readonly EnterpriseTier[] = [
+  EnterpriseTier.FREE,
+  EnterpriseTier.STARTER,
+  EnterpriseTier.PRO,
+  EnterpriseTier.ENTERPRISE,
 ];
 
 const UNLIMITED_SENTINEL = Number.MAX_SAFE_INTEGER;
 
-function compareTiers(a: PlanTier, b: PlanTier): number {
+function compareTiers(a: EnterpriseTier, b: EnterpriseTier): number {
   return tierOrder.indexOf(a) - tierOrder.indexOf(b);
 }
 
-function isHigherTier(candidate: PlanTier, current: PlanTier): boolean {
+function isHigherTier(candidate: EnterpriseTier, current: EnterpriseTier): boolean {
   return compareTiers(candidate, current) > 0;
 }
 
-function isLowerTier(candidate: PlanTier, current: PlanTier): boolean {
+function isLowerTier(candidate: EnterpriseTier, current: EnterpriseTier): boolean {
   return compareTiers(candidate, current) < 0;
 }
 
@@ -112,17 +111,17 @@ export async function getSubscriptionData(
     options.overview ??
     (await getDashboardOverview(enterpriseId));
 
-  const normalizedTier = normalizePlanTier(enterprise.billingTier);
+  const normalizedTier = normalizeEnterpriseTier(enterprise.billingTier);
   const tierMeta = getTierMetaByPlan(normalizedTier);
 
   const availableTierMetas = listTierMetas().filter((meta) => meta.planTier !== null);
   const availableUpgrades = availableTierMetas
-    .filter((meta): meta is TierMeta & { planTier: PlanTier } => Boolean(meta.planTier))
+    .filter((meta): meta is TierMeta & { planTier: EnterpriseTier } => Boolean(meta.planTier))
     .filter((meta) => meta.planTier && isHigherTier(meta.planTier, normalizedTier))
     .map(toPlanOption);
 
   const downgradeCandidates = availableTierMetas
-    .filter((meta): meta is TierMeta & { planTier: PlanTier } => Boolean(meta.planTier))
+    .filter((meta): meta is TierMeta & { planTier: EnterpriseTier } => Boolean(meta.planTier))
     .filter((meta) => meta.planTier && isLowerTier(meta.planTier, normalizedTier));
 
   const receiptsUsed = overview.usage.receipts.used;
@@ -179,7 +178,7 @@ export async function getSubscriptionData(
   } satisfies SubscriptionData;
 }
 
-export function findPlanOption(target: PlanTier): PlanOption | null {
+export function findPlanOption(target: EnterpriseTier): PlanOption | null {
   const meta = listTierMetas().find((item) => item.planTier === target);
   if (!meta || !meta.planTier) {
     return null;
@@ -207,7 +206,7 @@ export function canMatchTier(
   return true;
 }
 
-export function getTierMetaByPlanStrict(plan: PlanTier): TierMeta {
+export function getTierMetaByPlanStrict(plan: EnterpriseTier): TierMeta {
   const meta = listTierMetas().find((item) => item.planTier === plan);
   if (!meta) {
     throw new Error(`Unknown plan tier: ${plan}`);
@@ -215,9 +214,9 @@ export function getTierMetaByPlanStrict(plan: PlanTier): TierMeta {
   return meta;
 }
 
-export function getTierOrder(): readonly PlanTier[] {
+export function getTierOrder(): readonly EnterpriseTier[] {
   return tierOrder;
 }
-export function comparePlanTiers(a: PlanTier, b: PlanTier): number {
+export function compareEnterpriseTiers(a: EnterpriseTier, b: EnterpriseTier): number {
   return compareTiers(a, b);
 }

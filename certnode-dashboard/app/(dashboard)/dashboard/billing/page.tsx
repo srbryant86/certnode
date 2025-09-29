@@ -6,7 +6,7 @@ import { formatCurrency, formatNumber, formatPercentage } from "@/lib/format";
 import { BillingPortalButton } from "./_components/billing-portal-button";
 import { InvoiceHistory } from "./_components/invoice-history";
 import { PlanChangeButton } from "./_components/plan-change-button";
-import { changePlanAction } from "./actions";
+import { changePlanFormAction } from "./actions";
 import type { PlanOption } from "@/types";
 
 export default async function BillingPage() {
@@ -71,7 +71,7 @@ export default async function BillingPage() {
     return (
       <form
         key={option.tier}
-        action={changePlanAction}
+        action={changePlanFormAction}
         className="flex items-center justify-between gap-4 rounded-lg border border-slate-800 bg-slate-950/40 px-4 py-3"
       >
         <input type="hidden" name="targetTier" value={option.tier} />

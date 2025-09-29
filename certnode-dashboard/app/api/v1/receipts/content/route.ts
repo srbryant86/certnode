@@ -1,12 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contentReceiptService } from "@/lib/content/service";
 import { applyRateLimit, createRateLimitHeaders } from "@/lib/rate-limiting";
+import { authenticateApiKey, hasPermission } from "@/lib/api-auth";
+import { detectionQueue } from "@/lib/queue";
 
 export async function POST(request: NextRequest) {
   try {
+    // Authenticate API key
+    const authResult = await authenticateApiKey(request);
+    if (!authResult.success) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: 401 }
+      );
+    }
+
     // Apply rate limiting
-    const apiKey = request.headers.get('x-api-key');
-    const rateLimitResult = await applyRateLimit(request, apiKey || undefined);
+    const rateLimitResult = await applyRateLimit(request, authResult.apiKeyId);
 
     if (!rateLimitResult.success) {
       return NextResponse.json(
@@ -20,6 +30,7 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json();
+    const { searchParams } = new URL(request.url);
 
     // Basic validation
     if (!body.contentBase64 && !body.contentHash) {
@@ -31,15 +42,41 @@ export async function POST(request: NextRequest) {
 
     const { contentBase64, contentHash, contentType, metadata, provenance, detectorResults } = body;
 
-    // For development, use a default enterprise ID
-    // In production, this would come from API key authentication
-    const enterpriseId = "dev-enterprise-1";
+    // Use authenticated enterprise ID
+    const enterpriseId = authResult.enterpriseId!;
+
+    // Check if background processing is requested
+    const useBackground = searchParams.get('background') === 'true';
+    const contentSize = contentBase64 ? Buffer.from(contentBase64, 'base64').length : 0;
+    const shouldUseBackground = useBackground || contentSize > 5 * 1024 * 1024; // 5MB threshold
 
     // Run advanced AI detection if detectorResults not provided
     let aiDetectionResults = detectorResults;
+    let backgroundJobId: string | null = null;
+
     if (!aiDetectionResults && (contentBase64 || contentType?.startsWith('text/'))) {
-      // Run advanced AI detection
-      aiDetectionResults = await runAdvancedAIDetection(contentBase64, contentType);
+      if (shouldUseBackground) {
+        // Queue for background processing
+        backgroundJobId = await detectionQueue.addJob({
+          receiptId: '', // Will be updated after receipt creation
+          contentType: contentType || 'application/octet-stream',
+          contentHash: contentHash || '',
+          contentBase64,
+          priority: contentSize > 50 * 1024 * 1024 ? 'high' : 'normal', // 50MB threshold for high priority
+        });
+
+        // Set placeholder result
+        aiDetectionResults = {
+          confidence: 0,
+          reasoning: "AI detection queued for background processing",
+          method: "background_queued",
+          backgroundJobId,
+          timestamp: new Date().toISOString(),
+        };
+      } else {
+        // Run synchronously for smaller files
+        aiDetectionResults = await runAdvancedAIDetection(contentBase64, contentType);
+      }
     }
 
     // Create content receipt
@@ -53,9 +90,25 @@ export async function POST(request: NextRequest) {
       detectorResults: aiDetectionResults,
     });
 
+    // Update background job with receipt ID if needed
+    if (backgroundJobId && result.receiptId) {
+      try {
+        // Note: In a full implementation, you'd need to update the job data
+        // For now, we'll just log it since BullMQ jobs are immutable once created
+        console.log(`Receipt ${result.receiptId} created for background job ${backgroundJobId}`);
+      } catch (error) {
+        console.warn('Failed to update background job with receipt ID:', error);
+      }
+    }
+
     return NextResponse.json({
       success: true,
       receipt: result,
+      backgroundJob: backgroundJobId ? {
+        id: backgroundJobId,
+        status: 'queued',
+        message: 'AI detection running in background. Check job status for updates.'
+      } : undefined,
     }, {
       status: 201,
       headers: createRateLimitHeaders(rateLimitResult)

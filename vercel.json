@@ -63,6 +63,17 @@
     { "source": "/dashboard", "destination": "/certnode-dashboard/dashboard" },
     { "source": "/login", "destination": "/certnode-dashboard/login" },
     { "source": "/register", "destination": "/certnode-dashboard/register" },
+    { "source": "/platform", "destination": "/web/platform.html" },
+    { "source": "/solutions", "destination": "/web/solutions.html" },
+    { "source": "/support", "destination": "/web/support.html" },
+    { "source": "/security", "destination": "/web/security.html" },
+    { "source": "/account", "destination": "/web/account.html" },
+    { "source": "/compliance-calculator", "destination": "/web/compliance-calculator.html" },
+    { "source": "/pitch", "destination": "/web/pitch.html" },
+    { "source": "/status", "destination": "/web/status.html" },
+    { "source": "/subscription-success", "destination": "/web/subscription-success.html" },
+    { "source": "/trust", "destination": "/web/trust.html" },
+    { "source": "/verify", "destination": "/web/verify.html" },
     { "source": "/", "destination": "/web/index.html" }
   ]
 }

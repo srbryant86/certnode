@@ -7,7 +7,7 @@ import PlatformAnalytics from "@/components/dashboard/platform-analytics";
 export default async function AnalyticsPage() {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session?.user?.enterpriseId) {
     redirect("/login");
   }
 
@@ -15,10 +15,11 @@ export default async function AnalyticsPage() {
   const apiKey = await prisma.apiKey.findFirst({
     where: {
       enterpriseId: session.user.enterpriseId,
-      revokedAt: null
+      status: "ACTIVE"
     },
     select: {
-      key: true
+      id: true,
+      keyPreview: true
     }
   });
 
@@ -73,7 +74,7 @@ export default async function AnalyticsPage() {
               Admin Only
             </span>
           </div>
-          <PlatformAnalytics apiKey={apiKey.key} />
+          <PlatformAnalytics apiKey={apiKey.keyPreview} />
         </div>
       )}
 
@@ -81,7 +82,7 @@ export default async function AnalyticsPage() {
         <h2 className="text-xl font-semibold text-white">Enterprise Analytics</h2>
         <EnterpriseAnalytics
           enterpriseId={session.user.enterpriseId}
-          apiKey={apiKey.key}
+          apiKey={apiKey.keyPreview}
         />
       </div>
     </div>

@@ -4,6 +4,8 @@ import { normalizeProvenance, type ProvenanceInput } from "@/lib/content/provena
 import { signPayload } from "@/lib/signing";
 import { prisma } from "@/lib/prisma";
 import { nanoid } from "nanoid";
+import { contentIntelligenceEngine, type ContentInput } from "./intelligence-engine/content-intelligence-engine";
+import { reportGenerator } from "./intelligence-engine/report-generator";
 
 export interface CreateContentReceiptInput {
   enterpriseId: string;
@@ -22,6 +24,14 @@ export interface CreateContentReceiptResult {
   receiptId: string;
   contentHash: string;
   cryptographicProof: Record<string, unknown>;
+  intelligenceAnalysis?: {
+    confidence: number;
+    riskLevel: string;
+    recommendation: string;
+    detectors: string[];
+    analysisId: string;
+  };
+  comprehensiveReport?: any;
 }
 
 export class ContentReceiptService {
@@ -42,6 +52,40 @@ export class ContentReceiptService {
     });
 
     const signed = await signPayload(payload);
+
+    // Run comprehensive content intelligence analysis
+    let intelligenceAnalysis = undefined;
+    let comprehensiveReport = undefined;
+
+    if (input.contentBase64 || input.contentBuffer) {
+      try {
+        const contentInput: ContentInput = {
+          content: input.contentBuffer || Buffer.from(input.contentBase64!, 'base64'),
+          contentType: input.contentType || 'application/octet-stream',
+          metadata: input.metadata || undefined,
+          provenance: input.provenance || undefined
+        };
+
+        const analysis = await contentIntelligenceEngine.analyzeContent(contentInput);
+        comprehensiveReport = reportGenerator.generateReport(analysis);
+
+        // Extract key metrics for storage
+        intelligenceAnalysis = {
+          confidence: analysis.authenticity.confidence,
+          riskLevel: analysis.authenticity.riskLevel,
+          recommendation: analysis.authenticity.recommendation,
+          detectors: Object.values(analysis.detectionResults)
+            .filter(Boolean)
+            .map(result => result!.detector),
+          analysisId: analysis.authenticity.analysisId
+        };
+
+        console.log(`Content intelligence analysis completed: ${analysis.authenticity.analysisId} - ${analysis.authenticity.confidence}% confidence`);
+      } catch (error) {
+        console.error('Content intelligence analysis failed:', error);
+        // Continue with receipt creation even if analysis fails
+      }
+    }
 
     const record = await prisma.receipt.create({
       data: {
@@ -65,6 +109,8 @@ export class ContentReceiptService {
       receiptId: signed.receipt_id,
       contentHash: hash.digest,
       cryptographicProof: signed as unknown as Record<string, unknown>,
+      intelligenceAnalysis,
+      comprehensiveReport,
     };
   }
 

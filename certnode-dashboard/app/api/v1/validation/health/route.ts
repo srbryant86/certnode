@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authenticateApiKey } from "@/lib/api-auth";
 import { validationMonitor } from "@/lib/validation/monitoring/validation-monitor";
+import { createSuccessResponse, createErrorResponse, QualityProfiles } from "@/lib/api-response-helpers";
 
 export async function GET(request: NextRequest) {
   try {
@@ -21,21 +22,21 @@ export async function GET(request: NextRequest) {
     // Get health status
     const healthStatus = await validationMonitor.getHealthStatus();
 
-    return NextResponse.json({
-      success: true,
-      health: healthStatus,
-      timestamp: new Date().toISOString()
-    });
+    return NextResponse.json(
+      createSuccessResponse(
+        { health: healthStatus },
+        QualityProfiles.validation
+      )
+    );
 
   } catch (error) {
     console.error("Validation health check error:", error);
     return NextResponse.json(
-      {
-        success: false,
-        error: "Failed to get validation health status",
-        code: 'HEALTH_CHECK_ERROR',
-        timestamp: new Date().toISOString()
-      },
+      createErrorResponse(
+        "Failed to get validation health status",
+        'HEALTH_CHECK_ERROR',
+        QualityProfiles.validation
+      ),
       { status: 500 }
     );
   }

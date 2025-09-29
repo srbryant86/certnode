@@ -5,6 +5,10 @@ import { signOutAction } from "./actions";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Overview" },
+  { href: "/dashboard/intelligence", label: "Tri-Pillar Intelligence" },
+  { href: "/dashboard/model-intelligence", label: "Advanced Model Intelligence" },
+  { href: "/dashboard/solutions", label: "Industry Solutions" },
+  { href: "/dashboard/integrations", label: "Enterprise Integrations" },
   { href: "/dashboard/api", label: "API Keys" },
   { href: "/dashboard/receipts", label: "Receipts" },
   { href: "/dashboard/content", label: "Content Authenticity" },

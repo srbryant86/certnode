@@ -196,60 +196,60 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Enhanced AI detection using advanced algorithms (90%+ accuracy target)
+// Enhanced AI detection using multi-modal algorithms (95%+ accuracy target)
 async function runAdvancedAIDetection(contentBase64?: string, contentType?: string): Promise<Record<string, unknown>> {
   if (!contentBase64) {
     return {
       confidence: 0,
       reasoning: "No content provided for analysis",
-      method: "advanced_detection",
+      method: "multi_modal_detection",
       timestamp: new Date().toISOString(),
     };
   }
 
-  // Decode content for analysis
-  const content = Buffer.from(contentBase64, 'base64').toString('utf-8');
+  // Use the new multi-modal detector for comprehensive analysis
+  const { MultiModalDetector } = await import('@/lib/content/detectors/multi-modal-detector');
+  const detector = new MultiModalDetector();
+
+  // Determine content type and prepare input
+  let modalType: 'text' | 'image' | 'video' | 'audio' | 'document' = 'text';
+  let content: string | Buffer = Buffer.from(contentBase64, 'base64');
 
   if (contentType?.startsWith('text/') || contentType?.includes('json')) {
-    // Use advanced text detection
-    const { advancedTextDetector } = await import('@/lib/content/detectors/advanced-text');
-    const result = await advancedTextDetector.analyze(content);
-
-    return {
-      confidence: result.confidence,
-      methods: result.methods,
-      indicators: result.indicators,
-      reasoning: result.reasoning,
-      modelSignatures: result.modelSignatures,
-      confidenceInterval: result.confidenceInterval,
-      processingTime: result.processingTime,
-      method: "advanced_text_detection",
-      timestamp: new Date().toISOString(),
-    };
+    modalType = 'text';
+    content = content.toString('utf-8');
   } else if (contentType?.startsWith('image/')) {
-    // Use image metadata detection
-    const { imageMetadataDetector } = await import('@/lib/content/detectors/image-metadata');
-    const imageBuffer = Buffer.from(contentBase64, 'base64');
-    const result = await imageMetadataDetector.analyze(imageBuffer);
-
-    return {
-      confidence: result.confidence,
-      metadata: result.metadata,
-      statistics: result.statistics,
-      indicators: result.indicators,
-      reasoning: result.reasoning,
-      processingTime: result.processingTime,
-      method: "advanced_image_detection",
-      timestamp: new Date().toISOString(),
-    };
+    modalType = 'image';
+  } else if (contentType?.startsWith('video/')) {
+    modalType = 'video';
+  } else if (contentType?.startsWith('audio/')) {
+    modalType = 'audio';
+  } else if (contentType?.includes('pdf') || contentType?.includes('document') ||
+             contentType?.includes('msword') || contentType?.includes('excel') ||
+             contentType?.includes('powerpoint') || contentType?.includes('openxml')) {
+    modalType = 'document';
   }
 
-  // For non-text content, return basic metadata analysis
+  // Run multi-modal analysis
+  const result = await detector.analyzeContent({
+    contentType: modalType,
+    content,
+    metadata: {
+      originalFormat: contentType,
+      fileSize: Buffer.isBuffer(content) ? content.length : Buffer.byteLength(content, 'utf-8')
+    }
+  });
+
   return {
-    confidence: 0.1,
-    reasoning: "Content type not supported for AI detection",
-    method: "advanced_detection",
-    contentLength: content.length,
+    confidence: result.overallConfidence,
+    modality: result.modality,
+    crossModalConsistency: result.crossModalConsistency,
+    modalityResults: result.modalityResults,
+    aggregatedIndicators: result.aggregatedIndicators,
+    reasoning: result.reasoning,
+    metadata: result.metadata,
+    processingTime: result.processingTime,
+    method: "multi_modal_detection",
     timestamp: new Date().toISOString(),
   };
 }

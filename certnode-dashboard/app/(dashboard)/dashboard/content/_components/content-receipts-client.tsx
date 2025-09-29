@@ -28,6 +28,9 @@ type SerializableContentReceipt = {
   confidence?: number;
   detectedModels?: string[];
   indicators?: string[];
+  modality?: string;
+  crossModalConsistency?: number;
+  modalityResults?: Record<string, unknown>;
 };
 
 type SerializableContentAnalytics = {
@@ -171,6 +174,9 @@ export function ContentReceiptsClient({
                   Type
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  Modality
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
                   AI Confidence
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
@@ -201,6 +207,13 @@ export function ContentReceiptsClient({
                       {receipt.contentType}
                     </span>
                   </td>
+                  <td className="px-4 py-3 text-sm text-slate-300">
+                    {receipt.modality && (
+                      <span className="px-2 py-1 text-xs rounded-full bg-blue-900/50 text-blue-300 border border-blue-700/50">
+                        {receipt.modality}
+                      </span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-sm">
                     <div className={`font-medium ${getConfidenceColor(receipt.confidence || 0)}`}>
                       {formatPercentage(receipt.confidence || 0)}
@@ -208,6 +221,11 @@ export function ContentReceiptsClient({
                     <div className="text-xs text-slate-400">
                       {getConfidenceLabel(receipt.confidence || 0)}
                     </div>
+                    {receipt.crossModalConsistency !== undefined && (
+                      <div className="text-xs text-slate-500">
+                        Cross-modal: {formatPercentage(receipt.crossModalConsistency)}
+                      </div>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-sm">
                     <span className={`font-medium ${getStatusColor(receipt.status)}`}>
@@ -286,11 +304,17 @@ export function ContentReceiptsClient({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
                     <label className="text-sm font-medium text-slate-300">AI Confidence</label>
                     <div className={`text-lg font-semibold mt-1 ${getConfidenceColor(selectedReceipt.confidence || 0)}`}>
                       {formatPercentage(selectedReceipt.confidence || 0)}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-slate-300">Modality</label>
+                    <div className="text-lg font-semibold mt-1 text-blue-400">
+                      {selectedReceipt.modality || 'N/A'}
                     </div>
                   </div>
                   <div>
@@ -306,6 +330,18 @@ export function ContentReceiptsClient({
                     </div>
                   </div>
                 </div>
+
+                {selectedReceipt.crossModalConsistency !== undefined && (
+                  <div>
+                    <label className="text-sm font-medium text-slate-300">Cross-Modal Consistency</label>
+                    <div className="text-lg font-semibold mt-1 text-purple-400">
+                      {formatPercentage(selectedReceipt.crossModalConsistency)}
+                    </div>
+                    <div className="text-xs text-slate-400 mt-1">
+                      Consistency across different analysis modalities
+                    </div>
+                  </div>
+                )}
 
                 {selectedReceipt.detectedModels && selectedReceipt.detectedModels.length > 0 && (
                   <div>
@@ -339,9 +375,20 @@ export function ContentReceiptsClient({
                   </div>
                 )}
 
+                {selectedReceipt.modalityResults && (
+                  <div>
+                    <label className="text-sm font-medium text-slate-300">Multi-Modal Analysis Results</label>
+                    <div className="bg-slate-900 rounded p-4 mt-2">
+                      <pre className="text-xs text-slate-400 whitespace-pre-wrap overflow-x-auto">
+                        {JSON.stringify(selectedReceipt.modalityResults, null, 2)}
+                      </pre>
+                    </div>
+                  </div>
+                )}
+
                 {selectedReceipt.contentAiScores && (
                   <div>
-                    <label className="text-sm font-medium text-slate-300">AI Analysis Results</label>
+                    <label className="text-sm font-medium text-slate-300">Legacy AI Analysis Results</label>
                     <div className="bg-slate-900 rounded p-4 mt-2">
                       <pre className="text-xs text-slate-400 whitespace-pre-wrap overflow-x-auto">
                         {JSON.stringify(selectedReceipt.contentAiScores, null, 2)}

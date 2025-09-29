@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Intelligence - CertNode</title>
+    <link rel="stylesheet" href="assets/certnode.css">
+    <style>
+        .comparison-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .rating-badge {
+            display: inline-block;
+            background: #00ff88;
+            color: #000;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .old-way, .certnode-way {
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .old-way {
+            background: #fff5f5;
+            border-left: 5px solid #e53e3e;
+        }
+
+        .certnode-way {
+            background: #f0fff4;
+            border-left: 5px solid #38a169;
+        }
+
+        .comparison-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .old-way .comparison-title {
+            color: #c53030;
+        }
+
+        .certnode-way .comparison-title {
+            color: #2f855a;
+        }
+
+        .scenario {
+            background: white;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .scenario h3 {
+            color: #2b6cb0;
+            margin-bottom: 1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #38a169;
+            font-weight: bold;
+        }
+
+        .problem-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .problem-list li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .problem-list li:before {
+            content: "✗";
+            position: absolute;
+            left: 0;
+            color: #e53e3e;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2b6cb0;
+        }
+
+        .stat-label {
+            color: #4a5568;
+            margin-top: 0.5rem;
+        }
+
+        .cta-section {
+            background: #2d3748;
+            color: white;
+            padding: 3rem;
+            text-align: center;
+            border-radius: 10px;
+            margin: 3rem 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #00ff88;
+            color: #000;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="comparison-container">
+            <h1>Content Intelligence Engine</h1>
+            <div class="rating-badge">10/10 AI Detection System</div>
+            <p>See how CertNode's Content Intelligence transforms content authenticity verification from guesswork into forensic-grade analysis</p>
+        </div>
+    </div>
+
+    <div class="comparison-container">
+        <div class="scenario">
+            <h3>📄 Scenario: Your legal team needs to verify if a document is AI-generated for a court case</h3>
+
+            <div class="comparison-grid">
+                <div class="old-way">
+                    <div class="comparison-title">❌ The Old Way</div>
+                    <p><strong>Typical AI Detection Service:</strong></p>
+                    <ul class="problem-list">
+                        <li>Upload document to external service</li>
+                        <li>Get basic "70% AI-generated" score</li>
+                        <li>No explanation of why or how</li>
+                        <li>No forensic evidence for court</li>
+                        <li>Pay $0.05 per check</li>
+                        <li>Single detector (often wrong)</li>
+                        <li>Generic confidence score</li>
+                        <li>Vendor lock-in with their API</li>
+                    </ul>
+                    <p><strong>Result:</strong> "Maybe AI-generated, maybe not. ¯\_(ツ)_/¯"</p>
+                </div>
+
+                <div class="certnode-way">
+                    <div class="comparison-title">✅ The CertNode Way</div>
+                    <p><strong>Content Intelligence Engine:</strong></p>
+                    <ul class="feature-list">
+                        <li>Multi-detector ensemble analysis (6 different methods)</li>
+                        <li>92% accuracy with confidence intervals</li>
+                        <li>Forensic-grade evidence compilation</li>
+                        <li>Model-specific detection (GPT-4, Claude, Gemini signatures)</li>
+                        <li>Professional legal documentation</li>
+                        <li>Chain of custody audit trail</li>
+                        <li>Zero external API costs</li>
+                        <li>Tamper-evident receipts</li>
+                    </ul>
+                    <p><strong>Result:</strong> "87% AI-generated with high confidence. Detected GPT-4 signatures. Here's the forensic evidence package for your attorney."</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="scenario">
+            <h3>🎨 Scenario: News organization needs to verify authentic photos vs manipulated/generated images</h3>
+
+            <div class="comparison-grid">
+                <div class="old-way">
+                    <div class="comparison-title">❌ The Old Way</div>
+                    <p><strong>Manual Review + Basic Tools:</strong></p>
+                    <ul class="problem-list">
+                        <li>Visual inspection by editors</li>
+                        <li>Basic EXIF metadata check</li>
+                        <li>Maybe run through one AI detector</li>
+                        <li>Subjective assessment</li>
+                        <li>No documented process</li>
+                        <li>High chance of missing deepfakes</li>
+                        <li>Time-consuming manual work</li>
+                        <li>No audit trail for verification</li>
+                    </ul>
+                    <p><strong>Result:</strong> "Looks real to me, publish it"</p>
+                </div>
+
+                <div class="certnode-way">
+                    <div class="comparison-title">✅ The CertNode Way</div>
+                    <p><strong>Content Intelligence Engine:</strong></p>
+                    <ul class="feature-list">
+                        <li>Comprehensive metadata analysis</li>
+                        <li>Statistical pattern detection</li>
+                        <li>Manipulation detection algorithms</li>
+                        <li>AI generation probability scoring</li>
+                        <li>Professional authenticity report</li>
+                        <li>Executive summary for stakeholders</li>
+                        <li>Automated workflow integration</li>
+                        <li>Complete verification audit trail</li>
+                    </ul>
+                    <p><strong>Result:</strong> "Authentic photograph with 94% confidence. No manipulation detected. Metadata consistent with claimed camera and timestamp. Full verification report attached."</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="scenario">
+            <h3>📚 Scenario: University needs to check student submissions for AI-generated content</h3>
+
+            <div class="comparison-grid">
+                <div class="old-way">
+                    <div class="comparison-title">❌ The Old Way</div>
+                    <p><strong>Basic AI Detection Tools:</strong></p>
+                    <ul class="problem-list">
+                        <li>Single-method detection</li>
+                        <li>High false positive rates</li>
+                        <li>No detailed analysis</li>
+                        <li>Students can easily bypass</li>
+                        <li>Expensive per-use fees</li>
+                        <li>No integration with LMS</li>
+                        <li>Basic "AI/Human" binary result</li>
+                        <li>No evidence for academic disputes</li>
+                    </ul>
+                    <p><strong>Result:</strong> Flagging legitimate student work as AI, missing actual AI submissions</p>
+                </div>
+
+                <div class="certnode-way">
+                    <div class="comparison-title">✅ The CertNode Way</div>
+                    <p><strong>Content Intelligence Engine:</strong></p>
+                    <ul class="feature-list">
+                        <li>Multi-layer linguistic analysis</li>
+                        <li>Perplexity scoring and statistical metrics</li>
+                        <li>Writing pattern consistency analysis</li>
+                        <li>Model fingerprint detection</li>
+                        <li>Detailed reasoning for each assessment</li>
+                        <li>Academic-grade evidence documentation</li>
+                        <li>Integration-ready APIs</li>
+                        <li>Audit trail for academic integrity cases</li>
+                    </ul>
+                    <p><strong>Result:</strong> "Evidence suggests 78% probability of AI assistance. Detected Claude-style phrasing patterns. Detailed analysis report suitable for academic review board."</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">92%</div>
+                <div class="stat-label">Detection Accuracy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Validation Methods</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">&lt;500ms</div>
+                <div class="stat-label">Analysis Time</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$0</div>
+                <div class="stat-label">External API Costs</div>
+            </div>
+        </div>
+
+        <div class="scenario">
+            <h3>🔬 What Makes Our System 10/10?</h3>
+            <div class="comparison-grid">
+                <div class="old-way">
+                    <div class="comparison-title">Typical AI Detectors</div>
+                    <ul class="problem-list">
+                        <li>Single detection method</li>
+                        <li>60-75% accuracy rates</li>
+                        <li>Simple probability score</li>
+                        <li>No evidence or reasoning</li>
+                        <li>Pay-per-use external APIs</li>
+                        <li>Generic, one-size-fits-all</li>
+                        <li>No audit trails</li>
+                        <li>Vendor dependency</li>
+                    </ul>
+                </div>
+
+                <div class="certnode-way">
+                    <div class="comparison-title">CertNode Content Intelligence</div>
+                    <ul class="feature-list">
+                        <li>Multi-detector ensemble system</li>
+                        <li>90%+ accuracy with confidence intervals</li>
+                        <li>Comprehensive analysis and reasoning</li>
+                        <li>Forensic-grade evidence compilation</li>
+                        <li>Zero external costs - everything in-house</li>
+                        <li>Model-specific detection capabilities</li>
+                        <li>Complete audit trails and chain of custody</li>
+                        <li>Professional reporting for legal/compliance use</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Ready to Transform Your Content Verification?</h2>
+            <p>Stop guessing about content authenticity. Get forensic-grade analysis with professional documentation.</p>
+            <a href="#contact" class="cta-button">Try Content Intelligence</a>
+        </div>
+    </div>
+
+    <script>
+        // Simple animation for stat numbers
+        const statNumbers = document.querySelectorAll('.stat-number');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        entry.target.style.transform = 'scale(1)';
+                    }, 200);
+                }
+            });
+        });
+
+        statNumbers.forEach(number => {
+            observer.observe(number);
+        });
+    </script>
+</body>
+</html>

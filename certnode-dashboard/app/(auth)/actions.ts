@@ -5,7 +5,7 @@ import { AuthError } from "next-auth";
 import { signIn } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
-import { PlanTier, UserRole } from "@prisma/client";
+import { EnterpriseTier, UserRole } from "@prisma/client";
 
 export type AuthFormState = {
   status: "idle" | "error";
@@ -90,7 +90,7 @@ export async function registerAction(
     data: {
       name: company,
       domain,
-      billingTier: PlanTier.STARTER,
+      billingTier: EnterpriseTier.STARTER,
       settings: {},
     },
   });

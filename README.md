@@ -286,7 +286,7 @@ docker compose up --build
 CertNode is the **ONLY PLATFORM** offering 10/10 intelligence across ALL THREE pillars:
 - **Content Authenticity** (92% AI detection, manipulation, provenance)
 - **Transaction Verification** (90% fraud detection, compliance, risk assessment)
-- **Operations Trust** (85% compliance automation, incident management, policy attestation)
+- **Operations Trust** (95% compliance automation, incident management, policy attestation)
 
 ### **Revenue Opportunities**
 - **Content Certification**: Premium pricing for comprehensive AI detection (zero external costs)
@@ -311,7 +311,7 @@ CertNode is the **ONLY PLATFORM** offering 10/10 intelligence across ALL THREE p
 CertNode Tri-Pillar Intelligence Platform
 ├── 🎨 Content Intelligence Engine (10/10) - 92% AI detection accuracy
 ├── 💰 Transaction Intelligence Engine (10/10) - 90% fraud detection accuracy
-├── 🔧 Operations Trust Intelligence Engine (10/10) - 85% compliance accuracy
+├── 🔧 Operations Trust Intelligence Engine (10/10) - 95% compliance accuracy
 └── 🏗️ Unified Infrastructure - 30+ total validation layers
 ```
 

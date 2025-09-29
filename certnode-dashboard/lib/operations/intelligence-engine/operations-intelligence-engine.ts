@@ -266,7 +266,7 @@ export class OperationsIntelligenceEngine {
 
     // Security validation - security implications assessment
     if (this.config.enableSecurityAnalysis) {
-      results.securityValidation = await this.validateSecurityImplications(input, context)
+      results.securityValidation = await this.performSecurityValidation(input)
     }
 
     // Business impact validation - operational impact assessment
@@ -281,12 +281,12 @@ export class OperationsIntelligenceEngine {
 
     // Governance validation - policy and approval compliance
     if (this.config.enableGovernanceValidation) {
-      results.governanceValidation = await this.validateGovernanceRequirements(input, context)
+      results.governanceValidation = await this.performGovernanceValidation(input)
     }
 
     // Risk assessment - operational risk evaluation
     if (this.config.enableRiskAssessment) {
-      results.riskAssessment = await this.assessOperationalRisk(input, context)
+      results.riskAssessment = await this.performRiskAssessment(input)
     }
 
     // Stakeholder validation - notification and approval validation
@@ -700,32 +700,337 @@ export class OperationsIntelligenceEngine {
   }
 
   /**
-   * Generic detector result creator
+   * Advanced detector implementations for enterprise-grade validation
    */
-  private createDetectorResult(
-    detectorName: string,
-    input: OperationalInput,
-    context?: ValidationContext
-  ): OperationalDetectorResult {
+  private async performSecurityValidation(input: OperationalInput): Promise<OperationalDetectorResult> {
     const startTime = Date.now()
+    const indicators: string[] = []
+    const recommendations: string[] = []
+    const evidence: Record<string, unknown> = {}
+    let confidence = 98
+    let riskScore = 0
+    let complianceScore = 100
 
-    // Simplified validation for demonstration
-    // In production, each would have comprehensive validation logic
-    const confidence = 85 + Math.random() * 10
-    const riskScore = Math.random() * 30
-    const complianceScore = 90 + Math.random() * 10
+    // Security validation based on operation type
+    switch (input.operationType) {
+      case 'incident':
+        if (input.incidentData?.impactLevel === 'security_breach') {
+          // Enhanced security validation for breaches
+          if (!input.incidentData.rootCause) {
+            confidence -= 20
+            riskScore += 30
+            indicators.push('missing_security_root_cause')
+            recommendations.push('Security incidents require immediate root cause analysis')
+          }
+
+          if (!input.metadata?.regulatoryImplications?.includes('data_breach_notification')) {
+            confidence -= 15
+            riskScore += 25
+            indicators.push('missing_breach_notification_assessment')
+            recommendations.push('Assess regulatory notification requirements for security breaches')
+          }
+        }
+        break
+
+      case 'build_provenance':
+        if (input.buildData) {
+          // Advanced security scanning validation
+          if (!input.buildData.scanResults) {
+            confidence -= 25
+            riskScore += 35
+            indicators.push('missing_security_scans')
+            recommendations.push('Security scanning is mandatory for all builds')
+          } else {
+            const vulns = input.buildData.scanResults.vulnerabilities
+            if (vulns > 0) {
+              confidence -= Math.min(30, vulns * 5)
+              riskScore += Math.min(40, vulns * 8)
+              indicators.push(`${vulns}_vulnerabilities_detected`)
+              recommendations.push('Address all security vulnerabilities before deployment')
+            }
+
+            // Check for high-risk dependencies
+            const riskDeps = input.buildData.dependencies?.filter(dep =>
+              !dep.license || ['UNKNOWN', 'UNLICENSED'].includes(dep.license)
+            ).length || 0
+
+            if (riskDeps > 0) {
+              confidence -= riskDeps * 3
+              riskScore += riskDeps * 5
+              indicators.push(`${riskDeps}_unlicensed_dependencies`)
+              recommendations.push('Review and validate licenses for all dependencies')
+            }
+          }
+        }
+        break
+
+      case 'policy_change':
+        if (input.policyData?.policyType === 'security') {
+          // Security policy changes require enhanced validation
+          if (!input.policyData.approvedBy?.some(approver => approver.includes('CISO') || approver.includes('security'))) {
+            confidence -= 20
+            riskScore += 30
+            indicators.push('missing_security_approval')
+            recommendations.push('Security policies require CISO or security team approval')
+          }
+        }
+        break
+    }
+
+    // General security validations
+    if (input.severity === 'critical' && !input.metadata?.businessImpact) {
+      confidence -= 10
+      riskScore += 15
+      indicators.push('missing_critical_impact_assessment')
+      recommendations.push('Critical operations require business impact assessment')
+    }
+
+    evidence.securityValidation = {
+      operationType: input.operationType,
+      severity: input.severity,
+      checksPerformed: 5 + indicators.length,
+      vulnerabilitiesFound: indicators.length
+    }
+
+    const finalComplianceScore = Math.max(0, complianceScore - riskScore)
+    const complianceStatus = this.determineComplianceStatus(finalComplianceScore, riskScore)
 
     return {
-      detector: detectorName,
-      confidence: Math.round(confidence),
-      riskScore: Math.round(riskScore),
-      complianceScore: Math.round(complianceScore),
-      indicators: [`${detectorName}_validated`],
-      evidence: { operationType: input.operationType, severity: input.severity },
-      recommendations: [`Standard ${detectorName} recommendations applied`],
-      complianceStatus: riskScore < 25 ? 'passed' : riskScore < 50 ? 'warning' : 'requires_review',
+      detector: 'Advanced Security Validation',
+      confidence: Math.max(0, confidence),
+      riskScore: Math.min(100, riskScore),
+      complianceScore: finalComplianceScore,
+      indicators,
+      evidence,
+      recommendations,
+      complianceStatus,
       processingTime: Date.now() - startTime
     }
+  }
+
+  private async performGovernanceValidation(input: OperationalInput): Promise<OperationalDetectorResult> {
+    const startTime = Date.now()
+    const indicators: string[] = []
+    const recommendations: string[] = []
+    const evidence: Record<string, unknown> = {}
+    let confidence = 96
+    let riskScore = 0
+    let complianceScore = 100
+
+    // Governance validation
+    if (!input.metadata?.requestor) {
+      confidence -= 15
+      riskScore += 20
+      indicators.push('missing_requestor_identity')
+      recommendations.push('All operations must have identified requestor for governance')
+    }
+
+    // Approval workflow validation
+    const requiredApprovals = this.getRequiredApprovals(input.operationType, input.severity)
+    const actualApprovals = input.metadata?.approvals?.length || 0
+
+    if (actualApprovals < requiredApprovals) {
+      confidence -= 20
+      riskScore += 30
+      indicators.push('insufficient_approvals')
+      recommendations.push(`Operation requires ${requiredApprovals} approvals, only ${actualApprovals} provided`)
+    }
+
+    // Stakeholder notification validation
+    const requiredNotifications = this.getRequiredNotifications(input.operationType, input.severity)
+
+    if (input.operationType === 'policy_change') {
+      const notified = input.policyData?.stakeholdersNotified?.length || 0
+      if (notified < requiredNotifications) {
+        confidence -= 15
+        riskScore += 25
+        indicators.push('insufficient_stakeholder_notifications')
+        recommendations.push('Policy changes require comprehensive stakeholder notification')
+      }
+    }
+
+    // Change control validation
+    if (['policy_change', 'build_provenance'].includes(input.operationType)) {
+      if (!input.metadata?.relatedIncidents && input.severity !== 'low') {
+        confidence -= 10
+        riskScore += 15
+        indicators.push('missing_change_impact_analysis')
+        recommendations.push('Changes should reference related incidents or justification')
+      }
+    }
+
+    evidence.governanceValidation = {
+      requiredApprovals,
+      actualApprovals,
+      requiredNotifications,
+      governanceScore: Math.max(0, 100 - riskScore)
+    }
+
+    const finalComplianceScore = Math.max(0, complianceScore - riskScore)
+    const complianceStatus = this.determineComplianceStatus(finalComplianceScore, riskScore)
+
+    return {
+      detector: 'Advanced Governance Validation',
+      confidence: Math.max(0, confidence),
+      riskScore: Math.min(100, riskScore),
+      complianceScore: finalComplianceScore,
+      indicators,
+      evidence,
+      recommendations,
+      complianceStatus,
+      processingTime: Date.now() - startTime
+    }
+  }
+
+  private async performRiskAssessment(input: OperationalInput): Promise<OperationalDetectorResult> {
+    const startTime = Date.now()
+    const indicators: string[] = []
+    const recommendations: string[] = []
+    const evidence: Record<string, unknown> = {}
+    let confidence = 97
+    let riskScore = 0
+    let complianceScore = 100
+
+    // Risk assessment based on operation type and severity
+    const baseRisk = this.calculateBaseRisk(input.operationType, input.severity)
+    riskScore += baseRisk
+
+    // Business impact assessment
+    if (!input.metadata?.businessImpact && input.severity !== 'low') {
+      confidence -= 20
+      riskScore += 25
+      indicators.push('missing_business_impact_assessment')
+      recommendations.push('Business impact assessment required for medium+ severity operations')
+    }
+
+    // Customer impact validation
+    if (!input.metadata?.customerImpact && ['incident', 'policy_change'].includes(input.operationType)) {
+      confidence -= 15
+      riskScore += 20
+      indicators.push('missing_customer_impact_assessment')
+      recommendations.push('Customer impact must be assessed for incidents and policy changes')
+    }
+
+    // Risk mitigation validation
+    if (input.severity === 'critical' || input.severity === 'high') {
+      if (input.operationType === 'incident' && !input.incidentData?.preventiveMeasures?.length) {
+        confidence -= 25
+        riskScore += 35
+        indicators.push('missing_risk_mitigation_measures')
+        recommendations.push('High-severity incidents require documented preventive measures')
+      }
+    }
+
+    // Regulatory risk assessment
+    const regulatoryRisk = this.assessRegulatoryRisk(input)
+    if (regulatoryRisk.score > 30) {
+      confidence -= regulatoryRisk.score / 3
+      riskScore += regulatoryRisk.score
+      indicators.push('elevated_regulatory_risk')
+      recommendations.push(regulatoryRisk.recommendation)
+    }
+
+    evidence.riskAssessment = {
+      baseRisk,
+      regulatoryRisk: regulatoryRisk.score,
+      totalRiskScore: riskScore,
+      riskLevel: this.determineRiskLevel(riskScore)
+    }
+
+    const finalComplianceScore = Math.max(0, complianceScore - riskScore)
+    const complianceStatus = this.determineComplianceStatus(finalComplianceScore, riskScore)
+
+    return {
+      detector: 'Advanced Risk Assessment',
+      confidence: Math.max(0, confidence),
+      riskScore: Math.min(100, riskScore),
+      complianceScore: finalComplianceScore,
+      indicators,
+      evidence,
+      recommendations,
+      complianceStatus,
+      processingTime: Date.now() - startTime
+    }
+  }
+
+  // Helper methods for advanced validation
+  private getRequiredApprovals(operationType: string, severity: string): number {
+    const approvalMatrix: Record<string, Record<string, number>> = {
+      'incident': { 'low': 1, 'medium': 2, 'high': 3, 'critical': 4 },
+      'policy_change': { 'low': 2, 'medium': 3, 'high': 4, 'critical': 5 },
+      'build_provenance': { 'low': 1, 'medium': 2, 'high': 3, 'critical': 3 },
+      'sla_breach': { 'low': 1, 'medium': 2, 'high': 3, 'critical': 4 },
+      'compliance_report': { 'low': 2, 'medium': 2, 'high': 3, 'critical': 4 },
+      'audit_event': { 'low': 2, 'medium': 3, 'high': 4, 'critical': 5 }
+    }
+
+    return approvalMatrix[operationType]?.[severity] || 1
+  }
+
+  private getRequiredNotifications(operationType: string, severity: string): number {
+    const notificationMatrix: Record<string, Record<string, number>> = {
+      'incident': { 'low': 2, 'medium': 5, 'high': 10, 'critical': 15 },
+      'policy_change': { 'low': 5, 'medium': 10, 'high': 20, 'critical': 30 },
+      'build_provenance': { 'low': 1, 'medium': 3, 'high': 5, 'critical': 8 },
+      'sla_breach': { 'low': 3, 'medium': 8, 'high': 15, 'critical': 25 },
+      'compliance_report': { 'low': 5, 'medium': 10, 'high': 15, 'critical': 20 },
+      'audit_event': { 'low': 3, 'medium': 8, 'high': 15, 'critical': 25 }
+    }
+
+    return notificationMatrix[operationType]?.[severity] || 1
+  }
+
+  private calculateBaseRisk(operationType: string, severity: string): number {
+    const riskMatrix: Record<string, Record<string, number>> = {
+      'incident': { 'low': 5, 'medium': 15, 'high': 35, 'critical': 60 },
+      'policy_change': { 'low': 10, 'medium': 20, 'high': 40, 'critical': 70 },
+      'build_provenance': { 'low': 3, 'medium': 8, 'high': 20, 'critical': 35 },
+      'sla_breach': { 'low': 8, 'medium': 18, 'high': 30, 'critical': 50 },
+      'compliance_report': { 'low': 2, 'medium': 5, 'high': 15, 'critical': 25 },
+      'audit_event': { 'low': 5, 'medium': 12, 'high': 25, 'critical': 45 }
+    }
+
+    return riskMatrix[operationType]?.[severity] || 10
+  }
+
+  private assessRegulatoryRisk(input: OperationalInput): { score: number, recommendation: string } {
+    let score = 0
+    let recommendations: string[] = []
+
+    // Check for high-risk regulatory scenarios
+    if (input.operationType === 'incident' && input.incidentData?.impactLevel === 'security_breach') {
+      score += 40
+      recommendations.push('Security breaches may require regulatory notification (GDPR, CCPA, etc.)')
+    }
+
+    if (input.operationType === 'policy_change' && input.policyData?.policyType === 'privacy') {
+      score += 30
+      recommendations.push('Privacy policy changes may trigger regulatory compliance requirements')
+    }
+
+    if (input.metadata?.regulatoryImplications?.length) {
+      score += input.metadata.regulatoryImplications.length * 10
+      recommendations.push('Regulatory implications identified - ensure compliance procedures followed')
+    }
+
+    return {
+      score: Math.min(100, score),
+      recommendation: recommendations.join('; ') || 'No significant regulatory risk identified'
+    }
+  }
+
+  private determineRiskLevel(riskScore: number): string {
+    if (riskScore <= 15) return 'low'
+    if (riskScore <= 35) return 'medium'
+    if (riskScore <= 60) return 'high'
+    return 'critical'
+  }
+
+  private determineComplianceStatus(complianceScore: number, riskScore: number): 'passed' | 'warning' | 'failed' | 'requires_review' {
+    if (riskScore > 60) return 'failed'
+    if (riskScore > 35) return 'requires_review'
+    if (riskScore > 15) return 'warning'
+    return 'passed'
   }
 
   /**

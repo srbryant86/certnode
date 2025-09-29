@@ -5,7 +5,7 @@ import { AuthError } from "next-auth";
 import { signIn } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
-import { EnterpriseTier, UserRole } from "@prisma/client";
+import { EnterpriseTier } from "@prisma/client";
 
 export type AuthFormState = {
   status: "idle" | "error";

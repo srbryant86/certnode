@@ -7,6 +7,9 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { validationEngine, ValidationResult, ValidationContext, ValidationLayer } from './validation-engine'
+
+// Re-export ValidationLayer for external use
+export { ValidationLayer } from './validation-engine'
 import { getSchema } from './schemas'
 import { cryptographicValidator } from './layers/cryptographic-validator'
 import { integrityValidator } from './layers/integrity-validator'

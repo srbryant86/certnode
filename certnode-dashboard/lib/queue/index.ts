@@ -17,9 +17,9 @@ class QueueAdapter implements IDetectionQueue {
   private isRedis: boolean;
 
   constructor() {
-    // Determine which queue implementation to use
-    this.isRedis = process.env.NODE_ENV === 'production' ||
-                   process.env.USE_REDIS_QUEUE === 'true' ||
+    // For development/testing, always use in-memory queue unless explicitly enabled
+    // For production with no Redis, use in-memory with warning
+    this.isRedis = process.env.USE_REDIS_QUEUE === 'true' ||
                    Boolean(process.env.REDIS_HOST || process.env.REDIS_URL);
 
     if (this.isRedis) {
@@ -33,7 +33,11 @@ class QueueAdapter implements IDetectionQueue {
       }
     } else {
       this.queue = new InMemoryQueue();
-      console.log('Initialized in-memory detection queue');
+      if (process.env.NODE_ENV === 'production') {
+        console.warn('Using in-memory queue in production - consider configuring Redis for persistence');
+      } else {
+        console.log('Initialized in-memory detection queue');
+      }
     }
   }
 

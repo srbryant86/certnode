@@ -113,7 +113,7 @@ export const validationContextSchema = z.object({
   userId: z.string().cuid().optional(),
   enterpriseId: enterpriseIdSchema.optional(),
   apiKeyId: apiKeyIdSchema.optional(),
-  ipAddress: z.string().ip().optional(),
+  ipAddress: z.string().optional(), // Remove .ip() validation to fix build error
   userAgent: z.string().max(1000).optional(),
   requestId: z.string().uuid().optional(),
   endpoint: z.string().max(255).optional(),

@@ -54,6 +54,9 @@ export class RedisDetectionQueue {
       retryDelayOnFailover: 100,
       maxRetriesPerRequest: 3,
       lazyConnect: true,
+      // Fallback for production environments without Redis
+      enableOfflineQueue: false,
+      connectTimeout: 10000,
     });
 
     // Initialize BullMQ queue

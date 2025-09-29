@@ -7,6 +7,11 @@
 import { ValidationResult, ValidationLayer, ValidationSeverity, ValidationContext } from '../validation-engine'
 import { cryptographicProofSchema } from '../schemas'
 import crypto from 'crypto'
+
+// Add crypto to global if not available
+if (typeof globalThis.crypto === 'undefined') {
+  globalThis.crypto = crypto as any
+}
 import { z } from 'zod'
 
 export interface CryptographicValidationConfig {

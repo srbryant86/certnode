@@ -159,3 +159,41 @@ model AuditLog {
   @@index([userId])
   @@index([resourceType, resourceId])
 }
+
+model ValidationRecord {
+  id                   String             @id @default(cuid())
+  requestId            String             @map("request_id")
+  endpoint             String
+  enterpriseId         String?            @map("enterprise_id")
+  results              Json
+  processingTime       Int                @map("processing_time")
+  success              Boolean
+  criticalFailures     Int                @map("critical_failures")
+  highFailures         Int                @map("high_failures")
+  timestamp            DateTime           @default(now())
+
+  @@map("validation_records")
+  @@index([timestamp])
+  @@index([enterpriseId])
+  @@index([endpoint])
+  @@index([success])
+}
+
+model ValidationAlert {
+  id                   String             @id @default(cuid())
+  type                 String
+  severity             String
+  message              String
+  details              Json
+  timestamp            DateTime           @default(now())
+  acknowledged         Boolean            @default(false)
+  acknowledgedBy       String?            @map("acknowledged_by")
+  acknowledgedAt       DateTime?          @map("acknowledged_at")
+  resolvedAt           DateTime?          @map("resolved_at")
+
+  @@map("validation_alerts")
+  @@index([timestamp])
+  @@index([acknowledged])
+  @@index([type])
+  @@index([severity])
+}

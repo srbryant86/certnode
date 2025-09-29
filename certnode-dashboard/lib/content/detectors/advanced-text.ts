@@ -32,6 +32,20 @@ export interface EnhancedDetectionResult {
 
 // Common AI model signature patterns
 const AI_MODEL_SIGNATURES = {
+  'gpt-5': [
+    'let me think through this',
+    'i need to consider',
+    'from what i understand',
+    'breaking this down systematically',
+    'looking at this holistically',
+    'to synthesize this information',
+    'drawing from multiple perspectives',
+    'integrating these concepts',
+    'this connects to broader themes',
+    'considering the nuanced aspects',
+    'weaving together these ideas',
+    'through a comprehensive lens'
+  ],
   'gpt-4': [
     'it\'s important to note that',
     'it\'s worth mentioning',

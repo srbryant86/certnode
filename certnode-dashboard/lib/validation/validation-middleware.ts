@@ -247,6 +247,10 @@ export class ValidationMiddleware {
       success: false,
       error: 'Validation failed',
       code: 'VALIDATION_FAILED',
+      validation: {
+        layers: `${summary.passedLayers}/${summary.totalLayers} passed`,
+        security: 'Multi-layer validation active'
+      },
       summary: {
         totalErrors: errors.length,
         criticalErrors: summary.criticalIssues,
@@ -338,6 +342,7 @@ export class ValidationMiddleware {
 
     // TODO: Send metrics to monitoring
   }
+
 }
 
 /**

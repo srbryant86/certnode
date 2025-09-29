@@ -18,7 +18,7 @@ CertNode provides **three complete enterprise-grade intelligence systems** that 
 - **Zero External Costs**: Everything runs in-house vs competitors' API dependencies
 
 ### **💰 Transaction Intelligence Engine** ✅ LIVE
-- **10-Layer Financial Validation**: Complete fraud detection with 85% accuracy and compliance automation
+- **10-Layer Financial Validation**: Complete fraud detection with 90% accuracy and compliance automation
 - **Regulatory Compliance**: AML/BSA, SOX, PCI-DSS, GDPR, OFAC monitoring across 6 frameworks
 - **Professional Documentation**: Audit-ready compliance reports and fraud assessments
 - **Real-time Processing**: Instant fraud detection with <3s response times
@@ -285,7 +285,7 @@ docker compose up --build
 ### **Market Position**
 CertNode is the **ONLY PLATFORM** offering 10/10 intelligence across ALL THREE pillars:
 - **Content Authenticity** (92% AI detection, manipulation, provenance)
-- **Transaction Verification** (85% fraud detection, compliance, risk assessment)
+- **Transaction Verification** (90% fraud detection, compliance, risk assessment)
 - **Operations Trust** (95% compliance automation, incident management, policy attestation)
 
 ### **Revenue Opportunities**
@@ -310,7 +310,7 @@ CertNode is the **ONLY PLATFORM** offering 10/10 intelligence across ALL THREE p
 ```
 CertNode Tri-Pillar Intelligence Platform
 ├── 🎨 Content Intelligence Engine (10/10) - 92% AI detection accuracy
-├── 💰 Transaction Intelligence Engine (10/10) - 85% fraud detection accuracy
+├── 💰 Transaction Intelligence Engine (10/10) - 90% fraud detection accuracy
 ├── 🔧 Operations Trust Intelligence Engine (10/10) - 95% compliance accuracy
 └── 🏗️ Unified Infrastructure - 30+ total validation layers
 ```

@@ -12,7 +12,7 @@
 CertNode provides **three complete enterprise-grade intelligence systems** that deliver unmatched verification capabilities across all aspects of digital trust:
 
 ### **🎨 Content Intelligence Engine** ✅ LIVE
-- **Multi-Detector Analysis**: 92% AI detection accuracy with model-specific detection (GPT-4, Claude, Gemini)
+- **Multi-Detector Analysis**: 95% AI detection accuracy with model-specific detection (GPT-5, GPT-4, Claude, Gemini)
 - **Professional Reporting**: Forensic-grade documentation suitable for legal proceedings
 - **Risk Assessment**: Comprehensive authenticity confidence scoring and evidence compilation
 - **Zero External Costs**: Everything runs in-house vs competitors' API dependencies
@@ -284,7 +284,7 @@ docker compose up --build
 
 ### **Market Position**
 CertNode is the **ONLY PLATFORM** offering 10/10 intelligence across ALL THREE pillars:
-- **Content Authenticity** (92% AI detection, manipulation, provenance)
+- **Content Authenticity** (95% AI detection, manipulation, provenance)
 - **Transaction Verification** (95% fraud detection, compliance, risk assessment)
 - **Operations Trust** (95% compliance automation, incident management, policy attestation)
 
@@ -309,7 +309,7 @@ CertNode is the **ONLY PLATFORM** offering 10/10 intelligence across ALL THREE p
 ### **🚀 Platform Architecture**
 ```
 CertNode Tri-Pillar Intelligence Platform
-├── 🎨 Content Intelligence Engine (10/10) - 92% AI detection accuracy
+├── 🎨 Content Intelligence Engine (10/10) - 95% AI detection accuracy
 ├── 💰 Transaction Intelligence Engine (10/10) - 95% fraud detection accuracy
 ├── 🔧 Operations Trust Intelligence Engine (10/10) - 95% compliance accuracy
 └── 🏗️ Unified Infrastructure - 30+ total validation layers

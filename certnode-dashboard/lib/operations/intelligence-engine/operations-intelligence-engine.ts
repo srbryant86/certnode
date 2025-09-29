@@ -437,46 +437,11 @@ export class OperationsIntelligenceEngine {
   }
 
   /**
-   * Additional validation methods (abbreviated for brevity)
+   * Continuity planning validation - bridge method for validation loop
    */
-  private async validateSecurityImplications(input: OperationalInput, context?: ValidationContext): Promise<OperationalDetectorResult> {
-    // Security implications analysis
-    return this.createDetectorResult('security_implications_validator', input, context)
-  }
-
-  private async validateBusinessImpact(input: OperationalInput, context?: ValidationContext): Promise<OperationalDetectorResult> {
-    // Business impact assessment
-    return this.createDetectorResult('business_impact_validator', input, context)
-  }
-
-  private async validateAuditRequirements(input: OperationalInput, context?: ValidationContext): Promise<OperationalDetectorResult> {
-    // Audit requirements validation
-    return this.createDetectorResult('audit_requirements_validator', input, context)
-  }
-
-  private async validateGovernanceRequirements(input: OperationalInput, context?: ValidationContext): Promise<OperationalDetectorResult> {
-    // Governance requirements validation
-    return this.createDetectorResult('governance_requirements_validator', input, context)
-  }
-
-  private async assessOperationalRisk(input: OperationalInput, context?: ValidationContext): Promise<OperationalDetectorResult> {
-    // Operational risk assessment
-    return this.createDetectorResult('operational_risk_assessor', input, context)
-  }
-
-  private async validateStakeholderRequirements(input: OperationalInput, context?: ValidationContext): Promise<OperationalDetectorResult> {
-    // Stakeholder requirements validation
-    return this.createDetectorResult('stakeholder_requirements_validator', input, context)
-  }
-
-  private async validateDocumentationRequirements(input: OperationalInput, context?: ValidationContext): Promise<OperationalDetectorResult> {
-    // Documentation requirements validation
-    return this.createDetectorResult('documentation_requirements_validator', input, context)
-  }
-
   private async validateContinuityPlanning(input: OperationalInput, context?: ValidationContext): Promise<OperationalDetectorResult> {
-    // Continuity planning validation
-    return this.createDetectorResult('continuity_planning_validator', input, context)
+    // Use the comprehensive implementation
+    return this.validateContinuityRequirements(input, context)
   }
 
   /**

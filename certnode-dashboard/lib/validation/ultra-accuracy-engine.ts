@@ -379,4 +379,3 @@ export class UltraAccuracyEngine {
   }
 }
 
-export { UltraAccuracyEngine };

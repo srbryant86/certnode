@@ -246,56 +246,73 @@ This creates natural upgrade pressure as customers build more complex receipt re
 
 ### Enterprise High-Touch Sales Tiers
 
-#### DISPUTE PROTECTION - $12,000/year ($1,000/month)
-**Designed for:** High-value, low-volume businesses (luxury goods, professional services, B2B)
+#### DISPUTE SHIELD PRO - $12,000/year
+**Designed for:** Growing businesses needing complete dispute defense
 
-**Volume:** Up to 500 receipts/month (low volume by design)
+**Coverage:** Up to $2M GMV/year, 1 merchant ID
 
 **Core Features:**
-- All three products included
-- Receipt graph (unlimited depth)
-- Priority dispute protection
-- Enhanced fraud detection
-- Dedicated dispute support team
-- Phone support (4h response)
-- 99.9% SLA
+- All three products included (transaction + content + operations)
+- Receipt graph (10 levels deep)
+- Evidence pack automation
+- 48-hour evidence turnaround SLA
+- Business hours support
+- Quarterly business reviews
+- Standard reporting dashboard
+- All Visa/MC/Amex/Discover core reason codes
 
-**Specialized Dispute Features:**
-- Chargeback evidence package generation
-- Legal-ready documentation formatting
-- Real-time dispute alerts
-- Dispute resolution workflow automation
-- Evidence chain validation
-- Payment processor API integration (Stripe, Square, etc.)
+**Implementation:**
+- 2-hour onboarding workshop
+- Standard evidence templates
+- Receipt Graph API integration
+- Webhook setup
+- Self-service documentation
 
-**Why This Tier Exists:**
-- Pain point: Chargebacks/disputes on high-value transactions
-- Value: Cryptographic proof beyond payment processor UI
-- Math: One prevented $10K chargeback pays for entire year
-- Customer profile: Low transaction volume, high transaction value, high dispute risk
+**Why This Tier:**
+- Pain point: Chargebacks/disputes eating into profit margins
+- Value: Cryptographic proof chain for every transaction
+- Math: Preventing 3-5 chargebacks pays for entire year
+- Customer profile: $500K-2M GMV, need professional dispute defense
 
 **Example Customers:**
-- Luxury e-commerce ($2K-50K orders, 10-50 transactions/month)
-- Professional services (consultants, agencies - $5K-100K projects)
-- B2B software (annual contracts $20K-500K)
-- High-ticket coaching/courses ($5K-25K purchases)
+- E-commerce stores ($500K-2M annual sales)
+- Digital product sellers (courses, software)
+- Subscription businesses (SaaS, memberships)
+- Service providers (consultants, agencies)
 
 ---
 
-#### ENTERPRISE FORTRESS - $30,000/year ($2,500/month)
-**Designed for:** Mission-critical dispute protection + compliance
+#### DISPUTE SHIELD ELITE - $30,000/year
+**Designed for:** Enterprise-grade protection with performance guarantees
 
-**Volume:** Up to 2,000 receipts/month
+**Coverage:** Up to $10M GMV/year, up to 5 merchant IDs
 
-**Everything in Dispute Protection, plus:**
+**Everything in Pro, plus:**
 
-**Advanced Dispute Features:**
-- Multi-party dispute resolution (marketplace scenarios)
-- Custom dispute workflows
-- Integration with legal case management systems
-- Automated evidence collection across receipt graph
-- Pattern analysis: "Which products have highest dispute rate?"
-- Dispute prediction scoring
+**Enhanced Features:**
+- Unlimited receipt graph depth
+- 24-hour evidence turnaround SLA (priority queue)
+- Direct support line to founder
+- After-hours escalation for critical disputes
+- Manual QA on all evidence packs
+- All reason codes + friendly fraud + subscription disputes
+
+**Strategic Support:**
+- Full week operations audit (deep dive into sales/support process)
+- Custom integrations (CRM, helpdesk, data pipelines)
+- White-glove migration from existing tools
+- Monthly optimization sessions (30 min)
+- Quarterly executive briefings
+- Payment processor advocacy (direct coordination with acquirer)
+- Team training (up to 3 sessions/year)
+
+**Performance Guarantee:**
+- **Commitment:** ≥30% improvement in dispute win rate vs. 60-day baseline
+- **Service credit:** Up to 15% annual fee ($4,500) if targets missed*
+- Quarterly performance attestation reports
+- Root-cause analysis if goals not met
+
+***Credit conditions:** Evidence kits used for ≥90% of disputes, processor accepts CertNode format
 
 **Compliance & Operations:**
 - Full operations attestation

@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import TriPillarIntelligenceCalculator from '@/components/TriPillarIntelligenceCalculator';
+// Removed TriPillarIntelligenceCalculator - focusing on deterministic proof rail
 
 export const metadata: Metadata = {
   title: 'Enterprise Platforms — CertNode',
@@ -63,18 +63,29 @@ export default function PlatformsPage() {
           </div>
         </div>
 
-        {/* Tri-Pillar Intelligence Calculator */}
+        {/* Enterprise Contact Section */}
         <section className="py-16">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Calculate Your Tri-Pillar Intelligence ROI
-              </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                See how much you'll save with 99%+ accuracy across transactions, operations, and content intelligence.
-              </p>
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Ready for Enterprise-Grade Deterministic Proof?
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+              Contact our team to discuss Core Trust enterprise licensing, Platform editions for marketplaces, and optional Advisory Intelligence add-ons.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="mailto:contact@certnode.io"
+                className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 shadow-lg"
+              >
+                Contact Enterprise Sales
+              </a>
+              <a
+                href="/pricing"
+                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-lg font-semibold text-lg transition-all"
+              >
+                View Core Trust Plans
+              </a>
             </div>
-            <TriPillarIntelligenceCalculator />
           </div>
         </section>
 

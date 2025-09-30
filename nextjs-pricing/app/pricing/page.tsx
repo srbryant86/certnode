@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLdProducts = pricingData.intelligenceTiers.map(tier => ({
+const jsonLdProducts = pricingData.coreTiers.map(tier => ({
   "@type": "Product",
   "name": `CertNode ${tier.name}`,
   "description": tier.tagline,

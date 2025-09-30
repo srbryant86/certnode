@@ -1,245 +1,189 @@
 {
-  "intelligenceTiers": [
+  "coreTiers": [
     {
-      "id": "intelligence-foundation",
-      "name": "Intelligence Foundation",
-      "priceMonthly": 1999,
+      "id": "core-starter",
+      "name": "CertNode Starter",
+      "priceMonthly": 49,
       "annualDiscount": 0.83,
-      "maxTransactionVolume": "10M",
-      "maxOperationsValidated": 5000,
-      "maxContentAnalyzed": "100K items",
-      "tagline": "Tri-pillar intelligence for growing businesses • 99%+ accuracy across all validations",
+      "includedReceipts": 1000,
+      "overagePerReceipt": 0.10,
+      "tagline": "Deterministic receipts for growing businesses",
       "features": [
-        "🧠 Transaction Intelligence: 99.9% fraud detection accuracy",
-        "🔍 Content Intelligence: 98% AI/manipulation detection",
-        "⚡ Operations Intelligence: 99.8% compliance validation",
-        "Up to $10M monthly transaction volume",
-        "5,000 operations validations per month",
-        "100K content items analyzed monthly",
-        "UltraAccuracyEngine™ mathematical validation",
-        "Bayesian ensemble fraud detection",
-        "Real-time statistical consensus",
-        "Court-admissible mathematical proof",
-        "Email support (12-hour SLA)",
-        "Self-service analytics dashboard",
-        "Standard API access (10K requests/hour)"
+        "1,000 receipts/month included",
+        "Cryptographic transaction receipts",
+        "Content certification (C2PA-compatible)",
+        "Operations incident receipts",
+        "JWKS verification",
+        "Public verifier access",
+        "Email support (24-hour SLA)",
+        "Self-service dashboard",
+        "Standard API access"
       ]
     },
     {
-      "id": "intelligence-professional",
-      "name": "Intelligence Professional",
-      "priceMonthly": 7999,
+      "id": "core-professional",
+      "name": "CertNode Professional",
+      "priceMonthly": 199,
       "annualDiscount": 0.83,
-      "maxTransactionVolume": "100M",
-      "maxOperationsValidated": 25000,
-      "maxContentAnalyzed": "1M items",
-      "tagline": "Advanced multi-modal intelligence • Enterprise-grade accuracy with cost efficiency",
+      "includedReceipts": 5000,
+      "overagePerReceipt": 0.05,
+      "tagline": "Enhanced proof generation with priority support",
       "features": [
-        "🧠 Transaction Intelligence: 99.9% fraud detection + AML compliance",
-        "🔍 Content Intelligence: 98% detection + manipulation forensics",
-        "⚡ Operations Intelligence: 99.8% validation + risk scoring",
-        "Up to $100M monthly transaction volume",
-        "25,000 operations validations per month",
-        "1M content items analyzed monthly",
-        "Enhanced UltraAccuracyEngine™ with cross-validation",
-        "Multi-source cryptographic validation",
-        "Advanced behavioral analytics",
-        "Regulatory compliance reporting",
-        "Priority support (4-hour SLA)",
-        "Advanced dashboard with custom alerts",
-        "Enhanced API (50K requests/hour)",
-        "Monthly intelligence reports"
+        "5,000 receipts/month included",
+        "Multi-source timestamps",
+        "Enhanced audit trails",
+        "Content authenticity verification",
+        "Policy compliance receipts",
+        "Priority support (12-hour SLA)",
+        "Advanced analytics dashboard",
+        "Enhanced API (10K requests/hour)",
+        "Custom receipt templates"
       ]
     },
     {
-      "id": "intelligence-enterprise",
-      "name": "Intelligence Enterprise",
-      "priceMonthly": 19999,
+      "id": "core-enterprise",
+      "name": "CertNode Enterprise",
+      "priceMonthly": 499,
       "annualDiscount": 0.83,
-      "maxTransactionVolume": "1B",
-      "maxOperationsValidated": 100000,
-      "maxContentAnalyzed": "10M items",
-      "tagline": "Maximum intelligence coverage • Financial services grade accuracy and compliance",
+      "includedReceipts": 25000,
+      "overagePerReceipt": 0.03,
+      "tagline": "Compliance-ready infrastructure with SLA guarantees",
       "features": [
-        "🧠 Transaction Intelligence: 99.9% accuracy + sophisticated AML",
-        "🔍 Content Intelligence: 98% detection + deep forensic analysis",
-        "⚡ Operations Intelligence: 99.8% validation + predictive risk",
-        "Up to $1B monthly transaction volume",
-        "100,000 operations validations per month",
-        "10M content items analyzed monthly",
-        "Full UltraAccuracyEngine™ suite with meta-learning",
-        "Multi-witness cryptographic proofs",
-        "AI-powered risk prediction and scoring",
-        "Custom compliance frameworks (SOX, PCI, GDPR)",
-        "Dedicated support (2-hour SLA)",
-        "Custom dashboard with executive reporting",
-        "Premium API (200K requests/hour)",
-        "Weekly intelligence briefings",
-        "Custom integration assistance (10 hours)"
-      ]
-    },
-    {
-      "id": "intelligence-fortress",
-      "name": "Intelligence Fortress",
-      "priceMonthly": 49999,
-      "annualDiscount": 0.83,
-      "maxTransactionVolume": "Unlimited",
-      "maxOperationsValidated": "Unlimited",
-      "maxContentAnalyzed": "Unlimited",
-      "tagline": "Ultimate tri-pillar protection • Zero limits, maximum accuracy, complete coverage",
-      "features": [
-        "🧠 Transaction Intelligence: 99.9% accuracy + full AML automation",
-        "🔍 Content Intelligence: 98% detection + advanced threat modeling",
-        "⚡ Operations Intelligence: 99.8% validation + autonomous compliance",
-        "Unlimited transaction volume processing",
-        "Unlimited operations validations",
-        "Unlimited content analysis",
-        "Complete UltraAccuracyEngine™ with custom algorithms",
-        "White-glove setup and training",
-        "Dedicated infrastructure and IP ranges",
-        "Custom AI model training on your data",
-        "24/7 dedicated support with direct line",
-        "Fully customized dashboard and reporting",
-        "Unlimited API access with dedicated endpoints",
-        "Daily intelligence briefings",
-        "Unlimited integration assistance",
-        "Priority feature development"
+        "25,000 receipts/month included",
+        "Multi-tenant architecture",
+        "SSO integration",
+        "Data residency controls",
+        "Compliance reporting (SOX, PCI readiness)",
+        "Dedicated support (4-hour SLA)",
+        "Custom compliance frameworks",
+        "Premium API (50K requests/hour)",
+        "Monthly protection reports",
+        "Audit trail exports"
       ]
     }
   ],
-  "highTicket": [
+  "enterpriseTiers": [
     {
-      "id": "legal-shield",
-      "name": "Legal Shield",
-      "priceYearly": 12000,
-      "annualSalesCeiling": 2000000,
-      "tagline": "Courtroom-ready protection • One prevented $25K dispute = 2+ years free",
-      "valueProposition": "Protection per $1M: $6-12 • Average dispute prevented: $25K-100K",
+      "id": "core-trust",
+      "name": "Core Trust",
+      "priceYearly": 25000,
+      "ceiling": 75000,
+      "tagline": "Deterministic receipts across Transactions/Content/Ops with SLA",
+      "pricing": "Base $25K-$75K + metered events ($0.002-$0.02)",
       "features": [
-        "Unlimited receipts • Unlimited transaction value",
-        "Courtroom-ready affidavits automatically generated",
-        "Blockchain anchoring for additional immutability",
-        "Multi-witness cryptographic validation",
-        "Legal export formats optimized for litigation",
-        "Enhanced metadata: Full session recording, multi-IP validation",
-        "Sub-100ms API response guarantee",
-        "Dedicated processing infrastructure",
-        "25-year lifetime retention",
-        "4-hour email SLA",
-        "Monthly legal-grade protection audit",
-        "Custom integration assistance (5 hours included)",
-        "Dispute response documentation support"
+        "Multi-tenant infrastructure",
+        "Enterprise SLA guarantees",
+        "SSO and data residency",
+        "JWKS verification infrastructure",
+        "Unlimited receipt generation",
+        "Custom compliance reporting",
+        "Dedicated account management",
+        "Professional services included"
       ]
     },
     {
-      "id": "dispute-fortress",
-      "name": "Dispute Fortress",
-      "priceYearly": 30000,
-      "annualSalesCeiling": 10000000,
-      "tagline": "Ultimate dispute insurance • ROI: 300-3000% when disputes prevented",
-      "valueProposition": "Cost per $1M protected: $3-30 • ROI: 300-3000% when disputes prevented",
+      "id": "platform-edition",
+      "name": "Platform Edition",
+      "priceYearly": 60000,
+      "ceiling": 250000,
+      "tagline": "Per-merchant trust rail with compliance reporting",
+      "pricing": "$5-$10 per merchant/month OR 0.1% verified GMV",
       "features": [
-        "Everything in Legal Shield +",
-        "White-glove onboarding (dedicated setup)",
-        "Custom compliance reporting for specific industries",
-        "Revenue protection analysis and recommendations",
-        "Advanced fraud detection with real-time monitoring",
-        "Custom branding on all documentation",
-        "Dedicated IP ranges for reputation management",
-        "Multi-region backup processing",
-        "Lifetime retention + legal archiving",
-        "2-hour email SLA",
-        "Quarterly business review calls",
-        "Custom integration assistance (20 hours included)",
-        "Priority feature requests",
-        "Direct communication channel"
+        "Multi-merchant architecture",
+        "Shared verifier infrastructure",
+        "Per-tenant compliance reporting",
+        "Marketplace integration APIs",
+        "Revenue sharing analytics",
+        "Tenant onboarding automation",
+        "Aggregated compliance dashboards",
+        "Platform-specific customization"
+      ]
+    }
+  ],
+  "intelligenceAddOns": [
+    {
+      "id": "advisory-starter",
+      "name": "Intelligence Advisory - Starter",
+      "priceYearly": 25000,
+      "inferences": 1000000,
+      "overagePerEvent": 0.01,
+      "tagline": "Advisory fraud/content/anomaly signals",
+      "features": [
+        "1M advisory inferences included",
+        "Fraud heuristics (advisory only)",
+        "AI-content flags (advisory only)",
+        "Anomaly scoring (advisory only)",
+        "Cannot be source of truth",
+        "Must bundle with Core Trust",
+        "Compute commits model",
+        "Overage at $0.01 per event"
+      ]
+    },
+    {
+      "id": "advisory-professional",
+      "name": "Intelligence Advisory - Professional",
+      "priceYearly": 75000,
+      "inferences": 5000000,
+      "overagePerEvent": 0.005,
+      "tagline": "Enhanced advisory intelligence with priority support",
+      "features": [
+        "5M advisory inferences included",
+        "Advanced fraud modeling",
+        "Content manipulation detection",
+        "Behavioral anomaly detection",
+        "Advisory-only classification",
+        "Priority intelligence support",
+        "Custom model training",
+        "Overage at $0.005 per event"
+      ]
+    },
+    {
+      "id": "advisory-enterprise",
+      "name": "Intelligence Advisory - Enterprise",
+      "priceYearly": 150000,
+      "inferences": 15000000,
+      "overagePerEvent": 0.002,
+      "tagline": "Complete advisory intelligence suite",
+      "features": [
+        "15M advisory inferences included",
+        "Full advisory intelligence suite",
+        "Custom algorithm development",
+        "Real-time advisory scoring",
+        "Multi-modal analysis",
+        "Dedicated ML engineering",
+        "Custom advisory models",
+        "Overage at $0.002 per event"
       ]
     }
   ],
   "tierLimits": {
-    "intelligence-foundation": {
-      "transactionVolume": "10M",
-      "operationsValidated": 5000,
-      "contentAnalyzed": "100K",
+    "core-starter": {
+      "receipts": 1000,
       "overageRates": {
-        "transactionVolume": "Contact sales",
-        "operationsValidated": "Contact sales",
-        "contentAnalyzed": "Contact sales"
+        "receipts": 0.10
       }
     },
-    "intelligence-professional": {
-      "transactionVolume": "100M",
-      "operationsValidated": 25000,
-      "contentAnalyzed": "1M",
+    "core-professional": {
+      "receipts": 5000,
       "overageRates": {
-        "transactionVolume": "Contact sales",
-        "operationsValidated": "Contact sales",
-        "contentAnalyzed": "Contact sales"
+        "receipts": 0.05
       }
     },
-    "intelligence-enterprise": {
-      "transactionVolume": "1B",
-      "operationsValidated": 100000,
-      "contentAnalyzed": "10M",
+    "core-enterprise": {
+      "receipts": 25000,
       "overageRates": {
-        "transactionVolume": "Contact sales",
-        "operationsValidated": "Contact sales",
-        "contentAnalyzed": "Contact sales"
+        "receipts": 0.03
       }
-    },
-    "intelligence-fortress": {
-      "transactionVolume": "Unlimited",
-      "operationsValidated": "Unlimited",
-      "contentAnalyzed": "Unlimited",
-      "overageRates": null
-    },
-    "legal-shield": {
-      "receipts": null,
-      "transactionValue": null,
-      "overageRates": null
-    },
-    "dispute-fortress": {
-      "receipts": null,
-      "transactionValue": null,
-      "overageRates": null
     }
   },
-  "upgradeIncentives": {
-    "intelligence-foundation": {
-      "targetTier": "intelligence-professional",
-      "message": "4x transaction volume + advanced AML for just 4x price",
-      "valueMessage": "300% more value per dollar"
-    },
-    "intelligence-professional": {
-      "targetTier": "intelligence-enterprise",
-      "message": "10x operations capacity + predictive risk for 2.5x price",
-      "valueMessage": "400% more value per dollar"
-    },
-    "intelligence-enterprise": {
-      "targetTier": "intelligence-fortress",
-      "message": "Unlimited everything + custom algorithms for 2.5x price",
-      "valueMessage": "Infinite scale, maximum protection"
-    }
+  "bundleDiscounts": {
+    "coreAndAdvisory": 0.15,
+    "multiYear": 0.05,
+    "annual": 0.17
   },
   "legacy": {
-    "starter": "intelligence-foundation",
-    "growth": "intelligence-professional",
-    "business": "intelligence-enterprise",
-    "foundation": "intelligence-foundation",
-    "professional": "intelligence-professional",
-    "enterprise": "intelligence-enterprise"
-  },
-  "platform": {
-    "perMerchantPerMonth": 5,
-    "gmvRate": 0.001,
-    "features": [
-      "Per-merchant pricing ($5-10/month)",
-      "0.1% GMV alternative pricing",
-      "Compliance reporting dashboard",
-      "Multi-tenant architecture",
-      "White-label options",
-      "Enterprise SLA",
-      "Dedicated technical support"
-    ]
+    "starter": "core-starter",
+    "professional": "core-professional",
+    "enterprise": "core-enterprise"
   }
 }

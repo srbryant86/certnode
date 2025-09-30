@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from 'react'
 import PricingTable from './PricingTable'
-import TriPillarIntelligenceCalculator from './TriPillarIntelligenceCalculator'
+// Removed TriPillarIntelligenceCalculator - focusing on deterministic proof rail
 import pricingData from '../app/(data)/pricing.json'
 
 type TabId = 'standard' | 'custom' | 'high-ticket'
@@ -16,18 +16,18 @@ interface Tab {
 const tabs: Tab[] = [
   {
     id: 'standard',
-    label: 'Intelligence Tiers',
-    description: 'Tri-pillar accuracy for all scales'
+    label: 'Core Trust',
+    description: 'Deterministic receipts with cryptographic proof'
   },
   {
     id: 'custom',
-    label: 'ROI Calculator',
-    description: 'Calculate your savings across all pillars'
+    label: 'Enterprise',
+    description: 'Platform edition and advisory intelligence'
   },
   {
     id: 'high-ticket',
-    label: 'Legacy Protection',
-    description: 'Legacy receipt-based protection plans'
+    label: 'Legacy Plans',
+    description: 'Previous generation protection plans'
   }
 ]
 
@@ -59,53 +59,90 @@ export default function PricingTabs() {
       {/* Tab Content */}
       <div className="min-h-[600px]">
         {activeTab === 'standard' && (
-          <div className="grid lg:grid-cols-4 gap-8">
-            <div className="lg:col-span-3">
-              <Suspense fallback={<div className="animate-pulse bg-gray-200 h-96 rounded-lg"></div>}>
-                <PricingTable tiers={pricingData.intelligenceTiers} highlightTier="intelligence-professional" />
-              </Suspense>
+          <div className="space-y-8">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                Core Trust - Deterministic Proof Rail
+              </h3>
+              <p className="text-gray-600 max-w-3xl mx-auto">
+                Cryptographic receipts across Transactions, Content, and Operations.
+                Standards-verifiable, offline-checkable proof generation.
+              </p>
             </div>
-            <div className="lg:col-span-1">
-              <div className="sticky top-6">
-                <TriPillarIntelligenceCalculator />
-              </div>
-            </div>
+            <Suspense fallback={<div className="animate-pulse bg-gray-200 h-96 rounded-lg"></div>}>
+              <PricingTable tiers={pricingData.coreTiers} highlightTier="core-professional" />
+            </Suspense>
           </div>
         )}
 
         {activeTab === 'custom' && (
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-8">
+          <div className="max-w-6xl mx-auto space-y-12">
+            <div className="text-center">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Calculate Your Tri-Pillar Intelligence ROI
+                Enterprise Solutions
               </h3>
-              <p className="text-gray-600">
-                See exactly how much you'll save with 99%+ accuracy across transactions, operations, and content.
-                One prevented fraud incident typically pays for our service for 6+ months.
+              <p className="text-gray-600 max-w-3xl mx-auto">
+                Platform editions for aggregators and marketplaces, plus optional advisory intelligence add-ons.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
-              <TriPillarIntelligenceCalculator />
+            {/* Enterprise Tiers */}
+            <div className="grid md:grid-cols-2 gap-8">
+              {pricingData.enterpriseTiers.map((tier) => (
+                <div key={tier.id} className="bg-white rounded-xl border border-gray-200 p-8 shadow-lg">
+                  <div className="text-center mb-6">
+                    <h4 className="text-xl font-bold text-gray-900 mb-2">{tier.name}</h4>
+                    <div className="text-lg text-gray-600 mb-2">{tier.pricing}</div>
+                    <div className="text-sm text-gray-500">{tier.tagline}</div>
+                  </div>
 
-              <div className="mt-8 pt-8 border-t border-gray-200">
-                <div className="grid md:grid-cols-3 gap-6 text-center">
-                  <div>
-                    <div className="text-2xl font-bold text-blue-600 mb-2">🧠</div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Transaction Intelligence</h4>
-                    <p className="text-sm text-gray-600">99.9% fraud detection + 87% fewer false positives</p>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-green-600 mb-2">⚡</div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Operations Intelligence</h4>
-                    <p className="text-sm text-gray-600">99.8% compliance validation with mathematical proof</p>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-purple-600 mb-2">🔍</div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Content Intelligence</h4>
-                    <p className="text-sm text-gray-600">98% AI/manipulation detection accuracy</p>
-                  </div>
+                  <ul className="space-y-3 mb-8">
+                    {tier.features.map((feature, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <span className="text-green-500 mt-0.5">✓</span>
+                        <span className="text-sm text-gray-700">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                    Contact Sales
+                  </button>
                 </div>
+              ))}
+            </div>
+
+            {/* Advisory Intelligence Add-Ons */}
+            <div className="bg-gray-50 rounded-xl p-8">
+              <div className="text-center mb-8">
+                <h4 className="text-xl font-bold text-gray-900 mb-2">
+                  Advisory Intelligence Add-Ons
+                </h4>
+                <p className="text-gray-600">
+                  Optional ML-powered advisory signals. Must bundle with Core Trust. Advisory use only - not source of truth.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                {pricingData.intelligenceAddOns.map((addon) => (
+                  <div key={addon.id} className="bg-white rounded-lg border border-gray-200 p-6">
+                    <h5 className="font-semibold text-gray-900 mb-2">{addon.name}</h5>
+                    <div className="text-lg font-bold text-blue-600 mb-2">
+                      ${addon.priceYearly.toLocaleString()}/year
+                    </div>
+                    <div className="text-sm text-gray-600 mb-4">
+                      {addon.inferences.toLocaleString()} inferences included
+                    </div>
+                    <ul className="space-y-2 text-sm text-gray-600">
+                      {addon.features.slice(0, 4).map((feature, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <span className="text-blue-500 mt-0.5">•</span>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

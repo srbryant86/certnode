@@ -10,6 +10,7 @@ import SmartRecommendationBanner from '@/components/SmartRecommendationBanner';
 import SocialProofWidget from '@/components/SocialProofWidget';
 import UrgencyTrigger from '@/components/UrgencyTrigger';
 import RiskReversalSection from '@/components/RiskReversalSection';
+import ThreeProductShowcase from '@/components/ThreeProductShowcase';
 
 // Import pricing data
 import pricingData from '../(data)/pricing.json';
@@ -159,12 +160,8 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* Three Pillars */}
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-6">
-            <Pillars />
-          </div>
-        </section>
+        {/* Three Product Showcase */}
+        <ThreeProductShowcase />
 
         {/* Social Proof disabled - no real customers yet */}
 

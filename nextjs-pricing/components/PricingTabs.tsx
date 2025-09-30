@@ -164,10 +164,10 @@ export default function PricingTabs() {
               {/* Pro Dispute Protection */}
               <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-lg">
                 <div className="text-center mb-6">
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">Legal Shield</h4>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">Dispute Shield Pro</h4>
                   <div className="text-3xl font-bold text-blue-600 mb-1">$12,000</div>
                   <div className="text-sm text-gray-600">per year</div>
-                  <div className="text-sm text-blue-600 font-medium mt-1">Up to $2M annual sales</div>
+                  <div className="text-sm text-blue-600 font-medium mt-1">Up to $2M GMV</div>
                 </div>
 
                 <ul className="space-y-3 mb-8">
@@ -201,21 +201,21 @@ export default function PricingTabs() {
                   className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                   onClick={() => window.location.href = 'https://buy.stripe.com/28E7sK9rYces1s2fD7bAs09'}
                 >
-                  Get Started
+                  Contact Sales
                 </button>
               </div>
 
               {/* Elite Dispute Protection */}
               <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl border border-purple-200 p-8 shadow-lg relative">
                 <div className="absolute top-0 right-6 bg-purple-600 text-white px-3 py-1 rounded-b-lg text-xs font-semibold">
-                  MOST POPULAR
+                  RECOMMENDED
                 </div>
 
                 <div className="text-center mb-6">
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">Dispute Fortress</h4>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">Dispute Shield Elite</h4>
                   <div className="text-3xl font-bold text-purple-600 mb-1">$30,000</div>
                   <div className="text-sm text-gray-600">per year</div>
-                  <div className="text-sm text-purple-600 font-medium mt-1">Up to $10M annual sales</div>
+                  <div className="text-sm text-purple-600 font-medium mt-1">Up to $10M GMV</div>
                 </div>
 
                 <ul className="space-y-3 mb-8">
@@ -253,7 +253,7 @@ export default function PricingTabs() {
                   className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
                   onClick={() => window.location.href = 'https://buy.stripe.com/aFa7sK8nU1zO9YycqVbAs0b'}
                 >
-                  Get Started
+                  Contact Sales
                 </button>
               </div>
             </div>

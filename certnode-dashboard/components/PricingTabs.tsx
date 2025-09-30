@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from 'react'
 import PricingTable from './PricingTable'
-import EnterpriseSavingsCalculator from './EnterpriseSavingsCalculator'
+// Removed TriPillarIntelligenceCalculator - focusing on deterministic proof rail
 import pricingData from '../app/(data)/pricing.json'
 
 type TabId = 'standard' | 'custom' | 'high-ticket'
@@ -16,18 +16,18 @@ interface Tab {
 const tabs: Tab[] = [
   {
     id: 'standard',
-    label: 'Standard Plans',
-    description: 'Choose from our pre-configured plans'
+    label: 'Core Trust',
+    description: 'Deterministic receipts with cryptographic proof'
   },
   {
     id: 'custom',
-    label: 'Custom Pricing',
-    description: 'Get pricing tailored to your volume'
+    label: 'Enterprise',
+    description: 'Platform edition and advisory intelligence'
   },
   {
     id: 'high-ticket',
-    label: 'High-Ticket Protection',
-    description: 'Specialized dispute protection plans'
+    label: 'Legacy Plans',
+    description: 'Previous generation protection plans'
   }
 ]
 
@@ -59,53 +59,90 @@ export default function PricingTabs() {
       {/* Tab Content */}
       <div className="min-h-[600px]">
         {activeTab === 'standard' && (
-          <div className="grid lg:grid-cols-4 gap-8">
-            <div className="lg:col-span-3">
-              <Suspense fallback={<div className="animate-pulse bg-gray-200 h-96 rounded-lg"></div>}>
-                <PricingTable tiers={pricingData.smbTiers} highlightTier="growth" />
-              </Suspense>
+          <div className="space-y-8">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                Core Trust - Deterministic Proof Rail
+              </h3>
+              <p className="text-gray-600 max-w-3xl mx-auto">
+                Cryptographic receipts across Transactions, Content, and Operations.
+                Standards-verifiable, offline-checkable proof generation.
+              </p>
             </div>
-            <div className="lg:col-span-1">
-              <div className="sticky top-6">
-                <EnterpriseSavingsCalculator />
-              </div>
-            </div>
+            <Suspense fallback={<div className="animate-pulse bg-gray-200 h-96 rounded-lg"></div>}>
+              <PricingTable tiers={pricingData.coreTiers} highlightTier="core-professional" />
+            </Suspense>
           </div>
         )}
 
         {activeTab === 'custom' && (
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
+          <div className="max-w-6xl mx-auto space-y-12">
+            <div className="text-center">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Get Custom Pricing for Your Volume
+                Enterprise Solutions
               </h3>
-              <p className="text-gray-600">
-                Use our calculator to see exactly what CertNode will cost for your specific needs.
-                Volumes over 2,500 receipts/month automatically qualify for enterprise pricing.
+              <p className="text-gray-600 max-w-3xl mx-auto">
+                Platform editions for aggregators and marketplaces, plus optional advisory intelligence add-ons.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
-              <EnterpriseSavingsCalculator />
+            {/* Enterprise Tiers */}
+            <div className="grid md:grid-cols-2 gap-8">
+              {pricingData.enterpriseTiers.map((tier) => (
+                <div key={tier.id} className="bg-white rounded-xl border border-gray-200 p-8 shadow-lg">
+                  <div className="text-center mb-6">
+                    <h4 className="text-xl font-bold text-gray-900 mb-2">{tier.name}</h4>
+                    <div className="text-lg text-gray-600 mb-2">{tier.pricing}</div>
+                    <div className="text-sm text-gray-500">{tier.tagline}</div>
+                  </div>
 
-              <div className="mt-8 pt-8 border-t border-gray-200">
-                <div className="grid md:grid-cols-3 gap-6 text-center">
-                  <div>
-                    <div className="text-2xl font-bold text-blue-600 mb-2">🎯</div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Precise Pricing</h4>
-                    <p className="text-sm text-gray-600">Exact costs based on your volume and usage patterns</p>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-green-600 mb-2">💰</div>
-                    <h4 className="font-semibold text-gray-900 mb-1">ROI Calculator</h4>
-                    <p className="text-sm text-gray-600">See your projected savings from dispute deflection</p>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-purple-600 mb-2">⚡</div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Instant Quote</h4>
-                    <p className="text-sm text-gray-600">Get pricing immediately or request enterprise consultation</p>
-                  </div>
+                  <ul className="space-y-3 mb-8">
+                    {tier.features.map((feature, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <span className="text-green-500 mt-0.5">✓</span>
+                        <span className="text-sm text-gray-700">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                    Contact Sales
+                  </button>
                 </div>
+              ))}
+            </div>
+
+            {/* Advisory Intelligence Add-Ons */}
+            <div className="bg-gray-50 rounded-xl p-8">
+              <div className="text-center mb-8">
+                <h4 className="text-xl font-bold text-gray-900 mb-2">
+                  Advisory Intelligence Add-Ons
+                </h4>
+                <p className="text-gray-600">
+                  Optional ML-powered advisory signals. Must bundle with Core Trust. Advisory use only - not source of truth.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                {pricingData.intelligenceAddOns.map((addon) => (
+                  <div key={addon.id} className="bg-white rounded-lg border border-gray-200 p-6">
+                    <h5 className="font-semibold text-gray-900 mb-2">{addon.name}</h5>
+                    <div className="text-lg font-bold text-blue-600 mb-2">
+                      ${addon.priceYearly.toLocaleString()}/year
+                    </div>
+                    <div className="text-sm text-gray-600 mb-4">
+                      {addon.inferences.toLocaleString()} inferences included
+                    </div>
+                    <ul className="space-y-2 text-sm text-gray-600">
+                      {addon.features.slice(0, 4).map((feature, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <span className="text-blue-500 mt-0.5">•</span>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -115,10 +152,10 @@ export default function PricingTabs() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                High-Ticket Dispute Protection
+                Legacy Receipt Protection
               </h3>
               <p className="text-gray-600 mb-6">
-                Specialized plans for businesses with high-value transactions and significant chargeback risk.
+                Traditional receipt-based protection plans. For maximum accuracy and ROI, we recommend our Tri-Pillar Intelligence platform above.
                 One saved $10,000 dispute pays for 4 months.
               </p>
             </div>
@@ -127,10 +164,10 @@ export default function PricingTabs() {
               {/* Pro Dispute Protection */}
               <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-lg">
                 <div className="text-center mb-6">
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">Legal Shield</h4>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">Dispute Shield Pro</h4>
                   <div className="text-3xl font-bold text-blue-600 mb-1">$12,000</div>
                   <div className="text-sm text-gray-600">per year</div>
-                  <div className="text-sm text-blue-600 font-medium mt-1">Up to $2M annual sales</div>
+                  <div className="text-sm text-blue-600 font-medium mt-1">Up to $2M GMV</div>
                 </div>
 
                 <ul className="space-y-3 mb-8">
@@ -164,21 +201,21 @@ export default function PricingTabs() {
                   className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                   onClick={() => window.location.href = 'https://buy.stripe.com/28E7sK9rYces1s2fD7bAs09'}
                 >
-                  Get Started
+                  Contact Sales
                 </button>
               </div>
 
               {/* Elite Dispute Protection */}
               <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl border border-purple-200 p-8 shadow-lg relative">
                 <div className="absolute top-0 right-6 bg-purple-600 text-white px-3 py-1 rounded-b-lg text-xs font-semibold">
-                  MOST POPULAR
+                  RECOMMENDED
                 </div>
 
                 <div className="text-center mb-6">
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">Dispute Fortress</h4>
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">Dispute Shield Elite</h4>
                   <div className="text-3xl font-bold text-purple-600 mb-1">$30,000</div>
                   <div className="text-sm text-gray-600">per year</div>
-                  <div className="text-sm text-purple-600 font-medium mt-1">Up to $10M annual sales</div>
+                  <div className="text-sm text-purple-600 font-medium mt-1">Up to $10M GMV</div>
                 </div>
 
                 <ul className="space-y-3 mb-8">
@@ -216,19 +253,21 @@ export default function PricingTabs() {
                   className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
                   onClick={() => window.location.href = 'https://buy.stripe.com/aFa7sK8nU1zO9YycqVbAs0b'}
                 >
-                  Get Started
+                  Contact Sales
                 </button>
               </div>
             </div>
 
             <div className="mt-8 text-center">
               <p className="text-sm text-gray-600">
-                All high-ticket plans include white-glove onboarding, dedicated support, and revenue protection guarantees.
+                All legacy plans include white-glove onboarding, dedicated support, and revenue protection guarantees.
+                <br />
+                <strong>Recommended:</strong> Upgrade to <a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('standard'); }} className="text-blue-600 hover:text-blue-700 cursor-pointer">Tri-Pillar Intelligence</a> for 99%+ accuracy and maximum ROI.
                 <br />
                 <a href="mailto:contact@certnode.io" className="text-blue-600 hover:text-blue-700">
                   Contact us
                 </a>{' '}
-                for custom enterprise volumes above $10M annual sales.
+                for custom enterprise volumes.
               </p>
             </div>
           </div>

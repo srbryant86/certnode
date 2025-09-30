@@ -1,192 +1,193 @@
 {
-  "smbTiers": [
+  "coreTiers": [
     {
-      "id": "foundation",
-      "name": "Foundation",
+      "id": "core-starter",
+      "name": "Starter",
       "priceMonthly": 49,
-      "includedReceipts": 250,
-      "overagePerReceipt": 0.50,
-      "transactionLimit": 1000,
-      "transactionOverageRate": 5.00,
-      "tagline": "Complete protection for growing businesses",
-      "features": [
-        "250 receipts/month included",
-        "Up to $1,000 per transaction",
-        "$0.50 per additional receipt",
-        "$5 per $1K transaction value over limit",
-        "Basic cryptographic protection",
-        "5-year retention",
-        "Email support (24-hour SLA)",
-        "Self-service dashboard",
-        "Standard API access"
-      ]
-    },
-    {
-      "id": "professional",
-      "name": "Professional",
-      "priceMonthly": 199,
+      "annualDiscount": 0.83,
       "includedReceipts": 1000,
-      "overagePerReceipt": 0.25,
-      "transactionLimit": 10000,
-      "transactionOverageRate": 2.00,
-      "tagline": "Enhanced security for established operations",
+      "overagePerReceipt": 0.10,
+      "tagline": "Perfect for startups and small businesses",
       "features": [
         "1,000 receipts/month included",
-        "Up to $10,000 per transaction",
-        "$0.25 per additional receipt",
-        "$2 per $10K transaction value over limit",
-        "Enhanced cryptographic proofs",
-        "IP geolocation tracking",
-        "Device fingerprinting",
-        "7-year retention",
-        "Priority email support (12-hour SLA)",
-        "Advanced analytics dashboard",
-        "API rate limit: 10,000 requests/hour"
+        "All three products: Transactions + Content + Operations",
+        "Cryptographic transaction receipts",
+        "Content certification (C2PA-compatible)",
+        "Operations incident receipts",
+        "Receipt Graph (5 levels deep)",
+        "JWKS verification",
+        "Public verifier access",
+        "Email support (48-hour SLA)",
+        "Self-service dashboard"
       ]
     },
     {
-      "id": "enterprise",
-      "name": "Enterprise",
-      "priceMonthly": 499,
-      "includedReceipts": 2500,
-      "overagePerReceipt": 0.15,
-      "transactionLimit": 50000,
-      "transactionOverageRate": 1.00,
-      "tagline": "Compliance-ready infrastructure for serious businesses",
+      "id": "core-professional",
+      "name": "Professional",
+      "priceMonthly": 199,
+      "annualDiscount": 0.83,
+      "includedReceipts": 5000,
+      "overagePerReceipt": 0.05,
+      "tagline": "For growing teams that need advanced features",
       "features": [
-        "2,500 receipts/month included",
-        "Up to $50,000 per transaction",
-        "$0.15 per additional receipt",
-        "$1 per $50K transaction value over limit",
+        "5,000 receipts/month included",
+        "All three products: Transactions + Content + Operations",
+        "Receipt Graph (10 levels deep)",
+        "Webhooks & batch operations",
         "Multi-source timestamps",
         "Enhanced audit trails",
-        "Compliance reporting (SOX, SOC 2 readiness)",
-        "10-year retention",
-        "Priority support (4-hour SLA)",
-        "Custom receipt templates",
-        "API rate limit: 50,000 requests/hour",
-        "Monthly protection reports"
+        "Content authenticity verification",
+        "Policy compliance receipts",
+        "Priority support (24-hour SLA)",
+        "Advanced analytics dashboard"
+      ]
+    },
+    {
+      "id": "core-scale",
+      "name": "Scale",
+      "priceMonthly": 499,
+      "annualDiscount": 0.83,
+      "includedReceipts": 10000,
+      "overagePerReceipt": 0.03,
+      "tagline": "Everything you need to scale with confidence",
+      "features": [
+        "10,000 receipts/month included",
+        "All three products: Transactions + Content + Operations",
+        "Multi-tenant architecture",
+        "SSO integration",
+        "Data residency controls",
+        "Compliance reporting (SOX, PCI readiness)",
+        "Dedicated support (12-hour SLA)",
+        "Custom compliance frameworks",
+        "Premium API (100K requests/hour)",
+        "Monthly protection reports",
+        "Audit trail exports"
       ]
     }
   ],
-  "highTicket": [
+  "enterpriseTiers": [
     {
-      "id": "legal-shield",
-      "name": "Legal Shield",
-      "priceYearly": 12000,
-      "annualSalesCeiling": 2000000,
-      "tagline": "Courtroom-ready protection • One prevented $25K dispute = 2+ years free",
-      "valueProposition": "Protection per $1M: $6-12 • Average dispute prevented: $25K-100K",
+      "id": "core-trust",
+      "name": "Core Trust",
+      "priceYearly": 25000,
+      "ceiling": 75000,
+      "tagline": "Deterministic receipts across Transactions/Content/Ops with SLA",
+      "pricing": "Base $25K-$75K + metered events ($0.002-$0.02)",
       "features": [
-        "Unlimited receipts • Unlimited transaction value",
-        "Courtroom-ready affidavits automatically generated",
-        "Blockchain anchoring for additional immutability",
-        "Multi-witness cryptographic validation",
-        "Legal export formats optimized for litigation",
-        "Enhanced metadata: Full session recording, multi-IP validation",
-        "Sub-100ms API response guarantee",
-        "Dedicated processing infrastructure",
-        "25-year lifetime retention",
-        "4-hour email SLA",
-        "Monthly legal-grade protection audit",
-        "Custom integration assistance (5 hours included)",
-        "Dispute response documentation support"
+        "Multi-tenant infrastructure",
+        "Enterprise SLA guarantees",
+        "SSO and data residency",
+        "JWKS verification infrastructure",
+        "Unlimited receipt generation",
+        "Custom compliance reporting",
+        "Dedicated account management",
+        "Professional services included"
       ]
     },
     {
-      "id": "dispute-fortress",
-      "name": "Dispute Fortress",
-      "priceYearly": 30000,
-      "annualSalesCeiling": 10000000,
-      "tagline": "Ultimate dispute insurance • ROI: 300-3000% when disputes prevented",
-      "valueProposition": "Cost per $1M protected: $3-30 • ROI: 300-3000% when disputes prevented",
+      "id": "platform-edition",
+      "name": "Platform Edition",
+      "priceYearly": 60000,
+      "ceiling": 250000,
+      "tagline": "Per-merchant trust rail with compliance reporting",
+      "pricing": "$5-$10 per merchant/month OR 0.1% verified GMV",
       "features": [
-        "Everything in Legal Shield +",
-        "White-glove onboarding (dedicated setup)",
-        "Custom compliance reporting for specific industries",
-        "Revenue protection analysis and recommendations",
-        "Advanced fraud detection with real-time monitoring",
-        "Custom branding on all documentation",
-        "Dedicated IP ranges for reputation management",
-        "Multi-region backup processing",
-        "Lifetime retention + legal archiving",
-        "2-hour email SLA",
-        "Quarterly business review calls",
-        "Custom integration assistance (20 hours included)",
-        "Priority feature requests",
-        "Direct communication channel"
+        "Multi-merchant architecture",
+        "Shared verifier infrastructure",
+        "Per-tenant compliance reporting",
+        "Marketplace integration APIs",
+        "Revenue sharing analytics",
+        "Tenant onboarding automation",
+        "Aggregated compliance dashboards",
+        "Platform-specific customization"
+      ]
+    }
+  ],
+  "intelligenceAddOns": [
+    {
+      "id": "advisory-starter",
+      "name": "Intelligence Advisory - Starter",
+      "priceYearly": 25000,
+      "inferences": 1000000,
+      "overagePerEvent": 0.01,
+      "tagline": "Advisory fraud/content/anomaly signals",
+      "features": [
+        "1M advisory inferences included",
+        "Fraud heuristics (advisory only)",
+        "AI-content flags (advisory only)",
+        "Anomaly scoring (advisory only)",
+        "Cannot be source of truth",
+        "Must bundle with Core Trust",
+        "Compute commits model",
+        "Overage at $0.01 per event"
+      ]
+    },
+    {
+      "id": "advisory-professional",
+      "name": "Intelligence Advisory - Professional",
+      "priceYearly": 75000,
+      "inferences": 5000000,
+      "overagePerEvent": 0.005,
+      "tagline": "Enhanced advisory intelligence with priority support",
+      "features": [
+        "5M advisory inferences included",
+        "Advanced fraud modeling",
+        "Content manipulation detection",
+        "Behavioral anomaly detection",
+        "Advisory-only classification",
+        "Priority intelligence support",
+        "Custom model training",
+        "Overage at $0.005 per event"
+      ]
+    },
+    {
+      "id": "advisory-enterprise",
+      "name": "Intelligence Advisory - Enterprise",
+      "priceYearly": 150000,
+      "inferences": 15000000,
+      "overagePerEvent": 0.002,
+      "tagline": "Complete advisory intelligence suite",
+      "features": [
+        "15M advisory inferences included",
+        "Full advisory intelligence suite",
+        "Custom algorithm development",
+        "Real-time advisory scoring",
+        "Multi-modal analysis",
+        "Dedicated ML engineering",
+        "Custom advisory models",
+        "Overage at $0.002 per event"
       ]
     }
   ],
   "tierLimits": {
-    "foundation": {
-      "receipts": 250,
-      "transactionValue": 1000,
-      "overageRates": {
-        "receipts": 0.50,
-        "transactionValue": 5.00
-      }
-    },
-    "professional": {
+    "core-starter": {
       "receipts": 1000,
-      "transactionValue": 10000,
       "overageRates": {
-        "receipts": 0.25,
-        "transactionValue": 2.00
+        "receipts": 0.10
       }
     },
-    "enterprise": {
-      "receipts": 2500,
-      "transactionValue": 50000,
+    "core-professional": {
+      "receipts": 5000,
       "overageRates": {
-        "receipts": 0.15,
-        "transactionValue": 1.00
+        "receipts": 0.05
       }
     },
-    "legal-shield": {
-      "receipts": null,
-      "transactionValue": null,
-      "overageRates": null
-    },
-    "dispute-fortress": {
-      "receipts": null,
-      "transactionValue": null,
-      "overageRates": null
+    "core-scale": {
+      "receipts": 10000,
+      "overageRates": {
+        "receipts": 0.03
+      }
     }
   },
-  "upgradeIncentives": {
-    "foundation": {
-      "targetTier": "professional",
-      "message": "Save 60% by upgrading to Professional",
-      "discount": 0.60
-    },
-    "professional": {
-      "targetTier": "enterprise",
-      "message": "Save 40% by upgrading to Enterprise",
-      "discount": 0.40
-    },
-    "enterprise": {
-      "targetTier": "legal-shield",
-      "message": "Legal Shield eliminates all limits",
-      "discount": null
-    }
+  "bundleDiscounts": {
+    "coreAndAdvisory": 0.15,
+    "multiYear": 0.05,
+    "annual": 0.17
   },
   "legacy": {
-    "starter": "foundation",
-    "growth": "professional",
-    "business": "enterprise"
-  },
-  "platform": {
-    "perMerchantPerMonth": 5,
-    "gmvRate": 0.001,
-    "features": [
-      "Per-merchant pricing ($5-10/month)",
-      "0.1% GMV alternative pricing",
-      "Compliance reporting dashboard",
-      "Multi-tenant architecture",
-      "White-label options",
-      "Enterprise SLA",
-      "Dedicated technical support"
-    ]
+    "starter": "core-starter",
+    "professional": "core-professional",
+    "enterprise": "core-scale",
+    "scale": "core-scale"
   }
 }

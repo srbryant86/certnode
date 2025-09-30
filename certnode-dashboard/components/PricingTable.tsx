@@ -3,13 +3,18 @@
 import { useState, useEffect } from 'react';
 import { formatCurrency, calculateYearlyPrice } from '@/lib/currency';
 import { PricingAnalytics } from '@/lib/analytics';
+import { getPaymentLink } from '@/lib/payment-links';
 
 interface PricingTier {
   id: string;
   name: string;
   priceMonthly: number;
-  includedReceipts: number;
-  overagePerReceipt: number;
+  annualDiscount?: number;
+  maxTransactionVolume?: string;
+  maxOperationsValidated?: number | string;
+  maxContentAnalyzed?: string;
+  includedReceipts?: number;
+  overagePerReceipt?: number;
   tagline: string;
   features: string[];
 }
@@ -49,7 +54,7 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
   };
 
   // Handle checkout
-  const handleCheckout = async (tierId: string) => {
+  const handleCheckout = (tierId: string) => {
     // Track the checkout attempt
     analytics.trackInteraction('checkout_start', {
       planId: tierId,
@@ -57,46 +62,21 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
       currency
     });
 
-    // Map display tier names to API tiers
-    const mappedTier = TIER_API_MAP[tierId];
-    if (!mappedTier) {
-      console.error('Invalid tier:', tierId);
+    // Get payment link directly
+    const billing = isYearly ? 'annual' : 'monthly';
+    const paymentLink = getPaymentLink(tierId, billing);
+
+    if (!paymentLink) {
+      console.error('No payment link found for:', tierId, billing);
+      analytics.trackInteraction('checkout_error', {
+        planId: tierId,
+        error: 'Payment link not configured'
+      });
       return;
     }
 
-    try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          tier: mappedTier,
-          billing: isYearly ? 'yearly' : 'monthly',
-          email: null // Will be collected by Stripe
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Checkout failed');
-      }
-
-      const data = await response.json();
-
-      const checkoutUrl = data.url || data.checkout_url || data.payment_link;
-      if (checkoutUrl) {
-        window.location.href = checkoutUrl;
-      } else {
-        throw new Error('No checkout URL returned');
-      }
-    } catch (error) {
-      console.error('Checkout error:', error);
-      analytics.trackInteraction('checkout_error', {
-        planId: tierId,
-        error: error instanceof Error ? error.message : 'Unknown error'
-      });
-      // Could show a user-friendly error message here
-    }
+    // Redirect to Stripe payment link
+    window.location.href = paymentLink;
   };
 
   // Track when plans come into view
@@ -226,12 +206,27 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
               </div>
 
               <div className="mt-8 space-y-3">
-                <h4 className="font-semibold text-gray-900">
-                  {tier.includedReceipts.toLocaleString()} receipts included
-                </h4>
-                <p className="text-sm text-gray-600">
-                  {formatCurrency(tier.overagePerReceipt, currency)} per additional receipt
-                </p>
+                {tier.includedReceipts ? (
+                  <>
+                    <h4 className="font-semibold text-gray-900">
+                      {tier.includedReceipts.toLocaleString()} receipts included
+                    </h4>
+                    <p className="text-sm text-gray-600">
+                      {formatCurrency(tier.overagePerReceipt || 0, currency)} per additional receipt
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h4 className="font-semibold text-gray-900">
+                      {tier.maxTransactionVolume} monthly volume
+                    </h4>
+                    <p className="text-sm text-gray-600">
+                      {typeof tier.maxOperationsValidated === 'number'
+                        ? tier.maxOperationsValidated.toLocaleString()
+                        : tier.maxOperationsValidated} operations • {tier.maxContentAnalyzed} content
+                    </p>
+                  </>
+                )}
 
                 <ul className="space-y-2">
                   {tier.features.map((feature, index) => (

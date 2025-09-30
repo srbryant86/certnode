@@ -36,6 +36,14 @@ enum KeyStatus {
   REVOKED     @map("revoked")
 }
 
+enum RelationType {
+  CAUSES      @map("causes")
+  EVIDENCES   @map("evidences")
+  FULFILLS    @map("fulfills")
+  INVALIDATES @map("invalidates")
+  AMENDS      @map("amends")
+}
+
 model Receipt {
   id                   String             @id @default(cuid())
   enterpriseId         String             @map("enterprise_id")
@@ -64,16 +72,25 @@ model Receipt {
   currency             String?
   createdAt            DateTime           @default(now()) @map("created_at")
 
+  // Receipt Graph fields
+  graphDepth           Int                @default(0) @map("graph_depth")
+  graphHash            String?            @map("graph_hash")
+
   // Relations
   enterprise           Enterprise?        @relation(fields: [enterpriseId], references: [id])
   apiKey               ApiKey?            @relation(fields: [apiKeyId], references: [id])
   apiKeyId             String?            @map("api_key_id")
+
+  // Graph relationships
+  parentRelationships  ReceiptRelationship[] @relation("ParentReceipt")
+  childRelationships   ReceiptRelationship[] @relation("ChildReceipt")
 
   @@map("receipts")
   @@index([enterpriseId, type])
   @@index([contentHash])
   @@index([type, subtype])
   @@index([apiKeyId])
+  @@index([graphDepth])
 }
 
 model Enterprise {
@@ -196,4 +213,25 @@ model ValidationAlert {
   @@index([acknowledged])
   @@index([type])
   @@index([severity])
+}
+
+model ReceiptRelationship {
+  id                   String             @id @default(cuid())
+  parentReceiptId      String             @map("parent_receipt_id")
+  childReceiptId       String             @map("child_receipt_id")
+  relationType         RelationType       @map("relation_type")
+  description          String?
+  metadata             Json?
+  createdBy            String?            @map("created_by")
+  createdAt            DateTime           @default(now()) @map("created_at")
+
+  // Relations
+  parentReceipt        Receipt            @relation("ParentReceipt", fields: [parentReceiptId], references: [id], onDelete: Cascade)
+  childReceipt         Receipt            @relation("ChildReceipt", fields: [childReceiptId], references: [id], onDelete: Cascade)
+
+  @@map("receipt_relationships")
+  @@index([parentReceiptId])
+  @@index([childReceiptId])
+  @@index([relationType])
+  @@unique([parentReceiptId, childReceiptId])
 }

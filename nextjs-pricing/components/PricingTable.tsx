@@ -8,8 +8,12 @@ interface PricingTier {
   id: string;
   name: string;
   priceMonthly: number;
-  includedReceipts: number;
-  overagePerReceipt: number;
+  annualDiscount?: number;
+  maxTransactionVolume?: string;
+  maxOperationsValidated?: number | string;
+  maxContentAnalyzed?: string;
+  includedReceipts?: number;
+  overagePerReceipt?: number;
   tagline: string;
   features: string[];
 }
@@ -226,12 +230,27 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
               </div>
 
               <div className="mt-8 space-y-3">
-                <h4 className="font-semibold text-gray-900">
-                  {tier.includedReceipts.toLocaleString()} receipts included
-                </h4>
-                <p className="text-sm text-gray-600">
-                  {formatCurrency(tier.overagePerReceipt, currency)} per additional receipt
-                </p>
+                {tier.includedReceipts ? (
+                  <>
+                    <h4 className="font-semibold text-gray-900">
+                      {tier.includedReceipts.toLocaleString()} receipts included
+                    </h4>
+                    <p className="text-sm text-gray-600">
+                      {formatCurrency(tier.overagePerReceipt || 0, currency)} per additional receipt
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h4 className="font-semibold text-gray-900">
+                      {tier.maxTransactionVolume} monthly volume
+                    </h4>
+                    <p className="text-sm text-gray-600">
+                      {typeof tier.maxOperationsValidated === 'number'
+                        ? tier.maxOperationsValidated.toLocaleString()
+                        : tier.maxOperationsValidated} operations • {tier.maxContentAnalyzed} content
+                    </p>
+                  </>
+                )}
 
                 <ul className="space-y-2">
                   {tier.features.map((feature, index) => (

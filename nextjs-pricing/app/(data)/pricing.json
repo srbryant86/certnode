@@ -1,71 +1,109 @@
 {
-  "smbTiers": [
+  "intelligenceTiers": [
     {
-      "id": "foundation",
-      "name": "Foundation",
-      "priceMonthly": 49,
-      "includedReceipts": 250,
-      "overagePerReceipt": 0.50,
-      "transactionLimit": 1000,
-      "transactionOverageRate": 5.00,
-      "tagline": "Complete protection for growing businesses",
+      "id": "intelligence-foundation",
+      "name": "Intelligence Foundation",
+      "priceMonthly": 1999,
+      "annualDiscount": 0.83,
+      "maxTransactionVolume": "10M",
+      "maxOperationsValidated": 5000,
+      "maxContentAnalyzed": "100K items",
+      "tagline": "Tri-pillar intelligence for growing businesses • 99%+ accuracy across all validations",
       "features": [
-        "250 receipts/month included",
-        "Up to $1,000 per transaction",
-        "$0.50 per additional receipt",
-        "$5 per $1K transaction value over limit",
-        "Basic cryptographic protection",
-        "5-year retention",
-        "Email support (24-hour SLA)",
-        "Self-service dashboard",
-        "Standard API access"
+        "🧠 Transaction Intelligence: 99.9% fraud detection accuracy",
+        "🔍 Content Intelligence: 98% AI/manipulation detection",
+        "⚡ Operations Intelligence: 99.8% compliance validation",
+        "Up to $10M monthly transaction volume",
+        "5,000 operations validations per month",
+        "100K content items analyzed monthly",
+        "UltraAccuracyEngine™ mathematical validation",
+        "Bayesian ensemble fraud detection",
+        "Real-time statistical consensus",
+        "Court-admissible mathematical proof",
+        "Email support (12-hour SLA)",
+        "Self-service analytics dashboard",
+        "Standard API access (10K requests/hour)"
       ]
     },
     {
-      "id": "professional",
-      "name": "Professional",
-      "priceMonthly": 199,
-      "includedReceipts": 1000,
-      "overagePerReceipt": 0.25,
-      "transactionLimit": 10000,
-      "transactionOverageRate": 2.00,
-      "tagline": "Enhanced security for established operations",
+      "id": "intelligence-professional",
+      "name": "Intelligence Professional",
+      "priceMonthly": 7999,
+      "annualDiscount": 0.83,
+      "maxTransactionVolume": "100M",
+      "maxOperationsValidated": 25000,
+      "maxContentAnalyzed": "1M items",
+      "tagline": "Advanced multi-modal intelligence • Enterprise-grade accuracy with cost efficiency",
       "features": [
-        "1,000 receipts/month included",
-        "Up to $10,000 per transaction",
-        "$0.25 per additional receipt",
-        "$2 per $10K transaction value over limit",
-        "Enhanced cryptographic proofs",
-        "IP geolocation tracking",
-        "Device fingerprinting",
-        "7-year retention",
-        "Priority email support (12-hour SLA)",
-        "Advanced analytics dashboard",
-        "API rate limit: 10,000 requests/hour"
-      ]
-    },
-    {
-      "id": "enterprise",
-      "name": "Enterprise",
-      "priceMonthly": 499,
-      "includedReceipts": 2500,
-      "overagePerReceipt": 0.15,
-      "transactionLimit": 50000,
-      "transactionOverageRate": 1.00,
-      "tagline": "Compliance-ready infrastructure for serious businesses",
-      "features": [
-        "2,500 receipts/month included",
-        "Up to $50,000 per transaction",
-        "$0.15 per additional receipt",
-        "$1 per $50K transaction value over limit",
-        "Multi-source timestamps",
-        "Enhanced audit trails",
-        "Compliance reporting (SOX, SOC 2 readiness)",
-        "10-year retention",
+        "🧠 Transaction Intelligence: 99.9% fraud detection + AML compliance",
+        "🔍 Content Intelligence: 98% detection + manipulation forensics",
+        "⚡ Operations Intelligence: 99.8% validation + risk scoring",
+        "Up to $100M monthly transaction volume",
+        "25,000 operations validations per month",
+        "1M content items analyzed monthly",
+        "Enhanced UltraAccuracyEngine™ with cross-validation",
+        "Multi-source cryptographic validation",
+        "Advanced behavioral analytics",
+        "Regulatory compliance reporting",
         "Priority support (4-hour SLA)",
-        "Custom receipt templates",
-        "API rate limit: 50,000 requests/hour",
-        "Monthly protection reports"
+        "Advanced dashboard with custom alerts",
+        "Enhanced API (50K requests/hour)",
+        "Monthly intelligence reports"
+      ]
+    },
+    {
+      "id": "intelligence-enterprise",
+      "name": "Intelligence Enterprise",
+      "priceMonthly": 19999,
+      "annualDiscount": 0.83,
+      "maxTransactionVolume": "1B",
+      "maxOperationsValidated": 100000,
+      "maxContentAnalyzed": "10M items",
+      "tagline": "Maximum intelligence coverage • Financial services grade accuracy and compliance",
+      "features": [
+        "🧠 Transaction Intelligence: 99.9% accuracy + sophisticated AML",
+        "🔍 Content Intelligence: 98% detection + deep forensic analysis",
+        "⚡ Operations Intelligence: 99.8% validation + predictive risk",
+        "Up to $1B monthly transaction volume",
+        "100,000 operations validations per month",
+        "10M content items analyzed monthly",
+        "Full UltraAccuracyEngine™ suite with meta-learning",
+        "Multi-witness cryptographic proofs",
+        "AI-powered risk prediction and scoring",
+        "Custom compliance frameworks (SOX, PCI, GDPR)",
+        "Dedicated support (2-hour SLA)",
+        "Custom dashboard with executive reporting",
+        "Premium API (200K requests/hour)",
+        "Weekly intelligence briefings",
+        "Custom integration assistance (10 hours)"
+      ]
+    },
+    {
+      "id": "intelligence-fortress",
+      "name": "Intelligence Fortress",
+      "priceMonthly": 49999,
+      "annualDiscount": 0.83,
+      "maxTransactionVolume": "Unlimited",
+      "maxOperationsValidated": "Unlimited",
+      "maxContentAnalyzed": "Unlimited",
+      "tagline": "Ultimate tri-pillar protection • Zero limits, maximum accuracy, complete coverage",
+      "features": [
+        "🧠 Transaction Intelligence: 99.9% accuracy + full AML automation",
+        "🔍 Content Intelligence: 98% detection + advanced threat modeling",
+        "⚡ Operations Intelligence: 99.8% validation + autonomous compliance",
+        "Unlimited transaction volume processing",
+        "Unlimited operations validations",
+        "Unlimited content analysis",
+        "Complete UltraAccuracyEngine™ with custom algorithms",
+        "White-glove setup and training",
+        "Dedicated infrastructure and IP ranges",
+        "Custom AI model training on your data",
+        "24/7 dedicated support with direct line",
+        "Fully customized dashboard and reporting",
+        "Unlimited API access with dedicated endpoints",
+        "Daily intelligence briefings",
+        "Unlimited integration assistance",
+        "Priority feature development"
       ]
     }
   ],
@@ -119,29 +157,41 @@
     }
   ],
   "tierLimits": {
-    "foundation": {
-      "receipts": 250,
-      "transactionValue": 1000,
+    "intelligence-foundation": {
+      "transactionVolume": "10M",
+      "operationsValidated": 5000,
+      "contentAnalyzed": "100K",
       "overageRates": {
-        "receipts": 0.50,
-        "transactionValue": 5.00
+        "transactionVolume": "Contact sales",
+        "operationsValidated": "Contact sales",
+        "contentAnalyzed": "Contact sales"
       }
     },
-    "professional": {
-      "receipts": 1000,
-      "transactionValue": 10000,
+    "intelligence-professional": {
+      "transactionVolume": "100M",
+      "operationsValidated": 25000,
+      "contentAnalyzed": "1M",
       "overageRates": {
-        "receipts": 0.25,
-        "transactionValue": 2.00
+        "transactionVolume": "Contact sales",
+        "operationsValidated": "Contact sales",
+        "contentAnalyzed": "Contact sales"
       }
     },
-    "enterprise": {
-      "receipts": 2500,
-      "transactionValue": 50000,
+    "intelligence-enterprise": {
+      "transactionVolume": "1B",
+      "operationsValidated": 100000,
+      "contentAnalyzed": "10M",
       "overageRates": {
-        "receipts": 0.15,
-        "transactionValue": 1.00
+        "transactionVolume": "Contact sales",
+        "operationsValidated": "Contact sales",
+        "contentAnalyzed": "Contact sales"
       }
+    },
+    "intelligence-fortress": {
+      "transactionVolume": "Unlimited",
+      "operationsValidated": "Unlimited",
+      "contentAnalyzed": "Unlimited",
+      "overageRates": null
     },
     "legal-shield": {
       "receipts": null,
@@ -155,26 +205,29 @@
     }
   },
   "upgradeIncentives": {
-    "foundation": {
-      "targetTier": "professional",
-      "message": "Save 60% by upgrading to Professional",
-      "discount": 0.60
+    "intelligence-foundation": {
+      "targetTier": "intelligence-professional",
+      "message": "4x transaction volume + advanced AML for just 4x price",
+      "valueMessage": "300% more value per dollar"
     },
-    "professional": {
-      "targetTier": "enterprise",
-      "message": "Save 40% by upgrading to Enterprise",
-      "discount": 0.40
+    "intelligence-professional": {
+      "targetTier": "intelligence-enterprise",
+      "message": "10x operations capacity + predictive risk for 2.5x price",
+      "valueMessage": "400% more value per dollar"
     },
-    "enterprise": {
-      "targetTier": "legal-shield",
-      "message": "Legal Shield eliminates all limits",
-      "discount": null
+    "intelligence-enterprise": {
+      "targetTier": "intelligence-fortress",
+      "message": "Unlimited everything + custom algorithms for 2.5x price",
+      "valueMessage": "Infinite scale, maximum protection"
     }
   },
   "legacy": {
-    "starter": "foundation",
-    "growth": "professional",
-    "business": "enterprise"
+    "starter": "intelligence-foundation",
+    "growth": "intelligence-professional",
+    "business": "intelligence-enterprise",
+    "foundation": "intelligence-foundation",
+    "professional": "intelligence-professional",
+    "enterprise": "intelligence-enterprise"
   },
   "platform": {
     "perMerchantPerMonth": 5,

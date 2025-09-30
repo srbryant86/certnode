@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import EnterpriseVolumeCalculator from '@/components/EnterpriseVolumeCalculator';
+import TriPillarIntelligenceCalculator from '@/components/TriPillarIntelligenceCalculator';
 
 export const metadata: Metadata = {
   title: 'Enterprise Platforms — CertNode',
@@ -63,18 +63,18 @@ export default function PlatformsPage() {
           </div>
         </div>
 
-        {/* Volume Calculator */}
+        {/* Tri-Pillar Intelligence Calculator */}
         <section className="py-16">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Calculate Your Enterprise Pricing
+                Calculate Your Tri-Pillar Intelligence ROI
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                See real-time pricing based on your monthly receipt volume. Drag the slider to find the perfect plan for your business scale.
+                See how much you'll save with 99%+ accuracy across transactions, operations, and content intelligence.
               </p>
             </div>
-            <EnterpriseVolumeCalculator />
+            <TriPillarIntelligenceCalculator />
           </div>
         </section>
 

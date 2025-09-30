@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from 'react'
 import PricingTable from './PricingTable'
-import EnterpriseSavingsCalculator from './EnterpriseSavingsCalculator'
+import TriPillarIntelligenceCalculator from './TriPillarIntelligenceCalculator'
 import pricingData from '../app/(data)/pricing.json'
 
 type TabId = 'standard' | 'custom' | 'high-ticket'
@@ -16,18 +16,18 @@ interface Tab {
 const tabs: Tab[] = [
   {
     id: 'standard',
-    label: 'Standard Plans',
-    description: 'Choose from our pre-configured plans'
+    label: 'Intelligence Tiers',
+    description: 'Tri-pillar accuracy for all scales'
   },
   {
     id: 'custom',
-    label: 'Custom Pricing',
-    description: 'Get pricing tailored to your volume'
+    label: 'ROI Calculator',
+    description: 'Calculate your savings across all pillars'
   },
   {
     id: 'high-ticket',
-    label: 'High-Ticket Protection',
-    description: 'Specialized dispute protection plans'
+    label: 'Legacy Protection',
+    description: 'Legacy receipt-based protection plans'
   }
 ]
 
@@ -62,48 +62,48 @@ export default function PricingTabs() {
           <div className="grid lg:grid-cols-4 gap-8">
             <div className="lg:col-span-3">
               <Suspense fallback={<div className="animate-pulse bg-gray-200 h-96 rounded-lg"></div>}>
-                <PricingTable tiers={pricingData.smbTiers} highlightTier="growth" />
+                <PricingTable tiers={pricingData.intelligenceTiers} highlightTier="intelligence-professional" />
               </Suspense>
             </div>
             <div className="lg:col-span-1">
               <div className="sticky top-6">
-                <EnterpriseSavingsCalculator />
+                <TriPillarIntelligenceCalculator />
               </div>
             </div>
           </div>
         )}
 
         {activeTab === 'custom' && (
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Get Custom Pricing for Your Volume
+                Calculate Your Tri-Pillar Intelligence ROI
               </h3>
               <p className="text-gray-600">
-                Use our calculator to see exactly what CertNode will cost for your specific needs.
-                Volumes over 2,500 receipts/month automatically qualify for enterprise pricing.
+                See exactly how much you'll save with 99%+ accuracy across transactions, operations, and content.
+                One prevented fraud incident typically pays for our service for 6+ months.
               </p>
             </div>
 
             <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
-              <EnterpriseSavingsCalculator />
+              <TriPillarIntelligenceCalculator />
 
               <div className="mt-8 pt-8 border-t border-gray-200">
                 <div className="grid md:grid-cols-3 gap-6 text-center">
                   <div>
-                    <div className="text-2xl font-bold text-blue-600 mb-2">🎯</div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Precise Pricing</h4>
-                    <p className="text-sm text-gray-600">Exact costs based on your volume and usage patterns</p>
+                    <div className="text-2xl font-bold text-blue-600 mb-2">🧠</div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Transaction Intelligence</h4>
+                    <p className="text-sm text-gray-600">99.9% fraud detection + 87% fewer false positives</p>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-green-600 mb-2">💰</div>
-                    <h4 className="font-semibold text-gray-900 mb-1">ROI Calculator</h4>
-                    <p className="text-sm text-gray-600">See your projected savings from dispute deflection</p>
+                    <div className="text-2xl font-bold text-green-600 mb-2">⚡</div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Operations Intelligence</h4>
+                    <p className="text-sm text-gray-600">99.8% compliance validation with mathematical proof</p>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-purple-600 mb-2">⚡</div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Instant Quote</h4>
-                    <p className="text-sm text-gray-600">Get pricing immediately or request enterprise consultation</p>
+                    <div className="text-2xl font-bold text-purple-600 mb-2">🔍</div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Content Intelligence</h4>
+                    <p className="text-sm text-gray-600">98% AI/manipulation detection accuracy</p>
                   </div>
                 </div>
               </div>
@@ -115,10 +115,10 @@ export default function PricingTabs() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                High-Ticket Dispute Protection
+                Legacy Receipt Protection
               </h3>
               <p className="text-gray-600 mb-6">
-                Specialized plans for businesses with high-value transactions and significant chargeback risk.
+                Traditional receipt-based protection plans. For maximum accuracy and ROI, we recommend our Tri-Pillar Intelligence platform above.
                 One saved $10,000 dispute pays for 4 months.
               </p>
             </div>
@@ -223,12 +223,14 @@ export default function PricingTabs() {
 
             <div className="mt-8 text-center">
               <p className="text-sm text-gray-600">
-                All high-ticket plans include white-glove onboarding, dedicated support, and revenue protection guarantees.
+                All legacy plans include white-glove onboarding, dedicated support, and revenue protection guarantees.
+                <br />
+                <strong>Recommended:</strong> Upgrade to <a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('standard'); }} className="text-blue-600 hover:text-blue-700 cursor-pointer">Tri-Pillar Intelligence</a> for 99%+ accuracy and maximum ROI.
                 <br />
                 <a href="mailto:contact@certnode.io" className="text-blue-600 hover:text-blue-700">
                   Contact us
                 </a>{' '}
-                for custom enterprise volumes above $10M annual sales.
+                for custom enterprise volumes.
               </p>
             </div>
           </div>

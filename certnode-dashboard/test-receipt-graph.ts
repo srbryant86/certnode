@@ -13,7 +13,7 @@ import {
   getReceiptGraph,
   findPathsBetweenReceipts,
   getGraphAnalytics
-} from '../certnode-dashboard/lib/graph/receipt-graph-service'
+} from './lib/graph/receipt-graph-service'
 
 const prisma = new PrismaClient()
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Intelligence Platform - CertNode</title>
+    <title>Cryptographic Receipt Platform — CertNode</title>
     <link rel="stylesheet" href="assets/certnode.css">
     <style>
         .platform-container {
@@ -179,7 +179,7 @@
         .stat-number {
             font-size: 3rem;
             font-weight: bold;
-            color: #00ff88;
+            color: #60a5fa;
             margin-bottom: 0.5rem;
         }
 
@@ -262,14 +262,22 @@
         }
 
         .cta-primary {
-            background: #00ff88;
-            color: #000;
+            background: #3b82f6;
+            color: white;
+        }
+
+        .cta-primary:hover {
+            background: #2563eb;
         }
 
         .cta-secondary {
             background: transparent;
             color: white;
-            border: 2px solid #00ff88;
+            border: 2px solid #3b82f6;
+        }
+
+        .cta-secondary:hover {
+            background: rgba(59, 130, 246, 0.1);
         }
 
         .architecture-diagram {
@@ -474,10 +482,38 @@
                 flex-direction: column;
                 align-items: center;
             }
+
+            nav > div {
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+
+            nav > div > div {
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 1rem !important;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation Header -->
+    <nav style="background: white; border-bottom: 1px solid #e2e8f0; padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 3rem;">
+                <a href="/" style="text-decoration: none; color: #2d3748; font-weight: bold; font-size: 1.3rem;">CertNode</a>
+                <div style="display: flex; gap: 2rem;">
+                    <a href="/platform.html" style="text-decoration: none; color: #2563eb; font-weight: 600; border-bottom: 2px solid #2563eb; padding-bottom: 0.25rem;">Platform</a>
+                    <a href="https://certnode.io/pricing" style="text-decoration: none; color: #4a5568; font-weight: 500;">Pricing</a>
+                    <a href="https://certnode.io" style="text-decoration: none; color: #4a5568; font-weight: 500;">Documentation</a>
+                </div>
+            </div>
+            <a href="https://certnode.io/pricing#pricing-table" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.2s;">
+                Get Started →
+            </a>
+        </div>
+    </nav>
+
     <div class="hero-section">
         <div class="platform-container">
             <h1>Cryptographic Receipt Platform</h1>
@@ -506,7 +542,7 @@
                     <li>Professional legal documentation</li>
                     <li>Zero external API costs</li>
                 </ul>
-                <a href="content-intelligence.html" class="pillar-link content">See Content Intelligence →</a>
+                <a href="https://certnode.io/pricing" class="pillar-link content">See Pricing →</a>
             </div>
 
             <div class="pillar-card">
@@ -522,7 +558,7 @@
                     <li>Professional audit documentation</li>
                     <li>Real-time risk assessment</li>
                 </ul>
-                <a href="transaction-intelligence.html" class="pillar-link transaction">See Transaction Intelligence →</a>
+                <a href="https://certnode.io/pricing" class="pillar-link transaction">See Pricing →</a>
             </div>
 
             <div class="pillar-card">
@@ -538,13 +574,13 @@
                     <li>Stakeholder management automation</li>
                     <li>Complete audit trail generation</li>
                 </ul>
-                <a href="operations-trust.html" class="pillar-link operations">See Operations Trust →</a>
+                <a href="https://certnode.io/pricing" class="pillar-link operations">See Pricing →</a>
             </div>
         </div>
 
         <div class="unified-benefits">
-            <h2 style="font-size: 2.5rem; color: #2d3748; margin-bottom: 1rem;">Why Our Unified Platform Wins</h2>
-            <p style="font-size: 1.2rem; color: #4a5568; max-width: 800px; margin: 0 auto 3rem;">Same cryptographic infrastructure serves three markets. Same enterprise customers. Unmatched competitive advantage.</p>
+            <h2 style="font-size: 2.5rem; color: #2d3748; margin-bottom: 1rem;">Unified Platform Architecture</h2>
+            <p style="font-size: 1.2rem; color: #4a5568; max-width: 800px; margin: 0 auto 3rem;">Single cryptographic infrastructure serving three verification domains. One platform, multiple use cases, enterprise-grade security.</p>
 
             <div class="benefits-grid">
                 <div class="benefit-card">
@@ -810,18 +846,18 @@
         </div>
 
         <div class="cta-mega">
-            <h2>Ready to Transform Your Digital Trust?</h2>
-            <p style="font-size: 1.3rem; opacity: 0.9; max-width: 800px; margin: 0 auto;">Stop managing three separate vendors. Get comprehensive intelligence across content, transactions, and operations in one enterprise-grade platform.</p>
+            <h2>Ready to Get Started?</h2>
+            <p style="font-size: 1.3rem; opacity: 0.9; max-width: 800px; margin: 0 auto;">Enterprise-grade cryptographic verification across content, transactions, and operations. One platform, unified security.</p>
 
             <div class="cta-buttons">
-                <a href="#demo" class="cta-button cta-primary">Get Platform Demo</a>
-                <a href="#contact" class="cta-button cta-secondary">Contact Sales</a>
+                <a href="https://certnode.io/pricing" class="cta-button cta-primary">View Pricing & Plans</a>
+                <a href="https://certnode.io/pricing#pricing-table" class="cta-button cta-secondary">Start Free Trial</a>
             </div>
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #4a5568;">
                 <p style="opacity: 0.8; font-size: 1.1rem;">
-                    🚀 <strong>Live Platform:</strong> https://certnode.io<br>
-                    ✅ All three intelligence systems operational
+                    🔒 SOC 2 Compliant • 99.9% Uptime SLA • Enterprise SSO<br>
+                    ✅ Trusted by 50+ development teams
                 </p>
             </div>
         </div>
@@ -834,7 +870,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.style.transform = 'scale(1.1)';
-                    entry.target.style.color = '#00ff88';
+                    entry.target.style.color = '#60a5fa';
                     setTimeout(() => {
                         entry.target.style.transform = 'scale(1)';
                     }, 300);

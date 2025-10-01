@@ -272,18 +272,192 @@
         }
 
         .architecture-diagram {
-            background: #f7fafc;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
             padding: 3rem;
-            border-radius: 15px;
+            border-radius: 20px;
             margin: 3rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
         }
 
-        .diagram-tree {
-            font-family: monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
+        .receipt-graph-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .graph-canvas {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            overflow: visible;
+        }
+
+        .graph-node {
+            position: absolute;
+            background: white;
+            border: 2px solid #4299e1;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-width: 180px;
+            text-align: center;
+        }
+
+        .graph-node:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 24px rgba(66, 153, 225, 0.25);
+            z-index: 10;
+        }
+
+        .graph-node.root {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .graph-node.domain {
+            border-color: #48bb78;
+            background: linear-gradient(135deg, #ffffff 0%, #f0fff4 100%);
+        }
+
+        .graph-node.merchant {
+            border-color: #ed8936;
+            background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%);
+        }
+
+        .graph-node.receipt {
+            border-color: #9f7aea;
+            background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+        }
+
+        .graph-node .node-title {
+            font-weight: bold;
             color: #2d3748;
-            white-space: pre;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .graph-node.root .node-title {
+            color: white;
+        }
+
+        .graph-node .node-subtitle {
+            font-size: 0.75rem;
+            color: #718096;
+            margin-top: 0.25rem;
+        }
+
+        .graph-node.root .node-subtitle {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .graph-connection {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .graph-connection line {
+            stroke: #cbd5e0;
+            stroke-width: 2;
+            stroke-dasharray: 5, 5;
+        }
+
+        .graph-connection.active line {
+            stroke: #4299e1;
+            stroke-width: 3;
+            stroke-dasharray: none;
+            animation: flowAnimation 2s linear infinite;
+        }
+
+        @keyframes flowAnimation {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: 20; }
+        }
+
+        .graph-connection line.solid {
+            stroke-dasharray: none;
+        }
+
+        .graph-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid;
+        }
+
+        .legend-box.root {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+        }
+
+        .legend-box.domain {
+            background: linear-gradient(135deg, #ffffff 0%, #f0fff4 100%);
+            border-color: #48bb78;
+        }
+
+        .legend-box.merchant {
+            background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%);
+            border-color: #ed8936;
+        }
+
+        .legend-box.receipt {
+            background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+            border-color: #9f7aea;
+        }
+
+        .graph-description {
+            background: #edf2f7;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            border-left: 4px solid #4299e1;
+        }
+
+        .graph-description h4 {
+            margin: 0 0 0.5rem 0;
+            color: #2d3748;
+            font-size: 1.1rem;
+        }
+
+        .graph-description p {
+            margin: 0;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .graph-canvas {
+                height: 800px;
+            }
+
+            .graph-node {
+                min-width: 140px;
+                padding: 0.75rem 1rem;
+                font-size: 0.85rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -493,32 +667,145 @@
         </div>
 
         <div class="architecture-diagram">
-            <h3 style="text-align: center; color: #2d3748; margin-bottom: 2rem;">Platform Architecture</h3>
-            <div class="diagram-tree">CertNode Tri-Pillar Intelligence Platform
-├── 🎨 Content Intelligence Engine (10/10)
-│   ├── Multi-Detector AI Analysis (92% accuracy)
-│   ├── Metadata & Manipulation Detection
-│   ├── Forensic Evidence Compilation
-│   └── Professional Legal Documentation
-│
-├── 💰 Transaction Intelligence Engine (10/10)
-│   ├── 10-Layer Financial Validation
-│   ├── Real-time Fraud Detection (95% accuracy)
-│   ├── Multi-Framework Compliance (AML/BSA/SOX/etc.)
-│   └── Audit-Ready Compliance Reports
-│
-├── 🔧 Operations Trust Intelligence Engine (10/10)
-│   ├── 10-Layer Operational Validation
-│   ├── Multi-Type Operations (Incident/Build/Policy/etc.)
-│   ├── Stakeholder Management & Notifications
-│   └── Regulatory Compliance Automation
-│
-└── 🏗️ Unified Infrastructure
-    ├── 10-Layer Core Validation System
-    ├── Cryptographic Receipt Generation (ES256/JCS)
-    ├── Professional Reporting Engine
-    ├── Real-time Monitoring & Health
-    └── Enterprise Authentication & Authorization</div>
+            <h3 style="text-align: center; color: #2d3748; margin-bottom: 1rem; font-size: 2rem;">The CertNode Receipt Graph</h3>
+            <p style="text-align: center; color: #4a5568; margin-bottom: 2rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+                Our unique cross-domain verification network creates an immutable trust graph. Each receipt cryptographically links to others, creating a tamper-evident web that's impossible to forge.
+            </p>
+
+            <div class="receipt-graph-container">
+                <svg class="graph-canvas" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+                    <!-- Connections -->
+                    <g class="graph-connections">
+                        <!-- Root to Domains -->
+                        <line x1="500" y1="80" x2="250" y2="200" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5,5"/>
+                        <line x1="500" y1="80" x2="750" y2="200" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5,5"/>
+
+                        <!-- Domain 1 to Merchants -->
+                        <line x1="250" y1="240" x2="150" y2="360" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5,5"/>
+                        <line x1="250" y1="240" x2="350" y2="360" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5,5"/>
+
+                        <!-- Domain 2 to Merchants -->
+                        <line x1="750" y1="240" x2="650" y2="360" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5,5"/>
+                        <line x1="750" y1="240" x2="850" y2="360" stroke="#cbd5e0" stroke-width="2" stroke-dasharray="5,5"/>
+
+                        <!-- Merchants to Receipts -->
+                        <line x1="150" y1="400" x2="100" y2="520" stroke="#4299e1" stroke-width="3"/>
+                        <line x1="150" y1="400" x2="200" y2="520" stroke="#4299e1" stroke-width="3"/>
+                        <line x1="350" y1="400" x2="300" y2="520" stroke="#4299e1" stroke-width="3"/>
+                        <line x1="350" y1="400" x2="400" y2="520" stroke="#4299e1" stroke-width="3"/>
+                        <line x1="650" y1="400" x2="600" y2="520" stroke="#4299e1" stroke-width="3"/>
+                        <line x1="650" y1="400" x2="700" y2="520" stroke="#4299e1" stroke-width="3"/>
+                        <line x1="850" y1="400" x2="800" y2="520" stroke="#4299e1" stroke-width="3"/>
+                        <line x1="850" y1="400" x2="900" y2="520" stroke="#4299e1" stroke-width="3"/>
+
+                        <!-- Cross-domain connections (the magic) -->
+                        <line x1="200" y1="520" x2="600" y2="520" stroke="#9f7aea" stroke-width="2" stroke-dasharray="3,3" opacity="0.6"/>
+                        <line x1="400" y1="520" x2="800" y2="520" stroke="#9f7aea" stroke-width="2" stroke-dasharray="3,3" opacity="0.6"/>
+                    </g>
+                </svg>
+
+                <!-- Nodes overlay -->
+                <div class="graph-node root" style="top: 40px; left: 50%; transform: translateX(-50%);">
+                    <div class="node-title">🏛️ CertNode Root</div>
+                    <div class="node-subtitle">Trust Anchor</div>
+                </div>
+
+                <div class="graph-node domain" style="top: 180px; left: 15%;">
+                    <div class="node-title">🌐 stripe.com</div>
+                    <div class="node-subtitle">Domain Receipt</div>
+                </div>
+
+                <div class="graph-node domain" style="top: 180px; right: 15%;">
+                    <div class="node-title">🌐 shopify.com</div>
+                    <div class="node-subtitle">Domain Receipt</div>
+                </div>
+
+                <div class="graph-node merchant" style="top: 320px; left: 5%;">
+                    <div class="node-title">🏪 Merchant A</div>
+                    <div class="node-subtitle">Stripe Account</div>
+                </div>
+
+                <div class="graph-node merchant" style="top: 320px; left: 27%;">
+                    <div class="node-title">🏪 Merchant B</div>
+                    <div class="node-subtitle">Stripe Account</div>
+                </div>
+
+                <div class="graph-node merchant" style="top: 320px; left: 55%;">
+                    <div class="node-title">🏪 Merchant C</div>
+                    <div class="node-subtitle">Shopify Store</div>
+                </div>
+
+                <div class="graph-node merchant" style="top: 320px; right: 5%;">
+                    <div class="node-title">🏪 Merchant D</div>
+                    <div class="node-subtitle">Shopify Store</div>
+                </div>
+
+                <div class="graph-node receipt" style="top: 480px; left: 2%;">
+                    <div class="node-title">🧾 Txn #1</div>
+                    <div class="node-subtitle">$1,234</div>
+                </div>
+
+                <div class="graph-node receipt" style="top: 480px; left: 13%;">
+                    <div class="node-title">🧾 Txn #2</div>
+                    <div class="node-subtitle">$567</div>
+                </div>
+
+                <div class="graph-node receipt" style="top: 480px; left: 24%;">
+                    <div class="node-title">🧾 Txn #3</div>
+                    <div class="node-subtitle">$890</div>
+                </div>
+
+                <div class="graph-node receipt" style="top: 480px; left: 35%;">
+                    <div class="node-title">🧾 Txn #4</div>
+                    <div class="node-subtitle">$234</div>
+                </div>
+
+                <div class="graph-node receipt" style="top: 480px; left: 53%;">
+                    <div class="node-title">🧾 Txn #5</div>
+                    <div class="node-subtitle">$456</div>
+                </div>
+
+                <div class="graph-node receipt" style="top: 480px; left: 64%;">
+                    <div class="node-title">🧾 Txn #6</div>
+                    <div class="node-subtitle">$789</div>
+                </div>
+
+                <div class="graph-node receipt" style="top: 480px; left: 75%;">
+                    <div class="node-title">🧾 Txn #7</div>
+                    <div class="node-subtitle">$123</div>
+                </div>
+
+                <div class="graph-node receipt" style="top: 480px; right: 2%;">
+                    <div class="node-title">🧾 Txn #8</div>
+                    <div class="node-subtitle">$345</div>
+                </div>
+
+                <div class="graph-legend">
+                    <div class="legend-item">
+                        <div class="legend-box root"></div>
+                        <span>Root Trust Anchor</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box domain"></div>
+                        <span>Domain Receipts</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box merchant"></div>
+                        <span>Merchant Accounts</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box receipt"></div>
+                        <span>Transaction Receipts</span>
+                    </div>
+                </div>
+
+                <div class="graph-description">
+                    <h4>🔒 Why This Graph Is Unique</h4>
+                    <p>
+                        <strong>Cross-Domain Verification:</strong> Unlike traditional systems where each merchant operates in isolation, our Receipt Graph cryptographically links transactions across different domains and platforms. When Txn #2 references Txn #5, it creates tamper-evident proof that both transactions existed at the same point in time - even though they're from different payment processors. This makes fraud exponentially harder: attackers would need to compromise multiple independent systems simultaneously to forge a single receipt.
+                    </p>
+                </div>
+            </div>
         </div>
 
         <div class="cta-mega">
@@ -569,6 +856,128 @@
                 card.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
             });
         });
+
+        // Interactive Receipt Graph
+        const graphNodes = document.querySelectorAll('.graph-node');
+        const svgLines = document.querySelectorAll('.graph-connections line');
+
+        // Create a mapping of nodes to their connected lines
+        const nodeConnections = new Map();
+
+        // Map each node to its connections based on position
+        graphNodes.forEach((node, index) => {
+            const connections = [];
+            const rect = node.getBoundingClientRect();
+
+            svgLines.forEach(line => {
+                const x1 = parseFloat(line.getAttribute('x1'));
+                const y1 = parseFloat(line.getAttribute('y1'));
+                const x2 = parseFloat(line.getAttribute('x2'));
+                const y2 = parseFloat(line.getAttribute('y2'));
+
+                // Check if line connects to this node (approximate position matching)
+                const nodeLeft = parseFloat(node.style.left || 0);
+                const nodeTop = parseFloat(node.style.top || 0);
+
+                connections.push(line);
+            });
+
+            nodeConnections.set(node, connections);
+        });
+
+        // Add hover effects
+        graphNodes.forEach(node => {
+            node.addEventListener('mouseenter', () => {
+                // Highlight connected lines
+                const connections = nodeConnections.get(node);
+                if (connections) {
+                    connections.forEach(line => {
+                        line.style.stroke = '#4299e1';
+                        line.style.strokeWidth = '4';
+                        line.style.opacity = '1';
+                    });
+                }
+
+                // Show tooltip or details
+                node.style.zIndex = '100';
+            });
+
+            node.addEventListener('mouseleave', () => {
+                // Reset lines
+                const connections = nodeConnections.get(node);
+                if (connections) {
+                    connections.forEach(line => {
+                        const defaultColor = line.getAttribute('stroke');
+                        const defaultWidth = line.getAttribute('stroke-width');
+                        line.style.stroke = defaultColor;
+                        line.style.strokeWidth = defaultWidth;
+                        line.style.opacity = line.getAttribute('opacity') || '1';
+                    });
+                }
+
+                node.style.zIndex = 'auto';
+            });
+        });
+
+        // Animate graph on scroll into view
+        const graphCanvas = document.querySelector('.graph-canvas');
+        const graphObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Animate nodes appearing
+                    graphNodes.forEach((node, index) => {
+                        setTimeout(() => {
+                            node.style.animation = 'fadeInScale 0.5s ease-out forwards';
+                        }, index * 50);
+                    });
+
+                    // Animate lines drawing
+                    svgLines.forEach((line, index) => {
+                        setTimeout(() => {
+                            const length = Math.sqrt(
+                                Math.pow(parseFloat(line.getAttribute('x2')) - parseFloat(line.getAttribute('x1')), 2) +
+                                Math.pow(parseFloat(line.getAttribute('y2')) - parseFloat(line.getAttribute('y1')), 2)
+                            );
+                            line.style.strokeDasharray = `${length}`;
+                            line.style.strokeDashoffset = `${length}`;
+                            line.style.animation = 'drawLine 1s ease-out forwards';
+                        }, 300 + index * 30);
+                    });
+
+                    graphObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        if (graphCanvas) {
+            graphObserver.observe(graphCanvas);
+        }
+
+        // Add keyframe animations via style tag
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInScale {
+                from {
+                    opacity: 0;
+                    transform: scale(0.8);
+                }
+                to {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            @keyframes drawLine {
+                to {
+                    stroke-dashoffset: 0;
+                }
+            }
+
+            .graph-node {
+                opacity: 0;
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>

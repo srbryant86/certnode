@@ -4,8 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cryptographic Receipt Platform — CertNode</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Enterprise cryptographic receipt platform connecting transactions, content, and operations in one verifiable system. Cross-domain verification network with audit-ready documentation.">
+    <meta name="keywords" content="cryptographic receipts, transaction verification, content certification, operations compliance, blockchain receipts, audit trail">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Cryptographic Receipt Platform — CertNode">
+    <meta property="og:description" content="Enterprise cryptographic receipt platform with cross-domain verification. Connect transactions, content, and operations in one system.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://certnode.io/platform">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cryptographic Receipt Platform — CertNode">
+    <meta name="twitter:description" content="Enterprise cryptographic receipt platform with cross-domain verification network.">
+
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="assets/certnode.css">
     <style>
+        * {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
         .platform-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -70,8 +100,12 @@
         }
 
         .pillar-icon {
-            font-size: 4rem;
             margin-bottom: 1rem;
+        }
+
+        .pillar-icon svg {
+            width: 64px;
+            height: 64px;
         }
 
         .pillar-title {
@@ -152,8 +186,12 @@
         }
 
         .benefit-icon {
-            font-size: 2.5rem;
             margin-bottom: 1rem;
+        }
+
+        .benefit-icon svg {
+            width: 48px;
+            height: 48px;
         }
 
         .stats-showcase {
@@ -524,13 +562,18 @@
                 <div class="rating-badge">✅ Operations Attestation</div>
             </div>
             <p style="font-size: 1.2rem; opacity: 0.9; max-width: 800px; margin: 0 auto;">Enterprise-grade cryptographic verification for transactions, content authenticity, and operational compliance</p>
+            <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 1rem; color: #e0e7ff;">Currently in beta • Actively onboarding early access partners</p>
         </div>
     </div>
 
     <div class="platform-container">
         <div class="tri-pillar-grid">
             <div class="pillar-card">
-                <div class="pillar-icon">🎨</div>
+                <div class="pillar-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
+                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
                 <div class="pillar-title">Content Intelligence</div>
                 <div class="pillar-description">
                     Transform content verification from guesswork into forensic-grade analysis with multi-detector AI systems
@@ -546,7 +589,11 @@
             </div>
 
             <div class="pillar-card">
-                <div class="pillar-icon">💰</div>
+                <div class="pillar-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#48bb78" stroke-width="2">
+                        <path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3v-8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                    </svg>
+                </div>
                 <div class="pillar-title">Transaction Intelligence</div>
                 <div class="pillar-description">
                     Comprehensive financial validation with real-time fraud detection and automated compliance across 6 regulatory frameworks
@@ -562,7 +609,11 @@
             </div>
 
             <div class="pillar-card">
-                <div class="pillar-icon">🔧</div>
+                <div class="pillar-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#ed8936" stroke-width="2">
+                        <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
                 <div class="pillar-title">Operations Trust</div>
                 <div class="pillar-description">
                     Intelligent operational compliance automation covering incident management, build provenance, and policy changes
@@ -584,37 +635,63 @@
 
             <div class="benefits-grid">
                 <div class="benefit-card">
-                    <div class="benefit-icon">🎯</div>
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <circle cx="12" cy="12" r="6"/>
+                            <circle cx="12" cy="12" r="2"/>
+                        </svg>
+                    </div>
                     <h3>3x Market Size</h3>
                     <p>Content authenticity, financial transactions, and operational compliance - three separate markets, one unified platform</p>
                 </div>
 
                 <div class="benefit-card">
-                    <div class="benefit-icon">💰</div>
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                            <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
                     <h3>Zero External Costs</h3>
                     <p>Everything runs in-house while competitors pay per API call. 100% profit margin on intelligence features</p>
                 </div>
 
                 <div class="benefit-card">
-                    <div class="benefit-icon">🏆</div>
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                            <path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                        </svg>
+                    </div>
                     <h3>Market Leadership</h3>
                     <p>Industry's only platform connecting transactions, content, and operations in one cryptographic system</p>
                 </div>
 
                 <div class="benefit-card">
-                    <div class="benefit-icon">📊</div>
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2">
+                            <path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 13a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1v-7z"/>
+                        </svg>
+                    </div>
                     <h3>Unified Platform</h3>
                     <p>One platform for all verification needs. Single integration, multiple use cases</p>
                 </div>
 
                 <div class="benefit-card">
-                    <div class="benefit-icon">🛡️</div>
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+                            <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
                     <h3>Enterprise-Grade</h3>
                     <p>Professional reporting suitable for compliance and legal use across all systems</p>
                 </div>
 
                 <div class="benefit-card">
-                    <div class="benefit-icon">⚡</div>
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
                     <h3>Unified Architecture</h3>
                     <p>Consistent design patterns and quality standards across all three intelligence systems</p>
                 </div>
@@ -842,7 +919,138 @@
                         <strong>Cross-Domain Verification:</strong> Unlike traditional systems where each merchant operates in isolation, our Receipt Graph cryptographically links transactions across different domains and platforms. When Txn #2 references Txn #5, it creates tamper-evident proof that both transactions existed at the same point in time - even though they're from different payment processors. This makes fraud exponentially harder: attackers would need to compromise multiple independent systems simultaneously to forge a single receipt.
                     </p>
                 </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button id="animateGraphBtn" style="background: #2563eb; color: white; border: none; padding: 1rem 2rem; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); transition: all 0.2s;">
+                        ▶ Play Animation
+                    </button>
+                </div>
             </div>
+        </div>
+
+        <!-- Pricing Preview -->
+        <div style="background: white; padding: 4rem 2rem; border-radius: 20px; margin: 4rem 0;">
+            <h2 style="text-align: center; color: #2d3748; margin-bottom: 1rem; font-size: 2.5rem;">Simple, Transparent Pricing</h2>
+            <p style="text-align: center; color: #4a5568; margin-bottom: 3rem; font-size: 1.2rem;">Start free, scale as you grow. No hidden fees.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
+                <!-- Foundation -->
+                <div style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 15px; padding: 2rem; border: 2px solid #e2e8f0;">
+                    <h3 style="font-size: 1.5rem; font-weight: bold; color: #2d3748; margin-bottom: 0.5rem;">Foundation</h3>
+                    <p style="color: #718096; font-size: 0.9rem; margin-bottom: 1.5rem;">For startups</p>
+                    <div style="margin-bottom: 1.5rem;">
+                        <span style="font-size: 3rem; font-weight: bold; color: #2d3748;">$199</span>
+                        <span style="color: #718096; font-size: 1rem;">/month</span>
+                    </div>
+                    <ul style="list-style: none; padding: 0; margin-bottom: 2rem; color: #4a5568;">
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                            <svg style="width: 20px; height: 20px; margin-right: 0.75rem;" fill="none" stroke="#48bb78" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"/>
+                            </svg>
+                            10K receipts/month
+                        </li>
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                            <svg style="width: 20px; height: 20px; margin-right: 0.75rem;" fill="none" stroke="#48bb78" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Basic Receipt Graph
+                        </li>
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                            <svg style="width: 20px; height: 20px; margin-right: 0.75rem;" fill="none" stroke="#48bb78" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Email support
+                        </li>
+                    </ul>
+                    <a href="https://certnode.io/pricing" style="display: block; text-align: center; background: white; border: 2px solid #2563eb; color: #2563eb; padding: 1rem; border-radius: 10px; text-decoration: none; font-weight: 600; transition: all 0.2s;">
+                        View Details
+                    </a>
+                </div>
+
+                <!-- Professional -->
+                <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 15px; padding: 2rem; border: 3px solid #2563eb; position: relative; transform: scale(1.05); box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2);">
+                    <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 0.5rem 1.5rem; border-radius: 20px; font-size: 0.85rem; font-weight: bold; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);">
+                        ⭐ MOST POPULAR
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-weight: bold; color: #1e3a8a; margin-bottom: 0.5rem;">Professional</h3>
+                    <p style="color: #1e40af; font-size: 0.9rem; margin-bottom: 1.5rem;">For growing businesses</p>
+                    <div style="margin-bottom: 1.5rem;">
+                        <span style="font-size: 3rem; font-weight: bold; color: #1e3a8a;">$499</span>
+                        <span style="color: #1e40af; font-size: 1rem;">/month</span>
+                    </div>
+                    <ul style="list-style: none; padding: 0; margin-bottom: 2rem; color: #1e40af;">
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                            <svg style="width: 20px; height: 20px; margin-right: 0.75rem;" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"/>
+                            </svg>
+                            100K receipts/month
+                        </li>
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                            <svg style="width: 20px; height: 20px; margin-right: 0.75rem;" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Full Receipt Graph
+                        </li>
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                            <svg style="width: 20px; height: 20px; margin-right: 0.75rem;" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Priority chat support
+                        </li>
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                            <svg style="width: 20px; height: 20px; margin-right: 0.75rem;" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"/>
+                            </svg>
+                            99.9% SLA
+                        </li>
+                    </ul>
+                    <a href="https://certnode.io/pricing" style="display: block; text-align: center; background: #2563eb; color: white; padding: 1rem; border-radius: 10px; text-decoration: none; font-weight: 600; transition: all 0.2s; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);">
+                        Start Free Trial
+                    </a>
+                </div>
+
+                <!-- Enterprise -->
+                <div style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 15px; padding: 2rem; border: 2px solid #e2e8f0;">
+                    <h3 style="font-size: 1.5rem; font-weight: bold; color: #2d3748; margin-bottom: 0.5rem;">Enterprise</h3>
+                    <p style="color: #718096; font-size: 0.9rem; margin-bottom: 1.5rem;">For scale</p>
+                    <div style="margin-bottom: 1.5rem;">
+                        <span style="font-size: 2rem; font-weight: bold; color: #2d3748;">Custom</span>
+                    </div>
+                    <ul style="list-style: none; padding: 0; margin-bottom: 2rem; color: #4a5568;">
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                            <svg style="width: 20px; height: 20px; margin-right: 0.75rem;" fill="none" stroke="#48bb78" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Unlimited receipts
+                        </li>
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                            <svg style="width: 20px; height: 20px; margin-right: 0.75rem;" fill="none" stroke="#48bb78" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Custom integrations
+                        </li>
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                            <svg style="width: 20px; height: 20px; margin-right: 0.75rem;" fill="none" stroke="#48bb78" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Dedicated support
+                        </li>
+                        <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                            <svg style="width: 20px; height: 20px; margin-right: 0.75rem;" fill="none" stroke="#48bb78" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"/>
+                            </svg>
+                            99.99% SLA
+                        </li>
+                    </ul>
+                    <a href="https://certnode.io/pricing" style="display: block; text-align: center; background: white; border: 2px solid #2563eb; color: #2563eb; padding: 1rem; border-radius: 10px; text-decoration: none; font-weight: 600; transition: all 0.2s;">
+                        Contact Sales
+                    </a>
+                </div>
+            </div>
+
+            <p style="text-align: center; color: #718096; margin-top: 2rem; font-size: 0.95rem;">
+                All plans include 60-day money-back guarantee • Cancel anytime • No credit card required for trial
+            </p>
         </div>
 
         <div class="cta-mega">
@@ -856,12 +1064,80 @@
 
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #4a5568;">
                 <p style="opacity: 0.8; font-size: 1.1rem;">
-                    🔒 SOC 2 Compliant • 99.9% Uptime SLA • Enterprise SSO<br>
-                    ✅ Trusted by 50+ development teams
+                    🔒 SOC 2 Ready • 99.9% Uptime Target • Enterprise SSO<br>
+                    ✅ Beta program actively onboarding partners
                 </p>
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer style="background: #1a202c; color: white; padding: 4rem 2rem 2rem;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; margin-bottom: 3rem;">
+                <!-- Company -->
+                <div>
+                    <h4 style="font-weight: bold; margin-bottom: 1rem; font-size: 1.1rem;">CertNode</h4>
+                    <p style="color: #a0aec0; font-size: 0.9rem; line-height: 1.6;">
+                        Cryptographic receipt platform for enterprise-grade transaction verification.
+                    </p>
+                </div>
+
+                <!-- Product -->
+                <div>
+                    <h4 style="font-weight: 600; margin-bottom: 1rem; color: #e2e8f0;">Product</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="/platform.html" style="color: #a0aec0; text-decoration: none; font-size: 0.9rem;">Platform</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="https://certnode.io/pricing" style="color: #a0aec0; text-decoration: none; font-size: 0.9rem;">Pricing</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="https://certnode.io" style="color: #a0aec0; text-decoration: none; font-size: 0.9rem;">Documentation</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Company -->
+                <div>
+                    <h4 style="font-weight: 600; margin-bottom: 1rem; color: #e2e8f0;">Company</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="https://certnode.io/trust" style="color: #a0aec0; text-decoration: none; font-size: 0.9rem;">Trust Center</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="https://certnode.io" style="color: #a0aec0; text-decoration: none; font-size: 0.9rem;">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h4 style="font-weight: 600; margin-bottom: 1rem; color: #e2e8f0;">Legal</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="https://certnode.io" style="color: #a0aec0; text-decoration: none; font-size: 0.9rem;">Privacy Policy</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="https://certnode.io" style="color: #a0aec0; text-decoration: none; font-size: 0.9rem;">Terms of Service</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="border-top: 1px solid #2d3748; padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <p style="color: #718096; font-size: 0.85rem; margin: 0;">
+                    © 2025 CertNode. All rights reserved.
+                </p>
+                <div style="display: flex; gap: 1.5rem;">
+                    <span style="color: #718096; font-size: 0.85rem;">🔒 SOC 2 Ready</span>
+                    <span style="color: #718096; font-size: 0.85rem;">🛡️ Enterprise Security</span>
+                    <span style="color: #718096; font-size: 0.85rem;">⚡ 99.9% Uptime</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // Animation for stats when they come into view
@@ -1015,6 +1291,49 @@
             }
         `;
         document.head.appendChild(style);
+
+        // Play Animation Button
+        const animateBtn = document.getElementById('animateGraphBtn');
+        if (animateBtn) {
+            animateBtn.addEventListener('click', () => {
+                // Reset all nodes and lines
+                graphNodes.forEach(node => {
+                    node.style.opacity = '0';
+                    node.style.animation = 'none';
+                });
+
+                svgLines.forEach(line => {
+                    line.style.strokeDasharray = '';
+                    line.style.strokeDashoffset = '';
+                    line.style.animation = 'none';
+                });
+
+                // Trigger reflow
+                void animateBtn.offsetWidth;
+
+                // Animate nodes
+                graphNodes.forEach((node, index) => {
+                    setTimeout(() => {
+                        node.style.animation = 'fadeInScale 0.5s ease-out forwards';
+                    }, index * 50);
+                });
+
+                // Animate lines
+                svgLines.forEach((line, index) => {
+                    setTimeout(() => {
+                        const length = Math.sqrt(
+                            Math.pow(parseFloat(line.getAttribute('x2')) - parseFloat(line.getAttribute('x1')), 2) +
+                            Math.pow(parseFloat(line.getAttribute('y2')) - parseFloat(line.getAttribute('y1')), 2)
+                        );
+                        line.style.strokeDasharray = `${length}`;
+                        line.style.strokeDashoffset = `${length}`;
+                        line.style.animation = 'drawLine 1s ease-out forwards';
+                    }, 300 + index * 30);
+                });
+
+                animateBtn.textContent = '↻ Replay Animation';
+            });
+        }
     </script>
 </body>
 </html>

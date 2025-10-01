@@ -26,8 +26,8 @@ const tabs: Tab[] = [
   },
   {
     id: 'high-ticket',
-    label: 'Legacy Plans',
-    description: 'Previous generation protection plans'
+    label: 'Dispute Shield',
+    description: 'High-touch dispute protection for businesses'
   }
 ]
 
@@ -116,10 +116,14 @@ export default function PricingTabs() {
             <div className="bg-gray-50 rounded-xl p-8">
               <div className="text-center mb-8">
                 <h4 className="text-xl font-bold text-gray-900 mb-2">
-                  Advisory Intelligence Add-Ons
+                  Optional: ML-Powered Risk Signals
                 </h4>
-                <p className="text-gray-600">
-                  Optional ML-powered advisory signals. Must bundle with Core Trust. Advisory use only - not source of truth.
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  <strong>Advisory only (not deterministic proof):</strong> Get AI-powered fraud detection, content authenticity scoring, and anomaly alerts.
+                  <br />
+                  These are <em>estimates</em> to help you make decisions—they're not cryptographic proof and should not be your only source of truth.
+                  <br />
+                  <span className="text-sm text-gray-500 mt-2 inline-block">Must be bundled with Core Trust receipts. Cannot be purchased standalone.</span>
                 </p>
               </div>
 
@@ -152,11 +156,12 @@ export default function PricingTabs() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Legacy Receipt Protection
+                Dispute Shield - White-Glove Protection
               </h3>
               <p className="text-gray-600 mb-6">
-                Traditional receipt-based protection plans. For maximum accuracy and ROI, we recommend our Tri-Pillar Intelligence platform above.
-                One saved $10,000 dispute pays for 4 months.
+                Complete dispute defense with dedicated support and performance guarantees.
+                <br />
+                One saved $10,000 dispute pays for 4 months of Pro tier.
               </p>
             </div>
 
@@ -260,14 +265,12 @@ export default function PricingTabs() {
 
             <div className="mt-8 text-center">
               <p className="text-sm text-gray-600">
-                All legacy plans include white-glove onboarding, dedicated support, and revenue protection guarantees.
-                <br />
-                <strong>Recommended:</strong> Upgrade to <a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('standard'); }} className="text-blue-600 hover:text-blue-700 cursor-pointer">Tri-Pillar Intelligence</a> for 99%+ accuracy and maximum ROI.
+                Both tiers include white-glove onboarding, dedicated support, and performance guarantees.
                 <br />
                 <a href="mailto:contact@certnode.io" className="text-blue-600 hover:text-blue-700">
                   Contact us
                 </a>{' '}
-                for custom enterprise volumes.
+                for custom enterprise volumes or multi-year contracts.
               </p>
             </div>
           </div>

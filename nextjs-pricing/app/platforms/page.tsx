@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import ReceiptGraphDemo from '@/components/ReceiptGraphDemo';
+import TamperDemo from '@/components/TamperDemo';
 
 export const metadata: Metadata = {
   title: 'Platform — CertNode Receipt Graph',
@@ -27,6 +28,11 @@ export default function PlatformsPage() {
         {/* Receipt Graph Demo */}
         <div className="mb-20">
           <ReceiptGraphDemo />
+        </div>
+
+        {/* Tamper Detection Demo */}
+        <div className="mb-20">
+          <TamperDemo />
         </div>
 
         {/* Additional Platform Features */}

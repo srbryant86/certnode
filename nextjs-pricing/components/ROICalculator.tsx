@@ -141,12 +141,27 @@ export default function ROICalculator() {
           {/* Left: Inputs */}
           <div className="bg-white rounded-lg border-2 border-gray-200 p-6">
             <h3 className="font-bold text-gray-900 mb-4 text-lg">Your Business Metrics</h3>
-            <div className="space-y-4">
+            <div className="space-y-6">
               {/* Monthly GMV */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
                   Monthly Gross Merchandise Value (GMV)
                 </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="10000000"
+                  step="50000"
+                  value={inputs.monthlyGMV}
+                  onChange={(e) => {
+                    setInputs({ ...inputs, monthlyGMV: Number(e.target.value) });
+                    setSelectedPreset(null);
+                  }}
+                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer slider mb-3"
+                  style={{
+                    background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${(inputs.monthlyGMV / 10000000) * 100}%, #E5E7EB ${(inputs.monthlyGMV / 10000000) * 100}%, #E5E7EB 100%)`
+                  }}
+                />
                 <div className="relative">
                   <span className="absolute left-3 top-3 text-gray-500">$</span>
                   <input
@@ -163,9 +178,24 @@ export default function ROICalculator() {
 
               {/* Dispute Rate */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
                   Dispute/Chargeback Rate (%)
                 </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="5"
+                  step="0.1"
+                  value={inputs.disputeRate}
+                  onChange={(e) => {
+                    setInputs({ ...inputs, disputeRate: Number(e.target.value) });
+                    setSelectedPreset(null);
+                  }}
+                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer slider mb-3"
+                  style={{
+                    background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${(inputs.disputeRate / 5) * 100}%, #E5E7EB ${(inputs.disputeRate / 5) * 100}%, #E5E7EB 100%)`
+                  }}
+                />
                 <div className="relative">
                   <input
                     type="number"
@@ -184,9 +214,24 @@ export default function ROICalculator() {
 
               {/* Average Dispute Value */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
                   Average Dispute Value
                 </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="1000"
+                  step="10"
+                  value={inputs.avgDisputeValue}
+                  onChange={(e) => {
+                    setInputs({ ...inputs, avgDisputeValue: Number(e.target.value) });
+                    setSelectedPreset(null);
+                  }}
+                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer slider mb-3"
+                  style={{
+                    background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${(inputs.avgDisputeValue / 1000) * 100}%, #E5E7EB ${(inputs.avgDisputeValue / 1000) * 100}%, #E5E7EB 100%)`
+                  }}
+                />
                 <div className="relative">
                   <span className="absolute left-3 top-3 text-gray-500">$</span>
                   <input
@@ -203,9 +248,24 @@ export default function ROICalculator() {
 
               {/* Hourly Rate */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
                   Average Hourly Rate (Staff Cost)
                 </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="200"
+                  step="5"
+                  value={inputs.hourlyRate}
+                  onChange={(e) => {
+                    setInputs({ ...inputs, hourlyRate: Number(e.target.value) });
+                    setSelectedPreset(null);
+                  }}
+                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer slider mb-3"
+                  style={{
+                    background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${(inputs.hourlyRate / 200) * 100}%, #E5E7EB ${(inputs.hourlyRate / 200) * 100}%, #E5E7EB 100%)`
+                  }}
+                />
                 <div className="relative">
                   <span className="absolute left-3 top-3 text-gray-500">$</span>
                   <input
@@ -222,9 +282,24 @@ export default function ROICalculator() {
 
               {/* Hours per Dispute */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
                   Hours Spent Per Dispute
                 </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="10"
+                  step="0.5"
+                  value={inputs.hoursPerDispute}
+                  onChange={(e) => {
+                    setInputs({ ...inputs, hoursPerDispute: Number(e.target.value) });
+                    setSelectedPreset(null);
+                  }}
+                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer slider mb-3"
+                  style={{
+                    background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${(inputs.hoursPerDispute / 10) * 100}%, #E5E7EB ${(inputs.hoursPerDispute / 10) * 100}%, #E5E7EB 100%)`
+                  }}
+                />
                 <input
                   type="number"
                   step="0.5"

@@ -41,7 +41,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/platforms" className="text-gray-600 hover:text-gray-900">
+                <a href="/platform" className="text-gray-600 hover:text-gray-900">
                   Enterprise
                 </a>
               </li>

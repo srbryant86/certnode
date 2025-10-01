@@ -126,7 +126,7 @@ export default function FAQSection() {
               Contact Support
             </a>
             <a
-              href="/platforms"
+              href="/platform"
               className="bg-white border-2 border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:border-blue-600 hover:text-blue-600 transition-colors"
             >
               Learn More About the Platform

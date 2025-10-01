@@ -108,14 +108,14 @@ export default function ReceiptGraphDemo() {
   // Clean vertical flow positioning - no overlaps
   const getNodePosition = (step: number) => {
     const positions = [
-      { x: 50, y: 40 },     // Payment
-      { x: 50, y: 100 },    // Product Delivered
-      { x: 50, y: 160 },    // Delivery Confirmed
-      { x: 50, y: 220 },    // Customer Complaint
-      { x: 50, y: 280 },    // Defect Evidence
-      { x: 50, y: 340 },    // QA Investigation
-      { x: 50, y: 400 },    // Refund Approved
-      { x: 50, y: 460 },    // Refund
+      { x: 75, y: 40 },     // Payment
+      { x: 75, y: 100 },    // Product Delivered
+      { x: 75, y: 160 },    // Delivery Confirmed
+      { x: 75, y: 220 },    // Customer Complaint
+      { x: 75, y: 280 },    // Defect Evidence
+      { x: 75, y: 340 },    // QA Investigation
+      { x: 75, y: 400 },    // Refund Approved
+      { x: 75, y: 460 },    // Refund
     ];
     return positions[step] || { x: 0, y: 0 };
   };
@@ -217,9 +217,9 @@ export default function ReceiptGraphDemo() {
       {/* Graph Visualization - Clean Vertical Layout */}
       <div className="grid md:grid-cols-2 gap-8 items-start">
         {/* Left: Graph Visualization */}
-        <div className="relative w-full bg-white rounded-lg border-2 border-gray-200 p-6">
+        <div className="relative w-full bg-white rounded-lg border-2 border-gray-200 p-6 overflow-hidden">
           <h5 className="text-sm font-bold text-gray-500 uppercase mb-4 text-center">Receipt Chain</h5>
-          <svg viewBox="0 0 250 520" className="w-full h-auto max-w-full">
+          <svg viewBox="0 0 300 520" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
           {/* Draw edges - vertical arrows */}
           {edges.map((edge, idx) => {
             const fromNode = nodes.find(n => n.id === edge.from);
@@ -234,24 +234,26 @@ export default function ReceiptGraphDemo() {
               <g key={idx}>
                 {/* Vertical line from node to node */}
                 <line
-                  x1={fromPos.x + 100}
+                  x1={fromPos.x + 75}
                   y1={fromPos.y + 45}
-                  x2={toPos.x + 100}
+                  x2={toPos.x + 75}
                   y2={toPos.y}
                   stroke={isActive ? '#3B82F6' : '#E5E7EB'}
                   strokeWidth={isActive ? 3 : 2}
                   markerEnd={isActive ? "url(#arrowhead-active)" : "url(#arrowhead)"}
                   className="transition-all duration-500"
+                  opacity={isActive ? 1 : 0.4}
                 />
-                {/* Relationship label */}
+                {/* Relationship label - positioned to the right side */}
                 {isActive && (
                   <text
-                    x={fromPos.x + 160}
+                    x={fromPos.x + 185}
                     y={(fromPos.y + toPos.y) / 2 + 25}
-                    fontSize="11"
+                    fontSize="10"
                     fill="#3B82F6"
                     fontWeight="600"
-                    className="pointer-events-none"
+                    className="pointer-events-none select-none"
+                    textAnchor="start"
                   >
                     {edge.label}
                   </text>
@@ -260,7 +262,7 @@ export default function ReceiptGraphDemo() {
             );
           })}
 
-          {/* Arrow marker definitions */}
+          {/* Arrow marker definitions and filters */}
           <defs>
             <marker
               id="arrowhead"
@@ -282,6 +284,17 @@ export default function ReceiptGraphDemo() {
             >
               <polygon points="0 0, 10 3, 0 6" fill="#3B82F6" />
             </marker>
+            <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+              <feOffset dx="0" dy="2" result="offsetblur"/>
+              <feComponentTransfer>
+                <feFuncA type="linear" slope="0.3"/>
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
           </defs>
 
           {/* Draw nodes - larger, clearer */}
@@ -301,7 +314,7 @@ export default function ReceiptGraphDemo() {
                 {/* Glow effect for current step */}
                 {isCurrent && (
                   <circle
-                    cx="100"
+                    cx="75"
                     cy="22.5"
                     r="55"
                     fill={colors.bg}
@@ -330,7 +343,7 @@ export default function ReceiptGraphDemo() {
                 </text>
                 {/* Node rectangle */}
                 <rect
-                  x="25"
+                  x="0"
                   y="0"
                   width="150"
                   height="45"
@@ -340,9 +353,10 @@ export default function ReceiptGraphDemo() {
                   strokeWidth={isCurrent ? 3 : 2}
                   opacity={isActive ? 1 : 0.5}
                   className="transition-all duration-500"
+                  filter={isCurrent ? "url(#shadow)" : "none"}
                 />
                 <text
-                  x="100"
+                  x="75"
                   y="18"
                   textAnchor="middle"
                   fontSize="11"
@@ -351,7 +365,7 @@ export default function ReceiptGraphDemo() {
                   className="pointer-events-none select-none"
                 >
                   {node.label.split('\n').map((line, i) => (
-                    <tspan key={i} x="100" dy={i === 0 ? 0 : 13}>
+                    <tspan key={i} x="75" dy={i === 0 ? 0 : 13}>
                       {line}
                     </tspan>
                   ))}

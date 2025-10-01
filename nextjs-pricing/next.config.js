@@ -10,8 +10,8 @@ const nextConfig = {
   // Only enable standalone output when explicitly requested to avoid dev/start warnings
   output: enableStandaloneBuild ? 'standalone' : undefined,
 
-  // Ensure assets resolve correctly when deployed from a subdirectory on Vercel
-  assetPrefix: isVercelDeployment ? '/nextjs-pricing' : undefined,
+  // Assets are served from root domain
+  // assetPrefix: undefined,
 
   // Force cache invalidation for deployment pipelines
   generateBuildId: async () => {

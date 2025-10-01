@@ -25,7 +25,6 @@ export const metadata: Metadata = {
 export default function PlatformPage() {
   return (
     <>
-
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white py-20">

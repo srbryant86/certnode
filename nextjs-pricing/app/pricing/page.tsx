@@ -99,7 +99,7 @@ export default function PricingPage() {
       />
 
       <div className="min-h-screen bg-gray-50">
-        {/* Hero Section */}
+        {/* 1. Hero Section - Hook attention, establish credibility */}
         <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white py-20 overflow-hidden">
           <div className="relative max-w-7xl mx-auto px-6">
             <div className="text-center">
@@ -163,20 +163,18 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* Three Product Showcase */}
-        <ThreeProductShowcase />
-
-        {/* Social Proof disabled - no real customers yet */}
-
-        {/* ROI Calculator */}
+        {/* 2. Competitor Comparison - Create FOMO & justify premium pricing BEFORE price reveal */}
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-6">
-            <ROICalculator />
+            <CompetitorComparison />
           </div>
         </section>
 
-        {/* Pricing Tabs */}
-        <section className="py-16 bg-white" id="pricing-table">
+        {/* 3. Three Product Showcase - Show what's included after differentiation */}
+        <ThreeProductShowcase />
+
+        {/* 4. Pricing Tabs - THE ANCHOR: Show pricing after value is established */}
+        <section className="py-16 bg-gray-50" id="pricing-table">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -195,34 +193,34 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* Risk Reversal */}
-        <RiskReversalSection />
-
-        {/* Competitor Comparison */}
-        <section className="py-16 bg-gray-50">
+        {/* 5. ROI Calculator - Post-price justification: prove it pays for itself */}
+        <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-6">
-            <CompetitorComparison />
+            <ROICalculator />
           </div>
         </section>
 
-        {/* FAQ Section */}
+        {/* 6. Risk Reversal - Remove purchase anxiety */}
+        <RiskReversalSection />
+
+        {/* 7. FAQ Section - Handle objections while engaged */}
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-6">
             <FAQSection />
           </div>
         </section>
 
-        {/* High-Ticket CTA */}
+        {/* 8. High-Ticket CTA - Final conversion push */}
         <section className="py-16 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white">
           <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold mb-4">
-              High-Ticket Dispute Protection
+              Ready to Protect Your Revenue?
             </h2>
             <p className="text-xl text-blue-100 mb-6">
-              One saved $10,000 dispute pays for 4 months.
+              Join businesses saving thousands in disputes and compliance costs.
             </p>
             <p className="text-blue-200 mb-8">
-              Specialized plans for businesses with high-value transactions and significant chargeback risk.
+              One saved $10,000 dispute pays for months of CertNode. Start with our 60-day money-back guarantee.
             </p>
             <CTAGroup />
           </div>

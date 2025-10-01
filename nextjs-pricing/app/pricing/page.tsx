@@ -11,6 +11,9 @@ import SocialProofWidget from '@/components/SocialProofWidget';
 import UrgencyTrigger from '@/components/UrgencyTrigger';
 import RiskReversalSection from '@/components/RiskReversalSection';
 import ThreeProductShowcase from '@/components/ThreeProductShowcase';
+import ROICalculator from '@/components/ROICalculator';
+import CompetitorComparison from '@/components/CompetitorComparison';
+import FAQSection from '@/components/FAQSection';
 
 // Import pricing data
 import pricingData from '../(data)/pricing.json';
@@ -165,6 +168,13 @@ export default function PricingPage() {
 
         {/* Social Proof disabled - no real customers yet */}
 
+        {/* ROI Calculator */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-6">
+            <ROICalculator />
+          </div>
+        </section>
+
         {/* Pricing Tabs */}
         <section className="py-16 bg-white" id="pricing-table">
           <div className="max-w-7xl mx-auto px-6">
@@ -187,6 +197,20 @@ export default function PricingPage() {
 
         {/* Risk Reversal */}
         <RiskReversalSection />
+
+        {/* Competitor Comparison */}
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-6">
+            <CompetitorComparison />
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-6">
+            <FAQSection />
+          </div>
+        </section>
 
         {/* High-Ticket CTA */}
         <section className="py-16 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white">

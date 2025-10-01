@@ -1,19 +1,39 @@
 import { Metadata } from 'next';
-// Removed TriPillarIntelligenceCalculator - focusing on deterministic proof rail
+import ReceiptGraphDemo from '@/components/ReceiptGraphDemo';
 
 export const metadata: Metadata = {
-  title: 'Enterprise Platforms — CertNode',
-  description: 'Enterprise cryptographic receipt solutions for large-scale businesses',
+  title: 'Platform — CertNode Receipt Graph',
+  description: 'The only platform connecting transactions, content, and operations in one cryptographic graph',
 };
 
 export default function PlatformsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 py-16">
+        {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Enterprise Platforms</h1>
+          <div className="inline-block bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
+            THE CERTNODE DIFFERENCE
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            The Only Platform That Connects Everything
+          </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            High-scale cryptographic receipt infrastructure designed for enterprise-grade transaction volumes and compliance requirements.
+            Unlike competitors who handle only transactions OR content OR operations,
+            CertNode creates a cryptographically-linked graph connecting all three.
+          </p>
+        </div>
+
+        {/* Receipt Graph Demo */}
+        <div className="mb-20">
+          <ReceiptGraphDemo />
+        </div>
+
+        {/* Additional Platform Features */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Enterprise-Ready Infrastructure</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Built for scale, security, and compliance from day one.
           </p>
         </div>
 

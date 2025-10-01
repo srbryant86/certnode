@@ -201,7 +201,7 @@ export default function PricingTabs() {
                   className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                   onClick={() => window.location.href = 'https://buy.stripe.com/28E7sK9rYces1s2fD7bAs09'}
                 >
-                  Contact Sales
+                  Get Started
                 </button>
               </div>
 
@@ -253,7 +253,7 @@ export default function PricingTabs() {
                   className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
                   onClick={() => window.location.href = 'https://buy.stripe.com/aFa7sK8nU1zO9YycqVbAs0b'}
                 >
-                  Contact Sales
+                  Get Started
                 </button>
               </div>
             </div>

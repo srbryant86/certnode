@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function CompetitorComparison() {
   const features = [
     {
@@ -86,9 +88,9 @@ export default function CompetitorComparison() {
             {/* Table Body */}
             <tbody>
               {features.map((category, categoryIdx) => (
-                <>
+                <React.Fragment key={`category-${categoryIdx}`}>
                   {/* Category Header */}
-                  <tr key={`cat-${categoryIdx}`} className="bg-gray-50">
+                  <tr className="bg-gray-50">
                     <td colSpan={5} className="py-3 px-4 font-bold text-gray-900 text-sm uppercase tracking-wide">
                       {category.category}
                     </td>
@@ -115,7 +117,7 @@ export default function CompetitorComparison() {
                       </td>
                     </tr>
                   ))}
-                </>
+                </React.Fragment>
               ))}
             </tbody>
           </table>

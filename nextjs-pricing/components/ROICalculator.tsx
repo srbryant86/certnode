@@ -12,10 +12,10 @@ interface CalculatorInputs {
 
 export default function ROICalculator() {
   const [inputs, setInputs] = useState<CalculatorInputs>({
-    monthlyGMV: 500000,
-    disputeRate: 1.5,
-    avgDisputeValue: 150,
-    hourlyRate: 75,
+    monthlyGMV: 100000,
+    disputeRate: 1.8,
+    avgDisputeValue: 120,
+    hourlyRate: 60,
     hoursPerDispute: 3,
   });
 
@@ -24,17 +24,17 @@ export default function ROICalculator() {
   const presets = [
     {
       id: 'small-ecommerce',
-      label: 'Small E-Commerce',
-      monthlyGMV: 100000,
-      disputeRate: 2.0,
-      avgDisputeValue: 85,
-      hourlyRate: 50,
+      label: 'Small Business',
+      monthlyGMV: 25000,
+      disputeRate: 2.5,
+      avgDisputeValue: 75,
+      hourlyRate: 40,
       hoursPerDispute: 4,
     },
     {
       id: 'mid-market',
-      label: 'Mid-Market SaaS',
-      monthlyGMV: 500000,
+      label: 'Growing Business',
+      monthlyGMV: 250000,
       disputeRate: 1.5,
       avgDisputeValue: 150,
       hourlyRate: 75,
@@ -42,12 +42,12 @@ export default function ROICalculator() {
     },
     {
       id: 'enterprise',
-      label: 'Enterprise Platform',
-      monthlyGMV: 5000000,
+      label: 'High-Volume',
+      monthlyGMV: 2000000,
       disputeRate: 1.0,
-      avgDisputeValue: 500,
-      hourlyRate: 125,
-      hoursPerDispute: 5,
+      avgDisputeValue: 350,
+      hourlyRate: 100,
+      hoursPerDispute: 4,
     },
   ];
 
@@ -80,8 +80,9 @@ export default function ROICalculator() {
 
   // Recommended tier based on GMV
   const recommendedMonthlyPrice =
-    inputs.monthlyGMV < 200000 ? 199 :
-    inputs.monthlyGMV < 1000000 ? 499 :
+    inputs.monthlyGMV < 100000 ? 49 :   // Starter tier
+    inputs.monthlyGMV < 300000 ? 199 :   // Professional tier
+    inputs.monthlyGMV < 1000000 ? 499 :  // Business tier
     1500; // Enterprise estimate
 
   const monthlyROI = ((monthlyTotalSavings - recommendedMonthlyPrice) / recommendedMonthlyPrice) * 100;
@@ -150,8 +151,8 @@ export default function ROICalculator() {
                 <input
                   type="range"
                   min="0"
-                  max="10000000"
-                  step="50000"
+                  max="5000000"
+                  step="5000"
                   value={inputs.monthlyGMV}
                   onChange={(e) => {
                     setInputs({ ...inputs, monthlyGMV: Number(e.target.value) });
@@ -159,7 +160,7 @@ export default function ROICalculator() {
                   }}
                   className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer slider mb-3"
                   style={{
-                    background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${(inputs.monthlyGMV / 10000000) * 100}%, #E5E7EB ${(inputs.monthlyGMV / 10000000) * 100}%, #E5E7EB 100%)`
+                    background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${(inputs.monthlyGMV / 5000000) * 100}%, #E5E7EB ${(inputs.monthlyGMV / 5000000) * 100}%, #E5E7EB 100%)`
                   }}
                 />
                 <div className="relative">

@@ -45,7 +45,7 @@ export default function ROICalculator() {
       label: 'High-Volume',
       monthlyGMV: 2000000,
       disputeRate: 1.0,
-      avgDisputeValue: 350,
+      avgDisputeValue: 3500,
       hourlyRate: 100,
       hoursPerDispute: 4,
     },
@@ -221,8 +221,8 @@ export default function ROICalculator() {
                 <input
                   type="range"
                   min="0"
-                  max="1000"
-                  step="10"
+                  max="25000"
+                  step="100"
                   value={inputs.avgDisputeValue}
                   onChange={(e) => {
                     setInputs({ ...inputs, avgDisputeValue: Number(e.target.value) });
@@ -230,7 +230,7 @@ export default function ROICalculator() {
                   }}
                   className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer slider mb-3"
                   style={{
-                    background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${(inputs.avgDisputeValue / 1000) * 100}%, #E5E7EB ${(inputs.avgDisputeValue / 1000) * 100}%, #E5E7EB 100%)`
+                    background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${(inputs.avgDisputeValue / 25000) * 100}%, #E5E7EB ${(inputs.avgDisputeValue / 25000) * 100}%, #E5E7EB 100%)`
                   }}
                 />
                 <div className="relative">

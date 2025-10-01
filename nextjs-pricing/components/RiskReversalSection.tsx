@@ -58,11 +58,10 @@ export default function RiskReversalSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Zero-Risk Trial
+            Risk-Free Guarantee
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We're so confident CertNode will protect your revenue that we guarantee it.
-            Try risk-free for 60 days.
+            We're so confident CertNode will protect your revenue that we offer a 60-day money-back guarantee.
           </p>
         </div>
 
@@ -129,14 +128,14 @@ export default function RiskReversalSection() {
             </h3>
             <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
               Enterprise-grade cryptographic receipt technology designed for revenue protection.
-              Start your risk-free trial today.
+              Get started with our 60-day money-back guarantee.
             </p>
 
             <button
               onClick={() => {
                 analytics.trackInteraction('final_cta_clicked', {
                   location: 'risk_reversal_section',
-                  cta_text: 'Start 60-Day Free Trial'
+                  cta_text: 'Get Started Risk-Free'
                 });
 
                 const pricingSection = document.getElementById('pricing-table');
@@ -146,7 +145,7 @@ export default function RiskReversalSection() {
               }}
               className="bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-lg hover:shadow-xl"
             >
-              Start 60-Day Free Trial →
+              Get Started Risk-Free →
             </button>
           </div>
         </div>

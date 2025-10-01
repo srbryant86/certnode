@@ -21,13 +21,13 @@ const tabs: Tab[] = [
   },
   {
     id: 'custom',
-    label: 'Enterprise',
-    description: 'Platform edition and advisory intelligence'
+    label: 'Enterprise & Platforms',
+    description: 'Multi-tenant infrastructure and marketplace solutions'
   },
   {
     id: 'high-ticket',
-    label: 'Legacy Plans',
-    description: 'Previous generation protection plans'
+    label: 'High-Ticket Shield',
+    description: 'Premium transaction protection with white-glove service'
   }
 ]
 
@@ -62,11 +62,10 @@ export default function PricingTabs() {
           <div className="space-y-8">
             <div className="text-center">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Core Trust - Deterministic Proof Rail
+                Core Trust - Cryptographic Receipt Platform
               </h3>
               <p className="text-gray-600 max-w-3xl mx-auto">
-                Cryptographic receipts across Transactions, Content, and Operations.
-                Standards-verifiable, offline-checkable proof generation.
+                Generate cryptographic receipts for transactions, content, and operations. Enterprise-grade proof that's verifiable by anyone, anywhere, offline.
               </p>
             </div>
             <Suspense fallback={<div className="animate-pulse bg-gray-200 h-96 rounded-lg"></div>}>
@@ -79,10 +78,10 @@ export default function PricingTabs() {
           <div className="max-w-6xl mx-auto space-y-12">
             <div className="text-center">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Enterprise Solutions
+                Enterprise Infrastructure
               </h3>
               <p className="text-gray-600 max-w-3xl mx-auto">
-                Platform editions for aggregators and marketplaces, plus optional advisory intelligence add-ons.
+                Scalable receipt infrastructure for high-volume enterprises and multi-merchant platforms. Add optional ML-powered advisory intelligence.
               </p>
             </div>
 
@@ -119,7 +118,7 @@ export default function PricingTabs() {
                   Advisory Intelligence Add-Ons
                 </h4>
                 <p className="text-gray-600">
-                  Optional ML-powered advisory signals. Must bundle with Core Trust. Advisory use only - not source of truth.
+                  Optional ML-powered fraud detection, content verification, and anomaly alerts to complement your cryptographic receipts. Requires Core Trust subscription.
                 </p>
               </div>
 
@@ -152,10 +151,10 @@ export default function PricingTabs() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Legacy Receipt Protection
+                High-Ticket Dispute Protection
               </h3>
               <p className="text-gray-600 mb-6">
-                Traditional receipt-based protection plans. For maximum accuracy and ROI, we recommend our Tri-Pillar Intelligence platform above.
+                GMV-based protection for premium transactions and high-value businesses. White-glove service with dedicated dispute defense.
                 One saved $10,000 dispute pays for 4 months.
               </p>
             </div>
@@ -201,7 +200,7 @@ export default function PricingTabs() {
                   className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                   onClick={() => window.location.href = 'https://buy.stripe.com/28E7sK9rYces1s2fD7bAs09'}
                 >
-                  Contact Sales
+                  Get Started
                 </button>
               </div>
 
@@ -253,16 +252,16 @@ export default function PricingTabs() {
                   className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
                   onClick={() => window.location.href = 'https://buy.stripe.com/aFa7sK8nU1zO9YycqVbAs0b'}
                 >
-                  Contact Sales
+                  Get Started
                 </button>
               </div>
             </div>
 
             <div className="mt-8 text-center">
               <p className="text-sm text-gray-600">
-                All legacy plans include white-glove onboarding, dedicated support, and revenue protection guarantees.
+                All plans include white-glove onboarding, dedicated support, and revenue protection guarantees.
                 <br />
-                <strong>Recommended:</strong> Upgrade to <a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('standard'); }} className="text-blue-600 hover:text-blue-700 cursor-pointer">Tri-Pillar Intelligence</a> for 99%+ accuracy and maximum ROI.
+                <strong>Recommended:</strong> Upgrade to <a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('standard'); }} className="text-blue-600 hover:text-blue-700 cursor-pointer">Core Trust</a> for cryptographic proof and maximum ROI.
                 <br />
                 <a href="mailto:contact@certnode.io" className="text-blue-600 hover:text-blue-700">
                   Contact us

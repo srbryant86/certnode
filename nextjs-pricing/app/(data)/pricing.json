@@ -71,7 +71,7 @@
       "name": "Core Trust",
       "priceYearly": 25000,
       "ceiling": 75000,
-      "tagline": "Deterministic receipts across Transactions/Content/Ops with SLA",
+      "tagline": "Unlimited receipts with enterprise SLAs and dedicated compliance support",
       "pricing": "Base $25K-$75K + metered events ($0.002-$0.02)",
       "features": [
         "Multi-tenant infrastructure",
@@ -89,8 +89,8 @@
       "name": "Platform Edition",
       "priceYearly": 60000,
       "ceiling": 250000,
-      "tagline": "Per-merchant trust rail with compliance reporting",
-      "pricing": "$5-$10 per merchant/month OR 0.1% verified GMV",
+      "tagline": "White-label receipt infrastructure for marketplaces and payment platforms",
+      "pricing": "Custom pricing based on merchant count and GMV",
       "features": [
         "Multi-merchant architecture",
         "Shared verifier infrastructure",

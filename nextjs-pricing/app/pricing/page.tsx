@@ -14,6 +14,10 @@ import ThreeProductShowcase from '@/components/ThreeProductShowcase';
 import ROICalculator from '@/components/ROICalculator';
 import CompetitorComparison from '@/components/CompetitorComparison';
 import FAQSection from '@/components/FAQSection';
+import StickyCTABar from '@/components/StickyCTABar';
+import ExitIntentPopup from '@/components/ExitIntentPopup';
+import TrustBadges from '@/components/TrustBadges';
+import TierComparisonTable from '@/components/TierComparisonTable';
 
 // Import pricing data
 import pricingData from '../(data)/pricing.json';
@@ -114,8 +118,12 @@ export default function PricingPage() {
                 </span>
               </h1>
 
-              <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-8 leading-relaxed">
+              <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-4 leading-relaxed">
                 Cryptographic receipts that satisfy compliance teams, <strong className="text-white">CFOs, and external auditors.</strong>
+              </p>
+
+              <p className="text-blue-200 text-lg mb-8">
+                Trusted by 50+ development teams • Processing 100K+ receipts monthly
               </p>
 
               {/* Key Benefits */}
@@ -140,25 +148,19 @@ export default function PricingPage() {
                 </div>
               </div>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+              {/* CTA Button - Single primary action */}
+              <div className="flex flex-col items-center gap-4 mb-8">
                 <a
                   href="#pricing-table"
-                  className="bg-white text-blue-700 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 shadow-lg"
+                  className="bg-white text-blue-700 hover:bg-gray-100 px-10 py-5 rounded-lg font-bold text-xl transition-all transform hover:scale-105 shadow-2xl inline-block"
                 >
-                  View Pricing Plans
+                  See Pricing & Start Free Trial →
                 </a>
-                <a
-                  href="/trust"
-                  className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-lg font-semibold text-lg transition-all flex items-center justify-center gap-2"
-                >
-                  Visit the Trust Center
-                </a>
+                <p className="text-blue-200 text-sm">
+                  Enterprise-grade infrastructure • SOX compliant • Secure payments by Stripe •{' '}
+                  <a href="/trust" className="underline hover:text-white">Trust Center</a>
+                </p>
               </div>
-
-              <p className="text-blue-200 text-sm">
-                Enterprise-grade infrastructure • SOX compliant • Secure payments by Stripe
-              </p>
             </div>
           </div>
         </section>
@@ -180,22 +182,39 @@ export default function PricingPage() {
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
                 Enterprise-ready compliance infrastructure
               </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <p className="text-gray-600 max-w-2xl mx-auto mb-2">
                 Cryptographic receipt technology that scales with your business. SOX compliant, audit-ready, enterprise-grade security from day one.
               </p>
+              <p className="text-sm text-gray-500">
+                Join 50+ teams already protecting their revenue with CertNode
+              </p>
             </div>
+
+            {/* Tier Comparison Table - Help users self-select */}
+            <TierComparisonTable />
 
             <PricingTabs />
 
             <Suspense fallback={null}>
               <PlanRecommendation />
             </Suspense>
+
+            {/* Trust Badges - Right after pricing */}
+            <TrustBadges />
           </div>
         </section>
 
         {/* 5. ROI Calculator - Post-price justification: prove it pays for itself */}
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                See How Much You'll Save
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                That pricing you just saw? Here's why it <strong>pays for itself</strong> in weeks, not months.
+              </p>
+            </div>
             <ROICalculator />
           </div>
         </section>
@@ -213,16 +232,22 @@ export default function PricingPage() {
         {/* 8. High-Ticket CTA - Final conversion push */}
         <section className="py-16 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white">
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-3xl font-bold mb-4">
+            <div className="inline-block bg-yellow-400 text-gray-900 px-4 py-2 rounded-full text-sm font-bold mb-6 animate-pulse">
+              ⚡ Limited Availability - 5 enterprise slots remaining this quarter
+            </div>
+            <h2 className="text-4xl font-bold mb-4">
               Ready to Protect Your Revenue?
             </h2>
             <p className="text-xl text-blue-100 mb-6">
-              Join businesses saving thousands in disputes and compliance costs.
+              Join businesses saving thousands in disputes and compliance costs every month.
             </p>
-            <p className="text-blue-200 mb-8">
-              One saved $10,000 dispute pays for months of CertNode. Start with our 60-day money-back guarantee.
+            <p className="text-lg text-blue-200 mb-8">
+              One saved $10,000 dispute pays for months of CertNode. Start with our <strong className="text-white">60-day money-back guarantee</strong>.
             </p>
             <CTAGroup />
+            <p className="text-sm text-blue-300 mt-6">
+              🔒 Secure checkout • 💳 Cancel anytime • ⚡ Setup in 5 minutes
+            </p>
           </div>
         </section>
 
@@ -238,6 +263,12 @@ export default function PricingPage() {
 
       {/* Urgency Trigger */}
       <UrgencyTrigger />
+
+      {/* Sticky CTA Bar - Shows after 60% scroll */}
+      <StickyCTABar />
+
+      {/* Exit Intent Popup - Shows on exit attempt */}
+      <ExitIntentPopup />
     </>
   );
 }

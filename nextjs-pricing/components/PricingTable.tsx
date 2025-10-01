@@ -163,9 +163,9 @@ export default function PricingTable({ tiers, highlightTier = 'growth' }: Pricin
               } transition-all`}
             >
               {isHighlighted && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium">
-                    Most Popular
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                  <span className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg animate-pulse">
+                    ⭐ MOST POPULAR
                   </span>
                 </div>
               )}

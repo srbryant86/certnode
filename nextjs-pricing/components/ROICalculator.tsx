@@ -32,6 +32,15 @@ export default function ROICalculator() {
       hoursPerDispute: 4,
     },
     {
+      id: 'high-ticket',
+      label: 'High-Ticket Sales',
+      monthlyGMV: 150000,
+      disputeRate: 2.2,
+      avgDisputeValue: 10000,
+      hourlyRate: 85,
+      hoursPerDispute: 5,
+    },
+    {
       id: 'mid-market',
       label: 'Growing Business',
       monthlyGMV: 250000,

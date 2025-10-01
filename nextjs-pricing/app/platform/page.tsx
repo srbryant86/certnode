@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ReceiptGraph from '@/components/ReceiptGraph';
 import PlatformPillars from '@/components/PlatformPillars';
@@ -26,7 +25,6 @@ export const metadata: Metadata = {
 export default function PlatformPage() {
   return (
     <>
-      <Navigation />
 
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}

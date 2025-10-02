@@ -340,7 +340,7 @@ export function formatReceiptForVisualization(receipt: Receipt) {
     trustLevel: receipt.trust_level || 'BASIC',
     depth: receipt.graph_depth || 0,
     color: getColorForType(receipt.type),
-    size: getS izeForTrustLevel(receipt.trust_level || 'BASIC')
+    size: getSizeForTrustLevel(receipt.trust_level || 'BASIC')
   };
 }
 

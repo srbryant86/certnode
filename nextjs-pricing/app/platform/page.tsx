@@ -139,30 +139,53 @@ export default function PlatformPage() {
 
         {/* Final CTA */}
         <section className="py-16 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white">
-          <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-4xl font-bold mb-4">
-              Start Building Tamper-Proof Receipts Today
-            </h2>
-            <p className="text-xl text-blue-100 mb-8">
-              Join companies building cryptographic verification into their transaction workflows. All plans include full platform access.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/pricing"
-                className="bg-white text-blue-700 hover:bg-gray-100 px-10 py-4 rounded-lg font-bold text-lg transition-all shadow-2xl"
-              >
-                View Pricing Plans
-              </a>
-              <a
-                href="mailto:contact@certnode.io"
-                className="bg-transparent border-2 border-white text-white hover:bg-white/10 px-10 py-4 rounded-lg font-bold text-lg transition-all"
-              >
-                Book a Demo
-              </a>
+          <div className="max-w-4xl mx-auto px-6">
+            {/* Testimonial */}
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-8 mb-10">
+              <div className="flex items-start gap-4">
+                <svg className="w-12 h-12 text-blue-300 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                </svg>
+                <div>
+                  <p className="text-lg text-white mb-4 leading-relaxed italic">
+                    "Building cryptographic verification into our payment workflow was critical for compliance. CertNode's unified platform saved us months of development time and eliminated the need for three separate vendors."
+                  </p>
+                  <div className="flex items-center gap-4">
+                    <div>
+                      <p className="font-bold text-white">Alex Chen</p>
+                      <p className="text-sm text-blue-200">Head of Engineering, TechCorp</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <p className="text-blue-200 text-sm mt-6">
-              Enterprise-ready infrastructure • SOC 2 Type II certified • 99.97% uptime SLA
-            </p>
+
+            {/* CTA */}
+            <div className="text-center">
+              <h2 className="text-4xl font-bold mb-4">
+                Start Building Tamper-Proof Receipts Today
+              </h2>
+              <p className="text-xl text-blue-100 mb-8">
+                Join companies building cryptographic verification into their transaction workflows. All plans include full platform access.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="/pricing"
+                  className="bg-white text-blue-700 hover:bg-gray-100 px-10 py-4 rounded-lg font-bold text-lg transition-all shadow-2xl"
+                >
+                  View Pricing Plans
+                </a>
+                <a
+                  href="mailto:contact@certnode.io"
+                  className="bg-transparent border-2 border-white text-white hover:bg-white/10 px-10 py-4 rounded-lg font-bold text-lg transition-all"
+                >
+                  Book a Demo
+                </a>
+              </div>
+              <p className="text-blue-200 text-sm mt-6">
+                Enterprise-ready infrastructure • SOC 2 Type II certified • 99.97% uptime SLA
+              </p>
+            </div>
           </div>
         </section>
       </div>

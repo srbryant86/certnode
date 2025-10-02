@@ -4,10 +4,64 @@ import { useState } from 'react';
 
 export default function ReceiptGraph() {
   const [isAnimating, setIsAnimating] = useState(false);
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
   const handleAnimate = () => {
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 2500);
+  };
+
+  const nodeInfo: Record<string, { title: string; subtitle: string; description: string }> = {
+    root: {
+      title: 'CertNode Root Trust',
+      subtitle: 'Global Merkle Root',
+      description: 'All receipts cryptographically linked to blockchain-anchored root'
+    },
+    transaction: {
+      title: 'Transaction Domain',
+      subtitle: 'Payment Verification',
+      description: 'Stripe, PayPal, and custom payment processor integration'
+    },
+    content: {
+      title: 'Content Domain',
+      subtitle: 'AI Detection & Certification',
+      description: 'Multi-model AI detection for documents, images, and text'
+    },
+    operations: {
+      title: 'Operations Domain',
+      subtitle: 'Compliance & Attestation',
+      description: 'Deployments, incidents, and policy changes with cryptographic proof'
+    },
+    payment: {
+      title: 'Payment Receipt',
+      subtitle: '$1,249.00',
+      description: 'Stripe payment with fraud analysis and compliance mapping'
+    },
+    refund: {
+      title: 'Refund Receipt',
+      subtitle: '-$234.00',
+      description: 'Linked to original transaction for audit trail'
+    },
+    aicheck: {
+      title: 'AI Content Check',
+      subtitle: '92% AI-generated',
+      description: 'Multi-model ensemble detection flagged this content'
+    },
+    imagecert: {
+      title: 'Image Certification',
+      subtitle: 'Authentic',
+      description: 'Forensic analysis confirms image authenticity'
+    },
+    deploy: {
+      title: 'Deployment Record',
+      subtitle: 'v2.4.1',
+      description: 'Build provenance and deployment attestation'
+    },
+    incident: {
+      title: 'Incident Log',
+      subtitle: 'INC-042',
+      description: 'Security incident documentation with stakeholder sign-offs'
+    }
   };
 
   return (
@@ -18,6 +72,15 @@ export default function ReceiptGraph() {
       <p className="text-lg text-gray-600 mb-8 text-center max-w-3xl mx-auto">
         Three verification domains unified in one cryptographic graph. Transaction receipts link to content certifications, which link to operational attestations.
       </p>
+
+      {/* Tooltip Display */}
+      {hoveredNode && nodeInfo[hoveredNode] && (
+        <div className="mb-4 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-500 p-4 rounded-lg">
+          <h4 className="font-bold text-gray-900 mb-1">{nodeInfo[hoveredNode].title}</h4>
+          <p className="text-sm text-blue-700 font-semibold mb-2">{nodeInfo[hoveredNode].subtitle}</p>
+          <p className="text-sm text-gray-700">{nodeInfo[hoveredNode].description}</p>
+        </div>
+      )}
 
       <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 mb-6" style={{ minHeight: '500px' }}>
         <svg viewBox="0 0 1000 500" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
@@ -87,66 +150,146 @@ export default function ReceiptGraph() {
           </g>
 
           {/* Root Node */}
-          <g filter="url(#shadow)">
-            <rect x="440" y="50" width="120" height="60" rx="10" fill="url(#gradient-purple)" stroke="#5a67d8" strokeWidth="2" />
-            <text x="500" y="75" textAnchor="middle" className="fill-white font-bold" fontSize="14">CertNode</text>
-            <text x="500" y="93" textAnchor="middle" className="fill-white/80" fontSize="11">Root Trust</text>
+          <g
+            filter="url(#shadow)"
+            onMouseEnter={() => setHoveredNode('root')}
+            onMouseLeave={() => setHoveredNode(null)}
+            className="cursor-pointer transition-all"
+            style={{ opacity: hoveredNode === 'root' ? 1 : hoveredNode ? 0.7 : 1 }}
+          >
+            <rect
+              x="440" y="50" width="120" height="60" rx="10"
+              fill="url(#gradient-purple)"
+              stroke={hoveredNode === 'root' ? '#4c51bf' : '#5a67d8'}
+              strokeWidth={hoveredNode === 'root' ? '3' : '2'}
+            />
+            <text x="500" y="75" textAnchor="middle" className="fill-white font-bold pointer-events-none" fontSize="14">CertNode</text>
+            <text x="500" y="93" textAnchor="middle" className="fill-white/80 pointer-events-none" fontSize="11">Root Trust</text>
           </g>
 
           {/* Domain Nodes */}
-          <g filter="url(#shadow)">
-            <rect x="190" y="160" width="120" height="50" rx="8" fill="#f0fdf4" stroke="#22c55e" strokeWidth="2.5" />
-            <text x="250" y="190" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="13">Transaction</text>
+          <g
+            filter="url(#shadow)"
+            onMouseEnter={() => setHoveredNode('transaction')}
+            onMouseLeave={() => setHoveredNode(null)}
+            className="cursor-pointer"
+            style={{ opacity: hoveredNode === 'transaction' ? 1 : hoveredNode ? 0.7 : 1 }}
+          >
+            <rect
+              x="190" y="160" width="120" height="50" rx="8"
+              fill="#f0fdf4"
+              stroke={hoveredNode === 'transaction' ? '#16a34a' : '#22c55e'}
+              strokeWidth={hoveredNode === 'transaction' ? '3.5' : '2.5'}
+            />
+            <text x="250" y="190" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="13">Transaction</text>
           </g>
 
-          <g filter="url(#shadow)">
-            <rect x="440" y="160" width="120" height="50" rx="8" fill="#faf5ff" stroke="#8b5cf6" strokeWidth="2.5" />
-            <text x="500" y="190" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="13">Content</text>
+          <g
+            filter="url(#shadow)"
+            onMouseEnter={() => setHoveredNode('content')}
+            onMouseLeave={() => setHoveredNode(null)}
+            className="cursor-pointer"
+            style={{ opacity: hoveredNode === 'content' ? 1 : hoveredNode ? 0.7 : 1 }}
+          >
+            <rect
+              x="440" y="160" width="120" height="50" rx="8"
+              fill="#faf5ff"
+              stroke={hoveredNode === 'content' ? '#7c3aed' : '#8b5cf6'}
+              strokeWidth={hoveredNode === 'content' ? '3.5' : '2.5'}
+            />
+            <text x="500" y="190" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="13">Content</text>
           </g>
 
-          <g filter="url(#shadow)">
-            <rect x="690" y="160" width="120" height="50" rx="8" fill="#fff7ed" stroke="#f97316" strokeWidth="2.5" />
-            <text x="750" y="190" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="13">Operations</text>
+          <g
+            filter="url(#shadow)"
+            onMouseEnter={() => setHoveredNode('operations')}
+            onMouseLeave={() => setHoveredNode(null)}
+            className="cursor-pointer"
+            style={{ opacity: hoveredNode === 'operations' ? 1 : hoveredNode ? 0.7 : 1 }}
+          >
+            <rect
+              x="690" y="160" width="120" height="50" rx="8"
+              fill="#fff7ed"
+              stroke={hoveredNode === 'operations' ? '#ea580c' : '#f97316'}
+              strokeWidth={hoveredNode === 'operations' ? '3.5' : '2.5'}
+            />
+            <text x="750" y="190" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="13">Operations</text>
           </g>
 
           {/* Receipt Examples */}
           {/* Transaction Receipts */}
-          <g filter="url(#shadow)" className={isAnimating ? 'opacity-100' : 'opacity-90'} style={{ transition: 'opacity 0.3s' }}>
-            <rect x="150" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke="#22c55e" strokeWidth="2" />
-            <text x="200" y="332" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="11">Payment</text>
-            <text x="200" y="347" textAnchor="middle" className="fill-gray-600" fontSize="10">$1,249</text>
+          <g
+            filter="url(#shadow)"
+            onMouseEnter={() => setHoveredNode('payment')}
+            onMouseLeave={() => setHoveredNode(null)}
+            className="cursor-pointer"
+            style={{ opacity: hoveredNode === 'payment' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
+          >
+            <rect x="150" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke={hoveredNode === 'payment' ? '#16a34a' : '#22c55e'} strokeWidth={hoveredNode === 'payment' ? '3' : '2'} />
+            <text x="200" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Payment</text>
+            <text x="200" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">$1,249</text>
           </g>
 
-          <g filter="url(#shadow)" className={isAnimating ? 'opacity-100' : 'opacity-90'} style={{ transition: 'opacity 0.3s' }}>
-            <rect x="250" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke="#22c55e" strokeWidth="2" />
-            <text x="300" y="332" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="11">Refund</text>
-            <text x="300" y="347" textAnchor="middle" className="fill-gray-600" fontSize="10">-$234</text>
+          <g
+            filter="url(#shadow)"
+            onMouseEnter={() => setHoveredNode('refund')}
+            onMouseLeave={() => setHoveredNode(null)}
+            className="cursor-pointer"
+            style={{ opacity: hoveredNode === 'refund' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
+          >
+            <rect x="250" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke={hoveredNode === 'refund' ? '#16a34a' : '#22c55e'} strokeWidth={hoveredNode === 'refund' ? '3' : '2'} />
+            <text x="300" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Refund</text>
+            <text x="300" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">-$234</text>
           </g>
 
           {/* Content Receipts */}
-          <g filter="url(#shadow)" className={isAnimating ? 'opacity-100' : 'opacity-90'} style={{ transition: 'opacity 0.3s' }}>
-            <rect x="400" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke="#8b5cf6" strokeWidth="2" />
-            <text x="450" y="332" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="11">AI Check</text>
-            <text x="450" y="347" textAnchor="middle" className="fill-gray-600" fontSize="10">92% AI</text>
+          <g
+            filter="url(#shadow)"
+            onMouseEnter={() => setHoveredNode('aicheck')}
+            onMouseLeave={() => setHoveredNode(null)}
+            className="cursor-pointer"
+            style={{ opacity: hoveredNode === 'aicheck' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
+          >
+            <rect x="400" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke={hoveredNode === 'aicheck' ? '#7c3aed' : '#8b5cf6'} strokeWidth={hoveredNode === 'aicheck' ? '3' : '2'} />
+            <text x="450" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">AI Check</text>
+            <text x="450" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">92% AI</text>
           </g>
 
-          <g filter="url(#shadow)" className={isAnimating ? 'opacity-100' : 'opacity-90'} style={{ transition: 'opacity 0.3s' }}>
-            <rect x="500" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke="#8b5cf6" strokeWidth="2" />
-            <text x="550" y="332" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="11">Image Cert</text>
-            <text x="550" y="347" textAnchor="middle" className="fill-gray-600" fontSize="10">Authentic</text>
+          <g
+            filter="url(#shadow)"
+            onMouseEnter={() => setHoveredNode('imagecert')}
+            onMouseLeave={() => setHoveredNode(null)}
+            className="cursor-pointer"
+            style={{ opacity: hoveredNode === 'imagecert' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
+          >
+            <rect x="500" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke={hoveredNode === 'imagecert' ? '#7c3aed' : '#8b5cf6'} strokeWidth={hoveredNode === 'imagecert' ? '3' : '2'} />
+            <text x="550" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Image Cert</text>
+            <text x="550" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">Authentic</text>
           </g>
 
           {/* Operations Receipts */}
-          <g filter="url(#shadow)" className={isAnimating ? 'opacity-100' : 'opacity-90'} style={{ transition: 'opacity 0.3s' }}>
-            <rect x="650" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke="#f97316" strokeWidth="2" />
-            <text x="700" y="332" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="11">Deploy</text>
-            <text x="700" y="347" textAnchor="middle" className="fill-gray-600" fontSize="10">v2.4.1</text>
+          <g
+            filter="url(#shadow)"
+            onMouseEnter={() => setHoveredNode('deploy')}
+            onMouseLeave={() => setHoveredNode(null)}
+            className="cursor-pointer"
+            style={{ opacity: hoveredNode === 'deploy' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
+          >
+            <rect x="650" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke={hoveredNode === 'deploy' ? '#ea580c' : '#f97316'} strokeWidth={hoveredNode === 'deploy' ? '3' : '2'} />
+            <text x="700" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Deploy</text>
+            <text x="700" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">v2.4.1</text>
           </g>
 
-          <g filter="url(#shadow)" className={isAnimating ? 'opacity-100' : 'opacity-90'} style={{ transition: 'opacity 0.3s' }}>
-            <rect x="750" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke="#f97316" strokeWidth="2" />
-            <text x="800" y="332" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="11">Incident</text>
-            <text x="800" y="347" textAnchor="middle" className="fill-gray-600" fontSize="10">INC-042</text>
+          <g
+            filter="url(#shadow)"
+            onMouseEnter={() => setHoveredNode('incident')}
+            onMouseLeave={() => setHoveredNode(null)}
+            className="cursor-pointer"
+            style={{ opacity: hoveredNode === 'incident' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
+          >
+            <rect x="750" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke={hoveredNode === 'incident' ? '#ea580c' : '#f97316'} strokeWidth={hoveredNode === 'incident' ? '3' : '2'} />
+            <text x="800" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Incident</text>
+            <text x="800" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">INC-042</text>
           </g>
 
           {/* Cross-Domain Link Labels */}

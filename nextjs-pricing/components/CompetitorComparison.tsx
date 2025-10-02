@@ -3,39 +3,39 @@ import React from 'react';
 export default function CompetitorComparison() {
   const features = [
     {
-      category: 'Verification Domains',
+      category: 'Platform Coverage',
       items: [
-        { name: 'Transaction Receipts', certnode: true, stripe: true, c2pa: false, auditLogs: false },
-        { name: 'Content Certification', certnode: true, stripe: false, c2pa: true, auditLogs: false },
-        { name: 'Operations Attestation', certnode: true, stripe: false, c2pa: false, auditLogs: true },
-        { name: 'Unified Cross-Domain Graph', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Transaction Verification', certnode: true, stripe: true, c2pa: false, auditLogs: false },
+        { name: 'Content Authenticity', certnode: true, stripe: false, c2pa: true, auditLogs: false },
+        { name: 'Operational Compliance', certnode: true, stripe: false, c2pa: false, auditLogs: true },
+        { name: 'Unified Cross-Domain Platform', certnode: true, stripe: false, c2pa: false, auditLogs: false },
       ],
     },
     {
-      category: 'Network Architecture',
+      category: 'Cryptographic Security',
       items: [
-        { name: 'Cross-Merchant Network Effects', certnode: true, stripe: false, c2pa: false, auditLogs: false },
-        { name: 'Network Trust Scores', certnode: true, stripe: false, c2pa: false, auditLogs: false },
-        { name: 'Anonymous Fraud Pattern Sharing', certnode: true, stripe: false, c2pa: false, auditLogs: false },
-        { name: 'Collective Defense (Network Learns)', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Tamper-Evident Receipts', certnode: true, stripe: false, c2pa: true, auditLogs: true },
+        { name: 'Blockchain Anchoring', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Public Verifiability', certnode: true, stripe: false, c2pa: true, auditLogs: false },
+        { name: 'Cross-Domain Cryptographic Links', certnode: true, stripe: false, c2pa: false, auditLogs: false },
       ],
     },
     {
-      category: 'Cryptographic Infrastructure',
+      category: 'Fraud Detection',
       items: [
-        { name: 'Blockchain Time-Stamping', certnode: true, stripe: false, c2pa: false, auditLogs: false },
-        { name: 'Public Verifiability (Trustless)', certnode: true, stripe: false, c2pa: true, auditLogs: false },
-        { name: 'Global Merkle Root Publishing', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Real-Time Transaction Monitoring', certnode: true, stripe: true, c2pa: false, auditLogs: false },
+        { name: 'Cross-Merchant Pattern Detection', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Network Fraud Defense', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'AI Content Detection', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+      ],
+    },
+    {
+      category: 'Compliance & Audit',
+      items: [
+        { name: 'PCI/SOX/GDPR Mapping', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Audit Trail Generation', certnode: true, stripe: false, c2pa: false, auditLogs: true },
+        { name: 'Compliance Report Export', certnode: true, stripe: false, c2pa: false, auditLogs: true },
         { name: 'Court-Admissible Evidence', certnode: true, stripe: false, c2pa: true, auditLogs: false },
-      ],
-    },
-    {
-      category: 'Trust & Compliance',
-      items: [
-        { name: 'Multi-Domain Verification', certnode: true, stripe: false, c2pa: false, auditLogs: false },
-        { name: 'Auto-Compliance Mapping (PCI/SOX/GDPR)', certnode: true, stripe: false, c2pa: false, auditLogs: false },
-        { name: 'Tamper-Evident Audit Trails', certnode: true, stripe: false, c2pa: false, auditLogs: true },
-        { name: 'Public Verification APIs', certnode: true, stripe: false, c2pa: true, auditLogs: false },
       ],
     },
   ];
@@ -80,16 +80,16 @@ export default function CompetitorComparison() {
                   <div className="text-xs text-gray-500 font-normal">Full Platform</div>
                 </th>
                 <th className="py-4 px-4 text-center">
-                  <div className="font-semibold text-gray-700">Stripe</div>
-                  <div className="text-xs text-gray-500 font-normal">Payments Only</div>
+                  <div className="font-semibold text-gray-700">Stripe Radar</div>
+                  <div className="text-xs text-gray-500 font-normal">Payment Fraud</div>
                 </th>
                 <th className="py-4 px-4 text-center">
                   <div className="font-semibold text-gray-700">C2PA</div>
-                  <div className="text-xs text-gray-500 font-normal">Content Only</div>
+                  <div className="text-xs text-gray-500 font-normal">Content Auth</div>
                 </th>
                 <th className="py-4 px-4 text-center">
-                  <div className="font-semibold text-gray-700">Audit Logs</div>
-                  <div className="text-xs text-gray-500 font-normal">Operations Only</div>
+                  <div className="font-semibold text-gray-700">DataDog</div>
+                  <div className="text-xs text-gray-500 font-normal">Audit Logs</div>
                 </th>
               </tr>
             </thead>
@@ -132,37 +132,41 @@ export default function CompetitorComparison() {
           </table>
         </div>
 
-        {/* Key Differentiator Callout */}
+        {/* Value Proposition Callout */}
         <div className="mt-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white">
-          <div className="flex items-start gap-4">
-            <div className="text-4xl">🏆</div>
-            <div>
-              <h3 className="font-bold text-xl mb-2">Why CertNode Can't Be Replicated</h3>
-              <p className="text-blue-100 leading-relaxed mb-4">
-                While competitors offer isolated solutions, CertNode is the <strong>only platform</strong> with seven compounding architectural moats:
-              </p>
-              <ul className="space-y-2 text-blue-50">
-                <li className="flex items-start gap-2">
-                  <span className="text-yellow-300 font-bold">1.</span>
-                  <span><strong>Cross-Domain Graph:</strong> Transactions, content, and operations cryptographically linked</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-yellow-300 font-bold">2.</span>
-                  <span><strong>Cross-Merchant Network:</strong> Each new merchant makes every receipt more trustworthy</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-yellow-300 font-bold">3.</span>
-                  <span><strong>Blockchain Anchoring:</strong> Publicly verifiable, court-admissible evidence</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-yellow-300 font-bold">4.</span>
-                  <span><strong>Collective Fraud Defense:</strong> Network learns from every attack</span>
-                </li>
-              </ul>
-              <p className="text-blue-100 mt-4 font-semibold">
-                → Network effects make competition exponentially harder over time
-              </p>
+          <div>
+            <h3 className="font-bold text-2xl mb-4 text-center">One Platform vs. Three Separate Tools</h3>
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                <h4 className="font-bold text-lg mb-3">❌ Traditional Approach</h4>
+                <ul className="space-y-2 text-sm text-blue-50">
+                  <li>• Stripe Radar: $0.05 per transaction</li>
+                  <li>• C2PA integration: Custom development</li>
+                  <li>• DataDog logs: $15/host/month</li>
+                  <li>• Manual cross-referencing between systems</li>
+                  <li>• Siloed data, no unified verification</li>
+                </ul>
+                <div className="mt-4 pt-4 border-t border-white/30">
+                  <p className="font-bold text-yellow-300">Estimated cost: $500-2,000/month</p>
+                </div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border-2 border-yellow-400">
+                <h4 className="font-bold text-lg mb-3">✅ CertNode Platform</h4>
+                <ul className="space-y-2 text-sm text-white">
+                  <li>• Transaction + Content + Operations verification</li>
+                  <li>• Cryptographically linked across all domains</li>
+                  <li>• Automatic compliance reporting</li>
+                  <li>• Network fraud defense included</li>
+                  <li>• One unified API, one dashboard</li>
+                </ul>
+                <div className="mt-4 pt-4 border-t border-white/30">
+                  <p className="font-bold text-yellow-300">Starting at $49/month</p>
+                </div>
+              </div>
             </div>
+            <p className="text-center text-blue-100 text-sm">
+              <strong className="text-white">The CertNode Advantage:</strong> Save time, reduce costs, and get stronger security with unified cross-domain verification
+            </p>
           </div>
         </div>
 

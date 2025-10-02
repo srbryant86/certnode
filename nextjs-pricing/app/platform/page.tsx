@@ -30,23 +30,30 @@ export default function PlatformPage() {
         <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white py-20">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center">
+              <div className="inline-block bg-yellow-400 text-gray-900 text-xs font-bold px-4 py-1.5 rounded-full mb-4">
+                THE ONLY UNIFIED CRYPTOGRAPHIC VERIFICATION PLATFORM
+              </div>
+
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Cryptographic Receipt Platform
+                Seven Architectural Moats.<br/>One Verification Graph.
               </h1>
 
               <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-8 leading-relaxed">
-                Cryptographic verification infrastructure for transactions, content authenticity, and operational compliance
+                Transaction receipts link to content certifications, which link to operational attestations. Cross-merchant network effects, blockchain anchoring, and collective fraud defense create compounding trust that's <strong>impossible to replicate.</strong>
               </p>
 
               <div className="flex flex-wrap justify-center gap-4 mb-10">
                 <div className="bg-blue-500/20 border border-blue-400/30 text-blue-100 px-6 py-3 rounded-full text-sm font-medium">
-                  🔐 Transaction Receipts
+                  🔗 Cross-Domain Graph
                 </div>
                 <div className="bg-blue-500/20 border border-blue-400/30 text-blue-100 px-6 py-3 rounded-full text-sm font-medium">
-                  📄 Content Certification
+                  🌐 Cross-Merchant Network
                 </div>
                 <div className="bg-blue-500/20 border border-blue-400/30 text-blue-100 px-6 py-3 rounded-full text-sm font-medium">
-                  ✅ Operations Attestation
+                  ⏱️ Blockchain Anchored
+                </div>
+                <div className="bg-blue-500/20 border border-blue-400/30 text-blue-100 px-6 py-3 rounded-full text-sm font-medium">
+                  🛡️ Collective Defense
                 </div>
               </div>
 
@@ -58,7 +65,7 @@ export default function PlatformPage() {
                   View Pricing →
                 </a>
                 <p className="text-blue-200 text-sm">
-                  Cryptographic infrastructure for enterprise verification
+                  Network effects make competition exponentially harder over time
                 </p>
               </div>
             </div>

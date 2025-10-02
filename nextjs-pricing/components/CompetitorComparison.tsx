@@ -3,30 +3,39 @@ import React from 'react';
 export default function CompetitorComparison() {
   const features = [
     {
-      category: 'Receipt Types',
+      category: 'Verification Domains',
       items: [
         { name: 'Transaction Receipts', certnode: true, stripe: true, c2pa: false, auditLogs: false },
         { name: 'Content Certification', certnode: true, stripe: false, c2pa: true, auditLogs: false },
         { name: 'Operations Attestation', certnode: true, stripe: false, c2pa: false, auditLogs: true },
-        { name: 'Receipt Graph (Cross-Domain Links)', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Unified Cross-Domain Graph', certnode: true, stripe: false, c2pa: false, auditLogs: false },
       ],
     },
     {
-      category: 'Technical Features',
+      category: 'Network Architecture',
       items: [
-        { name: 'Cryptographic Signing (ES256)', certnode: true, stripe: true, c2pa: true, auditLogs: false },
-        { name: 'Offline Verification', certnode: true, stripe: false, c2pa: true, auditLogs: false },
-        { name: 'Open Standards (JWKS, JCS)', certnode: true, stripe: false, c2pa: true, auditLogs: false },
-        { name: 'Cross-Domain Queries', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Cross-Merchant Network Effects', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Network Trust Scores', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Anonymous Fraud Pattern Sharing', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Collective Defense (Network Learns)', certnode: true, stripe: false, c2pa: false, auditLogs: false },
       ],
     },
     {
-      category: 'Enterprise Features',
+      category: 'Cryptographic Infrastructure',
       items: [
-        { name: 'Compliance Reporting', certnode: true, stripe: true, c2pa: false, auditLogs: true },
-        { name: '99.9% SLA', certnode: true, stripe: true, c2pa: false, auditLogs: true },
-        { name: 'SSO Integration', certnode: true, stripe: true, c2pa: false, auditLogs: true },
-        { name: 'Dedicated Support', certnode: true, stripe: true, c2pa: false, auditLogs: true },
+        { name: 'Blockchain Time-Stamping', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Public Verifiability (Trustless)', certnode: true, stripe: false, c2pa: true, auditLogs: false },
+        { name: 'Global Merkle Root Publishing', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Court-Admissible Evidence', certnode: true, stripe: false, c2pa: true, auditLogs: false },
+      ],
+    },
+    {
+      category: 'Trust & Compliance',
+      items: [
+        { name: 'Trust Level Architecture (60/85/95%)', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Auto-Compliance Mapping (PCI/SOX/GDPR)', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Chargeback Insurance Eligibility', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Receipt Factoring Market', certnode: true, stripe: false, c2pa: false, auditLogs: false },
       ],
     },
   ];
@@ -128,11 +137,30 @@ export default function CompetitorComparison() {
           <div className="flex items-start gap-4">
             <div className="text-4xl">🏆</div>
             <div>
-              <h3 className="font-bold text-xl mb-2">The CertNode Advantage</h3>
-              <p className="text-blue-100 leading-relaxed">
-                While competitors focus on a single domain, CertNode is the <strong>only platform</strong> that
-                cryptographically links transactions, content, and operations in one unified graph.
-                This enables queries and insights impossible with any other solution.
+              <h3 className="font-bold text-xl mb-2">Why CertNode Can't Be Replicated</h3>
+              <p className="text-blue-100 leading-relaxed mb-4">
+                While competitors offer isolated solutions, CertNode is the <strong>only platform</strong> with seven compounding architectural moats:
+              </p>
+              <ul className="space-y-2 text-blue-50">
+                <li className="flex items-start gap-2">
+                  <span className="text-yellow-300 font-bold">1.</span>
+                  <span><strong>Cross-Domain Graph:</strong> Transactions, content, and operations cryptographically linked</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-yellow-300 font-bold">2.</span>
+                  <span><strong>Cross-Merchant Network:</strong> Each new merchant makes every receipt more trustworthy</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-yellow-300 font-bold">3.</span>
+                  <span><strong>Blockchain Anchoring:</strong> Publicly verifiable, court-admissible evidence</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-yellow-300 font-bold">4.</span>
+                  <span><strong>Collective Fraud Defense:</strong> Network learns from every attack</span>
+                </li>
+              </ul>
+              <p className="text-blue-100 mt-4 font-semibold">
+                → Network effects make competition exponentially harder over time
               </p>
             </div>
           </div>

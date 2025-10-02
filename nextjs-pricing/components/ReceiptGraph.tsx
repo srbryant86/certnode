@@ -16,87 +16,134 @@ export default function ReceiptGraph() {
         The CertNode Receipt Graph
       </h3>
       <p className="text-lg text-gray-600 mb-8 text-center max-w-3xl mx-auto">
-        Our cross-domain verification network creates an immutable trust graph. Each receipt cryptographically links to others, creating a tamper-evident web.
+        Three verification domains unified in one cryptographic graph. Transaction receipts link to content certifications, which link to operational attestations.
       </p>
 
-      <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 mb-6" style={{ minHeight: '600px' }}>
-        <svg viewBox="0 0 1000 600" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
+      <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 mb-6" style={{ minHeight: '650px' }}>
+        <svg viewBox="0 0 1000 650" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
           {/* Connection Lines */}
           <g className="opacity-60">
-            {/* Root to Domains */}
-            <line x1="500" y1="80" x2="250" y2="200" stroke="#cbd5e0" strokeWidth="2" strokeDasharray="5,5" />
-            <line x1="500" y1="80" x2="750" y2="200" stroke="#cbd5e0" strokeWidth="2" strokeDasharray="5,5" />
+            {/* Root to Three Domains */}
+            <line x1="500" y1="80" x2="200" y2="180" stroke="#cbd5e0" strokeWidth="2" strokeDasharray="5,5" />
+            <line x1="500" y1="80" x2="500" y2="180" stroke="#cbd5e0" strokeWidth="2" strokeDasharray="5,5" />
+            <line x1="500" y1="80" x2="800" y2="180" stroke="#cbd5e0" strokeWidth="2" strokeDasharray="5,5" />
 
-            {/* Domains to Merchants */}
-            <line x1="250" y1="200" x2="150" y2="320" stroke="#cbd5e0" strokeWidth="2" strokeDasharray="5,5" />
-            <line x1="250" y1="200" x2="350" y2="320" stroke="#cbd5e0" strokeWidth="2" strokeDasharray="5,5" />
-            <line x1="750" y1="200" x2="650" y2="320" stroke="#cbd5e0" strokeWidth="2" strokeDasharray="5,5" />
-            <line x1="750" y1="200" x2="850" y2="320" stroke="#cbd5e0" strokeWidth="2" strokeDasharray="5,5" />
+            {/* Domain to Receipt connections */}
+            <line x1="200" y1="220" x2="150" y2="340" stroke="#48bb78" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="200" y1="220" x2="250" y2="340" stroke="#48bb78" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="500" y1="220" x2="450" y2="340" stroke="#667eea" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="500" y1="220" x2="550" y2="340" stroke="#667eea" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="800" y1="220" x2="750" y2="340" stroke="#ed8936" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="800" y1="220" x2="850" y2="340" stroke="#ed8936" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
 
-            {/* Merchants to Receipts */}
-            <line x1="150" y1="320" x2="100" y2="480" stroke="#3b82f6" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="150" y1="320" x2="200" y2="480" stroke="#3b82f6" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="350" y1="320" x2="300" y2="480" stroke="#3b82f6" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="350" y1="320" x2="400" y2="480" stroke="#3b82f6" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="650" y1="320" x2="600" y2="480" stroke="#3b82f6" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="650" y1="320" x2="700" y2="480" stroke="#3b82f6" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="850" y1="320" x2="800" y2="480" stroke="#3b82f6" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="850" y1="320" x2="900" y2="480" stroke="#3b82f6" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
+            {/* Receipt to detailed records */}
+            <line x1="150" y1="380" x2="100" y2="520" stroke="#48bb78" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="150" y1="380" x2="200" y2="520" stroke="#48bb78" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="250" y1="380" x2="250" y2="520" stroke="#48bb78" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="450" y1="380" x2="400" y2="520" stroke="#667eea" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="450" y1="380" x2="500" y2="520" stroke="#667eea" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="550" y1="380" x2="550" y2="520" stroke="#667eea" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="750" y1="380" x2="700" y2="520" stroke="#ed8936" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="750" y1="380" x2="800" y2="520" stroke="#ed8936" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="850" y1="380" x2="850" y2="520" stroke="#ed8936" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
 
-            {/* Cross-domain connections - THE MAGIC */}
-            <line x1="200" y1="480" x2="600" y2="480" stroke="#9f7aea" strokeWidth="3" strokeDasharray="3,3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="400" y1="480" x2="800" y2="480" stroke="#9f7aea" strokeWidth="3" strokeDasharray="3,3" className={isAnimating ? 'animate-pulse' : ''} />
+            {/* Cross-domain cryptographic links - THE MAGIC */}
+            <line x1="200" y1="520" x2="500" y2="520" stroke="#9f7aea" strokeWidth="4" strokeDasharray="5,5" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="500" y1="520" x2="800" y2="520" stroke="#9f7aea" strokeWidth="4" strokeDasharray="5,5" className={isAnimating ? 'animate-pulse' : ''} />
+            <line x1="200" y1="520" x2="800" y2="520" stroke="#f59e0b" strokeWidth="3" strokeDasharray="3,3" opacity="0.6" className={isAnimating ? 'animate-pulse' : ''} />
           </g>
 
           {/* Root Node */}
           <g className={isAnimating ? 'animate-pulse' : ''}>
             <rect x="450" y="50" width="100" height="60" rx="8" fill="url(#gradient-purple)" stroke="#667eea" strokeWidth="2" />
             <text x="500" y="75" textAnchor="middle" className="fill-white text-sm font-semibold">CertNode</text>
-            <text x="500" y="92" textAnchor="middle" className="fill-white text-xs opacity-90">Root</text>
+            <text x="500" y="92" textAnchor="middle" className="fill-white text-xs opacity-90">Root Trust</text>
           </g>
 
-          {/* Domain Nodes */}
+          {/* Three Domain Nodes */}
           <g className={isAnimating ? 'animate-pulse' : ''}>
-            <rect x="200" y="170" width="100" height="60" rx="8" fill="#f0fff4" stroke="#48bb78" strokeWidth="2" />
-            <text x="250" y="195" textAnchor="middle" className="fill-gray-800 text-sm font-semibold">stripe.com</text>
-            <text x="250" y="212" textAnchor="middle" className="fill-gray-600 text-xs">Domain</text>
+            <rect x="150" y="180" width="100" height="40" rx="8" fill="#f0fff4" stroke="#48bb78" strokeWidth="2" />
+            <text x="200" y="205" textAnchor="middle" className="fill-gray-800 text-sm font-semibold">Transaction</text>
           </g>
 
           <g className={isAnimating ? 'animate-pulse' : ''}>
-            <rect x="700" y="170" width="100" height="60" rx="8" fill="#f0fff4" stroke="#48bb78" strokeWidth="2" />
-            <text x="750" y="195" textAnchor="middle" className="fill-gray-800 text-sm font-semibold">shopify.com</text>
-            <text x="750" y="212" textAnchor="middle" className="fill-gray-600 text-xs">Domain</text>
+            <rect x="450" y="180" width="100" height="40" rx="8" fill="#faf5ff" stroke="#667eea" strokeWidth="2" />
+            <text x="500" y="205" textAnchor="middle" className="fill-gray-800 text-sm font-semibold">Content</text>
           </g>
 
-          {/* Merchant Nodes */}
+          <g className={isAnimating ? 'animate-pulse' : ''}>
+            <rect x="750" y="180" width="100" height="40" rx="8" fill="#fffaf0" stroke="#ed8936" strokeWidth="2" />
+            <text x="800" y="205" textAnchor="middle" className="fill-gray-800 text-sm font-semibold">Operations</text>
+          </g>
+
+          {/* Receipt Type Nodes */}
+          {/* Transaction Receipts */}
+          <g className={isAnimating ? 'animate-pulse' : ''}>
+            <rect x="100" y="340" width="100" height="40" rx="6" fill="#f0fff4" stroke="#48bb78" strokeWidth="2" />
+            <text x="150" y="365" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">Stripe Payment</text>
+          </g>
+          <g className={isAnimating ? 'animate-pulse' : ''}>
+            <rect x="200" y="340" width="100" height="40" rx="6" fill="#f0fff4" stroke="#48bb78" strokeWidth="2" />
+            <text x="250" y="365" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">Refund Receipt</text>
+          </g>
+
+          {/* Content Receipts */}
+          <g className={isAnimating ? 'animate-pulse' : ''}>
+            <rect x="400" y="340" width="100" height="40" rx="6" fill="#faf5ff" stroke="#667eea" strokeWidth="2" />
+            <text x="450" y="365" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">AI Detection</text>
+          </g>
+          <g className={isAnimating ? 'animate-pulse' : ''}>
+            <rect x="500" y="340" width="100" height="40" rx="6" fill="#faf5ff" stroke="#667eea" strokeWidth="2" />
+            <text x="550" y="365" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">Image Cert</text>
+          </g>
+
+          {/* Operations Receipts */}
+          <g className={isAnimating ? 'animate-pulse' : ''}>
+            <rect x="700" y="340" width="100" height="40" rx="6" fill="#fffaf0" stroke="#ed8936" strokeWidth="2" />
+            <text x="750" y="365" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">Deploy Record</text>
+          </g>
+          <g className={isAnimating ? 'animate-pulse' : ''}>
+            <rect x="800" y="340" width="100" height="40" rx="6" fill="#fffaf0" stroke="#ed8936" strokeWidth="2" />
+            <text x="850" y="365" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">Incident Log</text>
+          </g>
+
+          {/* Detailed Records */}
+          {/* Transaction details */}
           {[
-            { x: 100, label: 'Merchant A', sub: 'Stripe' },
-            { x: 300, label: 'Merchant B', sub: 'Stripe' },
-            { x: 600, label: 'Merchant C', sub: 'Shopify' },
-            { x: 800, label: 'Merchant D', sub: 'Shopify' }
-          ].map((merchant, i) => (
-            <g key={i} className={isAnimating ? 'animate-pulse' : ''}>
-              <rect x={merchant.x - 50} y="290" width="100" height="60" rx="8" fill="#fffaf0" stroke="#ed8936" strokeWidth="2" />
-              <text x={merchant.x} y="315" textAnchor="middle" className="fill-gray-800 text-sm font-semibold">{merchant.label}</text>
-              <text x={merchant.x} y="332" textAnchor="middle" className="fill-gray-600 text-xs">{merchant.sub}</text>
+            { x: 100, label: 'Txn #A84F', sub: '$1,249' },
+            { x: 200, label: 'Txn #B2C3', sub: '$567' },
+            { x: 250, label: 'Ref #D9E1', sub: '-$234' }
+          ].map((item, i) => (
+            <g key={`txn-${i}`} className={isAnimating ? 'animate-bounce' : ''}>
+              <rect x={item.x - 35} y="500" width="70" height="50" rx="6" fill="#ecfdf5" stroke="#48bb78" strokeWidth="2" />
+              <text x={item.x} y="520" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">{item.label}</text>
+              <text x={item.x} y="537" textAnchor="middle" className="fill-gray-600 text-xs">{item.sub}</text>
             </g>
           ))}
 
-          {/* Transaction Receipt Nodes */}
+          {/* Content details */}
           {[
-            { x: 100, txn: '#1', amt: '$1.2K' },
-            { x: 200, txn: '#2', amt: '$567' },
-            { x: 300, txn: '#3', amt: '$890' },
-            { x: 400, txn: '#4', amt: '$234' },
-            { x: 600, txn: '#5', amt: '$456' },
-            { x: 700, txn: '#6', amt: '$789' },
-            { x: 800, txn: '#7', amt: '$123' },
-            { x: 900, txn: '#8', amt: '$345' }
-          ].map((receipt, i) => (
-            <g key={i} className={isAnimating ? 'animate-bounce' : ''}>
-              <rect x={receipt.x - 35} y="450" width="70" height="50" rx="6" fill="#faf5ff" stroke="#9f7aea" strokeWidth="2" />
-              <text x={receipt.x} y="470" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">Txn {receipt.txn}</text>
-              <text x={receipt.x} y="487" textAnchor="middle" className="fill-gray-600 text-xs">{receipt.amt}</text>
+            { x: 400, label: 'Doc #3FA', sub: '92% AI' },
+            { x: 500, label: 'Doc #7BC', sub: '18% AI' },
+            { x: 550, label: 'Img #2D4', sub: 'Authentic' }
+          ].map((item, i) => (
+            <g key={`content-${i}`} className={isAnimating ? 'animate-bounce' : ''}>
+              <rect x={item.x - 35} y="500" width="70" height="50" rx="6" fill="#f5f3ff" stroke="#667eea" strokeWidth="2" />
+              <text x={item.x} y="520" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">{item.label}</text>
+              <text x={item.x} y="537" textAnchor="middle" className="fill-gray-600 text-xs">{item.sub}</text>
+            </g>
+          ))}
+
+          {/* Operations details */}
+          {[
+            { x: 700, label: 'Deploy', sub: 'v2.4.1' },
+            { x: 800, label: 'Incident', sub: 'INC-042' },
+            { x: 850, label: 'Policy', sub: 'P-2024' }
+          ].map((item, i) => (
+            <g key={`ops-${i}`} className={isAnimating ? 'animate-bounce' : ''}>
+              <rect x={item.x - 35} y="500" width="70" height="50" rx="6" fill="#fff7ed" stroke="#ed8936" strokeWidth="2" />
+              <text x={item.x} y="520" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">{item.label}</text>
+              <text x={item.x} y="537" textAnchor="middle" className="fill-gray-600 text-xs">{item.sub}</text>
             </g>
           ))}
 
@@ -130,11 +177,121 @@ export default function ReceiptGraph() {
         </div>
       </div>
 
-      {/* Explanation Box */}
-      <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg mb-6">
-        <h4 className="font-bold text-gray-900 mb-2">🔒 Why This Graph Is Unique</h4>
-        <p className="text-gray-700 leading-relaxed">
-          <strong>Cross-Domain Verification:</strong> Unlike traditional systems where each merchant operates in isolation, our Receipt Graph cryptographically links transactions across different domains and platforms. When Txn #2 references Txn #5, it creates tamper-evident proof that both transactions existed at the same point in time - even though they're from different payment processors. This makes fraud exponentially harder: attackers would need to compromise multiple independent systems simultaneously to forge a single receipt.
+      {/* Explanation Boxes */}
+      <div className="grid md:grid-cols-2 gap-6 mb-6">
+        <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg">
+          <h4 className="font-bold text-gray-900 mb-2">🔒 Cross-Domain Verification</h4>
+          <p className="text-gray-700 leading-relaxed text-sm">
+            Transaction receipts link to content certifications, which link to operational attestations. Each domain strengthens the others cryptographically. To forge a single transaction, attackers must compromise all three domains simultaneously and recalculate the global merkle root - <strong>exponentially harder</strong> than forging isolated records.
+          </p>
+        </div>
+
+        <div className="bg-purple-50 border-l-4 border-purple-500 p-6 rounded-lg">
+          <h4 className="font-bold text-gray-900 mb-2">🌐 Cross-Merchant Network</h4>
+          <p className="text-gray-700 leading-relaxed text-sm">
+            Receipts from different merchants verify each other through cryptographic hash linking. A customer with 15 verified purchases across 8 merchants has a network trust score that makes fraud nearly impossible. <strong>Each new merchant makes every receipt more trustworthy.</strong>
+          </p>
+        </div>
+
+        <div className="bg-green-50 border-l-4 border-green-500 p-6 rounded-lg">
+          <h4 className="font-bold text-gray-900 mb-2">⏱️ Trusted Time-Stamping</h4>
+          <p className="text-gray-700 leading-relaxed text-sm">
+            Global merkle roots published to Bitcoin blockchain every 10 minutes. Anyone can independently verify receipts without trusting CertNode. <strong>Court-admissible evidence</strong> that's cryptographically provable and legally recognized.
+          </p>
+        </div>
+
+        <div className="bg-orange-50 border-l-4 border-orange-500 p-6 rounded-lg">
+          <h4 className="font-bold text-gray-900 mb-2">🛡️ Collective Fraud Defense</h4>
+          <p className="text-gray-700 leading-relaxed text-sm">
+            Anonymous fraud patterns shared across the network. When one merchant detects fraud, all merchants are protected. <strong>Network learns from every attack,</strong> making fraud patterns immediately detectable network-wide.
+          </p>
+        </div>
+      </div>
+
+      {/* Trust Level Comparison */}
+      <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 rounded-xl mb-6">
+        <h4 className="text-2xl font-bold mb-6 text-center">Trust Level Architecture</h4>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="bg-gray-700/50 p-6 rounded-lg border-2 border-gray-600">
+            <div className="text-center mb-4">
+              <div className="text-4xl font-bold text-gray-400">60%</div>
+              <div className="text-sm text-gray-300 mt-1">BASIC Trust</div>
+            </div>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-start gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-gray-300">Transaction verified</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-red-400">✗</span>
+                <span className="text-gray-300">No invoice certification</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-red-400">✗</span>
+                <span className="text-gray-300">No system attestation</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-red-400">✗</span>
+                <span className="text-gray-300">No network access</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-blue-600/50 p-6 rounded-lg border-2 border-blue-400">
+            <div className="text-center mb-4">
+              <div className="text-4xl font-bold text-blue-200">85%</div>
+              <div className="text-sm text-blue-100 mt-1">VERIFIED Trust</div>
+            </div>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-start gap-2">
+                <span className="text-green-300">✓</span>
+                <span className="text-white">Transaction + Content</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-green-300">✓</span>
+                <span className="text-white">Invoice AI-verified</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-green-300">✓</span>
+                <span className="text-white">Cross-domain links</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-yellow-300">~</span>
+                <span className="text-white">Network read access</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-600 to-purple-700 p-6 rounded-lg border-2 border-purple-300 relative">
+            <div className="absolute -top-3 right-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-bold">
+              RECOMMENDED
+            </div>
+            <div className="text-center mb-4">
+              <div className="text-4xl font-bold text-purple-100">95%</div>
+              <div className="text-sm text-purple-100 mt-1">PLATINUM Trust</div>
+            </div>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-start gap-2">
+                <span className="text-green-200">✓</span>
+                <span className="text-white font-semibold">All three domains linked</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-green-200">✓</span>
+                <span className="text-white font-semibold">System attestation</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-green-200">✓</span>
+                <span className="text-white font-semibold">Network fraud defense</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-green-200">✓</span>
+                <span className="text-white font-semibold">Chargeback insurance</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="text-center text-gray-300 text-sm mt-6">
+          Higher trust scores = better dispute outcomes, lower fraud risk, insurance eligibility
         </p>
       </div>
 

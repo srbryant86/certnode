@@ -3,7 +3,7 @@ export default function PlatformStats() {
     { number: 'API-First', label: 'Platform Architecture' },
     { number: '99.97%', label: 'Uptime SLA' },
     { number: '3 Domains', label: 'Unified Platform' },
-    { number: 'SOC 2', label: 'Type II Certified' },
+    { number: 'SOC 2', label: 'Readiness' },
     { number: 'SHA-256', label: 'Cryptographic Security' },
     { number: '24/7', label: 'Enterprise Support' }
   ];

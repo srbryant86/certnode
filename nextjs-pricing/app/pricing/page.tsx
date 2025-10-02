@@ -25,7 +25,7 @@ import fxData from '../(data)/fx.json';
 
 export const metadata: Metadata = {
   title: 'Pricing — CertNode Cryptographic Receipt Platform',
-  description: 'Transparent pricing for CertNode cryptographic receipt platform. Developer plans start free, Professional solutions from $199/month. Enterprise security standards.',
+  description: 'Transparent pricing for CertNode cryptographic receipt platform. Professional solutions from $199/month, Enterprise custom pricing. 60-day money-back guarantee.',
   openGraph: {
     title: 'Pricing — CertNode Cryptographic Receipt Platform',
     description: 'Transparent pricing for cryptographic receipt infrastructure. Free developer tier, professional plans, and business solutions.',
@@ -154,10 +154,10 @@ export default function PricingPage() {
                   href="#pricing-table"
                   className="bg-white text-blue-700 hover:bg-gray-100 px-10 py-5 rounded-lg font-bold text-xl transition-all transform hover:scale-105 shadow-2xl inline-block"
                 >
-                  See Pricing & Start Free Trial →
+                  View Pricing Plans →
                 </a>
                 <p className="text-blue-200 text-sm">
-                  Enterprise-grade infrastructure • SOX compliant • Secure payments by Stripe •{' '}
+                  Enterprise-grade infrastructure • SOX readiness • Secure payments by Stripe •{' '}
                   <a href="/trust" className="underline hover:text-white">Trust Center</a>
                 </p>
               </div>
@@ -183,7 +183,7 @@ export default function PricingPage() {
                 Enterprise-ready compliance infrastructure
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto mb-2">
-                Cryptographic receipt technology that scales with your business. SOX compliant, audit-ready, enterprise-grade security from day one.
+                Cryptographic receipt technology that scales with your business. SOX readiness, audit-ready, enterprise-grade security from day one.
               </p>
               <p className="text-sm text-gray-500">
                 Join 50+ teams already protecting their revenue with CertNode

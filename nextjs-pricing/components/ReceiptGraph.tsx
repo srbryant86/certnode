@@ -6,9 +6,21 @@ export default function ReceiptGraph() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
+  const [animationStep, setAnimationStep] = useState<number>(0);
+
   const handleAnimate = () => {
     setIsAnimating(true);
-    setTimeout(() => setIsAnimating(false), 2500);
+    setAnimationStep(0);
+
+    // Sequential animation: root → domains → receipts → cross-links
+    setTimeout(() => setAnimationStep(1), 300);  // Root
+    setTimeout(() => setAnimationStep(2), 800);  // Domains
+    setTimeout(() => setAnimationStep(3), 1400); // Receipts
+    setTimeout(() => setAnimationStep(4), 2000); // Cross-links
+    setTimeout(() => {
+      setIsAnimating(false);
+      setAnimationStep(0);
+    }, 3500);
   };
 
   const nodeInfo: Record<string, { title: string; subtitle: string; description: string }> = {
@@ -73,14 +85,16 @@ export default function ReceiptGraph() {
         Three verification domains unified in one cryptographic graph. Transaction receipts link to content certifications, which link to operational attestations.
       </p>
 
-      {/* Tooltip Display */}
-      {hoveredNode && nodeInfo[hoveredNode] && (
-        <div className="mb-4 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-500 p-4 rounded-lg">
-          <h4 className="font-bold text-gray-900 mb-1">{nodeInfo[hoveredNode].title}</h4>
-          <p className="text-sm text-blue-700 font-semibold mb-2">{nodeInfo[hoveredNode].subtitle}</p>
-          <p className="text-sm text-gray-700">{nodeInfo[hoveredNode].description}</p>
-        </div>
-      )}
+      {/* Tooltip Display - Fixed height to prevent layout shift */}
+      <div className="h-24 mb-4">
+        {hoveredNode && nodeInfo[hoveredNode] && (
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-500 p-4 rounded-lg transition-all">
+            <h4 className="font-bold text-gray-900 mb-1">{nodeInfo[hoveredNode].title}</h4>
+            <p className="text-sm text-blue-700 font-semibold mb-2">{nodeInfo[hoveredNode].subtitle}</p>
+            <p className="text-sm text-gray-700">{nodeInfo[hoveredNode].description}</p>
+          </div>
+        )}
+      </div>
 
       <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 mb-6" style={{ minHeight: '500px' }}>
         <svg viewBox="0 0 1000 500" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
@@ -121,31 +135,31 @@ export default function ReceiptGraph() {
           </g>
 
           {/* Cross-Domain Links (THE MOAT) */}
-          <g className={isAnimating ? 'opacity-100' : 'opacity-60'} style={{ transition: 'opacity 0.5s' }}>
+          <g className={animationStep === 4 ? 'opacity-100' : 'opacity-60'} style={{ transition: 'opacity 0.5s' }}>
             <path
               d="M 200 360 Q 350 420 500 360"
-              stroke="#9f7aea"
-              strokeWidth="3"
+              stroke={animationStep === 4 ? '#fbbf24' : '#9f7aea'}
+              strokeWidth={animationStep === 4 ? '5' : '3'}
               fill="none"
               strokeDasharray="8,4"
-              className={isAnimating ? 'animate-pulse' : ''}
+              className={animationStep === 4 ? 'animate-pulse' : ''}
             />
             <path
               d="M 500 360 Q 625 420 750 360"
-              stroke="#9f7aea"
-              strokeWidth="3"
+              stroke={animationStep === 4 ? '#fbbf24' : '#9f7aea'}
+              strokeWidth={animationStep === 4 ? '5' : '3'}
               fill="none"
               strokeDasharray="8,4"
-              className={isAnimating ? 'animate-pulse' : ''}
+              className={animationStep === 4 ? 'animate-pulse' : ''}
             />
             <path
               d="M 200 360 Q 475 440 750 360"
-              stroke="#ec4899"
-              strokeWidth="2"
+              stroke={animationStep === 4 ? '#fbbf24' : '#ec4899'}
+              strokeWidth={animationStep === 4 ? '4' : '2'}
               fill="none"
               strokeDasharray="4,4"
-              opacity="0.4"
-              className={isAnimating ? 'animate-pulse' : ''}
+              opacity={animationStep === 4 ? '1' : '0.4'}
+              className={animationStep === 4 ? 'animate-pulse' : ''}
             />
           </g>
 
@@ -160,8 +174,9 @@ export default function ReceiptGraph() {
             <rect
               x="440" y="50" width="120" height="60" rx="10"
               fill="url(#gradient-purple)"
-              stroke={hoveredNode === 'root' ? '#4c51bf' : '#5a67d8'}
-              strokeWidth={hoveredNode === 'root' ? '3' : '2'}
+              stroke={hoveredNode === 'root' ? '#4c51bf' : (animationStep === 1 ? '#fbbf24' : '#5a67d8')}
+              strokeWidth={hoveredNode === 'root' ? '3' : (animationStep === 1 ? '4' : '2')}
+              className={animationStep === 1 ? 'animate-pulse' : ''}
             />
             <text x="500" y="75" textAnchor="middle" className="fill-white font-bold pointer-events-none" fontSize="14">CertNode</text>
             <text x="500" y="93" textAnchor="middle" className="fill-white/80 pointer-events-none" fontSize="11">Root Trust</text>
@@ -178,8 +193,9 @@ export default function ReceiptGraph() {
             <rect
               x="190" y="160" width="120" height="50" rx="8"
               fill="#f0fdf4"
-              stroke={hoveredNode === 'transaction' ? '#16a34a' : '#22c55e'}
-              strokeWidth={hoveredNode === 'transaction' ? '3.5' : '2.5'}
+              stroke={hoveredNode === 'transaction' ? '#16a34a' : (animationStep === 2 ? '#fbbf24' : '#22c55e')}
+              strokeWidth={hoveredNode === 'transaction' ? '3.5' : (animationStep === 2 ? '4' : '2.5')}
+              className={animationStep === 2 ? 'animate-pulse' : ''}
             />
             <text x="250" y="190" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="13">Transaction</text>
           </g>
@@ -194,8 +210,9 @@ export default function ReceiptGraph() {
             <rect
               x="440" y="160" width="120" height="50" rx="8"
               fill="#faf5ff"
-              stroke={hoveredNode === 'content' ? '#7c3aed' : '#8b5cf6'}
-              strokeWidth={hoveredNode === 'content' ? '3.5' : '2.5'}
+              stroke={hoveredNode === 'content' ? '#7c3aed' : (animationStep === 2 ? '#fbbf24' : '#8b5cf6')}
+              strokeWidth={hoveredNode === 'content' ? '3.5' : (animationStep === 2 ? '4' : '2.5')}
+              className={animationStep === 2 ? 'animate-pulse' : ''}
             />
             <text x="500" y="190" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="13">Content</text>
           </g>
@@ -210,8 +227,9 @@ export default function ReceiptGraph() {
             <rect
               x="690" y="160" width="120" height="50" rx="8"
               fill="#fff7ed"
-              stroke={hoveredNode === 'operations' ? '#ea580c' : '#f97316'}
-              strokeWidth={hoveredNode === 'operations' ? '3.5' : '2.5'}
+              stroke={hoveredNode === 'operations' ? '#ea580c' : (animationStep === 2 ? '#fbbf24' : '#f97316')}
+              strokeWidth={hoveredNode === 'operations' ? '3.5' : (animationStep === 2 ? '4' : '2.5')}
+              className={animationStep === 2 ? 'animate-pulse' : ''}
             />
             <text x="750" y="190" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="13">Operations</text>
           </g>
@@ -225,7 +243,7 @@ export default function ReceiptGraph() {
             className="cursor-pointer"
             style={{ opacity: hoveredNode === 'payment' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
           >
-            <rect x="150" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke={hoveredNode === 'payment' ? '#16a34a' : '#22c55e'} strokeWidth={hoveredNode === 'payment' ? '3' : '2'} />
+            <rect x="150" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke={hoveredNode === 'payment' ? '#16a34a' : (animationStep === 3 ? '#fbbf24' : '#22c55e')} strokeWidth={hoveredNode === 'payment' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
             <text x="200" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Payment</text>
             <text x="200" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">$1,249</text>
           </g>
@@ -237,7 +255,7 @@ export default function ReceiptGraph() {
             className="cursor-pointer"
             style={{ opacity: hoveredNode === 'refund' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
           >
-            <rect x="250" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke={hoveredNode === 'refund' ? '#16a34a' : '#22c55e'} strokeWidth={hoveredNode === 'refund' ? '3' : '2'} />
+            <rect x="250" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke={hoveredNode === 'refund' ? '#16a34a' : (animationStep === 3 ? '#fbbf24' : '#22c55e')} strokeWidth={hoveredNode === 'refund' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
             <text x="300" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Refund</text>
             <text x="300" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">-$234</text>
           </g>
@@ -250,7 +268,7 @@ export default function ReceiptGraph() {
             className="cursor-pointer"
             style={{ opacity: hoveredNode === 'aicheck' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
           >
-            <rect x="400" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke={hoveredNode === 'aicheck' ? '#7c3aed' : '#8b5cf6'} strokeWidth={hoveredNode === 'aicheck' ? '3' : '2'} />
+            <rect x="400" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke={hoveredNode === 'aicheck' ? '#7c3aed' : (animationStep === 3 ? '#fbbf24' : '#8b5cf6')} strokeWidth={hoveredNode === 'aicheck' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
             <text x="450" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">AI Check</text>
             <text x="450" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">92% AI</text>
           </g>
@@ -262,7 +280,7 @@ export default function ReceiptGraph() {
             className="cursor-pointer"
             style={{ opacity: hoveredNode === 'imagecert' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
           >
-            <rect x="500" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke={hoveredNode === 'imagecert' ? '#7c3aed' : '#8b5cf6'} strokeWidth={hoveredNode === 'imagecert' ? '3' : '2'} />
+            <rect x="500" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke={hoveredNode === 'imagecert' ? '#7c3aed' : (animationStep === 3 ? '#fbbf24' : '#8b5cf6')} strokeWidth={hoveredNode === 'imagecert' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
             <text x="550" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Image Cert</text>
             <text x="550" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">Authentic</text>
           </g>
@@ -275,7 +293,7 @@ export default function ReceiptGraph() {
             className="cursor-pointer"
             style={{ opacity: hoveredNode === 'deploy' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
           >
-            <rect x="650" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke={hoveredNode === 'deploy' ? '#ea580c' : '#f97316'} strokeWidth={hoveredNode === 'deploy' ? '3' : '2'} />
+            <rect x="650" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke={hoveredNode === 'deploy' ? '#ea580c' : (animationStep === 3 ? '#fbbf24' : '#f97316')} strokeWidth={hoveredNode === 'deploy' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
             <text x="700" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Deploy</text>
             <text x="700" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">v2.4.1</text>
           </g>
@@ -287,7 +305,7 @@ export default function ReceiptGraph() {
             className="cursor-pointer"
             style={{ opacity: hoveredNode === 'incident' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
           >
-            <rect x="750" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke={hoveredNode === 'incident' ? '#ea580c' : '#f97316'} strokeWidth={hoveredNode === 'incident' ? '3' : '2'} />
+            <rect x="750" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke={hoveredNode === 'incident' ? '#ea580c' : (animationStep === 3 ? '#fbbf24' : '#f97316')} strokeWidth={hoveredNode === 'incident' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
             <text x="800" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Incident</text>
             <text x="800" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">INC-042</text>
           </g>
@@ -355,101 +373,6 @@ export default function ReceiptGraph() {
             Anonymous fraud patterns shared across the network. When one merchant detects fraud, all merchants are protected. <strong>Network learns from every attack,</strong> making fraud patterns immediately detectable network-wide.
           </p>
         </div>
-      </div>
-
-      {/* Verification Coverage Comparison */}
-      <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 rounded-xl mb-6">
-        <div className="text-center mb-2">
-          <div className="inline-block bg-blue-500/20 border border-blue-400/30 text-blue-200 px-4 py-1.5 rounded-full text-xs font-bold mb-3">
-            AVAILABLE ON ALL PLANS
-          </div>
-          <h4 className="text-2xl font-bold mb-2">Domain Coverage Levels</h4>
-          <p className="text-gray-400 text-sm max-w-2xl mx-auto mb-6">
-            All plans can link all three domains. More domains = stronger protection against fraud and disputes.
-          </p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-gray-700/50 p-6 rounded-lg border-2 border-gray-600">
-            <div className="text-center mb-4">
-              <div className="text-3xl font-bold text-gray-400">1 Domain</div>
-              <div className="text-sm text-gray-300 mt-1">Partial Coverage</div>
-            </div>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-start gap-2">
-                <span className="text-green-400">✓</span>
-                <span className="text-gray-300">Transaction verified</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-gray-500">○</span>
-                <span className="text-gray-400">No content certification</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-gray-500">○</span>
-                <span className="text-gray-400">No operations attestation</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-gray-500">○</span>
-                <span className="text-gray-400">Limited fraud protection</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-blue-600/50 p-6 rounded-lg border-2 border-blue-400">
-            <div className="text-center mb-4">
-              <div className="text-3xl font-bold text-blue-200">2 Domains</div>
-              <div className="text-sm text-blue-100 mt-1">Multi-Domain</div>
-            </div>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-start gap-2">
-                <span className="text-green-300">✓</span>
-                <span className="text-white">Transaction + Content</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-green-300">✓</span>
-                <span className="text-white">Cross-domain verification</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-green-300">✓</span>
-                <span className="text-white">Better fraud protection</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-gray-300">○</span>
-                <span className="text-white">Incomplete workflow</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-purple-600 to-purple-700 p-6 rounded-lg border-2 border-purple-300 relative">
-            <div className="absolute -top-3 right-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-bold">
-              RECOMMENDED
-            </div>
-            <div className="text-center mb-4">
-              <div className="text-3xl font-bold text-purple-100">3 Domains</div>
-              <div className="text-sm text-purple-100 mt-1">Complete Coverage</div>
-            </div>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-start gap-2">
-                <span className="text-green-200">✓</span>
-                <span className="text-white font-semibold">All three domains linked</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-green-200">✓</span>
-                <span className="text-white font-semibold">Full cryptographic proof</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-green-200">✓</span>
-                <span className="text-white font-semibold">Network fraud defense</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-green-200">✓</span>
-                <span className="text-white font-semibold">Strongest dispute protection</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p className="text-center text-gray-300 text-sm mt-6">
-          More domains = exponentially harder to forge. Complete coverage provides the strongest protection against fraud and disputes.
-        </p>
       </div>
 
       {/* Animate Button */}

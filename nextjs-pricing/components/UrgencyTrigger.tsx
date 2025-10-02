@@ -63,7 +63,7 @@ export default function UrgencyTrigger() {
         {
           type: 'risk_reversal',
           message: 'Enterprise-Ready Security',
-          subtext: 'SOX compliant, audit-ready from day one',
+          subtext: 'SOX readiness, audit-ready from day one',
           urgencyLevel: 'medium',
           icon: '🔐',
           ctaText: 'Start Secure',

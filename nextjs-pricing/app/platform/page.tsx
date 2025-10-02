@@ -88,6 +88,25 @@ export default function PlatformPage() {
           </div>
         </section>
 
+        {/* Deterministic Verification Badge */}
+        <section className="py-8 bg-white border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-xl p-6 text-center">
+              <div className="inline-block bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold mb-3">
+                THE CERTNODE DIFFERENCE
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                Deterministic by Design
+              </h3>
+              <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
+                Receipts <strong>verify or they don't</strong> — no scoring, no black boxes, no vendor round-trip.
+                Cryptographic proof is binary and offline-verifiable. Unlike ML-based fraud detection (Stripe Radar),
+                our verification is mathematically provable and doesn't require trusting CertNode's servers.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Platform Pillars */}
         <PlatformPillars />
 
@@ -183,7 +202,7 @@ export default function PlatformPage() {
                 </a>
               </div>
               <p className="text-blue-200 text-sm mt-6">
-                Enterprise-ready infrastructure • SOC 2 Type II certified • 99.97% uptime SLA
+                Enterprise-ready infrastructure • SOC 2 readiness • 99.97% uptime SLA
               </p>
             </div>
           </div>

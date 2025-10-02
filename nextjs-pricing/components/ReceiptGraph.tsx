@@ -7,7 +7,7 @@ export default function ReceiptGraph() {
 
   const handleAnimate = () => {
     setIsAnimating(true);
-    setTimeout(() => setIsAnimating(false), 3000);
+    setTimeout(() => setIsAnimating(false), 2500);
   };
 
   return (
@@ -19,141 +19,141 @@ export default function ReceiptGraph() {
         Three verification domains unified in one cryptographic graph. Transaction receipts link to content certifications, which link to operational attestations.
       </p>
 
-      <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 mb-6" style={{ minHeight: '650px' }}>
-        <svg viewBox="0 0 1000 650" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
-          {/* Connection Lines */}
-          <g className="opacity-60">
-            {/* Root to Three Domains */}
-            <line x1="500" y1="80" x2="200" y2="180" stroke="#cbd5e0" strokeWidth="2" strokeDasharray="5,5" />
-            <line x1="500" y1="80" x2="500" y2="180" stroke="#cbd5e0" strokeWidth="2" strokeDasharray="5,5" />
-            <line x1="500" y1="80" x2="800" y2="180" stroke="#cbd5e0" strokeWidth="2" strokeDasharray="5,5" />
-
-            {/* Domain to Receipt connections */}
-            <line x1="200" y1="220" x2="150" y2="340" stroke="#48bb78" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="200" y1="220" x2="250" y2="340" stroke="#48bb78" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="500" y1="220" x2="450" y2="340" stroke="#667eea" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="500" y1="220" x2="550" y2="340" stroke="#667eea" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="800" y1="220" x2="750" y2="340" stroke="#ed8936" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="800" y1="220" x2="850" y2="340" stroke="#ed8936" strokeWidth="3" className={isAnimating ? 'animate-pulse' : ''} />
-
-            {/* Receipt to detailed records */}
-            <line x1="150" y1="380" x2="100" y2="520" stroke="#48bb78" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="150" y1="380" x2="200" y2="520" stroke="#48bb78" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="250" y1="380" x2="250" y2="520" stroke="#48bb78" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="450" y1="380" x2="400" y2="520" stroke="#667eea" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="450" y1="380" x2="500" y2="520" stroke="#667eea" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="550" y1="380" x2="550" y2="520" stroke="#667eea" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="750" y1="380" x2="700" y2="520" stroke="#ed8936" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="750" y1="380" x2="800" y2="520" stroke="#ed8936" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="850" y1="380" x2="850" y2="520" stroke="#ed8936" strokeWidth="2" className={isAnimating ? 'animate-pulse' : ''} />
-
-            {/* Cross-domain cryptographic links - THE MAGIC */}
-            <line x1="200" y1="520" x2="500" y2="520" stroke="#9f7aea" strokeWidth="4" strokeDasharray="5,5" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="500" y1="520" x2="800" y2="520" stroke="#9f7aea" strokeWidth="4" strokeDasharray="5,5" className={isAnimating ? 'animate-pulse' : ''} />
-            <line x1="200" y1="520" x2="800" y2="520" stroke="#f59e0b" strokeWidth="3" strokeDasharray="3,3" opacity="0.6" className={isAnimating ? 'animate-pulse' : ''} />
-          </g>
-
-          {/* Root Node */}
-          <g className={isAnimating ? 'animate-pulse' : ''}>
-            <rect x="450" y="50" width="100" height="60" rx="8" fill="url(#gradient-purple)" stroke="#667eea" strokeWidth="2" />
-            <text x="500" y="75" textAnchor="middle" className="fill-white text-sm font-semibold">CertNode</text>
-            <text x="500" y="92" textAnchor="middle" className="fill-white text-xs opacity-90">Root Trust</text>
-          </g>
-
-          {/* Three Domain Nodes */}
-          <g className={isAnimating ? 'animate-pulse' : ''}>
-            <rect x="150" y="180" width="100" height="40" rx="8" fill="#f0fff4" stroke="#48bb78" strokeWidth="2" />
-            <text x="200" y="205" textAnchor="middle" className="fill-gray-800 text-sm font-semibold">Transaction</text>
-          </g>
-
-          <g className={isAnimating ? 'animate-pulse' : ''}>
-            <rect x="450" y="180" width="100" height="40" rx="8" fill="#faf5ff" stroke="#667eea" strokeWidth="2" />
-            <text x="500" y="205" textAnchor="middle" className="fill-gray-800 text-sm font-semibold">Content</text>
-          </g>
-
-          <g className={isAnimating ? 'animate-pulse' : ''}>
-            <rect x="750" y="180" width="100" height="40" rx="8" fill="#fffaf0" stroke="#ed8936" strokeWidth="2" />
-            <text x="800" y="205" textAnchor="middle" className="fill-gray-800 text-sm font-semibold">Operations</text>
-          </g>
-
-          {/* Receipt Type Nodes */}
-          {/* Transaction Receipts */}
-          <g className={isAnimating ? 'animate-pulse' : ''}>
-            <rect x="100" y="340" width="100" height="40" rx="6" fill="#f0fff4" stroke="#48bb78" strokeWidth="2" />
-            <text x="150" y="365" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">Stripe Payment</text>
-          </g>
-          <g className={isAnimating ? 'animate-pulse' : ''}>
-            <rect x="200" y="340" width="100" height="40" rx="6" fill="#f0fff4" stroke="#48bb78" strokeWidth="2" />
-            <text x="250" y="365" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">Refund Receipt</text>
-          </g>
-
-          {/* Content Receipts */}
-          <g className={isAnimating ? 'animate-pulse' : ''}>
-            <rect x="400" y="340" width="100" height="40" rx="6" fill="#faf5ff" stroke="#667eea" strokeWidth="2" />
-            <text x="450" y="365" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">AI Detection</text>
-          </g>
-          <g className={isAnimating ? 'animate-pulse' : ''}>
-            <rect x="500" y="340" width="100" height="40" rx="6" fill="#faf5ff" stroke="#667eea" strokeWidth="2" />
-            <text x="550" y="365" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">Image Cert</text>
-          </g>
-
-          {/* Operations Receipts */}
-          <g className={isAnimating ? 'animate-pulse' : ''}>
-            <rect x="700" y="340" width="100" height="40" rx="6" fill="#fffaf0" stroke="#ed8936" strokeWidth="2" />
-            <text x="750" y="365" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">Deploy Record</text>
-          </g>
-          <g className={isAnimating ? 'animate-pulse' : ''}>
-            <rect x="800" y="340" width="100" height="40" rx="6" fill="#fffaf0" stroke="#ed8936" strokeWidth="2" />
-            <text x="850" y="365" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">Incident Log</text>
-          </g>
-
-          {/* Detailed Records */}
-          {/* Transaction details */}
-          {[
-            { x: 100, label: 'Txn #A84F', sub: '$1,249' },
-            { x: 200, label: 'Txn #B2C3', sub: '$567' },
-            { x: 250, label: 'Ref #D9E1', sub: '-$234' }
-          ].map((item, i) => (
-            <g key={`txn-${i}`} className={isAnimating ? 'animate-bounce' : ''}>
-              <rect x={item.x - 35} y="500" width="70" height="50" rx="6" fill="#ecfdf5" stroke="#48bb78" strokeWidth="2" />
-              <text x={item.x} y="520" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">{item.label}</text>
-              <text x={item.x} y="537" textAnchor="middle" className="fill-gray-600 text-xs">{item.sub}</text>
-            </g>
-          ))}
-
-          {/* Content details */}
-          {[
-            { x: 400, label: 'Doc #3FA', sub: '92% AI' },
-            { x: 500, label: 'Doc #7BC', sub: '18% AI' },
-            { x: 550, label: 'Img #2D4', sub: 'Authentic' }
-          ].map((item, i) => (
-            <g key={`content-${i}`} className={isAnimating ? 'animate-bounce' : ''}>
-              <rect x={item.x - 35} y="500" width="70" height="50" rx="6" fill="#f5f3ff" stroke="#667eea" strokeWidth="2" />
-              <text x={item.x} y="520" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">{item.label}</text>
-              <text x={item.x} y="537" textAnchor="middle" className="fill-gray-600 text-xs">{item.sub}</text>
-            </g>
-          ))}
-
-          {/* Operations details */}
-          {[
-            { x: 700, label: 'Deploy', sub: 'v2.4.1' },
-            { x: 800, label: 'Incident', sub: 'INC-042' },
-            { x: 850, label: 'Policy', sub: 'P-2024' }
-          ].map((item, i) => (
-            <g key={`ops-${i}`} className={isAnimating ? 'animate-bounce' : ''}>
-              <rect x={item.x - 35} y="500" width="70" height="50" rx="6" fill="#fff7ed" stroke="#ed8936" strokeWidth="2" />
-              <text x={item.x} y="520" textAnchor="middle" className="fill-gray-800 text-xs font-semibold">{item.label}</text>
-              <text x={item.x} y="537" textAnchor="middle" className="fill-gray-600 text-xs">{item.sub}</text>
-            </g>
-          ))}
-
-          {/* Gradient Definitions */}
+      <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 mb-6" style={{ minHeight: '500px' }}>
+        <svg viewBox="0 0 1000 500" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
           <defs>
             <linearGradient id="gradient-purple" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#667eea" />
               <stop offset="100%" stopColor="#764ba2" />
             </linearGradient>
+            <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+              <feOffset dx="0" dy="2" result="offsetblur"/>
+              <feComponentTransfer>
+                <feFuncA type="linear" slope="0.2"/>
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
           </defs>
+
+          {/* Hierarchical Connection Lines */}
+          <g opacity="0.5">
+            {/* Root to Domains */}
+            <line x1="500" y1="80" x2="250" y2="160" stroke="#94a3b8" strokeWidth="2" />
+            <line x1="500" y1="80" x2="500" y2="160" stroke="#94a3b8" strokeWidth="2" />
+            <line x1="500" y1="80" x2="750" y2="160" stroke="#94a3b8" strokeWidth="2" />
+
+            {/* Domains to Receipts */}
+            <line x1="250" y1="210" x2="200" y2="310" stroke="#48bb78" strokeWidth="2" />
+            <line x1="250" y1="210" x2="300" y2="310" stroke="#48bb78" strokeWidth="2" />
+
+            <line x1="500" y1="210" x2="450" y2="310" stroke="#667eea" strokeWidth="2" />
+            <line x1="500" y1="210" x2="550" y2="310" stroke="#667eea" strokeWidth="2" />
+
+            <line x1="750" y1="210" x2="700" y2="310" stroke="#ed8936" strokeWidth="2" />
+            <line x1="750" y1="210" x2="800" y2="310" stroke="#ed8936" strokeWidth="2" />
+          </g>
+
+          {/* Cross-Domain Links (THE MOAT) */}
+          <g className={isAnimating ? 'opacity-100' : 'opacity-60'} style={{ transition: 'opacity 0.5s' }}>
+            <path
+              d="M 200 360 Q 350 420 500 360"
+              stroke="#9f7aea"
+              strokeWidth="3"
+              fill="none"
+              strokeDasharray="8,4"
+              className={isAnimating ? 'animate-pulse' : ''}
+            />
+            <path
+              d="M 500 360 Q 625 420 750 360"
+              stroke="#9f7aea"
+              strokeWidth="3"
+              fill="none"
+              strokeDasharray="8,4"
+              className={isAnimating ? 'animate-pulse' : ''}
+            />
+            <path
+              d="M 200 360 Q 475 440 750 360"
+              stroke="#ec4899"
+              strokeWidth="2"
+              fill="none"
+              strokeDasharray="4,4"
+              opacity="0.4"
+              className={isAnimating ? 'animate-pulse' : ''}
+            />
+          </g>
+
+          {/* Root Node */}
+          <g filter="url(#shadow)">
+            <rect x="440" y="50" width="120" height="60" rx="10" fill="url(#gradient-purple)" stroke="#5a67d8" strokeWidth="2" />
+            <text x="500" y="75" textAnchor="middle" className="fill-white font-bold" fontSize="14">CertNode</text>
+            <text x="500" y="93" textAnchor="middle" className="fill-white/80" fontSize="11">Root Trust</text>
+          </g>
+
+          {/* Domain Nodes */}
+          <g filter="url(#shadow)">
+            <rect x="190" y="160" width="120" height="50" rx="8" fill="#f0fdf4" stroke="#22c55e" strokeWidth="2.5" />
+            <text x="250" y="190" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="13">Transaction</text>
+          </g>
+
+          <g filter="url(#shadow)">
+            <rect x="440" y="160" width="120" height="50" rx="8" fill="#faf5ff" stroke="#8b5cf6" strokeWidth="2.5" />
+            <text x="500" y="190" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="13">Content</text>
+          </g>
+
+          <g filter="url(#shadow)">
+            <rect x="690" y="160" width="120" height="50" rx="8" fill="#fff7ed" stroke="#f97316" strokeWidth="2.5" />
+            <text x="750" y="190" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="13">Operations</text>
+          </g>
+
+          {/* Receipt Examples */}
+          {/* Transaction Receipts */}
+          <g filter="url(#shadow)" className={isAnimating ? 'opacity-100' : 'opacity-90'} style={{ transition: 'opacity 0.3s' }}>
+            <rect x="150" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke="#22c55e" strokeWidth="2" />
+            <text x="200" y="332" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="11">Payment</text>
+            <text x="200" y="347" textAnchor="middle" className="fill-gray-600" fontSize="10">$1,249</text>
+          </g>
+
+          <g filter="url(#shadow)" className={isAnimating ? 'opacity-100' : 'opacity-90'} style={{ transition: 'opacity 0.3s' }}>
+            <rect x="250" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke="#22c55e" strokeWidth="2" />
+            <text x="300" y="332" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="11">Refund</text>
+            <text x="300" y="347" textAnchor="middle" className="fill-gray-600" fontSize="10">-$234</text>
+          </g>
+
+          {/* Content Receipts */}
+          <g filter="url(#shadow)" className={isAnimating ? 'opacity-100' : 'opacity-90'} style={{ transition: 'opacity 0.3s' }}>
+            <rect x="400" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke="#8b5cf6" strokeWidth="2" />
+            <text x="450" y="332" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="11">AI Check</text>
+            <text x="450" y="347" textAnchor="middle" className="fill-gray-600" fontSize="10">92% AI</text>
+          </g>
+
+          <g filter="url(#shadow)" className={isAnimating ? 'opacity-100' : 'opacity-90'} style={{ transition: 'opacity 0.3s' }}>
+            <rect x="500" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke="#8b5cf6" strokeWidth="2" />
+            <text x="550" y="332" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="11">Image Cert</text>
+            <text x="550" y="347" textAnchor="middle" className="fill-gray-600" fontSize="10">Authentic</text>
+          </g>
+
+          {/* Operations Receipts */}
+          <g filter="url(#shadow)" className={isAnimating ? 'opacity-100' : 'opacity-90'} style={{ transition: 'opacity 0.3s' }}>
+            <rect x="650" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke="#f97316" strokeWidth="2" />
+            <text x="700" y="332" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="11">Deploy</text>
+            <text x="700" y="347" textAnchor="middle" className="fill-gray-600" fontSize="10">v2.4.1</text>
+          </g>
+
+          <g filter="url(#shadow)" className={isAnimating ? 'opacity-100' : 'opacity-90'} style={{ transition: 'opacity 0.3s' }}>
+            <rect x="750" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke="#f97316" strokeWidth="2" />
+            <text x="800" y="332" textAnchor="middle" className="fill-gray-800 font-semibold" fontSize="11">Incident</text>
+            <text x="800" y="347" textAnchor="middle" className="fill-gray-600" fontSize="10">INC-042</text>
+          </g>
+
+          {/* Cross-Domain Link Labels */}
+          <g className={isAnimating ? 'opacity-100' : 'opacity-70'} style={{ transition: 'opacity 0.5s' }}>
+            <text x="350" y="410" textAnchor="middle" className="fill-purple-600 font-semibold" fontSize="10">Cryptographic Link</text>
+            <text x="625" y="410" textAnchor="middle" className="fill-purple-600 font-semibold" fontSize="10">Cryptographic Link</text>
+          </g>
         </svg>
       </div>
 
@@ -161,19 +161,25 @@ export default function ReceiptGraph() {
       <div className="flex flex-wrap justify-center gap-6 mb-6 text-sm">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded bg-gradient-to-br from-purple-500 to-purple-700 border-2 border-purple-600"></div>
-          <span className="text-gray-700">Root Trust Anchor</span>
+          <span className="text-gray-700">Root Trust</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-green-50 border-2 border-green-500"></div>
-          <span className="text-gray-700">Domain Receipts</span>
+          <div className="w-6 h-6 rounded bg-green-100 border-2 border-green-500"></div>
+          <span className="text-gray-700">Transactions</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-orange-50 border-2 border-orange-500"></div>
-          <span className="text-gray-700">Merchant Accounts</span>
+          <div className="w-6 h-6 rounded bg-purple-100 border-2 border-purple-500"></div>
+          <span className="text-gray-700">Content</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-purple-50 border-2 border-purple-500"></div>
-          <span className="text-gray-700">Transaction Receipts</span>
+          <div className="w-6 h-6 rounded bg-orange-100 border-2 border-orange-500"></div>
+          <span className="text-gray-700">Operations</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <svg className="w-6 h-6" viewBox="0 0 24 24">
+            <line x1="2" y1="12" x2="22" y2="12" stroke="#9f7aea" strokeWidth="2" strokeDasharray="4,2" />
+          </svg>
+          <span className="text-gray-700">Cryptographic Links</span>
         </div>
       </div>
 

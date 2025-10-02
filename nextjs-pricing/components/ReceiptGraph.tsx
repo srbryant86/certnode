@@ -208,14 +208,22 @@ export default function ReceiptGraph() {
         </div>
       </div>
 
-      {/* Trust Level Comparison */}
+      {/* Verification Coverage Comparison */}
       <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 rounded-xl mb-6">
-        <h4 className="text-2xl font-bold mb-6 text-center">Trust Level Architecture</h4>
+        <div className="text-center mb-2">
+          <div className="inline-block bg-blue-500/20 border border-blue-400/30 text-blue-200 px-4 py-1.5 rounded-full text-xs font-bold mb-3">
+            AVAILABLE ON ALL PLANS
+          </div>
+          <h4 className="text-2xl font-bold mb-2">Domain Coverage Levels</h4>
+          <p className="text-gray-400 text-sm max-w-2xl mx-auto mb-6">
+            All plans can link all three domains. More domains = stronger protection against fraud and disputes.
+          </p>
+        </div>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-gray-700/50 p-6 rounded-lg border-2 border-gray-600">
             <div className="text-center mb-4">
-              <div className="text-4xl font-bold text-gray-400">60%</div>
-              <div className="text-sm text-gray-300 mt-1">BASIC Trust</div>
+              <div className="text-3xl font-bold text-gray-400">1 Domain</div>
+              <div className="text-sm text-gray-300 mt-1">Partial Coverage</div>
             </div>
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
@@ -223,24 +231,24 @@ export default function ReceiptGraph() {
                 <span className="text-gray-300">Transaction verified</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-red-400">✗</span>
-                <span className="text-gray-300">No invoice certification</span>
+                <span className="text-gray-500">○</span>
+                <span className="text-gray-400">No content certification</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-red-400">✗</span>
-                <span className="text-gray-300">No system attestation</span>
+                <span className="text-gray-500">○</span>
+                <span className="text-gray-400">No operations attestation</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-red-400">✗</span>
-                <span className="text-gray-300">No network access</span>
+                <span className="text-gray-500">○</span>
+                <span className="text-gray-400">Limited fraud protection</span>
               </div>
             </div>
           </div>
 
           <div className="bg-blue-600/50 p-6 rounded-lg border-2 border-blue-400">
             <div className="text-center mb-4">
-              <div className="text-4xl font-bold text-blue-200">85%</div>
-              <div className="text-sm text-blue-100 mt-1">VERIFIED Trust</div>
+              <div className="text-3xl font-bold text-blue-200">2 Domains</div>
+              <div className="text-sm text-blue-100 mt-1">Multi-Domain</div>
             </div>
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
@@ -249,15 +257,15 @@ export default function ReceiptGraph() {
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-green-300">✓</span>
-                <span className="text-white">Invoice AI-verified</span>
+                <span className="text-white">Cross-domain verification</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-green-300">✓</span>
-                <span className="text-white">Cross-domain links</span>
+                <span className="text-white">Better fraud protection</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-yellow-300">~</span>
-                <span className="text-white">Network read access</span>
+                <span className="text-gray-300">○</span>
+                <span className="text-white">Incomplete workflow</span>
               </div>
             </div>
           </div>
@@ -267,8 +275,8 @@ export default function ReceiptGraph() {
               RECOMMENDED
             </div>
             <div className="text-center mb-4">
-              <div className="text-4xl font-bold text-purple-100">95%</div>
-              <div className="text-sm text-purple-100 mt-1">PLATINUM Trust</div>
+              <div className="text-3xl font-bold text-purple-100">3 Domains</div>
+              <div className="text-sm text-purple-100 mt-1">Complete Coverage</div>
             </div>
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
@@ -277,7 +285,7 @@ export default function ReceiptGraph() {
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-green-200">✓</span>
-                <span className="text-white font-semibold">System attestation</span>
+                <span className="text-white font-semibold">Full cryptographic proof</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-green-200">✓</span>
@@ -285,13 +293,13 @@ export default function ReceiptGraph() {
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-green-200">✓</span>
-                <span className="text-white font-semibold">Chargeback insurance</span>
+                <span className="text-white font-semibold">Strongest dispute protection</span>
               </div>
             </div>
           </div>
         </div>
         <p className="text-center text-gray-300 text-sm mt-6">
-          Higher trust scores = better dispute outcomes, lower fraud risk, insurance eligibility
+          More domains = exponentially harder to forge. Complete coverage provides the strongest protection against fraud and disputes.
         </p>
       </div>
 

@@ -1,23 +1,29 @@
 # CertNode Status - Quick Reference
-**Last Updated:** 2025-10-02
+**Last Updated:** 2025-10-02 (Session Complete!)
 
-## ✅ DONE
+## ✅ DONE (Working APIs)
 - **Receipt Graph DAG:** Fully working (`lib/graph/receipt-graph-service.ts`)
 - **Graph API:** `POST /api/v1/receipts/graph` (create with parents)
-- **Graph Traversal:** Find paths, analytics, depth limits by tier
-- **Animation:** https://certnode.io/platform shows chargeback scenario
+- **Cross-Product Verification:** ✅ `POST /api/v1/receipts/verify/cross-product`
+- **Graph Completeness:** ✅ `GET /api/v1/receipts/graph/{id}/completeness`
+- **Batch Operations:** ✅ `POST /api/v1/receipts/batch` (1,000 receipts at once)
+- **Webhooks:** ✅ Service + API built (requires DB migration to activate)
+- **Animation:** https://certnode.io/platform shows chargeback scenario ✅
 
-## ❌ MISSING (Must Build)
-1. **Cross-Product Verification** - Verify tx→content→ops chain (2-3 hrs)
-2. **Batch Operations** - Process 1K receipts at once (2-3 hrs)
-3. **Webhooks** - Real-time event notifications (4-5 hrs)
-4. **Graph Completeness** - "80% complete" scoring (3-4 hrs)
+## 🎉 WHAT WE BUILT TODAY
+1. **Cross-Product Verification** - Prove tx→content→ops chains are valid
+2. **Graph Completeness Scoring** - Show "80% complete, add delivery confirmation"
+3. **Batch Operations** - Process 1,000+ receipts in parallel
+4. **Webhook Notifications** - Real-time events with HMAC signatures
 
-## 🎯 NEXT ACTION
-**Build Cross-Product Verification first** (makes animation real)
-- File: `app/api/v1/receipts/verify/cross-product/route.ts`
-- Input: Array of receipt IDs
-- Output: Chain validity + cryptographic proof + completeness score
+## 📋 NEXT STEPS (To Activate Webhooks)
+1. Run database migration: See `prisma/migrations/TODO_ADD_WEBHOOK_MODELS.md`
+   ```bash
+   npx prisma migrate dev --name add_webhook_models
+   npx prisma generate
+   ```
+2. Integrate `fireWebhook()` calls into receipt creation flow
+3. Test webhook delivery with real endpoints
 
 ## 💡 BIGGEST MOAT (Month 2-3)
 **Cross-Merchant Network:** Customer trust scores based on receipts across ALL merchants

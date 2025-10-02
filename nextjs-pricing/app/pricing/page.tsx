@@ -232,8 +232,8 @@ export default function PricingPage() {
         {/* 8. High-Ticket CTA - Final conversion push */}
         <section className="py-16 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white">
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <div className="inline-block bg-yellow-400 text-gray-900 px-4 py-2 rounded-full text-sm font-bold mb-6 animate-pulse">
-              ⚡ Limited Availability - 5 enterprise slots remaining this quarter
+            <div className="inline-block bg-blue-500/20 border border-blue-400/30 text-blue-100 px-4 py-2 rounded-full text-sm font-medium mb-6">
+              🚀 Enterprise-Ready Infrastructure
             </div>
             <h2 className="text-4xl font-bold mb-4">
               Ready to Protect Your Revenue?

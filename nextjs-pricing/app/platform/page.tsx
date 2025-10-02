@@ -159,22 +159,33 @@ export default function PlatformPage() {
         {/* Final CTA */}
         <section className="py-16 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white">
           <div className="max-w-4xl mx-auto px-6">
-            {/* Testimonial */}
+            {/* Value Proposition */}
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-8 mb-10">
-              <div className="flex items-start gap-4">
-                <svg className="w-12 h-12 text-blue-300 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-                </svg>
-                <div>
-                  <p className="text-lg text-white mb-4 leading-relaxed italic">
-                    "Building cryptographic verification into our payment workflow was critical for compliance. CertNode's unified platform saved us months of development time and eliminated the need for three separate vendors."
+              <h3 className="text-2xl font-bold text-white mb-4">Built for Engineering Teams</h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <svg className="w-6 h-6 text-blue-300 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <p className="text-white leading-relaxed">
+                    <strong>One API</strong> instead of three separate vendors for transactions, content, and operations
                   </p>
-                  <div className="flex items-center gap-4">
-                    <div>
-                      <p className="font-bold text-white">Alex Chen</p>
-                      <p className="text-sm text-blue-200">Head of Engineering, TechCorp</p>
-                    </div>
-                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <svg className="w-6 h-6 text-blue-300 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <p className="text-white leading-relaxed">
+                    <strong>Compliance-ready</strong> with automated SOX/SOC 2/HIPAA evidence collection
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <svg className="w-6 h-6 text-blue-300 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <p className="text-white leading-relaxed">
+                    <strong>Cryptographically verifiable</strong> receipts that work offline without trusting CertNode
+                  </p>
                 </div>
               </div>
             </div>

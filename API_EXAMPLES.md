@@ -468,11 +468,244 @@ Common HTTP status codes:
 
 ---
 
+---
+
+## 4. Batch Operations
+
+**Process multiple receipts in a single API call. Handles partial failures gracefully.**
+
+### Endpoint
+```
+POST /api/v1/receipts/batch
+```
+
+### Use Cases
+- **Bulk import:** Load historical data from other systems
+- **ETL pipelines:** Generate receipts from data warehouses
+- **Daily batch processing:** Create receipts for overnight transactions
+- **Migration:** Move data from legacy systems
+
+### Request Example (Simple Batch)
+```bash
+curl -X POST https://api.certnode.io/api/v1/receipts/batch \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "receipts": [
+      {
+        "type": "transaction",
+        "data": {
+          "amount": 89.50,
+          "currency": "USD",
+          "orderId": "order_001"
+        }
+      },
+      {
+        "type": "transaction",
+        "data": {
+          "amount": 125.00,
+          "currency": "USD",
+          "orderId": "order_002"
+        }
+      },
+      {
+        "type": "content",
+        "data": {
+          "contentHash": "sha256:abc123...",
+          "contentType": "image/jpeg"
+        }
+      }
+    ],
+    "options": {
+      "parallel": true,
+      "stopOnError": false
+    }
+  }'
+```
+
+### Response Example (All Success)
+```json
+{
+  "success": true,
+  "data": {
+    "success": true,
+    "processed": 3,
+    "succeeded": 3,
+    "failed": 0,
+    "results": [
+      {
+        "index": 0,
+        "success": true,
+        "receiptId": "receipt_tx_abc123",
+        "data": {
+          "id": "receipt_tx_abc123",
+          "type": "TRANSACTION",
+          "graphDepth": 0,
+          "createdAt": "2024-10-02T15:00:00Z"
+        }
+      },
+      {
+        "index": 1,
+        "success": true,
+        "receiptId": "receipt_tx_def456",
+        "data": {
+          "id": "receipt_tx_def456",
+          "type": "TRANSACTION",
+          "graphDepth": 0,
+          "createdAt": "2024-10-02T15:00:01Z"
+        }
+      },
+      {
+        "index": 2,
+        "success": true,
+        "receiptId": "receipt_content_xyz789",
+        "data": {
+          "id": "receipt_content_xyz789",
+          "type": "CONTENT",
+          "graphDepth": 0,
+          "createdAt": "2024-10-02T15:00:02Z"
+        }
+      }
+    ],
+    "processingTimeMs": 1847
+  },
+  "metadata": {
+    "platform": "Batch Operations",
+    "feature": "Bulk receipt creation",
+    "validation": "3 succeeded, 0 failed"
+  }
+}
+```
+
+### Response Example (Partial Failure)
+```json
+{
+  "success": false,
+  "data": {
+    "success": false,
+    "processed": 3,
+    "succeeded": 2,
+    "failed": 1,
+    "results": [
+      {
+        "index": 0,
+        "success": true,
+        "receiptId": "receipt_tx_abc123",
+        "data": {
+          "id": "receipt_tx_abc123",
+          "type": "TRANSACTION",
+          "graphDepth": 0,
+          "createdAt": "2024-10-02T15:00:00Z"
+        }
+      },
+      {
+        "index": 1,
+        "success": false,
+        "error": {
+          "message": "Receipt data is required",
+          "code": "MISSING_DATA"
+        }
+      },
+      {
+        "index": 2,
+        "success": true,
+        "receiptId": "receipt_content_xyz789",
+        "data": {
+          "id": "receipt_content_xyz789",
+          "type": "CONTENT",
+          "graphDepth": 0,
+          "createdAt": "2024-10-02T15:00:02Z"
+        }
+      }
+    ],
+    "processingTimeMs": 1523,
+    "errors": {
+      "summary": "1 of 3 receipts failed",
+      "details": [
+        {
+          "index": 1,
+          "message": "Receipt data is required"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "platform": "Batch Operations",
+    "feature": "Bulk receipt creation",
+    "validation": "2 succeeded, 1 failed"
+  }
+}
+```
+
+### Request Example (Batch with Graph Links)
+```bash
+# Create parent receipt first
+PARENT_ID="receipt_tx_abc123"
+
+# Then create child receipts linked to parent
+curl -X POST https://api.certnode.io/api/v1/receipts/batch \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"receipts\": [
+      {
+        \"type\": \"content\",
+        \"data\": {
+          \"contentHash\": \"sha256:abc...\",
+          \"aiScore\": 0.87
+        },
+        \"parentReceipts\": [
+          {
+            \"receiptId\": \"$PARENT_ID\",
+            \"relationType\": \"EVIDENCES\"
+          }
+        ]
+      },
+      {
+        \"type\": \"ops\",
+        \"data\": {
+          \"operationType\": \"delivery_confirmed\"
+        },
+        \"parentReceipts\": [
+          {
+            \"receiptId\": \"$PARENT_ID\",
+            \"relationType\": \"FULFILLS\"
+          }
+        ]
+      }
+    ]
+  }"
+```
+
+### Batch Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `parallel` | boolean | `true` | Process receipts in parallel for better performance |
+| `stopOnError` | boolean | `false` | Stop processing if one receipt fails |
+
+### Performance Guidelines
+
+| Batch Size | Avg Processing Time | Recommended Use |
+|------------|---------------------|-----------------|
+| 1-10 receipts | <500ms | Real-time operations |
+| 11-100 receipts | 500ms-2s | Standard batches |
+| 101-500 receipts | 2s-10s | Large batches |
+| 501-1,000 receipts | 10s-30s | Maximum batch size |
+
+**Tips:**
+- Use `parallel: true` for faster processing (default)
+- Use `stopOnError: true` for critical operations where all must succeed
+- Split batches >1,000 into multiple requests
+- Check `errors.details` for specific failure reasons
+
+---
+
 ## Next Steps
 
 1. **Test the APIs** using the examples above
-2. **Build Batch Operations** for processing 1,000+ receipts at once
-3. **Implement Webhooks** for real-time event notifications
+2. ~~**Build Batch Operations**~~ ✅ DONE - Process 1,000+ receipts at once
+3. **Implement Webhooks** for real-time event notifications (NEXT)
 4. **Deploy Cross-Merchant Network** for trust scoring across merchants
 
 See `IMPLEMENTATION_PLAN.md` for full roadmap.

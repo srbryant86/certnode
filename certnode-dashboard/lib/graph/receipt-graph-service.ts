@@ -395,4 +395,103 @@ export async function validateGraphIntegrity(enterpriseId: string) {
   }
 }
 
+/**
+ * Calculate graph completeness score for a receipt
+ * Shows how complete a chain is and what's missing
+ */
+export async function calculateGraphCompleteness(
+  receiptId: string,
+  enterpriseId: string,
+  tier: EnterpriseTier
+) {
+  // Get the receipt and its graph
+  const receipt = await prisma.receipt.findFirst({
+    where: { id: receiptId, enterpriseId }
+  })
+
+  if (!receipt) {
+    throw new Error('Receipt not found')
+  }
+
+  // Get full graph (ancestors and descendants)
+  const graph = await getReceiptGraph(receiptId, tier, 'both')
+
+  // Count receipt types in the graph
+  const types = new Set(graph.nodes.map(n => n.receipt.type))
+  const hasTransaction = types.has('TRANSACTION')
+  const hasContent = types.has('CONTENT')
+  const hasOps = types.has('OPS')
+
+  // Calculate completeness percentage
+  const typeCount = [hasTransaction, hasContent, hasOps].filter(Boolean).length
+  const completeness = Math.round((typeCount / 3) * 100)
+
+  // Determine score label
+  let scoreLabel: 'EXCELLENT' | 'GOOD' | 'FAIR' | 'POOR'
+  if (completeness === 100) scoreLabel = 'EXCELLENT'
+  else if (completeness >= 67) scoreLabel = 'GOOD'
+  else if (completeness >= 33) scoreLabel = 'FAIR'
+  else scoreLabel = 'POOR'
+
+  // Build chain representation
+  const chain = [
+    {
+      type: 'transaction',
+      present: hasTransaction,
+      receiptId: graph.nodes.find(n => n.receipt.type === 'TRANSACTION')?.receipt.id
+    },
+    {
+      type: 'content',
+      present: hasContent,
+      receiptId: graph.nodes.find(n => n.receipt.type === 'CONTENT')?.receipt.id
+    },
+    {
+      type: 'operations',
+      present: hasOps,
+      receiptId: graph.nodes.find(n => n.receipt.type === 'OPS')?.receipt.id
+    }
+  ]
+
+  // Find missing links
+  const missingLinks: string[] = []
+  if (!hasTransaction) missingLinks.push('transaction receipt')
+  if (!hasContent) missingLinks.push('content receipt')
+  if (!hasOps) missingLinks.push('operations receipt')
+
+  // Generate recommendations
+  const recommendations: string[] = []
+  if (missingLinks.length > 0) {
+    recommendations.push(`Add ${missingLinks.join(', ')} to complete the chain`)
+  }
+
+  if (completeness === 100) {
+    recommendations.push('Chain is complete - provides strong evidence for dispute resolution')
+  }
+
+  // Check tier limits
+  const depthLimit = GRAPH_DEPTH_LIMITS[tier]
+  if (graph.depthLimitReached) {
+    recommendations.push(`Graph depth limit reached (${depthLimit} levels). Upgrade to ${tier === 'FREE' ? 'STARTER' : tier === 'STARTER' ? 'PRO' : 'ENTERPRISE'} for deeper chains.`)
+  }
+
+  return {
+    completeness,
+    score: scoreLabel,
+    chain,
+    missingLinks,
+    recommendations,
+    graphStats: {
+      totalReceipts: graph.nodes.length,
+      maxDepth: graph.totalDepth,
+      depthLimit: depthLimit === Infinity ? 'Unlimited' : depthLimit.toString(),
+      depthLimitReached: graph.depthLimitReached
+    },
+    upsell: graph.depthLimitReached ? {
+      currentTier: tier,
+      recommendation: `Upgrade to ${tier === 'FREE' ? 'STARTER (5 levels)' : tier === 'STARTER' ? 'PRO (10 levels)' : 'ENTERPRISE (unlimited)'}`,
+      upgradeUrl: '/pricing'
+    } : undefined
+  }
+}
+
 export { GRAPH_DEPTH_LIMITS }

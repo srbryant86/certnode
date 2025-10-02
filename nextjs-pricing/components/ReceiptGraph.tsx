@@ -85,9 +85,25 @@ export default function ReceiptGraph() {
         Three verification domains unified in one cryptographic graph. Transaction receipts link to content certifications, which link to operational attestations.
       </p>
 
-      {/* Tooltip Display - Fixed height to prevent layout shift */}
+      {/* Animation Step Labels - Shows what's happening during animation */}
       <div className="h-24 mb-4">
-        {hoveredNode && nodeInfo[hoveredNode] && (
+        {isAnimating && animationStep > 0 && (
+          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-l-4 border-yellow-500 p-4 rounded-lg transition-all animate-pulse">
+            <h4 className="font-bold text-gray-900 mb-1">
+              {animationStep === 1 && "Step 1: Root Trust Established"}
+              {animationStep === 2 && "Step 2: Domain Verification"}
+              {animationStep === 3 && "Step 3: Receipt Generation"}
+              {animationStep === 4 && "Step 4: Cross-Domain Linking (The Key Advantage)"}
+            </h4>
+            <p className="text-sm text-gray-700">
+              {animationStep === 1 && "Global merkle root anchors to Bitcoin blockchain every 10 minutes"}
+              {animationStep === 2 && "Transaction, Content, and Operations domains inherit cryptographic trust from root"}
+              {animationStep === 3 && "Individual receipts generated and verified within each domain"}
+              {animationStep === 4 && "Payment $1,249 links to AI Check 92% links to Deploy v2.4.1 — all three must be consistent to verify"}
+            </p>
+          </div>
+        )}
+        {!isAnimating && hoveredNode && nodeInfo[hoveredNode] && (
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-500 p-4 rounded-lg transition-all">
             <h4 className="font-bold text-gray-900 mb-1">{nodeInfo[hoveredNode].title}</h4>
             <p className="text-sm text-blue-700 font-semibold mb-2">{nodeInfo[hoveredNode].subtitle}</p>

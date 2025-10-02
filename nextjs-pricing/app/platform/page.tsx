@@ -35,7 +35,7 @@ export default function PlatformPage() {
               </div>
 
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Seven Architectural Moats.<br/>One Verification Graph.
+                Four Compounding Advantages.<br/>One Verification Graph.
               </h1>
 
               <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-8 leading-relaxed">

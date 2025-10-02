@@ -36,7 +36,7 @@ export default function PlatformBenefits() {
       ),
       title: 'Blockchain Anchoring',
       tagline: 'Publicly Verifiable Evidence',
-      description: 'Global merkle roots published to Bitcoin blockchain every 10 minutes. Anyone can independently verify receipts without trusting CertNode. Court-admissible evidence that's cryptographically provable and legally recognized.',
+      description: 'Global merkle roots published to Bitcoin blockchain every 10 minutes. Anyone can independently verify receipts without trusting CertNode. Court-admissible evidence that is cryptographically provable and legally recognized.',
       example: 'Prove a transaction occurred at a specific time without relying on CertNode database - verify directly on the blockchain.',
       color: 'orange',
       gradient: 'from-orange-500 to-orange-700'

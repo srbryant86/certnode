@@ -12,94 +12,70 @@ export default function ReceiptGraph() {
     setIsAnimating(true);
     setAnimationStep(0);
 
-    // Sequential animation: root → domains → receipts → cross-links
-    setTimeout(() => setAnimationStep(1), 300);  // Root
-    setTimeout(() => setAnimationStep(2), 800);  // Domains
-    setTimeout(() => setAnimationStep(3), 1400); // Receipts
-    setTimeout(() => setAnimationStep(4), 2000); // Cross-links
+    // Story-driven animation: real e-commerce scenario
+    setTimeout(() => setAnimationStep(1), 500);   // Day 1: Customer purchases
+    setTimeout(() => setAnimationStep(2), 1800);  // Day 1: Product delivered (with AI images)
+    setTimeout(() => setAnimationStep(3), 3100);  // Day 1: Delivery confirmed
+    setTimeout(() => setAnimationStep(4), 4400);  // Day 30: Customer files chargeback (THREAT)
+    setTimeout(() => setAnimationStep(5), 6000);  // Merchant defends: Graph proves legitimacy
+    setTimeout(() => setAnimationStep(6), 7500);  // VICTORY: Dispute won, money saved
     setTimeout(() => {
       setIsAnimating(false);
       setAnimationStep(0);
-    }, 3500);
+    }, 9500);
   };
 
   const nodeInfo: Record<string, { title: string; subtitle: string; description: string }> = {
-    root: {
-      title: 'CertNode Root Trust',
-      subtitle: 'Global Merkle Root',
-      description: 'All receipts cryptographically linked to blockchain-anchored root'
-    },
-    transaction: {
-      title: 'Transaction Domain',
-      subtitle: 'Payment Verification',
-      description: 'Stripe, PayPal, and custom payment processor integration'
-    },
-    content: {
-      title: 'Content Domain',
-      subtitle: 'AI Detection & Certification',
-      description: 'Multi-model AI detection for documents, images, and text'
-    },
-    operations: {
-      title: 'Operations Domain',
-      subtitle: 'Compliance & Attestation',
-      description: 'Deployments, incidents, and policy changes with cryptographic proof'
-    },
     payment: {
-      title: 'Payment Receipt',
-      subtitle: '$89.50',
-      description: 'Stripe payment with fraud analysis and compliance mapping'
-    },
-    refund: {
-      title: 'Refund Receipt',
-      subtitle: '-$45.00',
-      description: 'Linked to original transaction for audit trail'
+      title: '💳 Payment Receipt',
+      subtitle: 'Transaction: $89.50',
+      description: 'Customer purchases product. Stripe payment processed and cryptographically signed. This is the first receipt in the chain.'
     },
     aicheck: {
-      title: 'AI Content Check',
-      subtitle: '87% Human Content',
-      description: 'Multi-model ensemble detection verified human-created content'
+      title: '🤖 AI Content Check',
+      subtitle: 'Content Verification: 87% Human',
+      description: 'Product images verified as 87% human-created. Links cryptographically to payment receipt, proving what was delivered.'
     },
-    imagecert: {
-      title: 'Image Certification',
-      subtitle: 'Verified Authentic',
-      description: 'Forensic analysis confirms image authenticity'
-    },
-    deploy: {
-      title: 'Deployment Record',
-      subtitle: 'v3.1.2',
-      description: 'Build provenance and deployment attestation'
-    },
-    incident: {
-      title: 'Incident Log',
-      subtitle: 'INC-2024-08',
-      description: 'Security incident documentation with stakeholder sign-offs'
+    delivery: {
+      title: '📦 Delivery Confirmation',
+      subtitle: 'Operations: Confirmed',
+      description: 'System confirms product delivery. Links to both payment and content receipts, completing the verification chain.'
     }
   };
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
       <h3 className="text-3xl font-bold text-gray-900 mb-4 text-center">
-        The CertNode Receipt Graph
+        See How Receipt Graph Defends Against Chargebacks
       </h3>
       <p className="text-lg text-gray-600 mb-8 text-center max-w-3xl mx-auto">
-        Three verification domains unified in one cryptographic graph. Transaction receipts link to content certifications, which link to operational attestations.
+        Watch a real-world e-commerce scenario: Customer purchases → Product delivered → Chargeback filed → Merchant wins with cryptographic proof.
+        Click "Play Animation" to see the complete story.
       </p>
 
       {/* Animation Step Labels - Shows what's happening during animation */}
       <div className="h-24 mb-4">
         {isAnimating && animationStep > 0 && (
-          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-l-4 border-yellow-500 p-4 rounded-lg transition-all animate-pulse">
+          <div className={`border-l-4 p-4 rounded-lg transition-all ${
+            animationStep === 4 ? 'bg-gradient-to-r from-red-50 to-orange-50 border-red-500 animate-pulse' :
+            animationStep === 6 ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-500' :
+            'bg-gradient-to-r from-blue-50 to-purple-50 border-blue-500'
+          }`}>
             <h4 className="font-bold text-gray-900 mb-1">
-              {animationStep === 1 && "Step 1: Root Trust Established"}
-              {animationStep === 2 && "Step 2: Domain Verification"}
-              {animationStep === 3 && "Step 3: Receipt Generation"}
-              {animationStep === 4 && "Step 4: Cross-Domain Linking (The Key Advantage)"}
+              {animationStep === 1 && "📅 Day 1, 2:34pm: Customer Purchases Product"}
+              {animationStep === 2 && "📦 Day 1, 2:35pm: Product Delivered (AI-Generated Images)"}
+              {animationStep === 3 && "✅ Day 1, 2:36pm: System Confirms Delivery"}
+              {animationStep === 4 && "⚠️ Day 30: Customer Files Chargeback — 'Never received product'"}
+              {animationStep === 5 && "🛡️ Merchant Defends: Graph Proves Complete Chain"}
+              {animationStep === 6 && "🎉 Victory: Chargeback Reversed in 2 Minutes"}
             </h4>
             <p className="text-sm text-gray-700">
-              {animationStep === 1 && "Global merkle root anchors to Bitcoin blockchain every 10 minutes"}
-              {animationStep === 2 && "Transaction, Content, and Operations domains inherit cryptographic trust from root"}
-              {animationStep === 3 && "Individual receipts generated and verified within each domain"}
-              {animationStep === 4 && "Payment $89.50 links to AI Check (87% Human) links to Deploy v3.1.2 — all three must be consistent to verify"}
+              {animationStep === 1 && "Transaction receipt created: $89.50 payment processed through Stripe"}
+              {animationStep === 2 && "Content receipt links to transaction: Product images verified 87% human-created"}
+              {animationStep === 3 && "Operations receipt links to both: Delivery tracking confirms receipt"}
+              {animationStep === 4 && "WITHOUT receipt graph: Merchant loses $89.50 + $15 dispute fee. WITH CertNode: Fight back with proof"}
+              {animationStep === 5 && "Complete cryptographic chain: Payment → Product (verified authentic) → Delivery confirmed. All 3 domains prove legitimacy"}
+              {animationStep === 6 && "Merchant saved $104.50 (payment + fee). Automated defense took 2 minutes, not 2 weeks"}
             </p>
           </div>
         )}
@@ -132,231 +108,184 @@ export default function ReceiptGraph() {
             </filter>
           </defs>
 
-          {/* Hierarchical Connection Lines */}
-          <g opacity="0.5">
-            {/* Root to Domains */}
-            <line x1="500" y1="80" x2="250" y2="160" stroke="#94a3b8" strokeWidth="2" />
-            <line x1="500" y1="80" x2="500" y2="160" stroke="#94a3b8" strokeWidth="2" />
-            <line x1="500" y1="80" x2="750" y2="160" stroke="#94a3b8" strokeWidth="2" />
-
-            {/* Domains to Receipts */}
-            <line x1="250" y1="210" x2="200" y2="310" stroke="#48bb78" strokeWidth="2" />
-            <line x1="250" y1="210" x2="300" y2="310" stroke="#48bb78" strokeWidth="2" />
-
-            <line x1="500" y1="210" x2="450" y2="310" stroke="#667eea" strokeWidth="2" />
-            <line x1="500" y1="210" x2="550" y2="310" stroke="#667eea" strokeWidth="2" />
-
-            <line x1="750" y1="210" x2="700" y2="310" stroke="#ed8936" strokeWidth="2" />
-            <line x1="750" y1="210" x2="800" y2="310" stroke="#ed8936" strokeWidth="2" />
+          {/* Connection Line: Payment to AI Check (appears in step 2) */}
+          <g opacity={animationStep >= 2 ? (animationStep === 5 || animationStep === 6 ? 1 : 0.7) : 0} style={{ transition: 'opacity 0.5s' }}>
+            <path
+              d="M 200 360 Q 350 420 450 360"
+              stroke={animationStep === 5 || animationStep === 6 ? '#10b981' : '#9f7aea'}
+              strokeWidth={animationStep === 5 || animationStep === 6 ? '4' : '3'}
+              fill="none"
+              strokeDasharray="8,4"
+              className={animationStep === 5 ? 'animate-pulse' : ''}
+            />
           </g>
 
-          {/* Cross-Domain Links (THE MOAT) */}
-          <g className={animationStep === 4 ? 'opacity-100' : 'opacity-60'} style={{ transition: 'opacity 0.5s' }}>
+          {/* Connection Line: AI Check to Delivery (appears in step 3) */}
+          <g opacity={animationStep >= 3 ? (animationStep === 5 || animationStep === 6 ? 1 : 0.7) : 0} style={{ transition: 'opacity 0.5s' }}>
             <path
-              d="M 200 360 Q 350 420 500 360"
-              stroke={animationStep === 4 ? '#fbbf24' : '#9f7aea'}
-              strokeWidth={animationStep === 4 ? '5' : '3'}
+              d="M 500 360 Q 600 420 700 360"
+              stroke={animationStep === 5 || animationStep === 6 ? '#10b981' : '#9f7aea'}
+              strokeWidth={animationStep === 5 || animationStep === 6 ? '4' : '3'}
               fill="none"
               strokeDasharray="8,4"
-              className={animationStep === 4 ? 'animate-pulse' : ''}
+              className={animationStep === 5 ? 'animate-pulse' : ''}
             />
+          </g>
+
+          {/* Connection Line: Payment to Delivery (complete chain, appears in step 3) */}
+          <g opacity={animationStep >= 3 ? (animationStep === 5 || animationStep === 6 ? 1 : 0.4) : 0} style={{ transition: 'opacity 0.5s' }}>
             <path
-              d="M 500 360 Q 625 420 750 360"
-              stroke={animationStep === 4 ? '#fbbf24' : '#9f7aea'}
-              strokeWidth={animationStep === 4 ? '5' : '3'}
-              fill="none"
-              strokeDasharray="8,4"
-              className={animationStep === 4 ? 'animate-pulse' : ''}
-            />
-            <path
-              d="M 200 360 Q 475 440 750 360"
-              stroke={animationStep === 4 ? '#fbbf24' : '#ec4899'}
-              strokeWidth={animationStep === 4 ? '4' : '2'}
+              d="M 200 360 Q 450 450 700 360"
+              stroke={animationStep === 5 || animationStep === 6 ? '#10b981' : '#ec4899'}
+              strokeWidth={animationStep === 5 || animationStep === 6 ? '3' : '2'}
               fill="none"
               strokeDasharray="4,4"
-              opacity={animationStep === 4 ? '1' : '0.4'}
-              className={animationStep === 4 ? 'animate-pulse' : ''}
+              className={animationStep === 5 ? 'animate-pulse' : ''}
             />
           </g>
 
-          {/* Root Node */}
-          <g
-            filter="url(#shadow)"
-            onMouseEnter={() => setHoveredNode('root')}
-            onMouseLeave={() => setHoveredNode(null)}
-            className="cursor-pointer transition-all"
-            style={{ opacity: hoveredNode === 'root' ? 1 : hoveredNode ? 0.7 : 1 }}
-          >
-            <rect
-              x="440" y="50" width="120" height="60" rx="10"
-              fill="url(#gradient-purple)"
-              stroke={hoveredNode === 'root' ? '#4c51bf' : (animationStep === 1 ? '#fbbf24' : '#5a67d8')}
-              strokeWidth={hoveredNode === 'root' ? '3' : (animationStep === 1 ? '4' : '2')}
-              className={animationStep === 1 ? 'animate-pulse' : ''}
-            />
-            <text x="500" y="75" textAnchor="middle" className="fill-white font-bold pointer-events-none" fontSize="14">CertNode</text>
-            <text x="500" y="93" textAnchor="middle" className="fill-white/80 pointer-events-none" fontSize="11">Root Trust</text>
+          {/* Chargeback Threat Indicator (appears in step 4) */}
+          {animationStep === 4 && (
+            <g className="animate-pulse">
+              <circle cx="450" cy="120" r="60" fill="#fee2e2" stroke="#dc2626" strokeWidth="3" opacity="0.9" />
+              <text x="450" y="115" textAnchor="middle" className="fill-red-600 font-bold" fontSize="16">⚠️ THREAT</text>
+              <text x="450" y="135" textAnchor="middle" className="fill-red-700 font-semibold" fontSize="12">Chargeback Filed</text>
+            </g>
+          )}
+
+          {/* Timeline indicator */}
+          <g>
+            <text x="100" y="250" className="fill-gray-500 font-semibold" fontSize="11">Day 1</text>
+            <text x="100" y="270" className="fill-gray-400" fontSize="9">Purchase</text>
+
+            <text x="420" y="250" className="fill-gray-500 font-semibold" fontSize="11">Day 1</text>
+            <text x="390" y="270" className="fill-gray-400" fontSize="9">Delivery + Check</text>
+
+            <text x="720" y="250" className="fill-gray-500 font-semibold" fontSize="11">Day 1</text>
+            <text x="690" y="270" className="fill-gray-400" fontSize="9">Confirmation</text>
           </g>
 
-          {/* Domain Nodes */}
-          <g
-            filter="url(#shadow)"
-            onMouseEnter={() => setHoveredNode('transaction')}
-            onMouseLeave={() => setHoveredNode(null)}
-            className="cursor-pointer"
-            style={{ opacity: hoveredNode === 'transaction' ? 1 : hoveredNode ? 0.7 : 1 }}
-          >
-            <rect
-              x="190" y="160" width="120" height="50" rx="8"
-              fill="#f0fdf4"
-              stroke={hoveredNode === 'transaction' ? '#16a34a' : (animationStep === 2 ? '#fbbf24' : '#22c55e')}
-              strokeWidth={hoveredNode === 'transaction' ? '3.5' : (animationStep === 2 ? '4' : '2.5')}
-              className={animationStep === 2 ? 'animate-pulse' : ''}
-            />
-            <text x="250" y="190" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="13">Transaction</text>
-          </g>
+          {/* Receipt 1: Payment - Appears in step 1 */}
+          {animationStep >= 1 && (
+            <g
+              filter="url(#shadow)"
+              onMouseEnter={() => !isAnimating && setHoveredNode('payment')}
+              onMouseLeave={() => setHoveredNode(null)}
+              className="cursor-pointer"
+              style={{
+                opacity: animationStep === 1 ? 1 : (hoveredNode === 'payment' ? 1 : 0.9),
+                transition: 'opacity 0.5s',
+                transform: animationStep === 1 ? 'scale(1.1)' : 'scale(1)',
+                transformOrigin: '200px 335px'
+              }}
+            >
+              <rect
+                x="150" y="310" width="100" height="50" rx="6"
+                fill={animationStep === 6 ? '#d1fae5' : '#dcfce7'}
+                stroke={animationStep === 6 ? '#10b981' : (animationStep === 1 ? '#fbbf24' : (hoveredNode === 'payment' ? '#16a34a' : '#22c55e'))}
+                strokeWidth={animationStep === 1 || animationStep === 6 ? '4' : (hoveredNode === 'payment' ? '3' : '2')}
+                className={animationStep === 1 || animationStep === 6 ? 'animate-pulse' : ''}
+              />
+              <text x="200" y="330" textAnchor="middle" className="fill-gray-800 font-bold pointer-events-none" fontSize="12">💳 Payment</text>
+              <text x="200" y="350" textAnchor="middle" className="fill-gray-700 font-semibold pointer-events-none" fontSize="14">$89.50</text>
+            </g>
+          )}
 
-          <g
-            filter="url(#shadow)"
-            onMouseEnter={() => setHoveredNode('content')}
-            onMouseLeave={() => setHoveredNode(null)}
-            className="cursor-pointer"
-            style={{ opacity: hoveredNode === 'content' ? 1 : hoveredNode ? 0.7 : 1 }}
-          >
-            <rect
-              x="440" y="160" width="120" height="50" rx="8"
-              fill="#faf5ff"
-              stroke={hoveredNode === 'content' ? '#7c3aed' : (animationStep === 2 ? '#fbbf24' : '#8b5cf6')}
-              strokeWidth={hoveredNode === 'content' ? '3.5' : (animationStep === 2 ? '4' : '2.5')}
-              className={animationStep === 2 ? 'animate-pulse' : ''}
-            />
-            <text x="500" y="190" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="13">Content</text>
-          </g>
+          {/* Receipt 2: AI Check - Appears in step 2 */}
+          {animationStep >= 2 && (
+            <g
+              filter="url(#shadow)"
+              onMouseEnter={() => !isAnimating && setHoveredNode('aicheck')}
+              onMouseLeave={() => setHoveredNode(null)}
+              className="cursor-pointer"
+              style={{
+                opacity: animationStep === 2 ? 1 : (hoveredNode === 'aicheck' ? 1 : 0.9),
+                transition: 'opacity 0.5s',
+                transform: animationStep === 2 ? 'scale(1.1)' : 'scale(1)',
+                transformOrigin: '450px 335px'
+              }}
+            >
+              <rect
+                x="400" y="310" width="100" height="50" rx="6"
+                fill={animationStep === 6 ? '#e9d5ff' : '#f3e8ff'}
+                stroke={animationStep === 6 ? '#10b981' : (animationStep === 2 ? '#fbbf24' : (hoveredNode === 'aicheck' ? '#7c3aed' : '#8b5cf6'))}
+                strokeWidth={animationStep === 2 || animationStep === 6 ? '4' : (hoveredNode === 'aicheck' ? '3' : '2')}
+                className={animationStep === 2 || animationStep === 6 ? 'animate-pulse' : ''}
+              />
+              <text x="450" y="330" textAnchor="middle" className="fill-gray-800 font-bold pointer-events-none" fontSize="12">🤖 AI Check</text>
+              <text x="450" y="350" textAnchor="middle" className="fill-gray-700 font-semibold pointer-events-none" fontSize="13">87% Human</text>
+            </g>
+          )}
 
-          <g
-            filter="url(#shadow)"
-            onMouseEnter={() => setHoveredNode('operations')}
-            onMouseLeave={() => setHoveredNode(null)}
-            className="cursor-pointer"
-            style={{ opacity: hoveredNode === 'operations' ? 1 : hoveredNode ? 0.7 : 1 }}
-          >
-            <rect
-              x="690" y="160" width="120" height="50" rx="8"
-              fill="#fff7ed"
-              stroke={hoveredNode === 'operations' ? '#ea580c' : (animationStep === 2 ? '#fbbf24' : '#f97316')}
-              strokeWidth={hoveredNode === 'operations' ? '3.5' : (animationStep === 2 ? '4' : '2.5')}
-              className={animationStep === 2 ? 'animate-pulse' : ''}
-            />
-            <text x="750" y="190" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="13">Operations</text>
-          </g>
+          {/* Receipt 3: Delivery - Appears in step 3 */}
+          {animationStep >= 3 && (
+            <g
+              filter="url(#shadow)"
+              onMouseEnter={() => !isAnimating && setHoveredNode('delivery')}
+              onMouseLeave={() => setHoveredNode(null)}
+              className="cursor-pointer"
+              style={{
+                opacity: animationStep === 3 ? 1 : (hoveredNode === 'delivery' ? 1 : 0.9),
+                transition: 'opacity 0.5s',
+                transform: animationStep === 3 ? 'scale(1.1)' : 'scale(1)',
+                transformOrigin: '700px 335px'
+              }}
+            >
+              <rect
+                x="650" y="310" width="100" height="50" rx="6"
+                fill={animationStep === 6 ? '#fed7aa' : '#ffedd5'}
+                stroke={animationStep === 6 ? '#10b981' : (animationStep === 3 ? '#fbbf24' : (hoveredNode === 'delivery' ? '#ea580c' : '#f97316'))}
+                strokeWidth={animationStep === 3 || animationStep === 6 ? '4' : (hoveredNode === 'delivery' ? '3' : '2')}
+                className={animationStep === 3 || animationStep === 6 ? 'animate-pulse' : ''}
+              />
+              <text x="700" y="330" textAnchor="middle" className="fill-gray-800 font-bold pointer-events-none" fontSize="12">📦 Delivery</text>
+              <text x="700" y="350" textAnchor="middle" className="fill-gray-700 font-semibold pointer-events-none" fontSize="13">Confirmed</text>
+            </g>
+          )}
 
-          {/* Receipt Examples */}
-          {/* Transaction Receipts */}
-          <g
-            filter="url(#shadow)"
-            onMouseEnter={() => setHoveredNode('payment')}
-            onMouseLeave={() => setHoveredNode(null)}
-            className="cursor-pointer"
-            style={{ opacity: hoveredNode === 'payment' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
-          >
-            <rect x="150" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke={hoveredNode === 'payment' ? '#16a34a' : (animationStep === 3 ? '#fbbf24' : '#22c55e')} strokeWidth={hoveredNode === 'payment' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
-            <text x="200" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Payment</text>
-            <text x="200" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">$89.50</text>
-          </g>
+          {/* Success Indicator (appears in step 6) */}
+          {animationStep === 6 && (
+            <g className="animate-bounce">
+              <circle cx="450" cy="120" r="70" fill="#d1fae5" stroke="#10b981" strokeWidth="4" opacity="0.95" />
+              <text x="450" y="105" textAnchor="middle" className="fill-green-700 font-bold" fontSize="32">✓</text>
+              <text x="450" y="130" textAnchor="middle" className="fill-green-800 font-bold" fontSize="14">Dispute Won!</text>
+              <text x="450" y="148" textAnchor="middle" className="fill-green-700 font-semibold" fontSize="12">Saved $104.50</text>
+            </g>
+          )}
 
-          <g
-            filter="url(#shadow)"
-            onMouseEnter={() => setHoveredNode('refund')}
-            onMouseLeave={() => setHoveredNode(null)}
-            className="cursor-pointer"
-            style={{ opacity: hoveredNode === 'refund' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
-          >
-            <rect x="250" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke={hoveredNode === 'refund' ? '#16a34a' : (animationStep === 3 ? '#fbbf24' : '#22c55e')} strokeWidth={hoveredNode === 'refund' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
-            <text x="300" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Refund</text>
-            <text x="300" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">-$45</text>
-          </g>
-
-          {/* Content Receipts */}
-          <g
-            filter="url(#shadow)"
-            onMouseEnter={() => setHoveredNode('aicheck')}
-            onMouseLeave={() => setHoveredNode(null)}
-            className="cursor-pointer"
-            style={{ opacity: hoveredNode === 'aicheck' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
-          >
-            <rect x="400" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke={hoveredNode === 'aicheck' ? '#7c3aed' : (animationStep === 3 ? '#fbbf24' : '#8b5cf6')} strokeWidth={hoveredNode === 'aicheck' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
-            <text x="450" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">AI Check</text>
-            <text x="450" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">87% Human</text>
-          </g>
-
-          <g
-            filter="url(#shadow)"
-            onMouseEnter={() => setHoveredNode('imagecert')}
-            onMouseLeave={() => setHoveredNode(null)}
-            className="cursor-pointer"
-            style={{ opacity: hoveredNode === 'imagecert' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
-          >
-            <rect x="500" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke={hoveredNode === 'imagecert' ? '#7c3aed' : (animationStep === 3 ? '#fbbf24' : '#8b5cf6')} strokeWidth={hoveredNode === 'imagecert' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
-            <text x="550" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Image Cert</text>
-            <text x="550" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">Verified</text>
-          </g>
-
-          {/* Operations Receipts */}
-          <g
-            filter="url(#shadow)"
-            onMouseEnter={() => setHoveredNode('deploy')}
-            onMouseLeave={() => setHoveredNode(null)}
-            className="cursor-pointer"
-            style={{ opacity: hoveredNode === 'deploy' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
-          >
-            <rect x="650" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke={hoveredNode === 'deploy' ? '#ea580c' : (animationStep === 3 ? '#fbbf24' : '#f97316')} strokeWidth={hoveredNode === 'deploy' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
-            <text x="700" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Deploy</text>
-            <text x="700" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">v3.1.2</text>
-          </g>
-
-          <g
-            filter="url(#shadow)"
-            onMouseEnter={() => setHoveredNode('incident')}
-            onMouseLeave={() => setHoveredNode(null)}
-            className="cursor-pointer"
-            style={{ opacity: hoveredNode === 'incident' ? 1 : hoveredNode ? 0.6 : 0.9, transition: 'opacity 0.3s' }}
-          >
-            <rect x="750" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke={hoveredNode === 'incident' ? '#ea580c' : (animationStep === 3 ? '#fbbf24' : '#f97316')} strokeWidth={hoveredNode === 'incident' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
-            <text x="800" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Incident</text>
-            <text x="800" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">INC-2024-08</text>
-          </g>
-
-          {/* Cross-Domain Link Labels */}
-          <g className={isAnimating ? 'opacity-100' : 'opacity-70'} style={{ transition: 'opacity 0.5s' }}>
-            <text x="350" y="410" textAnchor="middle" className="fill-purple-600 font-semibold" fontSize="10">Cryptographic Link</text>
-            <text x="625" y="410" textAnchor="middle" className="fill-purple-600 font-semibold" fontSize="10">Cryptographic Link</text>
-          </g>
+          {/* Connection Labels */}
+          {animationStep >= 3 && animationStep !== 4 && (
+            <g opacity="0.8" style={{ transition: 'opacity 0.5s' }}>
+              <text x="325" y="415" textAnchor="middle" className={animationStep === 5 || animationStep === 6 ? 'fill-green-600 font-bold' : 'fill-purple-600 font-semibold'} fontSize="10">
+                Linked
+              </text>
+              <text x="575" y="415" textAnchor="middle" className={animationStep === 5 || animationStep === 6 ? 'fill-green-600 font-bold' : 'fill-purple-600 font-semibold'} fontSize="10">
+                Linked
+              </text>
+            </g>
+          )}
         </svg>
       </div>
 
       {/* Legend */}
-      <div className="flex flex-wrap justify-center gap-6 mb-6 text-sm">
+      <div className="flex flex-wrap justify-center gap-8 mb-6 text-sm">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-gradient-to-br from-purple-500 to-purple-700 border-2 border-purple-600"></div>
-          <span className="text-gray-700">Root Trust</span>
+          <div className="w-8 h-8 rounded bg-green-100 border-2 border-green-500 flex items-center justify-center">💳</div>
+          <span className="text-gray-700 font-medium">Transaction Receipt</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-green-100 border-2 border-green-500"></div>
-          <span className="text-gray-700">Transactions</span>
+          <div className="w-8 h-8 rounded bg-purple-100 border-2 border-purple-500 flex items-center justify-center">🤖</div>
+          <span className="text-gray-700 font-medium">Content Receipt</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-purple-100 border-2 border-purple-500"></div>
-          <span className="text-gray-700">Content</span>
+          <div className="w-8 h-8 rounded bg-orange-100 border-2 border-orange-500 flex items-center justify-center">📦</div>
+          <span className="text-gray-700 font-medium">Operations Receipt</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-orange-100 border-2 border-orange-500"></div>
-          <span className="text-gray-700">Operations</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <svg className="w-6 h-6" viewBox="0 0 24 24">
-            <line x1="2" y1="12" x2="22" y2="12" stroke="#9f7aea" strokeWidth="2" strokeDasharray="4,2" />
+          <svg className="w-8 h-6" viewBox="0 0 32 24">
+            <line x1="2" y1="12" x2="30" y2="12" stroke="#9f7aea" strokeWidth="2" strokeDasharray="6,3" />
           </svg>
-          <span className="text-gray-700">Cryptographic Links</span>
+          <span className="text-gray-700 font-medium">Cryptographic Link</span>
         </div>
       </div>
 
@@ -395,10 +324,14 @@ export default function ReceiptGraph() {
       <div className="text-center">
         <button
           onClick={handleAnimate}
-          className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+          disabled={isAnimating}
+          className="bg-blue-600 text-white hover:bg-blue-700 px-10 py-4 rounded-lg font-bold text-lg transition-all shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isAnimating ? '↻ Replaying...' : '▶ Play Animation'}
+          {isAnimating ? '⏳ Playing Story...' : '▶️ Play: Customer Buys → Chargeback → Merchant Wins'}
         </button>
+        <p className="text-gray-500 text-sm mt-3">
+          Watch how cryptographic receipt linking saves $104.50 in 2 minutes
+        </p>
       </div>
     </div>
   );

@@ -46,32 +46,32 @@ export default function ReceiptGraph() {
     },
     payment: {
       title: 'Payment Receipt',
-      subtitle: '$1,249.00',
+      subtitle: '$89.50',
       description: 'Stripe payment with fraud analysis and compliance mapping'
     },
     refund: {
       title: 'Refund Receipt',
-      subtitle: '-$234.00',
+      subtitle: '-$45.00',
       description: 'Linked to original transaction for audit trail'
     },
     aicheck: {
       title: 'AI Content Check',
-      subtitle: '92% AI-generated',
-      description: 'Multi-model ensemble detection flagged this content'
+      subtitle: '87% Human Content',
+      description: 'Multi-model ensemble detection verified human-created content'
     },
     imagecert: {
       title: 'Image Certification',
-      subtitle: 'Authentic',
+      subtitle: 'Verified Authentic',
       description: 'Forensic analysis confirms image authenticity'
     },
     deploy: {
       title: 'Deployment Record',
-      subtitle: 'v2.4.1',
+      subtitle: 'v3.1.2',
       description: 'Build provenance and deployment attestation'
     },
     incident: {
       title: 'Incident Log',
-      subtitle: 'INC-042',
+      subtitle: 'INC-2024-08',
       description: 'Security incident documentation with stakeholder sign-offs'
     }
   };
@@ -99,7 +99,7 @@ export default function ReceiptGraph() {
               {animationStep === 1 && "Global merkle root anchors to Bitcoin blockchain every 10 minutes"}
               {animationStep === 2 && "Transaction, Content, and Operations domains inherit cryptographic trust from root"}
               {animationStep === 3 && "Individual receipts generated and verified within each domain"}
-              {animationStep === 4 && "Payment $1,249 links to AI Check 92% links to Deploy v2.4.1 — all three must be consistent to verify"}
+              {animationStep === 4 && "Payment $89.50 links to AI Check (87% Human) links to Deploy v3.1.2 — all three must be consistent to verify"}
             </p>
           </div>
         )}
@@ -261,7 +261,7 @@ export default function ReceiptGraph() {
           >
             <rect x="150" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke={hoveredNode === 'payment' ? '#16a34a' : (animationStep === 3 ? '#fbbf24' : '#22c55e')} strokeWidth={hoveredNode === 'payment' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
             <text x="200" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Payment</text>
-            <text x="200" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">$1,249</text>
+            <text x="200" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">$89.50</text>
           </g>
 
           <g
@@ -273,7 +273,7 @@ export default function ReceiptGraph() {
           >
             <rect x="250" y="310" width="100" height="50" rx="6" fill="#dcfce7" stroke={hoveredNode === 'refund' ? '#16a34a' : (animationStep === 3 ? '#fbbf24' : '#22c55e')} strokeWidth={hoveredNode === 'refund' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
             <text x="300" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Refund</text>
-            <text x="300" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">-$234</text>
+            <text x="300" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">-$45</text>
           </g>
 
           {/* Content Receipts */}
@@ -286,7 +286,7 @@ export default function ReceiptGraph() {
           >
             <rect x="400" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke={hoveredNode === 'aicheck' ? '#7c3aed' : (animationStep === 3 ? '#fbbf24' : '#8b5cf6')} strokeWidth={hoveredNode === 'aicheck' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
             <text x="450" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">AI Check</text>
-            <text x="450" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">92% AI</text>
+            <text x="450" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">87% Human</text>
           </g>
 
           <g
@@ -298,7 +298,7 @@ export default function ReceiptGraph() {
           >
             <rect x="500" y="310" width="100" height="50" rx="6" fill="#f3e8ff" stroke={hoveredNode === 'imagecert' ? '#7c3aed' : (animationStep === 3 ? '#fbbf24' : '#8b5cf6')} strokeWidth={hoveredNode === 'imagecert' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
             <text x="550" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Image Cert</text>
-            <text x="550" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">Authentic</text>
+            <text x="550" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">Verified</text>
           </g>
 
           {/* Operations Receipts */}
@@ -311,7 +311,7 @@ export default function ReceiptGraph() {
           >
             <rect x="650" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke={hoveredNode === 'deploy' ? '#ea580c' : (animationStep === 3 ? '#fbbf24' : '#f97316')} strokeWidth={hoveredNode === 'deploy' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
             <text x="700" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Deploy</text>
-            <text x="700" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">v2.4.1</text>
+            <text x="700" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">v3.1.2</text>
           </g>
 
           <g
@@ -323,7 +323,7 @@ export default function ReceiptGraph() {
           >
             <rect x="750" y="310" width="100" height="50" rx="6" fill="#ffedd5" stroke={hoveredNode === 'incident' ? '#ea580c' : (animationStep === 3 ? '#fbbf24' : '#f97316')} strokeWidth={hoveredNode === 'incident' ? '3' : (animationStep === 3 ? '4' : '2')} className={animationStep === 3 ? 'animate-pulse' : ''} />
             <text x="800" y="332" textAnchor="middle" className="fill-gray-800 font-semibold pointer-events-none" fontSize="11">Incident</text>
-            <text x="800" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">INC-042</text>
+            <text x="800" y="347" textAnchor="middle" className="fill-gray-600 pointer-events-none" fontSize="10">INC-2024-08</text>
           </g>
 
           {/* Cross-Domain Link Labels */}

@@ -1,11 +1,11 @@
 export default function PlatformStats() {
   const stats = [
-    { number: '30+', label: 'Total Validation Layers' },
-    { number: '<3s', label: 'Analysis Time' },
-    { number: '3', label: 'Verification Domains' },
-    { number: '10+', label: 'Compliance Frameworks' },
-    { number: '∞', label: 'Cross-Domain Links' },
-    { number: 'SHA-256', label: 'Cryptographic Hash' }
+    { number: 'API-First', label: 'Platform Architecture' },
+    { number: '99.97%', label: 'Uptime SLA' },
+    { number: '3 Domains', label: 'Unified Platform' },
+    { number: 'SOC 2', label: 'Type II Certified' },
+    { number: 'SHA-256', label: 'Cryptographic Security' },
+    { number: '24/7', label: 'Enterprise Support' }
   ];
 
   return (

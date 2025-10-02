@@ -32,10 +32,10 @@ export default function CompetitorComparison() {
     {
       category: 'Trust & Compliance',
       items: [
-        { name: 'Trust Level Architecture (60/85/95%)', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Multi-Domain Verification', certnode: true, stripe: false, c2pa: false, auditLogs: false },
         { name: 'Auto-Compliance Mapping (PCI/SOX/GDPR)', certnode: true, stripe: false, c2pa: false, auditLogs: false },
-        { name: 'Chargeback Insurance Eligibility', certnode: true, stripe: false, c2pa: false, auditLogs: false },
-        { name: 'Receipt Factoring Market', certnode: true, stripe: false, c2pa: false, auditLogs: false },
+        { name: 'Tamper-Evident Audit Trails', certnode: true, stripe: false, c2pa: false, auditLogs: true },
+        { name: 'Public Verification APIs', certnode: true, stripe: false, c2pa: true, auditLogs: false },
       ],
     },
   ];

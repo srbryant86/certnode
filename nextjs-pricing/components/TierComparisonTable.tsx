@@ -11,7 +11,7 @@ export default function TierComparisonTable() {
             <tr className="border-b-2 border-gray-200">
               <th className="text-left py-4 px-4 font-semibold text-gray-700">Feature</th>
               <th className="py-4 px-4 text-center">
-                <div className="font-bold text-gray-900">Foundation</div>
+                <div className="font-bold text-gray-900">Starter</div>
                 <div className="text-xs text-gray-500 font-normal">For Startups</div>
               </th>
               <th className="py-4 px-4 text-center bg-blue-50 rounded-t-lg">
@@ -19,7 +19,7 @@ export default function TierComparisonTable() {
                 <div className="text-xs text-blue-500 font-normal">⭐ Most Popular</div>
               </th>
               <th className="py-4 px-4 text-center">
-                <div className="font-bold text-gray-900">Enterprise</div>
+                <div className="font-bold text-gray-900">Scale</div>
                 <div className="text-xs text-gray-500 font-normal">For Scale</div>
               </th>
             </tr>
@@ -27,9 +27,9 @@ export default function TierComparisonTable() {
           <tbody>
             <tr className="border-b border-gray-100">
               <td className="py-4 px-4 text-gray-700">Monthly Receipts</td>
+              <td className="py-4 px-4 text-center">1,000</td>
+              <td className="py-4 px-4 text-center bg-blue-50 font-semibold">5,000</td>
               <td className="py-4 px-4 text-center">10,000</td>
-              <td className="py-4 px-4 text-center bg-blue-50 font-semibold">100,000</td>
-              <td className="py-4 px-4 text-center">Unlimited</td>
             </tr>
             <tr className="border-b border-gray-100">
               <td className="py-4 px-4 text-gray-700">Transaction Receipts</td>

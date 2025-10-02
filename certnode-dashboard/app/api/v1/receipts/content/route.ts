@@ -4,6 +4,7 @@ import { applyRateLimit, createRateLimitHeaders } from "@/lib/rate-limiting";
 import { authenticateApiKey, hasPermission } from "@/lib/api-auth";
 import { detectionQueue } from "@/lib/queue";
 import { validateRequest, ValidationLayer } from "@/lib/validation/validation-middleware";
+import { fireWebhook } from "@/lib/webhooks/webhook-service";
 import crypto from "crypto";
 
 export async function POST(request: NextRequest) {
@@ -144,6 +145,39 @@ export async function POST(request: NextRequest) {
         console.log(`Receipt ${result.receiptId} created for background job ${backgroundJobId}`);
       } catch (error) {
         console.warn('Failed to update background job with receipt ID:', error);
+      }
+    }
+
+    // Fire webhooks asynchronously (don't block response)
+    if (result.receiptId) {
+      // Fire receipt.created event
+      fireWebhook(enterpriseId, 'receipt.created', {
+        receiptId: result.receiptId,
+        type: 'content',
+        contentHash: result.contentHash,
+        contentType,
+        timestamp: new Date().toISOString()
+      }).catch(err => console.error('Webhook delivery failed:', err))
+
+      // Fire receipt.verified event if verification succeeded
+      if (result.verificationStatus === 'verified') {
+        fireWebhook(enterpriseId, 'receipt.verified', {
+          receiptId: result.receiptId,
+          type: 'content',
+          verificationStatus: 'verified',
+          timestamp: new Date().toISOString()
+        }).catch(err => console.error('Webhook delivery failed:', err))
+      }
+
+      // Fire content.flagged event if AI content detected with high confidence
+      if (aiDetectionResults && typeof aiDetectionResults.confidence === 'number' && aiDetectionResults.confidence > 0.7) {
+        fireWebhook(enterpriseId, 'content.flagged', {
+          receiptId: result.receiptId,
+          contentHash: result.contentHash,
+          aiConfidence: aiDetectionResults.confidence,
+          detectionMethod: aiDetectionResults.method,
+          timestamp: new Date().toISOString()
+        }).catch(err => console.error('Webhook delivery failed:', err))
       }
     }
 

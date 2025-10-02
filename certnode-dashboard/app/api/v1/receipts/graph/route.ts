@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { authenticateApiKey } from '@/lib/api-auth'
 import { createReceiptWithGraph } from '@/lib/graph/receipt-graph-service'
 import { createSuccessResponse, createErrorResponse, QualityProfiles } from '@/lib/api-response-helpers'
+import { fireWebhook } from '@/lib/webhooks/webhook-service'
 import { RelationType } from '@prisma/client'
 import crypto from 'crypto'
 
@@ -121,6 +122,8 @@ export async function POST(request: NextRequest) {
         hasParents: (parentReceipts?.length || 0) > 0
       }
     }
+
+    // Webhooks are now fired by createReceiptWithGraph() service function
 
     return NextResponse.json(
       createSuccessResponse(responseData, {

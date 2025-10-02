@@ -10,6 +10,7 @@
 
 import { PrismaClient, Receipt, ReceiptRelationship, RelationType, EnterpriseTier } from '@prisma/client'
 import { createHash, randomUUID } from 'crypto'
+import { fireWebhook } from '@/lib/webhooks/webhook-service'
 
 const prisma = new PrismaClient()
 
@@ -120,6 +121,28 @@ export async function createReceiptWithGraph(
         })
       )
     )
+  }
+
+  // Fire webhooks asynchronously (don't block receipt creation)
+  // Fire receipt.created event
+  fireWebhook(enterpriseId, 'receipt.created', {
+    receiptId: receipt.id,
+    type: receipt.type,
+    graphDepth: receipt.graphDepth,
+    timestamp: new Date().toISOString()
+  }).catch(err => console.error('Webhook delivery failed:', err))
+
+  // Fire graph.linked event if receipt has parent relationships
+  if (parentReceipts && parentReceipts.length > 0) {
+    fireWebhook(enterpriseId, 'graph.linked', {
+      receiptId: receipt.id,
+      parentReceipts: parentReceipts.map(p => ({
+        receiptId: p.receiptId,
+        relationType: p.relationType
+      })),
+      graphDepth: receipt.graphDepth,
+      timestamp: new Date().toISOString()
+    }).catch(err => console.error('Webhook delivery failed:', err))
   }
 
   return receipt

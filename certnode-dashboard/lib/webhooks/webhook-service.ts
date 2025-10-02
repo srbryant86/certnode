@@ -149,15 +149,19 @@ export async function fireWebhook(
   event: WebhookEvent,
   data: Record<string, unknown>
 ): Promise<void> {
-  // Get all webhooks for this enterprise subscribed to this event
-  const webhooks = await prisma.webhook.findMany({
+  // Get all webhooks for this enterprise
+  // Note: SQLite doesn't support JSON array queries, so we filter in JS
+  const allWebhooks = await prisma.webhook.findMany({
     where: {
       enterpriseId,
-      enabled: true,
-      events: {
-        has: event
-      }
+      enabled: true
     }
+  })
+
+  // Filter to only webhooks subscribed to this event
+  const webhooks = allWebhooks.filter(webhook => {
+    const events = webhook.events as unknown as string[]
+    return events.includes(event)
   })
 
   if (webhooks.length === 0) {
@@ -180,7 +184,7 @@ export async function fireWebhook(
       data: {
         webhookId: webhook.id,
         event,
-        payload,
+        payload: payload as any, // Cast to JSON
         success: result.success,
         statusCode: result.statusCode,
         responseBody: result.responseBody,

@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
         enterpriseId: authResult.enterpriseId!,
         url,
         secret,
-        events,
+        events: events as any, // Stored as JSON array
         description: description || null,
         enabled: true
       }
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
       createSuccessResponse({
         id: webhook.id,
         url: webhook.url,
-        events: webhook.events,
+        events: webhook.events as string[], // Cast from JSON
         enabled: webhook.enabled,
         description: webhook.description,
         secret: webhook.secret, // Only returned on creation
@@ -214,7 +214,7 @@ export async function GET(request: NextRequest) {
     const response = webhooks.map(webhook => ({
       id: webhook.id,
       url: webhook.url,
-      events: webhook.events,
+      events: webhook.events as string[], // Cast from JSON
       enabled: webhook.enabled,
       description: webhook.description,
       deliveryCount: webhook._count.deliveries,

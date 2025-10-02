@@ -69,7 +69,7 @@ export async function GET(
       createSuccessResponse({
         id: webhook.id,
         url: webhook.url,
-        events: webhook.events,
+        events: webhook.events as string[], // Cast from JSON
         enabled: webhook.enabled,
         description: webhook.description,
         createdAt: webhook.createdAt.toISOString(),
@@ -179,7 +179,7 @@ export async function PATCH(
       },
       data: {
         ...(url && { url }),
-        ...(events && { events }),
+        ...(events && { events: events as any }), // Cast to JSON
         ...(enabled !== undefined && { enabled }),
         ...(description !== undefined && { description })
       }
@@ -205,7 +205,7 @@ export async function PATCH(
       createSuccessResponse({
         id: updated!.id,
         url: updated!.url,
-        events: updated!.events,
+        events: updated!.events as string[], // Cast from JSON
         enabled: updated!.enabled,
         description: updated!.description,
         updatedAt: updated!.updatedAt.toISOString()

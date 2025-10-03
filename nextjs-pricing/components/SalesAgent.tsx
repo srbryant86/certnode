@@ -12,6 +12,7 @@ type Message = {
 
 type LeadData = {
   businessType?: string;
+  platforms?: string[];
   monthlyVolume?: string;
   painPoint?: string;
   company?: string;
@@ -23,6 +24,7 @@ type LeadData = {
 type ConversationStage =
   | 'greeting'
   | 'business_type'
+  | 'platforms'
   | 'volume'
   | 'pain_point'
   | 'recommendation'
@@ -73,7 +75,7 @@ export default function SalesAgent() {
     const timers: number[] = [];
 
     const greetingLines = [
-      `Hi! I'm the CertNode sales assistant. I'll help you find the right plan for your business.\n\nWhat type of business are you running?`,
+      `Hi! I'm the CertNode sales assistant. I'll help you find the right plan and show you our **turnkey integrations** for Shopify, Stripe, Kajabi, and more.\n\nWhat type of business are you running?`,
       `1) E-commerce / Retail\n2) SaaS / Software\n3) Content / Media Platform\n4) Logistics / Supply Chain\n5) Financial Services\n6) Other`,
     ];
 
@@ -125,11 +127,40 @@ export default function SalesAgent() {
     }
   };
 
-  const getRecommendation = (data: LeadData): { tier: string; price: string; reason: string; receipts?: number } => {
-    const { businessType, monthlyVolume, painPoint } = data;
+  const buildIntegrationMessage = (platforms?: string[]): string => {
+    if (!platforms || platforms.length === 0 || platforms.includes('None')) {
+      return '';
+    }
+
+    const turnkeyPlatforms = platforms.filter(p =>
+      ['Shopify', 'Stripe', 'Kajabi/Teachable', 'Shippo/ShipStation', 'WooCommerce'].includes(p)
+    );
+
+    if (turnkeyPlatforms.length === 0) {
+      return '\n\n🔌 **Custom Integration:** REST API + webhooks for seamless receipt creation';
+    }
+
+    const integrationDetails: Record<string, string> = {
+      'Shopify': 'orders → fulfillment → delivery → disputes',
+      'Stripe': 'charges → refunds → disputes → subscriptions',
+      'Kajabi/Teachable': 'purchases → logins → lessons → completions',
+      'Shippo/ShipStation': 'labels → tracking → delivery confirmation',
+      'WooCommerce': 'orders → payment → shipping → customer service'
+    };
+
+    const details = turnkeyPlatforms
+      .map(p => `  • **${p}**: ${integrationDetails[p] || 'automatic receipt linking'}`)
+      .join('\n');
+
+    return `\n\n🔌 **Turnkey Integrations** (<15 min setup):\n${details}\n\n📘 Complete onboarding guide included`;
+  };
+
+  const getRecommendation = (data: LeadData): { tier: string; price: string; reason: string; receipts?: number; integrations?: string } => {
+    const { businessType, monthlyVolume, painPoint, platforms } = data;
     const volumeNum = parseVolume(monthlyVolume || '');
     const annualGMV = volumeNum * 12;
     const estimatedReceipts = estimateReceipts(volumeNum, businessType);
+    const integrationMessage = buildIntegrationMessage(platforms);
 
     // High-ticket or dispute-heavy = Dispute Shield
     if (painPoint?.toLowerCase().includes('dispute') ||
@@ -140,15 +171,17 @@ export default function SalesAgent() {
         return {
           tier: 'Dispute Shield Elite',
           price: '$2,500/month ($30K/year)',
-          reason: `Your ${formatNumber(annualGMV)} annual GMV and dispute prevention needs require our premium tier with 24-hour priority SLA, processor advocacy, and performance guarantees. Includes unlimited receipts (estimated ${formatNumber(estimatedReceipts)}/month needed).`,
-          receipts: estimatedReceipts
+          reason: `Your ${formatNumber(annualGMV)} annual GMV and dispute prevention needs require our premium tier with 24-hour priority SLA, processor advocacy, and performance guarantees. Includes unlimited receipts (estimated ${formatNumber(estimatedReceipts)}/month needed).${integrationMessage}`,
+          receipts: estimatedReceipts,
+          integrations: integrationMessage
         };
       } else {
         return {
           tier: 'Dispute Shield Pro',
           price: '$1,000/month ($12K/year)',
-          reason: `Perfect for dispute prevention with 48-hour evidence SLA, automated receipt generation, and quarterly optimization reviews. GMV up to $2M/year. Includes unlimited receipts (estimated ${formatNumber(estimatedReceipts)}/month needed).`,
-          receipts: estimatedReceipts
+          reason: `Perfect for dispute prevention with 48-hour evidence SLA, automated receipt generation, and quarterly optimization reviews. GMV up to $2M/year. Includes unlimited receipts (estimated ${formatNumber(estimatedReceipts)}/month needed).${integrationMessage}`,
+          receipts: estimatedReceipts,
+          integrations: integrationMessage
         };
       }
     }
@@ -158,22 +191,25 @@ export default function SalesAgent() {
       return {
         tier: 'Starter',
         price: '$49/month ($490/year)',
-        reason: `Perfect for your volume - includes 1,000 receipts/month (you need ~${formatNumber(estimatedReceipts)}). All core features: Transactions, Content, Operations verification.`,
-        receipts: estimatedReceipts
+        reason: `Perfect for your volume - includes 1,000 receipts/month (you need ~${formatNumber(estimatedReceipts)}). All core features: Transactions, Content, Operations verification.${integrationMessage}`,
+        receipts: estimatedReceipts,
+        integrations: integrationMessage
       };
     } else if (estimatedReceipts <= 5000) {
       return {
         tier: 'Professional',
         price: '$199/month ($1,990/year)',
-        reason: `Recommended for your volume - includes 5,000 receipts/month (you need ~${formatNumber(estimatedReceipts)}). Webhooks, advanced analytics, priority support. Overage: $0.05/receipt.`,
-        receipts: estimatedReceipts
+        reason: `Recommended for your volume - includes 5,000 receipts/month (you need ~${formatNumber(estimatedReceipts)}). Webhooks, advanced analytics, priority support. Overage: $0.05/receipt.${integrationMessage}`,
+        receipts: estimatedReceipts,
+        integrations: integrationMessage
       };
     } else if (estimatedReceipts <= 10000) {
       return {
         tier: 'Scale',
         price: '$499/month ($4,990/year)',
-        reason: `Best fit for your volume - includes 10,000 receipts/month (you need ~${formatNumber(estimatedReceipts)}). Multi-tenant, SSO, compliance reporting. Overage: $0.03/receipt.`,
-        receipts: estimatedReceipts
+        reason: `Best fit for your volume - includes 10,000 receipts/month (you need ~${formatNumber(estimatedReceipts)}). Multi-tenant, SSO, compliance reporting. Overage: $0.03/receipt.${integrationMessage}`,
+        receipts: estimatedReceipts,
+        integrations: integrationMessage
       };
     } else if (estimatedReceipts <= 100000) {
       const basePrice = 25000;
@@ -182,8 +218,9 @@ export default function SalesAgent() {
       return {
         tier: 'Enterprise Core Trust',
         price: `~$${Math.round(estimatedAnnual/12).toLocaleString()}/month ($${(estimatedAnnual/1000).toFixed(0)}K/year)`,
-        reason: `For your volume (~${formatNumber(estimatedReceipts)} receipts/month), estimated at $${(estimatedAnnual/1000).toFixed(0)}K/year base + metered events. Includes unlimited receipts, dedicated support, custom SLAs, enterprise features.`,
-        receipts: estimatedReceipts
+        reason: `For your volume (~${formatNumber(estimatedReceipts)} receipts/month), estimated at $${(estimatedAnnual/1000).toFixed(0)}K/year base + metered events. Includes unlimited receipts, dedicated support, custom SLAs, enterprise features.${integrationMessage}`,
+        receipts: estimatedReceipts,
+        integrations: integrationMessage
       };
     } else {
       const basePrice = 60000;
@@ -191,8 +228,9 @@ export default function SalesAgent() {
       return {
         tier: 'Platform Edition',
         price: `~$${Math.round(estimatedAnnual/12).toLocaleString()}/month ($${(estimatedAnnual/1000).toFixed(0)}K/year)`,
-        reason: `For your high volume (~${formatNumber(estimatedReceipts)} receipts/month), Platform Edition provides white-label infrastructure, multi-merchant support, custom pricing based on merchant count and GMV.`,
-        receipts: estimatedReceipts
+        reason: `For your high volume (~${formatNumber(estimatedReceipts)} receipts/month), Platform Edition provides white-label infrastructure, multi-merchant support, custom pricing based on merchant count and GMV.${integrationMessage}`,
+        receipts: estimatedReceipts,
+        integrations: integrationMessage
       };
     }
   };
@@ -241,12 +279,45 @@ export default function SalesAgent() {
         }
 
         setLeadData(prev => ({ ...prev, businessType }));
-        setStage('volume');
+        setStage('platforms');
 
         setTimeout(() => {
           addAgentMessage(
-            `Great! For ${businessType}, what's your approximate monthly transaction volume or GMV?\n\n(e.g., "$50K", "$500K", "$2M")`
+            `Perfect! For ${businessType}, which platforms are you currently using?\n\n(Select all that apply - just type the numbers separated by commas)\n\n1️⃣ Shopify\n2️⃣ Stripe\n3️⃣ Kajabi / Teachable\n4️⃣ Shippo / ShipStation\n5️⃣ WooCommerce\n6️⃣ Other / Custom\n7️⃣ None yet`
           );
+        }, 500);
+        break;
+
+      case 'platforms':
+        // Detect platforms
+        const platforms: string[] = [];
+        const lowerPlatform = lowerInput;
+
+        if (lowerPlatform.includes('shopify') || lowerPlatform.includes('1')) platforms.push('Shopify');
+        if (lowerPlatform.includes('stripe') || lowerPlatform.includes('2')) platforms.push('Stripe');
+        if (lowerPlatform.includes('kajabi') || lowerPlatform.includes('teachable') || lowerPlatform.includes('3')) platforms.push('Kajabi/Teachable');
+        if (lowerPlatform.includes('shippo') || lowerPlatform.includes('shipstation') || lowerPlatform.includes('4')) platforms.push('Shippo/ShipStation');
+        if (lowerPlatform.includes('woocommerce') || lowerPlatform.includes('5')) platforms.push('WooCommerce');
+        if (lowerPlatform.includes('other') || lowerPlatform.includes('custom') || lowerPlatform.includes('6')) platforms.push('Custom');
+        if (lowerPlatform.includes('none') || lowerPlatform.includes('7')) platforms.push('None');
+
+        setLeadData(prev => ({ ...prev, platforms }));
+        setStage('volume');
+
+        const hasTurnkeyIntegrations = platforms.some(p =>
+          ['Shopify', 'Stripe', 'Kajabi/Teachable', 'Shippo/ShipStation', 'WooCommerce'].includes(p)
+        );
+
+        setTimeout(() => {
+          if (hasTurnkeyIntegrations) {
+            addAgentMessage(
+              `Excellent! CertNode has **turnkey integrations** for ${platforms.filter(p => p !== 'Custom' && p !== 'None').join(', ')}. Setup takes <15 minutes with zero code required.\n\nWhat's your approximate monthly transaction volume or GMV?\n\n(e.g., "$50K", "$500K", "$2M")`
+            );
+          } else {
+            addAgentMessage(
+              `Got it! CertNode provides a flexible API for custom integrations. What's your approximate monthly transaction volume or GMV?\n\n(e.g., "$50K", "$500K", "$2M")`
+            );
+          }
         }, 500);
         break;
 
@@ -282,8 +353,14 @@ export default function SalesAgent() {
         const recommendation = getRecommendation(updatedData);
 
         setTimeout(() => {
+          const hasTurnkeyIntegrations = (updatedData.platforms || []).some(p =>
+            ['Shopify', 'Stripe', 'Kajabi/Teachable', 'Shippo/ShipStation', 'WooCommerce'].includes(p)
+          );
+
+          const setupTime = hasTurnkeyIntegrations ? '⚡ Setup time: <15 minutes (turnkey integrations)' : '⚡ Setup time: <1 hour (flexible API)';
+
           addAgentMessage(
-            `Based on your needs, I recommend:\n\n**${recommendation.tier}** - ${recommendation.price}\n\n${recommendation.reason}\n\n✅ All three products included (Transactions, Content, Operations)\n✅ Cross-domain Receipt Graph\n✅ Cryptographic verification\n✅ 60-day money-back guarantee`
+            `Based on your needs, I recommend:\n\n**${recommendation.tier}** - ${recommendation.price}\n\n${recommendation.reason}\n\n✅ All three products included (Transactions, Content, Operations)\n✅ Cross-domain Receipt Graph (cryptographically linked)\n✅ ${setupTime}\n✅ Complete onboarding guide + documentation\n✅ 60-day money-back guarantee`
           );
 
           setTimeout(() => {
@@ -321,18 +398,28 @@ export default function SalesAgent() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               ...finalLeadData,
+              platforms: finalLeadData.platforms || [],
               recommendedTier: recommendation.tier,
               recommendedPrice: recommendation.price,
-              receipts: recommendation.receipts
+              receipts: recommendation.receipts,
+              integrations: recommendation.integrations
             })
           }).then(res => res.json())
             .then(data => console.log('Lead submitted:', data))
             .catch(err => console.error('Error submitting lead:', err));
 
           setTimeout(() => {
-            addAgentMessage(
-              `Thanks ${leadData.name}! 🎉\n\nI've sent your information to our sales team. You'll hear from us within 24 hours.\n\nIn the meantime:\n📊 Check out our [ROI Calculator](/pricing)\n🔍 Explore the [Receipt Graph Demo](/platform)\n📚 Read our [Documentation](/platform)`
+            const hasTurnkeyIntegrations = (finalLeadData.platforms || []).some(p =>
+              ['Shopify', 'Stripe', 'Kajabi/Teachable', 'Shippo/ShipStation', 'WooCommerce'].includes(p)
             );
+
+            let nextSteps = `Thanks ${leadData.name}! 🎉\n\nI've sent your information to our sales team. You'll hear from us within 24 hours.\n\nIn the meantime:\n📊 Check out our [ROI Calculator](/pricing)\n🔍 Explore the [Receipt Graph Demo](/platform)\n📚 Read our [Documentation](/platform)`;
+
+            if (hasTurnkeyIntegrations) {
+              nextSteps += `\n🔌 Review integration guides for ${(finalLeadData.platforms || []).filter(p => p !== 'None' && p !== 'Custom').join(', ')}`;
+            }
+
+            addAgentMessage(nextSteps);
           }, 800);
         } else {
           // Initial contact request

@@ -1,6 +1,14 @@
 # Receipt Graph Demo Rebuild Plan
 
 ## Problem Statement
+
+## Current Implementation Check (2025-10-03)
+- `components/ReceiptGraphMultiMode.tsx` still behaves like a step-by-step chain builder, so visitors never see multiple domains on screen at once.
+- Parent/child metadata exists in scenario definitions but the UI only shows badges; no edges, relation labels, or graph traversal are rendered.
+- CFO query mode highlights a static path rather than letting users explore cross-domain routes or run real graph queries.
+- Domain icons rely on mojibake emoji, undermining the "three products" visual story and making the moat harder to grasp.
+- No API endpoints back the demo yet, so the receipt graph remains a marketing mock instead of protocol-backed evidence.
+
 Current demo shows a simple linear chain (Payment → Product → Delivery) in a SINGLE domain. This doesn't demonstrate the actual competitive moat, which is **cross-domain graph connections** that require all three CertNode products.
 
 **Current demo weakness:**
@@ -311,3 +319,5 @@ This is a DAG (directed acyclic graph) with:
 - Multiple children
 - Cross-domain relationships
 - Something NO competitor can build
+
+

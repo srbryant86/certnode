@@ -1,193 +1,207 @@
 {
-  "coreTiers": [
-    {
-      "id": "core-starter",
-      "name": "Starter",
-      "priceMonthly": 49,
-      "annualDiscount": 0.83,
-      "includedReceipts": 1000,
-      "overagePerReceipt": 0.10,
-      "tagline": "Perfect for startups and small businesses",
-      "features": [
-        "1,000 receipts/month included",
-        "All three products: Transactions + Content + Operations",
-        "Cryptographic transaction receipts",
-        "Content certification (C2PA-compatible)",
-        "Operations incident receipts",
-        "Receipt Graph (5 levels deep)",
-        "JWKS verification",
-        "Public verifier access",
-        "Email support (48-hour SLA)",
-        "Self-service dashboard"
-      ]
-    },
-    {
-      "id": "core-professional",
-      "name": "Professional",
-      "priceMonthly": 199,
-      "annualDiscount": 0.83,
-      "includedReceipts": 5000,
-      "overagePerReceipt": 0.05,
-      "tagline": "For growing teams that need advanced features",
-      "features": [
-        "5,000 receipts/month included",
-        "All three products: Transactions + Content + Operations",
-        "Receipt Graph (10 levels deep)",
-        "Webhooks & batch operations",
-        "Multi-source timestamps",
-        "Enhanced audit trails",
-        "Content authenticity verification",
-        "Policy compliance receipts",
-        "Priority support (24-hour SLA)",
-        "Advanced analytics dashboard"
-      ]
-    },
-    {
-      "id": "core-scale",
-      "name": "Scale",
-      "priceMonthly": 499,
-      "annualDiscount": 0.83,
-      "includedReceipts": 10000,
-      "overagePerReceipt": 0.03,
-      "tagline": "Everything you need to scale with confidence",
-      "features": [
-        "10,000 receipts/month included",
-        "All three products: Transactions + Content + Operations",
-        "Multi-tenant architecture",
-        "SSO integration",
-        "Data residency controls",
-        "Compliance reporting (SOX, PCI readiness)",
-        "Dedicated support (12-hour SLA)",
-        "Custom compliance frameworks",
-        "Premium API (100K requests/hour)",
-        "Monthly protection reports",
-        "Audit trail exports"
-      ]
-    }
-  ],
-  "enterpriseTiers": [
-    {
-      "id": "core-trust",
-      "name": "Core Trust",
-      "priceYearly": 25000,
-      "ceiling": 75000,
-      "tagline": "Unlimited receipts with enterprise SLAs and dedicated compliance support",
-      "pricing": "Base $25K-$75K + metered events ($0.002-$0.02)",
-      "features": [
-        "Multi-tenant infrastructure",
-        "Enterprise SLA guarantees",
-        "SSO and data residency",
-        "JWKS verification infrastructure",
-        "Unlimited receipt generation",
-        "Custom compliance reporting",
-        "Dedicated account management",
-        "Professional services included"
-      ]
-    },
-    {
-      "id": "platform-edition",
-      "name": "Platform Edition",
-      "priceYearly": 60000,
-      "ceiling": 250000,
-      "tagline": "White-label receipt infrastructure for marketplaces and payment platforms",
-      "pricing": "Custom pricing based on merchant count and GMV",
-      "features": [
-        "Multi-merchant architecture",
-        "Shared verifier infrastructure",
-        "Per-tenant compliance reporting",
-        "Marketplace integration APIs",
-        "Revenue sharing analytics",
-        "Tenant onboarding automation",
-        "Aggregated compliance dashboards",
-        "Platform-specific customization"
-      ]
-    }
-  ],
-  "intelligenceAddOns": [
-    {
-      "id": "advisory-starter",
-      "name": "Intelligence Advisory - Starter",
-      "priceYearly": 25000,
-      "inferences": 1000000,
-      "overagePerEvent": 0.01,
-      "tagline": "Advisory fraud/content/anomaly signals",
-      "features": [
-        "1M advisory inferences included",
-        "Fraud heuristics (advisory only)",
-        "AI-content flags (advisory only)",
-        "Anomaly scoring (advisory only)",
-        "Cannot be source of truth",
-        "Must bundle with Core Trust",
-        "Compute commits model",
-        "Overage at $0.01 per event"
-      ]
-    },
-    {
-      "id": "advisory-professional",
-      "name": "Intelligence Advisory - Professional",
-      "priceYearly": 75000,
-      "inferences": 5000000,
-      "overagePerEvent": 0.005,
-      "tagline": "Enhanced advisory intelligence with priority support",
-      "features": [
-        "5M advisory inferences included",
-        "Advanced fraud modeling",
-        "Content manipulation detection",
-        "Behavioral anomaly detection",
-        "Advisory-only classification",
-        "Priority intelligence support",
-        "Custom model training",
-        "Overage at $0.005 per event"
-      ]
-    },
-    {
-      "id": "advisory-enterprise",
-      "name": "Intelligence Advisory - Enterprise",
-      "priceYearly": 150000,
-      "inferences": 15000000,
-      "overagePerEvent": 0.002,
-      "tagline": "Complete advisory intelligence suite",
-      "features": [
-        "15M advisory inferences included",
-        "Full advisory intelligence suite",
-        "Custom algorithm development",
-        "Real-time advisory scoring",
-        "Multi-modal analysis",
-        "Dedicated ML engineering",
-        "Custom advisory models",
-        "Overage at $0.002 per event"
-      ]
-    }
-  ],
-  "tierLimits": {
-    "core-starter": {
-      "receipts": 1000,
-      "overageRates": {
-        "receipts": 0.10
-      }
-    },
-    "core-professional": {
-      "receipts": 5000,
-      "overageRates": {
-        "receipts": 0.05
-      }
-    },
-    "core-scale": {
-      "receipts": 10000,
-      "overageRates": {
-        "receipts": 0.03
-      }
-    }
-  },
-  "bundleDiscounts": {
-    "coreAndAdvisory": 0.15,
-    "multiYear": 0.05,
-    "annual": 0.17
-  },
-  "legacy": {
-    "starter": "core-starter",
-    "professional": "core-professional",
-    "enterprise": "core-scale",
-    "scale": "core-scale"
-  }
+    "coreTiers":  [
+                      {
+                          "id":  "core-starter",
+                          "name":  "Starter",
+                          "priceMonthly":  49,
+                          "annualDiscount":  0.83,
+                          "includedReceipts":  1000,
+                          "overagePerReceipt":  0.10,
+                          "tagline":  "Perfect for startups and small businesses",
+                          "features":  [
+                                           "1,000 receipts/month included",
+                                           "All three products: Transactions + Content + Operations",
+                                           "Cryptographic transaction receipts",
+                                           "Content certification (C2PA-compatible)",
+                                           "Operations incident receipts",
+                                           "Receipt Graph (5 levels deep)",
+                                           "JWKS verification",
+                                           "Public verifier access",
+                                           "Email support (48-hour SLA)",
+                                           "Self-service dashboard"
+                                       ]
+                      },
+                      {
+                          "id":  "core-professional",
+                          "name":  "Professional",
+                          "priceMonthly":  199,
+                          "annualDiscount":  0.83,
+                          "includedReceipts":  5000,
+                          "overagePerReceipt":  0.05,
+                          "tagline":  "For scaling teams that need graph intelligence",
+                          "features":  [
+                                           "5,000 receipts/month included",
+                                           "All three products: Transactions + Content + Operations",
+                                           "Receipt Graph (10 levels deep)",
+                                           "Advanced analytics \u0026 reporting",
+                                           "Real-time webhooks",
+                                           "Batch operations toolkit",
+                                           "Graph queries (10/day)",
+                                           "Priority support (24-hour SLA)",
+                                           "Governed evidence export",
+                                           "Role-based access control"
+                                       ]
+                      },
+                      {
+                          "id":  "core-scale",
+                          "name":  "Business",
+                          "priceMonthly":  499,
+                          "annualDiscount":  0.83,
+                          "includedReceipts":  25000,
+                          "overagePerReceipt":  0.03,
+                          "tagline":  "Enterprises that need unlimited graph depth and automation",
+                          "features":  [
+                                           "25,000 receipts/month included",
+                                           "Receipt Graph (unlimited depth)",
+                                           "Cross-product verification",
+                                           "Multi-tenant controls",
+                                           "SSO integration (SAML/OIDC)",
+                                           "Graph queries (100/day)",
+                                           "Pattern detection (basic)",
+                                           "Dedicated customer success (12-hour SLA)",
+                                           "Compliance reporting \u0026 exports",
+                                           "Overage at $0.03 per receipt"
+                                       ]
+                      }
+                  ],
+    "enterpriseTiers":  [
+                            {
+                                "id":  "enterprise-core",
+                                "name":  "Enterprise Core",
+                                "priceYearly":  25000,
+                                "tagline":  "Full tri-pillar platform with unlimited graph depth and compliance automation",
+                                "pricing":  "$25K/year base, $0.02/receipt over 100K/month",
+                                "features":  [
+                                                 "100,000 receipts/month included (~$0.025/receipt)",
+                                                 "Everything in Business tier",
+                                                 "Receipt Graph (unlimited depth)",
+                                                 "Graph pattern detection",
+                                                 "Custom compliance reports",
+                                                 "99.9% uptime SLA",
+                                                 "Dedicated account manager",
+                                                 "Phone support (4-hour response)",
+                                                 "Overage at $0.02 per receipt"
+                                             ]
+                            },
+                            {
+                                "id":  "enterprise-platform",
+                                "name":  "Enterprise Platform",
+                                "priceYearly":  60000,
+                                "tagline":  "White-label receipt infrastructure for marketplaces and processors",
+                                "pricing":  "$60K/year base, $0.01/receipt over 500K/month",
+                                "features":  [
+                                                 "500,000 receipts/month included (~$0.012/receipt)",
+                                                 "Multi-merchant infrastructure",
+                                                 "White-label receipt graph",
+                                                 "Custom graph queries \u0026 APIs",
+                                                 "Real-time graph webhooks",
+                                                 "Dedicated engineering support",
+                                                 "Custom SLA (99.95%+)",
+                                                 "Overage at $0.01 per receipt"
+                                             ]
+                            },
+                            {
+                                "id":  "enterprise-unlimited",
+                                "name":  "Enterprise Unlimited",
+                                "priceYearly":  null,
+                                "tagline":  "Custom infrastructure for Fortune 500, banks, and government",
+                                "pricing":  "Starts at $150K/year (custom quote)",
+                                "features":  [
+                                                 "Unlimited receipts",
+                                                 "Dedicated infrastructure or on-premise",
+                                                 "Custom feature development",
+                                                 "Graph intelligence tailored to your workflows",
+                                                 "Custom compliance frameworks",
+                                                 "Dedicated on-call engineering team",
+                                                 "Joint roadmap planning"
+                                             ]
+                            }
+                        ],
+    "intelligenceAddOns":  [
+                               {
+                                   "id":  "advisory-starter",
+                                   "name":  "Intelligence Advisory - Starter",
+                                   "priceYearly":  25000,
+                                   "inferences":  1000000,
+                                   "overagePerEvent":  0.01,
+                                   "tagline":  "Advisory fraud/content/anomaly signals",
+                                   "features":  [
+                                                    "1M advisory inferences included",
+                                                    "Fraud heuristics (advisory only)",
+                                                    "AI-content flags (advisory only)",
+                                                    "Anomaly scoring (advisory only)",
+                                                    "Cannot be source of truth",
+                                                    "Must bundle with Core Trust",
+                                                    "Compute commits model",
+                                                    "Overage at $0.01 per event"
+                                                ]
+                               },
+                               {
+                                   "id":  "advisory-professional",
+                                   "name":  "Intelligence Advisory - Professional",
+                                   "priceYearly":  75000,
+                                   "inferences":  5000000,
+                                   "overagePerEvent":  0.005,
+                                   "tagline":  "Enhanced advisory intelligence with priority support",
+                                   "features":  [
+                                                    "5M advisory inferences included",
+                                                    "Advanced fraud modeling",
+                                                    "Content manipulation detection",
+                                                    "Behavioral anomaly detection",
+                                                    "Advisory-only classification",
+                                                    "Priority intelligence support",
+                                                    "Custom model training",
+                                                    "Overage at $0.005 per event"
+                                                ]
+                               },
+                               {
+                                   "id":  "advisory-enterprise",
+                                   "name":  "Intelligence Advisory - Enterprise",
+                                   "priceYearly":  150000,
+                                   "inferences":  15000000,
+                                   "overagePerEvent":  0.002,
+                                   "tagline":  "Complete advisory intelligence suite",
+                                   "features":  [
+                                                    "15M advisory inferences included",
+                                                    "Full advisory intelligence suite",
+                                                    "Custom algorithm development",
+                                                    "Real-time advisory scoring",
+                                                    "Multi-modal analysis",
+                                                    "Dedicated ML engineering",
+                                                    "Custom advisory models",
+                                                    "Overage at $0.002 per event"
+                                                ]
+                               }
+                           ],
+    "tierLimits":  {
+                       "core-starter":  {
+                                            "receipts":  1000,
+                                            "overageRates":  {
+                                                                 "receipts":  0.10
+                                                             }
+                                        },
+                       "core-professional":  {
+                                                 "receipts":  5000,
+                                                 "overageRates":  {
+                                                                      "receipts":  0.05
+                                                                  }
+                                             },
+                       "core-scale":  {
+                                          "receipts":  25000,
+                                          "overageRates":  {
+                                                               "receipts":  0.03
+                                                           }
+                                      }
+                   },
+    "bundleDiscounts":  {
+                            "coreAndAdvisory":  0.15,
+                            "multiYear":  0.05,
+                            "annual":  0.17
+                        },
+    "legacy":  {
+                   "starter":  "core-starter",
+                   "professional":  "core-professional",
+                   "enterprise":  "core-scale",
+                   "scale":  "core-scale"
+               }
 }

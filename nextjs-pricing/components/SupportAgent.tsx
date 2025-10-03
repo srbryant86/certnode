@@ -224,6 +224,19 @@ export default function SupportAgent() {
           <div ref={logRef} />
         </div>
 
+        <div className="mt-4 flex flex-wrap gap-2">
+          {quickPrompts.map(item => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => handleQuickPrompt(item.prompt)}
+              className="rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-gray-700 transition-colors hover:border-blue-400 hover:text-blue-700"
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+
         <form onSubmit={handleSubmit} className="mt-4 space-y-3">
           <label htmlFor="support-agent-input" className="block text-xs font-semibold uppercase tracking-wide text-gray-500">
             Ask a question

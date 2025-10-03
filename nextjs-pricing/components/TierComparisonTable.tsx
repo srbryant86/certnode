@@ -19,8 +19,8 @@ export default function TierComparisonTable() {
                 <div className="text-xs text-blue-500 font-normal">⭐ Most Popular</div>
               </th>
               <th className="py-4 px-4 text-center">
-                <div className="font-bold text-gray-900">Scale</div>
-                <div className="text-xs text-gray-500 font-normal">For Scale</div>
+                <div className="font-bold text-gray-900">Business</div>
+                <div className="text-xs text-gray-500 font-normal">For Operators</div>
               </th>
             </tr>
           </thead>
@@ -29,7 +29,7 @@ export default function TierComparisonTable() {
               <td className="py-4 px-4 text-gray-700">Monthly Receipts</td>
               <td className="py-4 px-4 text-center">1,000</td>
               <td className="py-4 px-4 text-center bg-blue-50 font-semibold">5,000</td>
-              <td className="py-4 px-4 text-center">10,000</td>
+              <td className="py-4 px-4 text-center">25,000</td>
             </tr>
             <tr className="border-b border-gray-100">
               <td className="py-4 px-4 text-gray-700">Transaction Receipts</td>

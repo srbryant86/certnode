@@ -7,6 +7,26 @@ export default function ReceiptGraph() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
   const [animationStep, setAnimationStep] = useState<number>(0);
+  const stepHeadlines = [
+    'Day 1, 2:34pm: Customer Purchases Product',
+    'Day 1, 2:35pm: Product Delivered with AI-generated assets',
+    'Day 1, 2:36pm: System Confirms Delivery',
+    "Day 30: Customer Files Chargeback - 'Never received product'",
+    'Merchant Defends: Graph Proves Complete Chain',
+    'Victory: Chargeback Reversed in 2 Minutes',
+  ];
+
+  const stepDescriptions = [
+    'Transaction receipt created: $89.50 payment processed through Stripe',
+    'Content receipt links to transaction: product images verified 87% human-created',
+    'Operations receipt links to both: delivery tracking confirms receipt',
+    'Without the receipt graph the merchant loses $89.50 plus a $15 dispute fee. With CertNode the team responds with cryptographic proof',
+    'Complete cryptographic chain: payment, product (verified authentic), and delivery confirmed. All three domains prove legitimacy',
+    'Merchant saved $104.50 (payment plus fee). Automated defense took two minutes instead of two weeks',
+  ];
+
+  const activeHeadline = animationStep > 0 ? stepHeadlines[animationStep - 1] : null;
+  const activeDescription = animationStep > 0 ? stepDescriptions[animationStep - 1] : null;
 
   const handleAnimate = () => {
     setIsAnimating(true);
@@ -50,10 +70,10 @@ export default function ReceiptGraph() {
       </h3>
       <p className="text-lg text-gray-600 mb-8 text-center max-w-3xl mx-auto">
         Watch a real-world e-commerce scenario: Customer purchases → Product delivered → Chargeback filed → Merchant wins with cryptographic proof.
-        Click "Play Animation" to see the complete story.
+        Click &quot;Play Animation&quot; to see the complete story.
       </p>
 
-      {/* Animation Step Labels - Shows what's happening during animation */}
+      {/* Animation Step Labels - Shows what&apos;s happening during animation */}
       <div className="h-24 mb-4">
         {isAnimating && animationStep > 0 && (
           <div className={`border-l-4 p-4 rounded-lg transition-all ${
@@ -61,22 +81,13 @@ export default function ReceiptGraph() {
             animationStep === 6 ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-500' :
             'bg-gradient-to-r from-blue-50 to-purple-50 border-blue-500'
           }`}>
-            <h4 className="font-bold text-gray-900 mb-1">
-              {animationStep === 1 && "📅 Day 1, 2:34pm: Customer Purchases Product"}
-              {animationStep === 2 && "📦 Day 1, 2:35pm: Product Delivered (AI-Generated Images)"}
-              {animationStep === 3 && "✅ Day 1, 2:36pm: System Confirms Delivery"}
-              {animationStep === 4 && "⚠️ Day 30: Customer Files Chargeback — 'Never received product'"}
-              {animationStep === 5 && "🛡️ Merchant Defends: Graph Proves Complete Chain"}
-              {animationStep === 6 && "🎉 Victory: Chargeback Reversed in 2 Minutes"}
-            </h4>
-            <p className="text-sm text-gray-700">
-              {animationStep === 1 && "Transaction receipt created: $89.50 payment processed through Stripe"}
-              {animationStep === 2 && "Content receipt links to transaction: Product images verified 87% human-created"}
-              {animationStep === 3 && "Operations receipt links to both: Delivery tracking confirms receipt"}
-              {animationStep === 4 && "WITHOUT receipt graph: Merchant loses $89.50 + $15 dispute fee. WITH CertNode: Fight back with proof"}
-              {animationStep === 5 && "Complete cryptographic chain: Payment → Product (verified authentic) → Delivery confirmed. All 3 domains prove legitimacy"}
-              {animationStep === 6 && "Merchant saved $104.50 (payment + fee). Automated defense took 2 minutes, not 2 weeks"}
-            </p>
+            {activeHeadline && (
+              <h4 className="font-bold text-gray-900 mb-1">{activeHeadline}</h4>
+            )}
+            {activeDescription && (
+              <p className="text-sm text-gray-700">{activeDescription}</p>
+            )}
+
           </div>
         )}
         {!isAnimating && hoveredNode && nodeInfo[hoveredNode] && (
@@ -308,7 +319,7 @@ export default function ReceiptGraph() {
         <div className="bg-green-50 border-l-4 border-green-500 p-6 rounded-lg">
           <h4 className="font-bold text-gray-900 mb-2">⏱️ Trusted Time-Stamping</h4>
           <p className="text-gray-700 leading-relaxed text-sm">
-            Global merkle roots published to Bitcoin blockchain every 10 minutes. Anyone can independently verify receipts without trusting CertNode. <strong>Court-admissible evidence</strong> that's cryptographically provable and legally recognized.
+            Global merkle roots published to Bitcoin blockchain every 10 minutes. Anyone can independently verify receipts without trusting CertNode. <strong>Court-admissible evidence</strong> that&apos;s cryptographically provable and legally recognized.
           </p>
         </div>
 

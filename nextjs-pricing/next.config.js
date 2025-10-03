@@ -36,14 +36,8 @@ const nextConfig = {
     ];
   },
 
-  // Health check API route
   async rewrites() {
-    return [
-      {
-        source: '/api/health',
-        destination: '/api/health',
-      },
-    ];
+    return [];
   },
 };
 

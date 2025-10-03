@@ -2,6 +2,7 @@
 
 ## Critical Deployment Info
 - The production homepage and marketing routes (`/`, `/platform`, `/pricing`, `/support`) are served by the Next.js app in `nextjs-pricing/`.
+- The root route is pinned via `vercel.json` `routes` to `/nextjs-pricing` so static `web/index.html` never supersedes the marketing app.
 - Dashboard surfaces (`/dashboard`, `/login`, `/register`) are served by the Next.js app in `certnode-dashboard/`.
 - Legacy static pages in `web/` remain available for specific trust and status URLs but should not be edited for homepage changes.
 - `vercel.json` owns the routing glue; review rewrites before every deployment.
@@ -41,3 +42,5 @@ certnode.io
 
 ## Troubleshooting
 - **`Attempted import error` during Vercel build**: confirms a renamed helper stopped exporting from shared libs. Run `npm --prefix certnode-dashboard run build` locally and align the imports/exports (e.g., `normalizePlanTier`, `comparePlanTiers`) before retrying the deploy.
+- **Homepage shows legacy static site**: ensure the `vercel.json` rewrites keep `/` pointing at `/nextjs-pricing` (host-aware rule stays last); redeploy after updating.
+- **`basePath can not be used with builds` or missing Next lambdas**: the dashboard app now shims its `/certnode-dashboard` prefix via Next.js rewrites instead of `basePath`, and marketing health checks ride the legacy Node API. Pull latest `certnode-dashboard/next.config.mjs` and drop duplicate `app/api/health` routes before redeploying.

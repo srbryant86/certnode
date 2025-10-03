@@ -521,6 +521,7 @@ export default function ROICalculator() {
           operationsInputs={operationsInputs}
           setOperationsInputs={setOperationsInputs}
           setSelectedPreset={setSelectedPreset}
+          selectedPreset={selectedPreset}
           results={results}
           formatCurrency={formatCurrency}
           formatNumber={formatNumber}
@@ -584,6 +585,7 @@ function DisputeCalculatorInputs({
   operationsInputs,
   setOperationsInputs,
   setSelectedPreset,
+  selectedPreset,
   results,
   formatCurrency,
   formatNumber,

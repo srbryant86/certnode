@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { SLA_UPTIME } from '@/lib/config';
 
 type Sender = 'agent' | 'user';
 
@@ -64,7 +65,7 @@ function buildSupportResponse(input: string): string {
     return `Receipts verify against the public JWKS published at trust.certnode.io.\nEach receipt carries a detached JWS so partners can verify offline without calling our API.\nRegulated deployments should follow the caching guidance in the trust center notes.`;
   }
   if (['incident', 'downtime', 'outage'].some(keyword => normalized.includes(keyword))) {
-    return `We run a 99.97 percent uptime SLA with redundant signing infrastructure and audit logging.\nVisit trust.certnode.io for live status, incident history, and security documentation.\nIf you believe you are seeing an outage, use the escalate button so the on call steward is paged.`;
+    return `We run a ${SLA_UPTIME} uptime SLA with redundant signing infrastructure and audit logging.\nVisit trust.certnode.io for live status, incident history, and security documentation.\nIf you believe you are seeing an outage, use the escalate button so the on call steward is paged.`;
   }
   return `Start with the platform docs at /platform for schema, signing, and verification details.\nGenerate an API key, sign the payload with ES256 or Ed25519, then POST to /api/receipts.\nSample payloads live in the /examples directory and the SDK repos so you can mirror our test vectors.`;
 }

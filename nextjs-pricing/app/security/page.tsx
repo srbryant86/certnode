@@ -1,10 +1,11 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import { SLA_UPTIME } from '@/lib/config';
 
 export const metadata: Metadata = {
   title: 'Security — CertNode',
-  description: 'CertNode security practices, data handling, cryptographic verification, and compliance certifications. Enterprise-grade infrastructure with 99.97% uptime.',
+  description: `CertNode security practices, data handling, cryptographic verification, and compliance certifications. Enterprise-grade infrastructure with ${SLA_UPTIME} uptime.`,
 };
 
 export default function SecurityPage() {
@@ -126,7 +127,7 @@ export default function SecurityPage() {
                 <ul className="space-y-2 text-gray-600">
                   <li className="flex items-start gap-2">
                     <span className="text-green-600 font-bold">✓</span>
-                    <span>99.97% uptime SLA</span>
+                    <span>{SLA_UPTIME} uptime SLA</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-green-600 font-bold">✓</span>

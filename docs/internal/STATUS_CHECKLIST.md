@@ -16,7 +16,7 @@ Quick reference for component delivery status and key files.
 | **Node SDK** | ✅ | `sdk/node/index.js`, `sdk/node/index.d.ts` | Zero-dependency verification |
 | **Web SDK** | ✅ | `sdk/web/index.js`, `sdk/web/index.d.ts` | Browser compatibility |
 | **CLI Tools** | ✅ | `tools/verify-receipt.js`, `tools/verify-lib.js` | Offline verification |
-| **Web Interface** | ✅ | `web/index.html`, `web/verify.html`, `web/js/verify.js`, `web/openapi.html`, `web/pitch.html` | User interfaces + home page |
+| **Web Interface** | OK | `nextjs-pricing/app/page.tsx`, `web/verify.html`, `web/js/verify.js`, `web/openapi.html`, `web/pitch.html` | User interfaces + home page |
 | **Build Scripts** | ✅ | `api/scripts/jwks-make-manifest.js`, `scripts/audit-tasks.js` | Automation tools |
 | **Timestamp Authority** | ✅ | `api/src/util/timestamp.js` | TSA integration ready |
 

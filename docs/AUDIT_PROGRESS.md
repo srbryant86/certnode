@@ -58,7 +58,7 @@ Current Priority (Next 48 hours)
 - Error model: standardize across all API routes; update OpenAPI examples and tests
 
 Recent Progress
-- Encoding normalization: public pages routed to clean UTF-8 web versions via `vercel.json`; added stub for `/public/verify.html`; normalized `/verify` title rendering (no copy changes)
+- Routing normalization: core marketing pages now serve from the `nextjs-pricing` Next.js app; legacy `/web` stubs remain only for trust/status routes
 
 Success Metrics
 - Security: priority‑1 items closed; 9.5+/10 across audits

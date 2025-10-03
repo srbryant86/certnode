@@ -1,7 +1,8 @@
+import { SLA_UPTIME } from '@/lib/config';
 export default function PlatformStats() {
   const stats = [
     { number: 'API-First', label: 'Platform Architecture' },
-    { number: '99.97%', label: 'Uptime SLA' },
+    { number: SLA_UPTIME, label: 'Uptime SLA' },
     { number: '3 Domains', label: 'Unified Platform' },
     { number: 'SOC 2', label: 'Readiness' },
     { number: 'SHA-256', label: 'Cryptographic Security' },

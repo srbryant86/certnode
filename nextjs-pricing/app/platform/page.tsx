@@ -6,6 +6,8 @@ import PlatformBenefits from '@/components/PlatformBenefits';
 import PlatformStats from '@/components/PlatformStats';
 import CompetitorComparison from '@/components/CompetitorComparison';
 
+import { SLA_UPTIME } from '@/lib/config';
+
 export const metadata: Metadata = {
   title: 'Platform — CertNode Cryptographic Receipt Infrastructure',
   description: 'Cryptographic verification infrastructure for transactions, content authenticity, and operational compliance. Cross-domain receipt graph with tamper-evident audit trails.',
@@ -213,7 +215,7 @@ export default function PlatformPage() {
                 </a>
               </div>
               <p className="text-blue-200 text-sm mt-6">
-                Enterprise-ready infrastructure • SOC 2 readiness • 99.97% uptime SLA
+                Enterprise-ready infrastructure • SOC 2 readiness • {SLA_UPTIME} uptime SLA
               </p>
             </div>
           </div>

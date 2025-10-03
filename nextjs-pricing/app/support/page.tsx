@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
 import TechnicalSupportAgent from '@/components/TechnicalSupportAgent';
+import { SLA_UPTIME } from '@/lib/config';
 
 export const metadata: Metadata = {
   title: 'Support - CertNode',
@@ -223,7 +224,7 @@ export default function SupportPage() {
                   Is CertNode SOC 2 compliant?
                 </h3>
                 <p className="text-gray-600">
-                  CertNode is built to help you achieve SOC 2 compliance through automated audit trail collection. Our infrastructure follows SOC 2 best practices with 99.97% uptime SLA and enterprise-grade security.
+                  CertNode is built to help you achieve SOC 2 compliance through automated audit trail collection. Our infrastructure follows SOC 2 best practices with {SLA_UPTIME} uptime SLA and enterprise-grade security.
                 </p>
               </div>
 

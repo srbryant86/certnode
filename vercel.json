@@ -4,77 +4,208 @@
     {
       "src": "certnode-dashboard/package.json",
       "use": "@vercel/next",
-      "config": { "distDir": ".next" }
+      "config": {
+        "distDir": ".next"
+      }
     },
     {
       "src": "nextjs-pricing/package.json",
       "use": "@vercel/next",
-      "config": { "distDir": ".next" }
+      "config": {
+        "distDir": ".next"
+      }
     },
-    { "src": "api/src/index.js", "use": "@vercel/node" },
-    { "src": "web/**", "use": "@vercel/static" },
-    { "src": "public/**", "use": "@vercel/static" }
+    {
+      "src": "api/src/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "web/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    }
   ],
   "headers": [
     {
       "source": "/",
       "headers": [
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https: https://api.stripe.com; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; frame-src https://js.stripe.com" }
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https: https://api.stripe.com; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; frame-src https://js.stripe.com"
+        }
       ]
     },
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https: https://api.stripe.com; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; frame-src https://js.stripe.com" }
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https: https://api.stripe.com; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; frame-src https://js.stripe.com"
+        }
       ]
     },
     {
       "source": "/.well-known/jwks.json",
       "headers": [
-        { "key": "Content-Type", "value": "application/jwk-set+json" },
-        { "key": "Cache-Control", "value": "public, max-age=300, immutable" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" }
+        {
+          "key": "Content-Type",
+          "value": "application/jwk-set+json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, immutable"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
       ]
     },
     {
       "source": "/openapi.json",
       "headers": [
-        { "key": "Content-Type", "value": "application/json" },
-        { "key": "Cache-Control", "value": "public, max-age=86400" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" }
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
       ]
     }
   ],
   "rewrites": [
-    { "source": "/_next/(.*)", "destination": "/certnode-dashboard/_next/$1" },
-    { "source": "/pricing/_next/(.*)", "destination": "/nextjs-pricing/_next/$1" },
-    { "source": "/nextjs-pricing/_next/(.*)", "destination": "/nextjs-pricing/_next/$1" },
-    { "source": "/openapi.html", "destination": "/public/openapi.html" },
-    { "source": "/openapi.json", "destination": "/public/openapi.json" },
-    { "source": "/.well-known/jwks.json", "destination": "/public/.well-known/jwks.json" },
-    { "source": "/trust/keys.jsonl", "destination": "/public/trust/keys.jsonl" },
-    { "source": "/api/checkout", "destination": "/nextjs-pricing/api/checkout" },
-    { "source": "/api/(.*)", "destination": "/api/src/index.js" },
-    { "source": "/pricing", "destination": "/nextjs-pricing/pricing" },
-    { "source": "/dashboard/(.*)", "destination": "/certnode-dashboard/dashboard/$1" },
-    { "source": "/dashboard", "destination": "/certnode-dashboard/dashboard" },
-    { "source": "/login", "destination": "/certnode-dashboard/login" },
-    { "source": "/register", "destination": "/certnode-dashboard/register" },
-    { "source": "/platform", "destination": "/nextjs-pricing/platform" },
-    { "source": "/solutions", "destination": "/web/solutions.html" },
-    { "source": "/support", "destination": "/nextjs-pricing/support" },
-    { "source": "/security", "destination": "/web/security.html" },
-    { "source": "/account", "destination": "/web/account.html" },
-    { "source": "/compliance-calculator", "destination": "/web/compliance-calculator.html" },
-    { "source": "/pitch", "destination": "/web/pitch.html" },
-    { "source": "/status", "destination": "/web/status.html" },
-    { "source": "/subscription-success", "destination": "/web/subscription-success.html" },
-    { "source": "/trust", "destination": "/web/trust.html" },
-    { "source": "/verify", "destination": "/web/verify.html" },
-    { "source": "/", "destination": "/web/index.html" }
+    {
+      "source": "/certnode-dashboard/_next/(.*)",
+      "destination": "/certnode-dashboard/_next/$1"
+    },
+    {
+      "source": "/nextjs-pricing/_next/(.*)",
+      "destination": "/nextjs-pricing/_next/$1"
+    },
+    {
+      "source": "/_next/(.*)",
+      "destination": "/nextjs-pricing/_next/$1"
+    },
+    {
+      "source": "/pricing/_next/(.*)",
+      "destination": "/nextjs-pricing/_next/$1"
+    },
+    {
+      "source": "/openapi.html",
+      "destination": "/public/openapi.html"
+    },
+    {
+      "source": "/openapi.json",
+      "destination": "/public/openapi.json"
+    },
+    {
+      "source": "/.well-known/jwks.json",
+      "destination": "/public/.well-known/jwks.json"
+    },
+    {
+      "source": "/trust/keys.jsonl",
+      "destination": "/public/trust/keys.jsonl"
+    },
+    {
+      "source": "/api/checkout",
+      "destination": "/nextjs-pricing/api/checkout"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/src/index.js"
+    },
+    {
+      "source": "/pricing",
+      "destination": "/nextjs-pricing/pricing"
+    },
+    {
+      "source": "/dashboard/(.*)",
+      "destination": "/certnode-dashboard/dashboard/$1"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/certnode-dashboard/dashboard"
+    },
+    {
+      "source": "/login",
+      "destination": "/certnode-dashboard/login"
+    },
+    {
+      "source": "/register",
+      "destination": "/certnode-dashboard/register"
+    },
+    {
+      "source": "/platform",
+      "destination": "/nextjs-pricing/platform"
+    },
+    {
+      "source": "/solutions",
+      "destination": "/web/solutions.html"
+    },
+    {
+      "source": "/support",
+      "destination": "/nextjs-pricing/support"
+    },
+    {
+      "source": "/security",
+      "destination": "/web/security.html"
+    },
+    {
+      "source": "/account",
+      "destination": "/web/account.html"
+    },
+    {
+      "source": "/compliance-calculator",
+      "destination": "/web/compliance-calculator.html"
+    },
+    {
+      "source": "/pitch",
+      "destination": "/web/pitch.html"
+    },
+    {
+      "source": "/status",
+      "destination": "/web/status.html"
+    },
+    {
+      "source": "/subscription-success",
+      "destination": "/web/subscription-success.html"
+    },
+    {
+      "source": "/trust",
+      "destination": "/web/trust.html"
+    },
+    {
+      "source": "/verify",
+      "destination": "/web/verify.html"
+    },
+    {
+      "source": "/",
+      "destination": "/nextjs-pricing"
+    }
   ]
 }

@@ -9,7 +9,7 @@ This document defines the initial public website IA, visual system, and approved
 
 ## Information Architecture (MVP)
 
-- Home (`index.html`)
+- Home (`nextjs-pricing/app/page.tsx`)
   - Hero: concise value prop and primary CTAs
   - How it works (3 steps)
   - Benefits (pillars)
@@ -85,12 +85,12 @@ Future (Later): Case studies, Pricing, Blog/Changelog, Security/Compliance page.
 ## Implementation Notes
 
 - Files:
-  - `web/index.html` (create): static home using existing CSS; no JS required beyond nav interactions.
-  - `web/assets/certnode.css` (reuse): add minimal home utilities if needed.
-  - Update `verify.html` to include site header/nav (no inline JS; keep a11y).
-  - Keep `openapi.html` separate; add CSP note if served in prod.
+  - `nextjs-pricing/app/page.tsx`: implements the marketing homepage.
+  - `nextjs-pricing/components/**`: shared hero/graph/navigation components.
+  - Legacy `web/` pages (`verify.html`, `openapi.html`, `pitch.html`) remain as fallbacks for trust/status links but should stay light.
+- Styling: reuse `nextjs-pricing/app/globals.css` and component-level styles; avoid reintroducing standalone CSS bundles except for legacy `web/` stubs.
 - CSP: maintain `script-src 'self'`; no inline. Avoid external fonts.
-- A11y: headings order, landmark roles, focus visible, aria‑busy where applicable.
+- A11y: headings order, landmark roles, focus visible, `aria-busy` where applicable.
 
 ## Success Criteria (MVP)
 
@@ -100,9 +100,11 @@ Future (Later): Case studies, Pricing, Blog/Changelog, Security/Compliance page.
 
 ## Next Steps (tracked)
 
-- w14 — Website home + nav integration
-  - Build `web/index.html` from this plan
-  - Add header/nav to `verify.html`
-  - Link to OpenAPI and GitHub
+- w14 - Website home + nav integration
+  - Keep `nextjs-pricing/app/page.tsx` aligned with this plan
+  - Mirror navigation into legacy `web/` fallbacks
+  - Link to OpenAPI, GitHub, and dashboard surfaces
   - Add minimal tests (link presence) if practical
+
+
 

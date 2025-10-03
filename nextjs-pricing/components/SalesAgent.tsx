@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 type MessageRole = 'agent' | 'user';
 
@@ -47,30 +47,50 @@ export default function SalesAgent() {
   }, [messages]);
 
   useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      // Initial greeting
-      setTimeout(() => {
-        addAgentMessage(
-          "👋 Hi! I'm the CertNode Sales Assistant. I'll help you find the perfect plan for your business.\n\nWhat type of business are you running?"
-        );
-        addAgentMessage(
-          "1️⃣ E-commerce / Retail\n2️⃣ SaaS / Software\n3️⃣ Content / Media Platform\n4️⃣ Logistics / Supply Chain\n5️⃣ Financial Services\n6️⃣ Other"
-        );
-      }, 500);
+    if (!isOpen || messages.length > 0) {
+      return;
     }
-  }, [isOpen]);
 
-  const addAgentMessage = (content: string) => {
+    const cleanupCallbacks: Array<() => void> = [];
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    const greetingLines = [
+      `Hi! I'm the CertNode sales assistant. I'll help you find the right plan for your business.\n\nWhat type of business are you running?`,
+      `1) E-commerce / Retail\n2) SaaS / Software\n3) Content / Media Platform\n4) Logistics / Supply Chain\n5) Financial Services\n6) Other`,
+    ];
+
+    greetingLines.forEach((line, index) => {
+      timers.push(
+        window.setTimeout(() => {
+          const cancel = addAgentMessage(line);
+          cleanupCallbacks.push(cancel);
+        }, 500 + index * 600)
+      );
+    });
+
+    return () => {
+      timers.forEach(timer => window.clearTimeout(timer));
+      cleanupCallbacks.forEach(cancel => cancel());
+    };
+  }, [isOpen, messages.length, addAgentMessage]);
+
+  const addAgentMessage = useCallback((content: string) => {
     setIsTyping(true);
-    setTimeout(() => {
-      setMessages(prev => [...prev, {
-        role: 'agent',
-        content,
-        timestamp: new Date()
-      }]);
+
+    const timer = window.setTimeout(() => {
+      setMessages(prev => [
+        ...prev,
+        {
+          role: 'agent',
+          content,
+          timestamp: new Date(),
+        },
+      ]);
       setIsTyping(false);
     }, 800);
-  };
+
+    return () => { window.clearTimeout(timer); setIsTyping(false); };
+  }, []);
 
   const addUserMessage = (content: string) => {
     setMessages(prev => [...prev, {
@@ -295,13 +315,15 @@ export default function SalesAgent() {
           setStage('complete');
 
           // Submit to API
+          const recommendation = getRecommendation(finalLeadData);
           fetch('/api/sales-lead', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               ...finalLeadData,
-              recommendedTier: getRecommendation(finalLeadData).tier,
-              recommendedPrice: getRecommendation(finalLeadData).price
+              recommendedTier: recommendation.tier,
+              recommendedPrice: recommendation.price,
+              receipts: recommendation.receipts
             })
           }).then(res => res.json())
             .then(data => console.log('Lead submitted:', data))

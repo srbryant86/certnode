@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
-import SalesAgent from '@/components/SalesAgent';
+import SupportAgent from '@/components/SupportAgent';
 
 export const metadata: Metadata = {
   title: 'Support - CertNode',
@@ -145,7 +145,7 @@ export default function SupportPage() {
             <p className="text-gray-600 text-base md:text-lg mb-10 text-center md:text-left">
               Ask integration, security, or pricing questions. The agent shares standards-aligned guidance and escalates to the CertNode team when a human needs to step in.
             </p>
-            <SalesAgent />
+            <SupportAgent />
           </div>
         </section>
 
@@ -332,7 +332,7 @@ export default function SupportPage() {
       <Footer />
 
       {/* AI Sales Agent */}
-      <SalesAgent />
+      <SupportAgent />
     </>
   );
 }

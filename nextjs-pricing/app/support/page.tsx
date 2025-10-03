@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import SalesAgent from '@/components/SalesAgent';
 
 export const metadata: Metadata = {
   title: 'Support — CertNode',
@@ -107,14 +108,14 @@ export default function SupportPage() {
                   How do cryptographic receipts work?
                 </h3>
                 <p className="text-gray-600">
-                  Each receipt contains a cryptographic hash of your transaction, content, or operation. This hash is signed and can be verified offline without trusting CertNode's servers. Receipts can link to each other, creating a verifiable chain of events.
+                  Each receipt contains a cryptographic hash of your transaction, content, or operation. This hash is signed and can be verified offline without trusting CertNode&apos;s servers. Receipts can link to each other, creating a verifiable chain of events.
                 </p>
               </div>
 
               {/* Question 3 */}
               <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  What's the difference between Core Trust and Platform Edition?
+                  What&apos;s the difference between Core Trust and Platform Edition?
                 </h3>
                 <p className="text-gray-600">
                   Core Trust plans are designed for individual businesses to protect their own operations. Platform Edition is for platforms and marketplaces that need to provide cryptographic verification as a service to their merchants or users.
@@ -127,7 +128,7 @@ export default function SupportPage() {
                   Do you offer a free trial?
                 </h3>
                 <p className="text-gray-600">
-                  We offer a 60-day money-back guarantee on all plans. If CertNode doesn't meet your needs, we'll refund your purchase in full.
+                  We offer a 60-day money-back guarantee on all plans. If CertNode doesn&apos;t meet your needs, we&apos;ll refund your purchase in full.
                 </p>
               </div>
 
@@ -187,7 +188,7 @@ export default function SupportPage() {
                   Platform Overview
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Learn how CertNode's cross-domain receipt graph connects transactions, content, and operations.
+                  Learn how CertNode&apos;s cross-domain receipt graph connects transactions, content, and operations.
                 </p>
                 <Link
                   href="/platform"
@@ -252,7 +253,7 @@ export default function SupportPage() {
               Still Have Questions?
             </h2>
             <p className="text-xl text-blue-100 mb-8">
-              We're here to help. Reach out and we'll get back to you quickly.
+              We&apos;re here to help. Reach out and we&apos;ll get back to you quickly.
             </p>
             <a
               href="mailto:contact@certnode.io"
@@ -265,6 +266,9 @@ export default function SupportPage() {
       </div>
 
       <Footer />
+
+      {/* AI Sales Agent */}
+      <SalesAgent />
     </>
   );
 }

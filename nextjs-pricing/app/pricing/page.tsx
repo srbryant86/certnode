@@ -18,6 +18,7 @@ import StickyCTABar from '@/components/StickyCTABar';
 import ExitIntentPopup from '@/components/ExitIntentPopup';
 import TrustBadges from '@/components/TrustBadges';
 import TierComparisonTable from '@/components/TierComparisonTable';
+import SalesAgent from '@/components/SalesAgent';
 
 // Import pricing data
 import pricingData from '../(data)/pricing.json';
@@ -172,7 +173,7 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* 3. Three Product Showcase - Show what's included after differentiation */}
+        {/* 3. Three Product Showcase - Show what&apos;s included after differentiation */}
         <ThreeProductShowcase />
 
         {/* 4. Pricing Tabs - THE ANCHOR: Show pricing after value is established */}
@@ -209,10 +210,10 @@ export default function PricingPage() {
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                See How Much You'll Save
+                See How Much You&apos;ll Save
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                That pricing you just saw? Here's why it <strong>pays for itself</strong> in weeks, not months.
+                That pricing you just saw? Here&apos;s why it <strong>pays for itself</strong> in weeks, not months.
               </p>
             </div>
             <ROICalculator />
@@ -269,6 +270,9 @@ export default function PricingPage() {
 
       {/* Exit Intent Popup - Shows on exit attempt */}
       <ExitIntentPopup />
+
+      {/* AI Sales Agent - Floating chat widget */}
+      <SalesAgent />
     </>
   );
 }

@@ -2,7 +2,7 @@ import { addDays } from "date-fns";
 import { EnterpriseTier } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getDashboardOverview } from "@/lib/dashboard";
-import { formatBillingCycle, normalizeEnterpriseTier } from "@/lib/billing";
+import { formatBillingCycle, normalizePlanTier } from "@/lib/billing";
 import { getTierMetaByPlan, listTierMetas, type TierMeta } from "@/lib/pricing";
 import type { Invoice, PlanOption, SubscriptionData } from "@/types";
 import type { DashboardMetrics } from "@/types/dashboard";
@@ -111,7 +111,7 @@ export async function getSubscriptionData(
     options.overview ??
     (await getDashboardOverview(enterpriseId));
 
-  const normalizedTier = normalizeEnterpriseTier(enterprise.billingTier);
+  const normalizedTier = normalizePlanTier(enterprise.billingTier);
   const tierMeta = getTierMetaByPlan(normalizedTier);
 
   const availableTierMetas = listTierMetas().filter((meta) => meta.planTier !== null);
@@ -218,5 +218,9 @@ export function getTierOrder(): readonly EnterpriseTier[] {
   return tierOrder;
 }
 export function compareEnterpriseTiers(a: EnterpriseTier, b: EnterpriseTier): number {
+  return compareTiers(a, b);
+}
+
+export function comparePlanTiers(a: EnterpriseTier, b: EnterpriseTier): number {
   return compareTiers(a, b);
 }

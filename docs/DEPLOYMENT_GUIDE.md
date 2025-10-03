@@ -38,3 +38,6 @@ certnode.io
 - [ ] `npm --prefix api run lint`
 - [ ] Confirm legacy `web/` pages still resolve (trust, status, verify)
 - [ ] Update `BILLION_DOLLAR_BLUEPRINT.md` with deployment notes
+
+## Troubleshooting
+- **`Attempted import error` during Vercel build**: confirms a renamed helper stopped exporting from shared libs. Run `npm --prefix certnode-dashboard run build` locally and align the imports/exports (e.g., `normalizePlanTier`, `comparePlanTiers`) before retrying the deploy.

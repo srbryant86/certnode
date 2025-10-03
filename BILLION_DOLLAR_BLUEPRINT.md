@@ -27,6 +27,7 @@
 ## Execution Notes
 - Updated RECEIPT_GRAPH_QUICK_WINS.md with baseline cleanup, SLA alignment, and Phase 1 quick win guidance.
 - Rerouted production marketing routes to `nextjs-pricing`, updated Vercel rewrites, and aligned docs so deploys no longer fall back to legacy `/web` pages.
+- Restored certnode-dashboard deployability by aligning billing helper exports with normalizePlanTier/comparePlanTiers and validating Next.js builds locally.
 - Refreshed certnode.io landing experience with enterprise-grade storytelling, domain pillars, and Integration Event Ledger messaging.
 - Ported Kajabi and Stripe adapters onto the Integration Event Ledger so HMAC-verified webhooks now write receipts through the Next.js graph service.
 - Registered the Shopify adapter on the integration gateway, wiring ledger + orchestrator updates end-to-end.
@@ -60,6 +61,7 @@
 - [ ] Render cross-domain edges with relationship labels in the interactive demo
 - [ ] Expose graph query/pattern examples that map to Phase 1 enterprise use cases
 - [x] Stand up integration event index and idempotency flow so platform webhooks resolve to single receipts
+- [x] Resolve Vercel deployment failure on latest commit and restore green deploys
 - [ ] Extend provider adapters (Kajabi, Stripe, Shippo, ShipStation, Teachable, WooCommerce) to the new ledger pipeline with provider-specific HMAC + telemetry hooks
 
 

@@ -145,7 +145,7 @@ export default function SupportPage() {
             <p className="text-gray-600 text-base md:text-lg mb-10 text-center md:text-left">
               Ask integration, security, or pricing questions. The agent shares standards-aligned guidance and escalates to the CertNode team when a human needs to step in.
             </p>
-            <SupportAgent />
+            <SalesAgent />
           </div>
         </section>
 

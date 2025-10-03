@@ -1,12 +1,18 @@
 # Billion Dollar Blueprint - Phase 1
 
 ## Roadmap Rollup
-- [x] Completed item - Activated the AI support steward on /support with escalation-ready email handoff
-- [ ] CURRENT PRIORITY - Monitor agent conversations and tune escalation signal quality for Phase 1 prospects
-- [ ] Next item - Capture agent transcripts inside analytics for human handoff reporting
+- [x] Completed item - Published AGENTS.md to codify canonical integration workflow and enforcement guardrails
+- [ ] CURRENT PRIORITY - Design canonical integration event normalization and routing so DAG linking stays standards-first
+- [ ] Next item - Implement provider adapters with idempotent mapping, HMAC verification, and telemetry hooks
 
 ## Strategic Insights
+- Homepage now positions CertNode as the universal receipt protocol, reinforcing standards ownership across developer and executive audiences.
+- Canonical Shopify ingestion now lands in the Integration Event Ledger, deduping webhooks before receipts write to the DAG service.
+- Operationalizing AGENTS.md forces every session to uphold the standards-first integration ledger before code changes land.
+- Turnkey connectors must ride on a canonical integration event ledger so partner ecosystems adopt the CertNode spec instead of bespoke webhook glue.
+- Automatic receipt linking demands an indexed external identifier map; without it, concurrent webhooks will generate orphaned nodes and erode the dispute-defense story.
 
+- Receipt graph UI still behaves like a sequential builder, so prospects never see the cross-domain DAG moat we promised; publishing the gap keeps Phase 1 focused on proving standards ownership.
 - Standing up the support steward shows CertNode owns the protocol guidance loop while preserving human escalation authority.
 - Launching the dedicated dashboard workspace locks Phase 1 around standards ownership with a Prisma schema that mirrors the protocol data model.
 - API key lifecycle governance with single-use secrets and audit trails positions CertNode as the protocol security authority.
@@ -19,7 +25,12 @@
 - Re-establishing the Tailwind/PostCSS pipeline ensures the premium pricing experience ships with the intended visual polish across every deploy.
 
 ## Execution Notes
+- Refreshed certnode.io landing experience with enterprise-grade storytelling, domain pillars, and Integration Event Ledger messaging.
+- Ported Kajabi and Stripe adapters onto the Integration Event Ledger so HMAC-verified webhooks now write receipts through the Next.js graph service.
+- Registered the Shopify adapter on the integration gateway, wiring ledger + orchestrator updates end-to-end.
+- Authored AGENTS.md to align all agents with the canonical integration ledger, graph service authority, and mandatory documentation cadence.
 
+- Reviewed "ReceiptGraphMultiMode.tsx" and documented why the current visualization stops at linear chains instead of the cryptographically linked DAG across transaction, content, and operations domains.
 - Launched the /support AI steward with a curated knowledge base and contextual mailto escalation so support and sales teams get structured transcripts.
 - Hardened the authentication perimeter with NextAuth v5, Argon2id hashing, and App Router guards so only verified enterprises reach Phase 1 surfaces.
 - Brought the overview telemetry online with Prisma aggregation, API surface, and seeded audit/receipt data to showcase the enterprise heartbeat.
@@ -39,3 +50,20 @@
 - Navigation component now mirrors the core site links, reinforcing unified developer journeys across static and Next.js surfaces.
 - Mobile navigation interaction matches the static site experience with outside-click dismissal and overlay for consistent polish.
 - Desktop navigation typography and spacing now match the static site, maintaining brand consistency across every route.
+
+## Session TODOs
+- [ ] Rebuild receipt graph data model with explicit parent/child relationship storage
+- [ ] Render cross-domain edges with relationship labels in the interactive demo
+- [ ] Expose graph query/pattern examples that map to Phase 1 enterprise use cases
+- [x] Stand up integration event index and idempotency flow so platform webhooks resolve to single receipts
+- [ ] Extend provider adapters (Kajabi, Stripe, Shippo, ShipStation, Teachable, WooCommerce) to the new ledger pipeline with provider-specific HMAC + telemetry hooks
+
+
+
+
+
+
+
+
+
+

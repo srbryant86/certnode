@@ -14,38 +14,38 @@ enum ReceiptType {
 }
 
 enum VerificationStatus {
-  PENDING   @map("pending")
-  VERIFIED  @map("verified")
-  FAILED    @map("failed")
+  PENDING  @map("pending")
+  VERIFIED @map("verified")
+  FAILED   @map("failed")
 }
 
 enum EnterpriseTier {
-  FREE        @map("free")
-  STARTER     @map("starter")
-  PRO         @map("pro")
-  ENTERPRISE  @map("enterprise")
+  FREE       @map("free")
+  STARTER    @map("starter")
+  PRO        @map("pro")
+  ENTERPRISE @map("enterprise")
 }
 
 enum IndustryCategory {
-  ECOMMERCE   @map("ecommerce")
-  SAAS        @map("saas")
-  CONTENT     @map("content")
-  SERVICES    @map("services")
-  LOGISTICS   @map("logistics")
-  FINANCE     @map("finance")
-  HEALTHCARE  @map("healthcare")
-  OTHER       @map("other")
-  MULTIPLE    @map("multiple")
+  ECOMMERCE  @map("ecommerce")
+  SAAS       @map("saas")
+  CONTENT    @map("content")
+  SERVICES   @map("services")
+  LOGISTICS  @map("logistics")
+  FINANCE    @map("finance")
+  HEALTHCARE @map("healthcare")
+  OTHER      @map("other")
+  MULTIPLE   @map("multiple")
 }
 
 enum UserRole {
-  ADMIN       @map("admin")
-  USER        @map("user")
+  ADMIN @map("admin")
+  USER  @map("user")
 }
 
 enum KeyStatus {
-  ACTIVE      @map("active")
-  REVOKED     @map("revoked")
+  ACTIVE  @map("active")
+  REVOKED @map("revoked")
 }
 
 enum RelationType {
@@ -56,195 +56,237 @@ enum RelationType {
   AMENDS      @map("amends")
 }
 
+enum IntegrationEventStatus {
+  RECEIVED  @map("received")
+  PROCESSED @map("processed")
+  FAILED    @map("failed")
+  REPLAYED  @map("replayed")
+}
+
 model Receipt {
-  id                   String             @id @default(cuid())
-  enterpriseId         String             @map("enterprise_id")
-  transactionId        String             @map("transaction_id")
-  transactionData      Json               @map("transaction_data")
-  cryptographicProof   Json               @map("cryptographic_proof")
-  verificationStatus   VerificationStatus @default(VERIFIED) @map("verification_status")
+  id                 String             @id @default(cuid())
+  enterpriseId       String             @map("enterprise_id")
+  transactionId      String             @map("transaction_id")
+  transactionData    Json               @map("transaction_data")
+  cryptographicProof Json               @map("cryptographic_proof")
+  verificationStatus VerificationStatus @default(VERIFIED) @map("verification_status")
 
   // Type discriminator
-  type                 ReceiptType        @default(TRANSACTION)
+  type ReceiptType @default(TRANSACTION)
 
   // Content-specific fields
-  contentHash          String?            @map("content_hash")
-  contentType          String?            @map("content_type")
-  contentMetadata      Json?              @map("content_metadata")
-  contentProvenance    Json?              @map("content_provenance")
-  contentAiScores      Json?              @map("content_ai_scores")
+  contentHash       String? @map("content_hash")
+  contentType       String? @map("content_type")
+  contentMetadata   Json?   @map("content_metadata")
+  contentProvenance Json?   @map("content_provenance")
+  contentAiScores   Json?   @map("content_ai_scores")
 
   // Operational trust fields (for future use)
-  subtype              String?            // incident|build_release|report_hash|policy_change
-  subject              String?            // URN/URL of attested object
-  claims               Json?              // Type-specific claims payload
-  version              String?            @default("1.0")
+  subtype String? // incident|build_release|report_hash|policy_change
+  subject String? // URN/URL of attested object
+  claims  Json? // Type-specific claims payload
+  version String? @default("1.0")
 
   // Standard fields
-  currency             String?
-  createdAt            DateTime           @default(now()) @map("created_at")
+  currency  String?
+  createdAt DateTime @default(now()) @map("created_at")
 
   // Receipt Graph fields
-  graphDepth           Int                @default(0) @map("graph_depth")
-  graphHash            String?            @map("graph_hash")
+  graphDepth Int     @default(0) @map("graph_depth")
+  graphHash  String? @map("graph_hash")
 
   // Relations
-  enterprise           Enterprise?        @relation(fields: [enterpriseId], references: [id])
-  apiKey               ApiKey?            @relation(fields: [apiKeyId], references: [id])
-  apiKeyId             String?            @map("api_key_id")
+  enterprise Enterprise? @relation(fields: [enterpriseId], references: [id])
+  apiKey     ApiKey?     @relation(fields: [apiKeyId], references: [id])
+  apiKeyId   String?     @map("api_key_id")
 
   // Graph relationships
-  parentRelationships  ReceiptRelationship[] @relation("ParentReceipt")
-  childRelationships   ReceiptRelationship[] @relation("ChildReceipt")
+  parentRelationships ReceiptRelationship[] @relation("ParentReceipt")
+  childRelationships  ReceiptRelationship[] @relation("ChildReceipt")
 
-  @@map("receipts")
   @@index([enterpriseId, type])
   @@index([contentHash])
   @@index([type, subtype])
   @@index([apiKeyId])
   @@index([graphDepth])
+  @@map("receipts")
 }
 
 model Enterprise {
-  id                   String             @id @default(cuid())
-  name                 String
-  domain               String?
-  tier                 EnterpriseTier     @default(FREE)
-  billingTier          EnterpriseTier     @default(FREE) @map("billing_tier")
-  industry             IndustryCategory?  // Optional: for UX personalization only
-  settings             String             @default("{}")
-  createdAt            DateTime           @default(now()) @map("created_at")
-  updatedAt            DateTime           @updatedAt @map("updated_at")
+  id          String            @id @default(cuid())
+  name        String
+  domain      String?
+  tier        EnterpriseTier    @default(FREE)
+  billingTier EnterpriseTier    @default(FREE) @map("billing_tier")
+  industry    IndustryCategory? // Optional: for UX personalization only
+  settings    String            @default("{}")
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
 
   // Relations
-  receipts             Receipt[]
-  apiKeys              ApiKey[]
-  users                User[]
-  auditLogs            AuditLog[]
-  webhooks             Webhook[]
+  receipts               Receipt[]
+  apiKeys                ApiKey[]
+  users                  User[]
+  auditLogs              AuditLog[]
+  webhooks               Webhook[]
+  IntegrationEventLedger IntegrationEventLedger[]
 
   @@map("enterprises")
 }
 
 model ApiKey {
-  id                   String             @id @default(cuid())
-  name                 String
-  keyHash              String             @map("key_hash")
-  keyPreview           String             @map("key_preview")
-  enterpriseId         String             @map("enterprise_id")
-  userId               String             @map("user_id")
-  status               KeyStatus          @default(ACTIVE)
-  rateLimit            Int                @default(1000) @map("rate_limit")
-  rateLimitWindow      String             @default("1h") @map("rate_limit_window")
-  permissions          String             @default("[]")
-  ipRestrictions       String             @default("[]") @map("ip_restrictions")
-  lastUsed             DateTime?          @map("last_used")
-  expiresAt            DateTime?          @map("expires_at")
-  createdAt            DateTime           @default(now()) @map("created_at")
+  id              String    @id @default(cuid())
+  name            String
+  keyHash         String    @map("key_hash")
+  keyPreview      String    @map("key_preview")
+  enterpriseId    String    @map("enterprise_id")
+  userId          String    @map("user_id")
+  status          KeyStatus @default(ACTIVE)
+  rateLimit       Int       @default(1000) @map("rate_limit")
+  rateLimitWindow String    @default("1h") @map("rate_limit_window")
+  permissions     String    @default("[]")
+  ipRestrictions  String    @default("[]") @map("ip_restrictions")
+  lastUsed        DateTime? @map("last_used")
+  expiresAt       DateTime? @map("expires_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
 
   // Relations
-  enterprise           Enterprise         @relation(fields: [enterpriseId], references: [id])
-  user                 User               @relation(fields: [userId], references: [id])
-  receipts             Receipt[]
+  enterprise Enterprise @relation(fields: [enterpriseId], references: [id])
+  user       User       @relation(fields: [userId], references: [id])
+  receipts   Receipt[]
 
-  @@map("api_keys")
   @@index([enterpriseId])
   @@index([userId])
+  @@map("api_keys")
 }
 
 model User {
-  id                   String             @id @default(cuid())
-  email                String             @unique
-  name                 String
-  role                 UserRole           @default(USER)
-  enterpriseId         String             @map("enterprise_id")
-  passwordHash         String             @map("password_hash")
-  createdAt            DateTime           @default(now()) @map("created_at")
-  updatedAt            DateTime           @updatedAt @map("updated_at")
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  role         UserRole @default(USER)
+  enterpriseId String   @map("enterprise_id")
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
   // Relations
-  enterprise           Enterprise         @relation(fields: [enterpriseId], references: [id])
-  apiKeys              ApiKey[]
-  auditLogs            AuditLog[]
+  enterprise Enterprise @relation(fields: [enterpriseId], references: [id])
+  apiKeys    ApiKey[]
+  auditLogs  AuditLog[]
 
-  @@map("users")
   @@index([enterpriseId])
+  @@map("users")
+}
+
+model IntegrationEventLedger {
+  id            String                 @id @default(cuid())
+  enterpriseId  String                 @map("enterprise_id")
+  enterprise    Enterprise             @relation(fields: [enterpriseId], references: [id])
+  provider      String
+  providerEvent String                 @map("provider_event")
+  externalId    String                 @map("external_id")
+  payload       Json
+  checksum      String
+  status        IntegrationEventStatus @default(RECEIVED) @map("status")
+  receiptRefs   Json?                  @map("receipt_refs")
+  error         String?
+  retries       Int                    @default(0)
+  createdAt     DateTime               @default(now()) @map("created_at")
+  updatedAt     DateTime               @updatedAt @map("updated_at")
+
+  @@unique([enterpriseId, provider, externalId, checksum])
+  @@index([enterpriseId, provider])
+  @@index([provider, externalId])
+}
+
+model IntegrationEventIndex {
+  id           String   @id @default(cuid())
+  enterpriseId String   @map("enterprise_id")
+  provider     String
+  externalId   String   @map("external_id")
+  receiptId    String   @map("receipt_id")
+  lastEventId  String   @map("last_event_id")
+  lastSeenAt   DateTime @default(now()) @map("last_seen_at")
+
+  @@unique([enterpriseId, provider, externalId])
+  @@index([receiptId])
 }
 
 model AuditLog {
-  id                   String             @id @default(cuid())
-  enterpriseId         String             @map("enterprise_id")
-  userId               String             @map("user_id")
-  action               String
-  resourceType         String             @map("resource_type")
-  resourceId           String             @map("resource_id")
-  details              String             @default("{}")
-  createdAt            DateTime           @default(now()) @map("created_at")
+  id           String   @id @default(cuid())
+  enterpriseId String   @map("enterprise_id")
+  userId       String   @map("user_id")
+  action       String
+  resourceType String   @map("resource_type")
+  resourceId   String   @map("resource_id")
+  details      String   @default("{}")
+  createdAt    DateTime @default(now()) @map("created_at")
 
   // Relations
-  enterprise           Enterprise         @relation(fields: [enterpriseId], references: [id])
-  user                 User               @relation(fields: [userId], references: [id])
+  enterprise Enterprise @relation(fields: [enterpriseId], references: [id])
+  user       User       @relation(fields: [userId], references: [id])
 
-  @@map("audit_logs")
   @@index([enterpriseId])
   @@index([userId])
   @@index([resourceType, resourceId])
+  @@map("audit_logs")
 }
 
 model ValidationRecord {
-  id                   String             @id @default(cuid())
-  requestId            String             @map("request_id")
-  endpoint             String
-  enterpriseId         String?            @map("enterprise_id")
-  results              Json
-  processingTime       Int                @map("processing_time")
-  success              Boolean
-  criticalFailures     Int                @map("critical_failures")
-  highFailures         Int                @map("high_failures")
-  timestamp            DateTime           @default(now())
+  id               String   @id @default(cuid())
+  requestId        String   @map("request_id")
+  endpoint         String
+  enterpriseId     String?  @map("enterprise_id")
+  results          Json
+  processingTime   Int      @map("processing_time")
+  success          Boolean
+  criticalFailures Int      @map("critical_failures")
+  highFailures     Int      @map("high_failures")
+  timestamp        DateTime @default(now())
 
-  @@map("validation_records")
   @@index([timestamp])
   @@index([enterpriseId])
   @@index([endpoint])
   @@index([success])
+  @@map("validation_records")
 }
 
 model ValidationAlert {
-  id                   String             @id @default(cuid())
-  type                 String
-  severity             String
-  message              String
-  details              Json
-  timestamp            DateTime           @default(now())
-  acknowledged         Boolean            @default(false)
-  acknowledgedBy       String?            @map("acknowledged_by")
-  acknowledgedAt       DateTime?          @map("acknowledged_at")
-  resolvedAt           DateTime?          @map("resolved_at")
+  id             String    @id @default(cuid())
+  type           String
+  severity       String
+  message        String
+  details        Json
+  timestamp      DateTime  @default(now())
+  acknowledged   Boolean   @default(false)
+  acknowledgedBy String?   @map("acknowledged_by")
+  acknowledgedAt DateTime? @map("acknowledged_at")
+  resolvedAt     DateTime? @map("resolved_at")
 
-  @@map("validation_alerts")
   @@index([timestamp])
   @@index([acknowledged])
   @@index([type])
   @@index([severity])
+  @@map("validation_alerts")
 }
 
 model Webhook {
-  id           String   @id @default(cuid())
-  enterpriseId String   @map("enterprise_id")
+  id           String     @id @default(cuid())
+  enterpriseId String     @map("enterprise_id")
   enterprise   Enterprise @relation(fields: [enterpriseId], references: [id], onDelete: Cascade)
 
-  url          String   // Webhook URL to call
-  secret       String   // HMAC secret for signatures
-  events       Json     // Events to subscribe to: receipt.created, fraud.detected, etc.
-  enabled      Boolean  @default(true)
+  url     String // Webhook URL to call
+  secret  String // HMAC secret for signatures
+  events  Json // Events to subscribe to: receipt.created, fraud.detected, etc.
+  enabled Boolean @default(true)
 
-  description  String?  // Optional description
+  description String? // Optional description
 
-  deliveries   WebhookDelivery[]
+  deliveries WebhookDelivery[]
 
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@index([enterpriseId])
   @@index([enabled])
@@ -252,22 +294,22 @@ model Webhook {
 }
 
 model WebhookDelivery {
-  id           String   @id @default(cuid())
-  webhookId    String   @map("webhook_id")
-  webhook      Webhook  @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+  id        String  @id @default(cuid())
+  webhookId String  @map("webhook_id")
+  webhook   Webhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
 
-  event        String   // Event type that triggered this
-  payload      Json     // The webhook payload sent
+  event   String // Event type that triggered this
+  payload Json // The webhook payload sent
 
-  success      Boolean  // Was delivery successful?
-  statusCode   Int?     @map("status_code") // HTTP status code
-  responseBody String?  @map("response_body") // Response from webhook URL
-  error        String?  // Error message if failed
+  success      Boolean // Was delivery successful?
+  statusCode   Int?    @map("status_code") // HTTP status code
+  responseBody String? @map("response_body") // Response from webhook URL
+  error        String? // Error message if failed
 
-  attemptNumber Int     @map("attempt_number") // Retry attempt number (1-3)
+  attemptNumber Int      @map("attempt_number") // Retry attempt number (1-3)
   deliveredAt   DateTime @map("delivered_at")
 
-  createdAt    DateTime @default(now()) @map("created_at")
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@index([webhookId])
   @@index([event])
@@ -277,22 +319,22 @@ model WebhookDelivery {
 }
 
 model ReceiptRelationship {
-  id                   String             @id @default(cuid())
-  parentReceiptId      String             @map("parent_receipt_id")
-  childReceiptId       String             @map("child_receipt_id")
-  relationType         RelationType       @map("relation_type")
-  description          String?
-  metadata             Json?
-  createdBy            String?            @map("created_by")
-  createdAt            DateTime           @default(now()) @map("created_at")
+  id              String       @id @default(cuid())
+  parentReceiptId String       @map("parent_receipt_id")
+  childReceiptId  String       @map("child_receipt_id")
+  relationType    RelationType @map("relation_type")
+  description     String?
+  metadata        Json?
+  createdBy       String?      @map("created_by")
+  createdAt       DateTime     @default(now()) @map("created_at")
 
   // Relations
-  parentReceipt        Receipt            @relation("ParentReceipt", fields: [parentReceiptId], references: [id], onDelete: Cascade)
-  childReceipt         Receipt            @relation("ChildReceipt", fields: [childReceiptId], references: [id], onDelete: Cascade)
+  parentReceipt Receipt @relation("ParentReceipt", fields: [parentReceiptId], references: [id], onDelete: Cascade)
+  childReceipt  Receipt @relation("ChildReceipt", fields: [childReceiptId], references: [id], onDelete: Cascade)
 
-  @@map("receipt_relationships")
+  @@unique([parentReceiptId, childReceiptId])
   @@index([parentReceiptId])
   @@index([childReceiptId])
   @@index([relationType])
-  @@unique([parentReceiptId, childReceiptId])
+  @@map("receipt_relationships")
 }

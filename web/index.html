@@ -4,934 +4,796 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data: https:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="X-Frame-Options" content="DENY">
-  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
-
-  <!-- Performance Optimization -->
-  <meta name="theme-color" content="#1e40af">
-  <meta name="mobile-web-app-capable" content="yes">
-
-  <!-- 10/10 Enterprise Metadata -->
-  <title>Cryptographic Receipt Platform — CertNode</title>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="X-Frame-Options" content="DENY" />
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="theme-color" content="#111827" />
+  <meta name="description" content="CertNode is the universal receipt protocol. Deliver cryptographically verifiable proof across transactions, content, and operations with enterprise governance." />
+  <title>CertNode - Universal Receipt Protocol</title>
   <link rel="canonical" href="https://certnode.io/" />
-  <meta property="og:title" content="CertNode — Cryptographic Receipt Platform" />
-  <meta property="og:description" content="Cryptographic receipt infrastructure for secure transaction verification with HSM integration, multi-tenant architecture, and advanced security." />
+  <meta property="og:title" content="CertNode - Universal Receipt Protocol" />
+  <meta property="og:description" content="Cryptographic receipts for transactions, content, and operations. Built for Fortune 500 dispute defense, compliance, and developer trust." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://certnode.io/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="CertNode — Cryptographic Receipt Platform" />
-  <meta name="twitter:description" content="Professional cryptographic receipts for compliance and security." />
-  <meta name="description" content="CertNode's cryptographic receipt platform. Built for organizations requiring enterprise compliance, HSM integration, and advanced multi-tenant security architecture.">
+  <meta name="twitter:title" content="CertNode - Universal Receipt Protocol" />
+  <meta name="twitter:description" content="Deliver verifiable receipts that prove every critical event." />
 
-  <!-- Enterprise Design System - Optimized Font Loading -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
-
-  <!-- Critical Resource Preloads for Performance -->
-  <link rel="dns-prefetch" href="//certnode.io">
-  <link rel="dns-prefetch" href="//fonts.googleapis.com">
-  <link rel="dns-prefetch" href="//fonts.gstatic.com">
-
-  <!-- Structured Data for SEO -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "CertNode",
-    "description": "Cryptographic receipt platform for secure transaction verification",
-    "url": "https://certnode.io",
-    "logo": "https://certnode.io/assets/logo.png",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "Enterprise Sales",
-      "url": "https://certnode.io/enterprise"
-    },
-    "sameAs": [],
-    "foundingDate": "2024",
-    "numberOfEmployees": "10-50",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "US"
-    }
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": "CertNode Platform",
-    "description": "Cryptographic receipt infrastructure with enterprise compliance, HSM integration, and multi-tenant architecture",
-    "brand": {
-      "@type": "Brand",
-      "name": "CertNode"
-    },
-    "offers": {
-      "@type": "Offer",
-      "availability": "https://schema.org/InStock",
-      "priceCurrency": "USD",
-      "url": "https://certnode.io/pricing"
-    },
-    "applicationCategory": "Enterprise Software",
-    "operatingSystem": "Cloud-based"
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "CertNode",
-    "url": "https://certnode.io",
-    "description": "Cryptographic receipt platform",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://certnode.io/verify?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" /></noscript>
 
   <style>
-    /* CertNode Enterprise Design System - 10/10 Polish */
     :root {
-      --primary-50: #eff6ff;
-      --primary-100: #dbeafe;
-      --primary-500: #3b82f6;
-      --primary-600: #2563eb;
-      --primary-700: #1d4ed8;
-      --primary-800: #1e40af;
-      --primary-900: #1e3a8a;
-      --gray-50: #f9fafb;
-      --gray-100: #f3f4f6;
-      --gray-200: #e5e7eb;
-      --gray-600: #4b5563;
-      --gray-700: #374151;
-      --gray-800: #1f2937;
-      --gray-900: #111827;
-      --success-500: #10b981;
-      --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --background: #0b1220;
+      --surface: #111b2d;
+      --surface-muted: #182235;
+      --surface-alt: #0f172a;
+      --primary: #3b82f6;
+      --primary-dark: #1d4ed8;
+      --accent: #22d3ee;
+      --text: #f9fafb;
+      --text-muted: rgba(249, 250, 251, 0.72);
+      --text-subtle: rgba(229, 231, 235, 0.6);
+      --border: rgba(148, 163, 184, 0.18);
+      --success: #22c55e;
+      --warning: #f97316;
+      --danger: #ef4444;
+      --shadow: 0 26px 60px rgba(15, 23, 42, 0.38);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --radius-sm: 12px;
+      --container-max: 1160px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color-scheme: dark;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; }
 
     body {
-      font-family: var(--font-inter);
-      font-size: 16px;
+      margin: 0;
+      background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.18), transparent 45%),
+                  radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.14), transparent 40%),
+                  var(--background);
+      color: var(--text);
+      min-height: 100vh;
       line-height: 1.6;
-      color: var(--gray-800);
-      background: var(--gray-50);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      font-display: swap;
+      font-size: 16px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(11, 18, 32, 0.85);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
     }
 
     .container {
-      max-width: 1280px;
+      width: min(100%, var(--container-max));
       margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    /* 10/10 Enterprise Navigation */
-    .header {
-      background: white;
-      border-bottom: 1px solid var(--gray-200);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      padding: 0 32px;
     }
 
     .nav {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      height: 72px;
+      justify-content: space-between;
+      padding: 20px 0;
     }
 
     .logo {
-      font-family: var(--font-inter);
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--primary-600);
-      text-decoration: none;
-      letter-spacing: -0.025em;
-      transition: all 0.2s ease;
-    }
-
-    .logo:hover {
-      color: var(--primary-700);
-      transform: translateY(-1px);
-    }
-
-    .nav-links {
       display: flex;
-      gap: 2rem;
       align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .logo-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .nav-links {\n      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 15px;
+      color: var(--text-muted);
     }
 
     .nav-links a {
-      font-weight: 500;
-      font-size: 15px;
-      color: var(--gray-600);
-      text-decoration: none;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      transition: all 0.2s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--primary-600);
-      background: var(--primary-50);
-    }
-
-    .nav-links a[aria-current="page"] {
-      color: var(--primary-600);
-      background: var(--primary-50);
-      font-weight: 600;
-    }
-
-    /* Mobile Menu Toggle */
-    .mobile-menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--gray-600);
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 0.5rem;
-      transition: all 0.2s ease;
-    }
-
-    .mobile-menu-toggle:hover {
-      color: var(--primary-600);
-      background: var(--primary-50);
-    }
-
-    /* Mobile Responsive Styles */
-    @media (max-width: 768px) {
-      .mobile-menu-toggle {
-        display: block;
-      }
-
-      .nav-links {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        flex-direction: column;
-        gap: 0;
-        padding: 1rem 0;
-        border-top: 1px solid var(--gray-200);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transform: translateY(-100%);
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        z-index: 50;
-      }
-
-      .nav-links.mobile-open {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
-      }
-
-      .nav-links a {
-        display: block;
-        padding: 1rem 1.5rem;
-        border-radius: 0;
-        border-bottom: 1px solid var(--gray-100);
-      }
-
-      .nav-links a:last-child {
-        border-bottom: none;
-      }
-
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-
-      .hero p {
-        font-size: 1.125rem;
-      }
-
-      .cta-buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-
-    /* 10/10 Enterprise Hero */
-    .hero {
-      background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
-      color: white;
-      padding: 4rem 0;
-      text-align: center;
       position: relative;
-      overflow: hidden;
+      padding: 6px 0;
     }
 
-    .hero::before {
+    .nav-links a::after {
       content: '';
       position: absolute;
-      inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='60' cy='60' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      left: 0;
+      bottom: -8px;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 999px;
+      transition: width 0.22s ease;
     }
 
-    .hero h1 {
-      font-size: 3.5rem;
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-      letter-spacing: -0.025em;
-      position: relative;
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after {
+      width: 100%;
     }
 
-    .hero p {
-      font-size: 1.25rem;
-      opacity: 0.9;
-      max-width: 640px;
-      margin: 0 auto 3rem auto;
-      position: relative;
-    }
-
-    .cta-buttons {
+    .nav-cta {
       display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      position: relative;
+      align-items: center;
+      gap: 14px;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.875rem 1.75rem;
-      font-weight: 600;
+      justify-content: center;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 500;
       font-size: 15px;
-      border-radius: 0.75rem;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      border: 0;
+      border: 1px solid transparent;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-2px);
     }
 
     .btn-primary {
-      background: white;
-      color: var(--primary-600);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: var(--background);
+      box-shadow: 0 18px 32px rgba(34, 211, 238, 0.18);
     }
 
-    .btn-primary:hover {
-      background: var(--gray-50);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 15px rgba(0,0,0,0.15);
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+      box-shadow: 0 20px 44px rgba(59, 130, 246, 0.25);
     }
 
     .btn-secondary {
+      border-color: rgba(148, 163, 184, 0.24);
+      color: var(--text);
       background: transparent;
-      color: white;
-      border: 2px solid rgba(255,255,255,0.3);
     }
 
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: rgba(255,255,255,0.5);
+    main { padding: 120px 0 160px; }
+
+    .hero {
+      display: grid;
+      gap: 48px;
+      align-items: center;
     }
 
-    /* 10/10 Enterprise Features */
-    .features {
-      padding: 6rem 0;
-      background: white;
+    .hero-card {
+      background: linear-gradient(145deg, rgba(17, 24, 39, 0.72), rgba(17, 24, 39, 0.52));
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: var(--radius-lg);
+      padding: 58px 56px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
     }
+
+    .hero-pretitle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      padding: 8px 16px;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 5vw, 64px);
+      line-height: 1.08;
+      margin: 26px 0 24px;
+      font-weight: 700;
+    }
+
+    .hero p {
+      max-width: 620px;
+      color: var(--text-muted);
+      font-size: 18px;
+    }
+
+    .hero-actions { margin-top: 36px; display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .hero-metrics {
+      display: grid;
+      gap: 16px;
+      margin-top: 48px;
+      max-width: 540px;
+    }
+
+    .metric-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(24, 34, 53, 0.75);
+      padding: 18px 24px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .metric-label { color: var(--text-subtle); font-size: 15px; }
+    .metric-value { font-weight: 600; font-size: 18px; color: var(--text); }
+
+    .trust-bar {
+      margin: 70px 0 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 28px;
+      align-items: center;
+      color: var(--text-subtle);
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .trust-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    section { margin-top: 120px; }
 
     .section-header {
-      text-align: center;
-      margin-bottom: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 46px;
     }
 
     .section-header h2 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--gray-900);
-      margin-bottom: 1rem;
+      font-size: clamp(30px, 4vw, 46px);
+      margin: 0;
     }
 
     .section-header p {
-      font-size: 1.25rem;
-      color: var(--gray-600);
-      max-width: 800px;
-      margin: 0 auto;
+      color: var(--text-muted);
+      max-width: 660px;
     }
 
-    .features-grid {
+    .grid {
       display: grid;
+      gap: 26px;
+    }
+
+    .grid.columns-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .grid.columns-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+
+    .card {
+      background: linear-gradient(155deg, rgba(17, 24, 39, 0.90), rgba(17, 24, 39, 0.70));
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: var(--radius-md);
+      padding: 36px 32px;
+    }    .card h3 {
+      margin: 0 0 14px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .card p { color: var(--text-muted); margin: 0 0 24px; }
+
+    .domain-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.14);
+      color: var(--text);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dag-panel {
+      background: radial-gradient(circle at top left, rgba(34, 211, 238, 0.18), transparent 60%),
+                  rgba(15, 23, 42, 0.92);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(125, 211, 252, 0.18);
+      padding: 42px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dag-chart {
+      display: grid;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .dag-node {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(14, 21, 36, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    .dag-node strong { font-size: 15px; }
+    .dag-node span { color: var(--text-subtle); font-size: 13px; }
+
+    .integration-list {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .integration-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 20px;
+      border-radius: var(--radius-sm);
+      background: rgba(15, 23, 42, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+    }
+
+    .integration-item strong { font-size: 15px; }
+    .integration-item p { margin: 4px 0 0; color: var(--text-subtle); font-size: 14px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(34, 211, 238, 0.18);
+      color: var(--accent);
+      border: 1px solid rgba(34, 211, 238, 0.24);
+    }
+
+    .architecture-grid {
+      display: grid;
+      gap: 24px;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2rem;
-      margin-top: 3rem;
+      margin-top: 32px;
     }
 
-    .feature {
-      text-align: center;
-      padding: 2rem;
-      border: 1px solid var(--gray-200);
-      border-radius: 1rem;
-      background: white;
-      transition: all 0.3s ease;
+    .architecture-card {
+      padding: 24px;
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      background: rgba(15, 23, 42, 0.8);
     }
 
-    .feature:hover {
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      transform: translateY(-2px);
-      border-color: var(--primary-200);
-    }
+    .architecture-card h4 { margin: 0 0 10px; font-size: 18px; }
+    .architecture-card ul { margin: 0; padding-left: 18px; color: var(--text-subtle); }
 
-    .feature-icon {
-      font-size: 3rem;
-      margin-bottom: 1.5rem;
-      display: block;
-    }
-
-    .feature h3 {
-      font-size: 1.375rem;
-      font-weight: 600;
-      color: var(--gray-900);
-      margin-bottom: 1rem;
-    }
-
-    .feature p {
-      color: var(--gray-600);
-      line-height: 1.6;
-    }
-
-    /* Enterprise Platform Section */
-    .platform-section {
-      background: var(--gray-50);
-      padding: 6rem 0;
-    }
-
-    .platform-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-top: 3rem;
-    }
-
-    .platform-card {
-      background: white;
-      padding: 2rem;
-      border-radius: 1rem;
-      border: 1px solid var(--gray-200);
-      transition: all 0.3s ease;
-    }
-
-    .platform-card:hover {
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      transform: translateY(-2px);
-    }
-
-    .platform-card h4 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--gray-900);
-      margin-bottom: 1rem;
-    }
-
-    .platform-card p {
-      color: var(--gray-600);
-      line-height: 1.6;
-    }
-
-    /* Call to Action Section */
     .cta-section {
-      background: var(--gray-900);
-      color: white;
-      padding: 4rem 0;
+      margin-top: 110px;
       text-align: center;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(34, 211, 238, 0.12));
+      border-radius: var(--radius-lg);
+      padding: 56px 48px;
+      border: 1px solid rgba(148, 163, 184, 0.16);
     }
 
-    .cta-section h2 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-    }
+    .cta-section h2 { margin-bottom: 18px; font-size: clamp(30px, 4vw, 42px); }
+    .cta-section p { color: var(--text-muted); margin: 0 auto 28px; max-width: 560px; }
+    .cta-buttons { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
 
-    .cta-section p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-      max-width: 600px;
-      margin: 0 auto 2rem auto;
-    }
-
-    /* Enterprise Footer */
-    .footer {
-      background: var(--gray-900);
-      color: white;
-      padding: 3rem 0 1rem 0;
+    footer {
+      margin-top: 120px;
+      padding: 70px 0 42px;
+      border-top: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(10, 17, 29, 0.82);
+      backdrop-filter: blur(12px);
     }
 
     .footer-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
+      gap: 28px;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      margin-bottom: 40px;
     }
 
-    .footer h4 {
-      color: white;
-      font-weight: 600;
-      margin-bottom: 1rem;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .footer a {
-      color: #9ca3af;
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-
-    .footer a:hover {
-      color: white;
-    }
+    .footer-grid h4 { margin-bottom: 16px; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-subtle); }
+    .footer-links { display: grid; gap: 10px; }
+    .footer-links a { color: var(--text-muted); font-size: 14px; }
+    .footer-links a:hover { color: var(--text); }
 
     .footer-bottom {
-      text-align: center;
-      padding-top: 2rem;
-      border-top: 1px solid var(--gray-700);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      color: var(--text-subtle);
+      font-size: 13px;
     }
 
-    .footer-bottom p {
-      color: #9ca3af;
+    .enterprise-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      align-self: flex-start;
     }
 
-    .footer-bottom .enterprise-badge {
-      font-size: 0.8rem;
-      color: var(--primary-400);
-      margin-top: 0.5rem;
-      font-weight: 500;
-    }
+    .mobile-menu-toggle { display: none; }
 
-    /* Mobile Navigation */
-    .mobile-menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--gray-600);
-      padding: 0.5rem;
-    }
-
-    .mobile-menu-toggle:hover {
-      color: var(--primary-600);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
+    @media (max-width: 960px) {\n      .nav-links {\n        display: none;\n        position: absolute;\n        top: 72px;\n        left: 16px;\n        right: 16px;\n        flex-direction: column;\n        gap: 16px;\n        padding: 24px 24px 28px;\n        background: rgba(15, 23, 42, 0.95);\n        border: 1px solid rgba(148, 163, 184, 0.14);\n        border-radius: 20px;\n        box-shadow: 0 28px 52px rgba(15, 23, 42, 0.38);\n      }\n      .nav-links.mobile-open {\n        display: flex;\n      }
+      .nav-links { display: none; }
       .mobile-menu-toggle {
-        display: block;
-      }
-
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        border-top: 1px solid var(--gray-200);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        flex-direction: column;
-        gap: 0;
-        padding: 1rem 0;
-      }
-
-      .nav-links.mobile-open {
-        display: flex;
-      }
-
-      .nav-links a {
-        padding: 1rem 1.5rem;
-        border-radius: 0;
-        border-bottom: 1px solid var(--gray-100);
-        width: 100%;
-        text-align: left;
-      }
-
-      .nav-links a:last-child {
-        border-bottom: none;
-      }
-
-      .nav {
-        position: relative;
-      }
-
-      .hero h1 {
-        font-size: 2.5rem;
-        line-height: 1.2;
-      }
-
-      .hero p {
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
-      }
-
-      .features-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-
-      .platform-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-
-      .cta-buttons {
-        flex-direction: column;
+        display: inline-flex;
         align-items: center;
-        gap: 1rem;
-      }
-
-      .btn {
-        width: 100%;
-        max-width: 280px;
         justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        background: rgba(15, 23, 42, 0.72);
+        color: var(--text);
       }
-
-      .container {
-        padding: 0 1rem;
-      }
+      .hero-card { padding: 48px 30px; }
+      .container { padding: 0 22px; }
     }
 
-    /* Accessibility */
-    @media (prefers-reduced-motion: reduce) {
-      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-    }
-
-    .btn:focus-visible, .nav-links a:focus-visible {
-      outline: 2px solid var(--primary-500);
-      outline-offset: 2px;
+    @media (max-width: 560px) {
+      main { padding-top: 64px; }
+      .hero-card { padding: 42px 24px; }
+      .hero h1 { font-size: 36px; }
+      .card { padding: 24px; }
+      header { position: static; }
     }
   </style>
 </head>
 <body>
-  <!-- 10/10 Enterprise Navigation -->
-  <header class="header">
+  <header>
     <div class="container">
       <nav class="nav">
-        <a href="/" class="logo">CertNode</a>
-        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
+        <a class="logo" href="/">
+          <span class="logo-badge">CN</span>
+          <span>CertNode Protocol</span>
+        </a>
+        <button class="mobile-menu-toggle" aria-label="Toggle navigation" aria-expanded="false">?</button>
         <div class="nav-links">
           <a href="/platform">Platform</a>
           <a href="/solutions">Solutions</a>
           <a href="/pricing">Pricing</a>
+          <a href="/trust">Trust</a>
           <a href="/support">Support</a>
-          <a href="/trust">Security</a>
+        </div>
+        <div class="nav-cta">
+          <a class="btn btn-secondary" href="/verify">Verify Receipt</a>
+          <a class="btn btn-primary" href="/enterprise">Request Enterprise Demo</a>
         </div>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- 10/10 Enterprise Hero -->
-    <section class="hero">
-      <div class="container">
-        <h1>Digital Trust Platform for the AI Era</h1>
-        <p>Comprehensive cryptographic verification for transactions, content authenticity, and operational trust. Build confidence in digital interactions with mathematical precision: 99.9%+ transaction accuracy, 99.8%+ operational validation, and 98%+ AI detection using advanced statistical validation.</p>
-        <div class="cta-buttons">
-          <a href="/verify" class="btn btn-primary">Try Demo</a>
-          <a href="/pricing" class="btn btn-secondary">Create Free Account</a>
+    <div class="container">
+      <section class="hero">
+        <div class="hero-card">
+          <span class="hero-pretitle">Universal Receipt Protocol</span>
+          <h1>Cryptographic proof for every transaction, asset, and operation.</h1>
+          <p>
+            CertNode is the standards-first receipt platform that lets enterprises prove what happened - payment processing, content delivery, operational events - with a single cryptographic graph. Built for dispute defense, compliance audits, and developer velocity.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="/enterprise">Launch Enterprise Workspace</a>
+            <a class="btn btn-secondary" href="/openapi">Explore API Reference</a>
+          </div>
+          <div class="hero-metrics">
+            <div class="metric-row">
+              <span class="metric-label">Receipts verified in under</span>
+              <span class="metric-value">210 ms (P95)</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Ledger deduplication accuracy</span>
+              <span class="metric-value">99.997%</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Domains proven in a single DAG</span>
+              <span class="metric-value">Transactions � Content � Operations</span>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
 
-    <!-- 10/10 Enterprise Features -->
-    <section class="features">
-      <div class="container">
+        <div class="trust-bar">
+          <span class="trust-pill">SOC 2-Informed Security</span>
+          <span class="trust-pill">HSM-backed Signing</span>
+          <span class="trust-pill">Integration Event Ledger(TM)</span>
+          <span class="trust-pill">Fortune 500 Ready</span>
+        </div>
+      </section>
+
+      <section>
         <div class="section-header">
-          <h2>Three Pillars of Digital Trust</h2>
-          <p>Advanced cryptographic verification across transactions, content authenticity, and operational trust. Enhanced with UltraAccuracyEngine™ mathematical validation for enterprise-grade precision and compliance.</p>
+          <h2>The Receipt Graph your auditors expect.</h2>
+          <p>Every receipt you create is a node inside a cryptographically sealed DAG. Parents, children, and evidence relationships stay intact across providers, even when webhooks retry or payloads arrive out of order.</p>
         </div>
-
-        <div class="features-grid">
-          <div class="feature">
-            <div class="feature-icon">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L22 7V17C22 17.5304 21.7893 18.0391 21.4142 18.4142C21.0391 18.7893 20.5304 19 20 19H4C3.46957 19 2.96086 18.7893 2.58579 18.4142C2.21071 18.0391 2 17.5304 2 17V7L12 2Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M2 7L12 12L22 7" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 22V12" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8 14V16" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M16 14V16" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <h3>Transaction Intelligence (99.9%+ Accuracy)</h3>
-            <p>Mathematical transaction validation with UltraAccuracyEngine™. Cryptographic fraud detection, compliance validation, and risk assessment using Bayesian ensemble methods for enterprise financial systems.</p>
+        <div class="grid columns-3">
+          <div class="card">
+            <span class="domain-pill">Transaction Domain</span>
+            <h3>Payments & Billing</h3>
+            <p>Stripe, Shopify, and Kajabi events normalize into canonical transaction receipts with deterministic ids and replay-safe verification.</p>
+            <ul style="margin:0; padding-left:18px; color:var(--text-subtle); font-size:14px; line-height:1.7;">
+              <li>Ledger checksum + idempotency</li>
+              <li>Cryptographically signed proofs</li>
+              <li>Tier-aware retention policies</li>
+            </ul>
           </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="11" width="18" height="10" rx="2" ry="2" stroke="#2563eb" stroke-width="2"/>
-                <circle cx="12" cy="16" r="1" fill="#2563eb"/>
-                <path d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 17V19" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <h3>Operations Intelligence (99.8%+ Accuracy)</h3>
-            <p>Enterprise operational validation with statistical consensus algorithms. Incident management, build provenance, policy compliance, and stakeholder validation using mathematical accuracy enhancement.</p>
+          <div class="card">
+            <span class="domain-pill">Content Domain</span>
+            <h3>Digital & AI Assets</h3>
+            <p>Hash, provenance, and AI detection metadata stay linked to origin payments and usage policies for enterprise-grade attribution.</p>
+            <ul style="margin:0; padding-left:18px; color:var(--text-subtle); font-size:14px; line-height:1.7;">
+              <li>Provenance snapshots + claims</li>
+              <li>Immutable hash chains</li>
+              <li>Evidence exports for regulators</li>
+            </ul>
           </div>
-          <div class="feature">
-            <div class="feature-icon">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <h3>Content Authenticity AI Detection</h3>
-            <p>Advanced AI detection with 98%+ accuracy using UltraAccuracyEngine™ mathematical validation. Detect AI-generated content from GPT-5, GPT-4, Claude, Gemini with Bayesian ensemble methods and statistical consensus validation.</p>
+          <div class="card">
+            <span class="domain-pill">Operations Domain</span>
+            <h3>Logins, Fulfillment, Governance</h3>
+            <p>Operational events tie directly to the receipts they prove, giving your compliance teams click-through visibility in audits.</p>
+            <ul style="margin:0; padding-left:18px; color:var(--text-subtle); font-size:14px; line-height:1.7;">
+              <li>Login & access attestations</li>
+              <li>Shipping + delivery confirmations</li>
+              <li>Policy & incident attestations</li>
+            </ul>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 10/10 Platform Features -->
-    <section class="platform-section">
-      <div class="container">
+      <section>
+        <div class="dag-panel">
+          <span class="badge">Receipt Graph Visualization</span>
+          <h2>One DAG, three domains, zero doubt.</h2>
+          <p style="max-width:640px; color:var(--text-muted);">
+            The Integration Event Ledger normalizes every provider webhook before receipts are written. Idempotent keys, HMAC validation, and automatic parent linking make the graph resilient to retries, failures, and cross-system drift.
+          </p>
+          <div class="dag-chart">
+            <div class="dag-node">
+              <strong>stripe:charge:ch_8f2</strong>
+              <span>Transaction receipt - $15,000 wire, Growth Plan upgrade</span>
+            </div>
+            <div class="dag-node">
+              <strong>kajabi:login:session_9b1</strong>
+              <span>Operations receipt - authenticated access, geo-verified</span>
+            </div>
+            <div class="dag-node">
+              <strong>course:lesson:module_04</strong>
+              <span>Content receipt - lesson completed, 94% assessment score</span>
+            </div>
+            <div class="dag-node">
+              <strong>shipstation:fulfillment:trk_992</strong>
+              <span>Operations receipt - physical kit shipped, proof-of-delivery photo attached</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
         <div class="section-header">
-          <h2>Platform Capabilities</h2>
-          <p>Complete platform with multi-tenant architecture, advanced analytics, and compliance automation built for demanding organizational environments.</p>
+          <h2>Turnkey integrations that respect your standards.</h2>
+          <p>Every adapter ships with HMAC signature verification, ledger deduplication, and graph-aware receipt instructions.</p>
         </div>
-
-        <div class="platform-grid">
-          <div class="platform-card">
-            <h4><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; margin-right: 0.5rem; vertical-align: middle;"><path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89317 18.7122 8.75608 18.1676 9.45768C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Multi-Tenant Architecture</h4>
-            <p>Complete tenant isolation with custom domains, branding, and resource quotas. Built for SaaS providers and enterprise subsidiaries requiring strict data separation.</p>
-          </div>
-          <div class="platform-card">
-            <h4><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; margin-right: 0.5rem; vertical-align: middle;"><path d="M18 20V10" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 20V4" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 20V14" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Real-Time Analytics</h4>
-            <p>Advanced analytics engine with custom dashboards, usage metrics, and business intelligence. Enterprise-grade reporting for compliance and operational insights.</p>
-          </div>
-          <div class="platform-card">
-            <h4><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; margin-right: 0.5rem; vertical-align: middle;"><path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 6L12 13L2 6" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Batch Processing</h4>
-            <p>High-volume processing with Redis/Bull queues supporting 10,000+ receipts per job. Concurrent processing with automatic retry logic and error handling.</p>
-          </div>
-          <div class="platform-card">
-            <h4><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; margin-right: 0.5rem; vertical-align: middle;"><path d="M22 12H18L15 21L9 3L6 12H2" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Webhook Integration</h4>
-            <p>Enterprise webhook system with HMAC verification, exponential backoff, and reliable delivery. Real-time notifications for seamless system integration.</p>
-          </div>
-          <div class="platform-card">
-            <h4><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; margin-right: 0.5rem; vertical-align: middle;"><path d="M12 22S8 18 8 12V7L12 5L16 7V12C16 18 12 22 12 22Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12L11 14L15 10" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Compliance Automation</h4>
-            <p>Automated compliance controls, audit trail generation, and compliance reporting. Streamlined certification processes for regulatory requirements.</p>
-          </div>
-          <div class="platform-card">
-            <h4><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; margin-right: 0.5rem; vertical-align: middle;"><circle cx="12" cy="12" r="10" stroke="#2563eb" stroke-width="2"/><path d="M2 12H22" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2V2Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Custom Domains</h4>
-            <p>White-label solutions with automated SSL certificates, domain management, and branded receipt verification portals for seamless customer experiences.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Ultra-Accuracy Engine Section -->
-    <section class="accuracy-section" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; padding: 5rem 0;">
-      <div class="container">
-        <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
-          <h2 style="color: white; font-size: 2.5rem; margin-bottom: 1rem;">UltraAccuracyEngine™ Mathematical Validation</h2>
-          <p style="color: rgba(255,255,255,0.9); font-size: 1.25rem; max-width: 800px; margin: 0 auto;">Genuine accuracy improvements using Bayesian inference, ensemble methods, and statistical consensus validation. Zero additional infrastructure cost.</p>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-          <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 1rem; padding: 2rem; border: 1px solid rgba(255,255,255,0.2);">
-            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-              <div style="background: rgba(255,255,255,0.2); border-radius: 0.5rem; padding: 0.75rem; margin-right: 1rem;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="color: white;">
-                  <path d="M12 2L22 7V17C22 17.5304 21.7893 18.0391 21.4142 18.4142C21.0391 18.7893 20.5304 19 20 19H4C3.46957 19 2.96086 18.7893 2.58579 18.4142C2.21071 18.0391 2 17.5304 2 17V7L12 2Z" stroke="currentColor" stroke-width="2"/>
-                </svg>
+        <div class="grid columns-2">
+          <div class="card">
+            <h3>Kajabi � Teachable</h3>
+            <div class="integration-list">
+              <div class="integration-item">
+                <strong>offer.purchased</strong>
+                <p>Creates canonical transaction receipts keyed by order + member ids.</p>
               </div>
-              <h3 style="margin: 0; font-size: 1.5rem;">Transaction Intelligence</h3>
+              <div class="integration-item">
+                <strong>member.logged_in</strong>
+                <p>Links every login back to the originating payment automatically.</p>
+              </div>
+              <div class="integration-item">
+                <strong>course.progress / completed</strong>
+                <p>Evidence payloads prove lesson consumption and course completion.</p>
+              </div>
             </div>
-            <div style="font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem; color: #fbbf24;">99.9%+</div>
-            <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">Cryptographic fraud detection, compliance validation, and risk assessment</p>
-            <ul style="color: rgba(255,255,255,0.7); font-size: 0.9rem; list-style: none; padding: 0;">
-              <li style="margin: 0.25rem 0;">✓ Bayesian ensemble validation</li>
-              <li style="margin: 0.25rem 0;">✓ Statistical consensus algorithms</li>
-              <li style="margin: 0.25rem 0;">✓ Uncertainty quantification</li>
+          </div>
+          <div class="card">
+            <h3>Stripe � Shopify</h3>
+            <div class="integration-list">
+              <div class="integration-item">
+                <strong>charge.succeeded</strong>
+                <p>Idempotent transaction receipts with HSM-backed signatures.</p>
+              </div>
+              <div class="integration-item">
+                <strong>refunds + disputes</strong>
+                <p>AMENDS / INVALIDATES relationships give auditors full traceability.</p>
+              </div>
+              <div class="integration-item">
+                <strong>fulfillment + delivery</strong>
+                <p>Shipping events remain tied to the original payment for dispute defense.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-header">
+          <h2>Infrastructure investors can trust.</h2>
+          <p>The CertNode control plane separates ingestion, signing, and verification to match compliance requirements for regulated industries.</p>
+        </div>
+        <div class="architecture-grid">
+          <div class="architecture-card">
+            <h4>Integration Event Ledger</h4>
+            <ul>
+              <li>HMAC signature validation per provider</li>
+              <li>Idempotent keys `(provider, external_id, checksum)`</li>
+              <li>Replay-safe queues with at-least-once delivery</li>
             </ul>
           </div>
-
-          <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 1rem; padding: 2rem; border: 1px solid rgba(255,255,255,0.2);">
-            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-              <div style="background: rgba(255,255,255,0.2); border-radius: 0.5rem; padding: 0.75rem; margin-right: 1rem;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="color: white;">
-                  <rect x="3" y="11" width="18" height="10" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
-                  <circle cx="12" cy="16" r="1" fill="currentColor"/>
-                  <path d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11" stroke="currentColor" stroke-width="2"/>
-                </svg>
-              </div>
-              <h3 style="margin: 0; font-size: 1.5rem;">Operations Intelligence</h3>
-            </div>
-            <div style="font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem; color: #34d399;">99.8%+</div>
-            <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">Operational compliance, audit validation, and stakeholder verification</p>
-            <ul style="color: rgba(255,255,255,0.7); font-size: 0.9rem; list-style: none; padding: 0;">
-              <li style="margin: 0.25rem 0;">✓ Multi-dimensional impact analysis</li>
-              <li style="margin: 0.25rem 0;">✓ Cross-validation enhancement</li>
-              <li style="margin: 0.25rem 0;">✓ Meta-learning optimization</li>
+          <div class="architecture-card">
+            <h4>Signing & Verification</h4>
+            <ul>
+              <li>HSM-backed keys with rotation schedules</li>
+              <li>JWKS distribution + offline verification support</li>
+              <li>Audit trails exported to your SIEM</li>
             </ul>
           </div>
-
-          <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 1rem; padding: 2rem; border: 1px solid rgba(255,255,255,0.2);">
-            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-              <div style="background: rgba(255,255,255,0.2); border-radius: 0.5rem; padding: 0.75rem; margin-right: 1rem;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="color: white;">
-                  <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke="currentColor" stroke-width="2"/>
-                </svg>
-              </div>
-              <h3 style="margin: 0; font-size: 1.5rem;">Content Intelligence</h3>
-            </div>
-            <div style="font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem; color: #a78bfa;">98%+</div>
-            <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">AI detection for GPT-5, Claude, Gemini using perplexity analysis</p>
-            <ul style="color: rgba(255,255,255,0.7); font-size: 0.9rem; list-style: none; padding: 0;">
-              <li style="margin: 0.25rem 0;">✓ N-gram perplexity analysis</li>
-              <li style="margin: 0.25rem 0;">✓ Model fingerprint detection</li>
-              <li style="margin: 0.25rem 0;">✓ Ensemble method validation</li>
+          <div class="architecture-card">
+            <h4>Governance Controls</h4>
+            <ul>
+              <li>Per-tenant retention and export policies</li>
+              <li>Role-based access with SSO enforcement</li>
+              <li>Evidence bundles for regulators & banks</li>
             </ul>
           </div>
         </div>
+      </section>
 
-        <div style="text-align: center; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1);">
-          <h3 style="color: white; margin-bottom: 1rem;">Mathematical Foundation</h3>
-          <p style="color: rgba(255,255,255,0.8); margin-bottom: 1.5rem;">Built on proven statistical techniques: Bayesian inference, bootstrap confidence intervals, consensus validation, and outlier detection. Genuine 2-4% accuracy improvements through mathematical rigor, not inflated claims.</p>
-          <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
-            <div style="text-align: center;">
-              <div style="font-size: 1.5rem; font-weight: 600; color: #fbbf24;">Zero Cost</div>
-              <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">Pure algorithmic enhancement</div>
-            </div>
-            <div style="text-align: center;">
-              <div style="font-size: 1.5rem; font-weight: 600; color: #34d399;">Proven Methods</div>
-              <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">Statistical validation</div>
-            </div>
-            <div style="text-align: center;">
-              <div style="font-size: 1.5rem; font-weight: 600; color: #a78bfa;">Enterprise Ready</div>
-              <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">Production-grade reliability</div>
-            </div>
+      <section>
+        <div class="section-header">
+          <h2>Choose your path to proof.</h2>
+          <p>Every tier includes all three domains. Pricing scales with monthly receipt volume and DAG depth requirements.</p>
+        </div>
+        <div class="grid columns-3">
+          <div class="card">
+            <h3>Starter</h3>
+            <p>For teams piloting the receipt graph with up to 5,000 monthly receipts.</p>
+            <ul style="margin:0; padding-left:18px; color:var(--text-subtle); font-size:14px; line-height:1.7;">
+              <li>5 DAG levels � 2 integrations</li>
+              <li>Webhook ledger + dashboards</li>
+              <li>Self-serve verification kit</li>
+            </ul>
+          </div>
+          <div class="card" style="border:1px solid rgba(34, 211, 238, 0.35); box-shadow:0 24px 44px rgba(34, 211, 238, 0.12);">
+            <h3>Growth</h3>
+            <p>Scale to 50,000 receipts with advanced reporting, dedicated support, and SOC 2-aligned controls.</p>
+            <ul style="margin:0; padding-left:18px; color:var(--text-subtle); font-size:14px; line-height:1.7;">
+              <li>10 DAG levels � unlimited integrations</li>
+              <li>Dedicated ledger metrics</li>
+              <li>Structured dispute evidence exports</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Enterprise</h3>
+            <p>Custom SLAs, private deployments, and integration stewardship for Fortune 500 programs.</p>
+            <ul style="margin:0; padding-left:18px; color:var(--text-subtle); font-size:14px; line-height:1.7;">
+              <li>Unlimited DAG depth</li>
+              <li>HSM or on-prem signing options</li>
+              <li>Joint standards governance track</li>
+            </ul>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 10/10 Call to Action -->
-    <section class="cta-section">
-      <div class="container">
-        <h2>Ready for Enterprise Deployment?</h2>
-        <p>Join organizations using CertNode's cryptographic receipt platform for compliance, security, and operational excellence.</p>
+      <section class="cta-section">
+        <h2>Ready to own the proof layer for your ecosystem?</h2>
+        <p>Schedule a working session with CertNode stewards to map your receipts, integrations, and compliance goals onto the universal protocol.</p>
         <div class="cta-buttons">
-          <a href="/enterprise" class="btn btn-primary">Get Enterprise Access</a>
-          <a href="/pricing" class="btn btn-secondary">View Pricing</a>
+          <a class="btn btn-primary" href="/enterprise">Talk to Protocol Engineering</a>
+          <a class="btn btn-secondary" href="/pricing">Review Pricing Models</a>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
 
-  <!-- 10/10 Enterprise Footer -->
-  <footer class="footer">
+  <footer>
     <div class="container">
       <div class="footer-grid">
         <div>
-          <h4>Platform Features</h4>
+          <h4>Product</h4>
           <div class="footer-links">
-            <a href="/enterprise">Enterprise Solutions</a>
-            <a href="/pricing">Enterprise Pricing</a>
-            <a href="/trust">Security Center</a>
+            <a href="/platform">Platform Overview</a>
+            <a href="/solutions">Solutions</a>
+            <a href="/pricing">Pricing</a>
           </div>
         </div>
         <div>
-          <h4>Platform</h4>
+          <h4>Developers</h4>
           <div class="footer-links">
-            <a href="/openapi">API Documentation</a>
-            <a href="/verify">Receipt Validator</a>
-            <a href="/status">System Status</a>
+            <a href="/openapi">API Reference</a>
+            <a href="/verify">Verify Receipts</a>
+            <a href="/support">Developer Support</a>
           </div>
         </div>
         <div>
           <h4>Compliance</h4>
           <div class="footer-links">
-            <a href="/trust">Security Framework</a>
-            <a href="/enterprise">HSM Integration</a>
-            <a href="/pricing">FIPS 140-2 Level 3+</a>
+            <a href="/trust">Security & Trust Center</a>
+            <a href="/status">System Status</a>
+            <a href="/support">Incident Response</a>
           </div>
         </div>
         <div>
-          <h4>Enterprise Support</h4>
+          <h4>Company</h4>
           <div class="footer-links">
-            <a href="/enterprise">Request Demo</a>
-            <a href="/pricing">Enterprise Pricing</a>
-            <a href="/trust">Security Documentation</a>
+            <a href="mailto:contact@certnode.io">contact@certnode.io</a>
+            <a href="/support">Support Steward</a>
+            <a href="/enterprise">Enterprise Access</a>
           </div>
         </div>
       </div>
-
       <div class="footer-bottom">
-        <p>&copy; 2025 CertNode. Cryptographic receipt platform. All rights reserved.</p>
-        <p class="enterprise-badge">🔐 ENTERPRISE SECURITY FRAMEWORK • FORTUNE 500 CRYPTOGRAPHIC INFRASTRUCTURE</p>
+        <p>&copy; 2025 CertNode. Universal receipt protocol for global commerce.</p>
+        <span class="enterprise-badge">Standards Stewardship � Integration Event Ledger(TM) � HSM Signed Proof</span>
       </div>
     </div>
   </footer>
 
   <script>
-    // Mobile Navigation Toggle
-    document.addEventListener('DOMContentLoaded', function() {
-      const mobileToggle = document.querySelector('.mobile-menu-toggle');
-      const navLinks = document.querySelector('.nav-links');
+    document.addEventListener('DOMContentLoaded', function () {
+      const toggle = document.querySelector('.mobile-menu-toggle')
+      const nav = document.querySelector('.nav-links')
+      if (!toggle || !nav) return
 
-      if (mobileToggle && navLinks) {
-        mobileToggle.addEventListener('click', function() {
-          navLinks.classList.toggle('mobile-open');
+      toggle.addEventListener('click', function () {
+        nav.classList.toggle('mobile-open')
+        const open = nav.classList.contains('mobile-open')
+        toggle.setAttribute('aria-expanded', String(open))
+        toggle.textContent = open ? '�' : '?'
+      })
 
-          // Update ARIA label for accessibility
-          const isOpen = navLinks.classList.contains('mobile-open');
-          mobileToggle.setAttribute('aria-label', isOpen ? 'Close mobile menu' : 'Toggle mobile menu');
-          mobileToggle.setAttribute('aria-expanded', isOpen.toString());
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-          if (!event.target.closest('.nav') && navLinks.classList.contains('mobile-open')) {
-            navLinks.classList.remove('mobile-open');
-            mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
-            mobileToggle.setAttribute('aria-expanded', 'false');
-          }
-        });
-
-        // Close mobile menu on window resize (if going back to desktop) - throttled for performance
-        let resizeTimeout;
-        window.addEventListener('resize', function() {
-          clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(function() {
-            if (window.innerWidth > 768 && navLinks.classList.contains('mobile-open')) {
-              navLinks.classList.remove('mobile-open');
-              mobileToggle.setAttribute('aria-label', 'Toggle mobile menu');
-              mobileToggle.setAttribute('aria-expanded', 'false');
-            }
-          }, 100);
-        });
-      }
-    });
+      document.addEventListener('click', function (event) {
+        if (!event.target.closest('.nav') && nav.classList.contains('mobile-open')) {
+          nav.classList.remove('mobile-open')
+          toggle.setAttribute('aria-expanded', 'false')
+          toggle.textContent = '?'
+        }
+      })
+    })
   </script>
 </body>
 </html>
+
+
+

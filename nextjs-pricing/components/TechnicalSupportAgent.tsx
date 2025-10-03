@@ -63,7 +63,16 @@ const receipt = await fetch('https://certnode.io/api/receipts', {
 \`\`\`
 
 **The receipt is completely flexible** - you control the \`type\` label and \`data\` payload.`
+      stripeIntegration: {
+    keywords: ['stripe', 'payment intent', 'charge succeeded', 'dispute', 'subscription'],
+    response: **Stripe Turnkey Integration:**
+
+- Point Stripe webhooks to **https://certnode.io/api/integrations/stripe**.
+- Use your CertNode API key as the endpoint secret; we verify the Stripe signature (t=.../v1=...) before accepting the event.
+- The Integration Event Ledger dedupes retries and links charges, refunds, invoices, subscriptions, and disputes to the same DAG so your dispute packet is always ready.,
   },
+
+},
 
   // Receipt Graph & DAG
   graphStructure: {
@@ -264,7 +273,7 @@ All use the same flexible API - just different receipt types and linking pattern
   // Kajabi/Course Platform Integration
   kajabiIntegration: {
     keywords: ['kajabi', 'teachable', 'thinkific', 'course platform', 'high ticket', 'login', 'content view', 'download'],
-    response: `**Kajabi/Course Platform Integration for High-Ticket Sales:**
+    response: `**Kajabi/Course Platform Integration for High-Ticket Sales:**\n\n**Integration Event Ledger:** Point Kajabi webhooks to `https://certnode.io/api/integrations/kajabi` using your CertNode API key as the secret. We verify the HMAC signature, dedupe events, and link purchases, logins, and lesson completions to the same receipt graph automatically.
 
 **How it works:**
 1. Use Kajabi webhooks to trigger CertNode receipt creation
@@ -450,7 +459,7 @@ function detectIntent(input: string): IntentType {
   if (['create', 'post', 'first receipt', 'new receipt'].some(kw => normalized.includes(kw))) return 'technical';
   if (['graph', 'dag', 'link', 'parent', 'child'].some(kw => normalized.includes(kw))) return 'graph';
   if (['error', 'debug', 'not working', 'broken', 'issue'].some(kw => normalized.includes(kw))) return 'troubleshooting';
-  if (['integrate', 'integration', 'webhook', 'kajabi', 'shopify', 'stripe', 'shippo', 'teachable', 'woocommerce', 'plugin', 'turnkey'].some(kw => normalized.includes(kw))) return 'integration';
+  if (['integrate', 'sdk', 'shopify', 'stripe', 'plugin'].some(kw => normalized.includes(kw))) return 'integration';
   if (['pricing', 'billing', 'upgrade', 'invoice'].some(kw => normalized.includes(kw))) return 'billing';
 
   return 'general';
@@ -496,7 +505,7 @@ function generateResponse(input: string): string {
   }
 
   if (intent === 'integration') {
-    return `CertNode offers **turnkey integrations** - just point your platform webhooks to CertNode and we automatically create receipts.\n\n**🎓 High-Ticket Sales & Courses:**\n• Kajabi - Tracks purchases, logins, lessons, completions\n• Teachable - Course platform integration\n\n**🛒 E-Commerce:**\n• Shopify - Orders, fulfillment, refunds, disputes\n• WooCommerce - WordPress e-commerce\n\n**💳 Payments:**\n• Stripe - Charges, refunds, subscriptions, disputes\n\n**📦 Shipping:**\n• Shippo - Multi-carrier shipping labels & tracking\n• ShipStation - Order fulfillment automation\n\n**Setup is simple:**\n1. Go to your platform's webhook settings\n2. Point to: \`https://certnode.io/api/integrations/{platform}\`\n3. Receipts created automatically for every event\n4. All receipts linked to form a complete audit trail\n\n**Example:** Shopify order → Shippo label → FedEx tracking → Delivery → Stripe chargeback → Evidence\n\nWhich platform are you integrating? I can provide specific setup steps.`;
+    return `CertNode integrates with:\n\n**E-commerce:**\n• Shopify - Install CertNode app from app store\n• WooCommerce - Use our WordPress plugin\n• Stripe - Automatic receipt creation on charge.succeeded\n\n**Content Platforms:**\n• YouTube - Webhook on video upload\n• Vimeo - API integration for content verification\n\n**Development:**\n• REST API - Full control via HTTPS\n• SDKs - JavaScript, Python, Go, Ruby\n• Webhooks - Real-time event notifications\n\nWhich platform are you integrating with?`;
   }
 
   if (intent === 'billing') {
@@ -713,3 +722,6 @@ export default function TechnicalSupportAgent() {
     </div>
   );
 }
+
+
+

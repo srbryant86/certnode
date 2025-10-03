@@ -6,6 +6,8 @@ type BusinessMode = 'ecommerce' | 'digital' | 'services' | 'highticket' | 'conte
 
 type ReceiptDomain = 'transaction' | 'content' | 'operations';
 
+type RelationType = 'evidences' | 'causes' | 'fulfills' | 'invalidates' | 'continues';
+
 type Receipt = {
   id: string;
   domain: ReceiptDomain;
@@ -13,6 +15,9 @@ type Receipt = {
   label: string;
   status: 'pending' | 'created' | 'linked';
   data: any;
+  parentIds?: string[]; // DAG: Multiple parents
+  relationType?: RelationType; // Relationship to parents
+  depth?: number; // Graph depth level
 };
 
 const scenarios = {
@@ -30,6 +35,8 @@ const scenarios = {
     resolutionTitle: "Chargeback reversed",
     amountSaved: 149.99,
     color: "green",
+    cfoQuery: "Prove this chargeback defense is legitimate",
+    queryPath: [0, 1, 2, 3], // Receipt indices that form the proof path
     receipts: [
       {
         domain: 'transaction' as ReceiptDomain,
@@ -37,7 +44,10 @@ const scenarios = {
         label: 'Payment',
         icon: '💳',
         description: '$150 paid',
-        domainLabel: 'Transaction'
+        domainLabel: 'Transaction',
+        parentIds: [],
+        relationType: undefined,
+        depth: 0
       },
       {
         domain: 'content' as ReceiptDomain,
@@ -45,7 +55,10 @@ const scenarios = {
         label: 'Label + Photo',
         icon: '📦',
         description: 'Product documented',
-        domainLabel: 'Content'
+        domainLabel: 'Content',
+        parentIds: ['rcpt_0'],
+        relationType: 'evidences' as RelationType,
+        depth: 1
       },
       {
         domain: 'operations' as ReceiptDomain,
@@ -53,7 +66,10 @@ const scenarios = {
         label: 'FedEx Tracking',
         icon: '🚚',
         description: 'Delivery logged',
-        domainLabel: 'Operations'
+        domainLabel: 'Operations',
+        parentIds: ['rcpt_1'],
+        relationType: 'fulfills' as RelationType,
+        depth: 2
       },
       {
         domain: 'content' as ReceiptDomain,
@@ -61,7 +77,10 @@ const scenarios = {
         label: 'Delivery Photo',
         icon: '📸',
         description: 'Signed package',
-        domainLabel: 'Content'
+        domainLabel: 'Content',
+        parentIds: ['rcpt_2'],
+        relationType: 'evidences' as RelationType,
+        depth: 3
       }
     ]
   },
@@ -79,6 +98,8 @@ const scenarios = {
     resolutionTitle: "Chargeback reversed",
     amountSaved: 89.00,
     color: "purple",
+    cfoQuery: "Prove customer had full access to the course",
+    queryPath: [0, 1, 2],
     receipts: [
       {
         domain: 'transaction' as ReceiptDomain,
@@ -86,7 +107,10 @@ const scenarios = {
         label: 'Payment',
         icon: '💳',
         description: '$89 paid',
-        domainLabel: 'Transaction'
+        domainLabel: 'Transaction',
+        parentIds: [],
+        relationType: undefined,
+        depth: 0
       },
       {
         domain: 'content' as ReceiptDomain,
@@ -94,7 +118,10 @@ const scenarios = {
         label: 'AI Course',
         icon: '🤖',
         description: 'Generated + delivered',
-        domainLabel: 'Content'
+        domainLabel: 'Content',
+        parentIds: ['rcpt_0'],
+        relationType: 'fulfills' as RelationType,
+        depth: 1
       },
       {
         domain: 'operations' as ReceiptDomain,
@@ -102,7 +129,10 @@ const scenarios = {
         label: '12 Lessons',
         icon: '📊',
         description: '47 min watched',
-        domainLabel: 'Operations'
+        domainLabel: 'Operations',
+        parentIds: ['rcpt_1'],
+        relationType: 'evidences' as RelationType,
+        depth: 2
       }
     ]
   },
@@ -120,6 +150,8 @@ const scenarios = {
     resolutionTitle: "Chargeback reversed",
     amountSaved: 2500.00,
     color: "blue",
+    cfoQuery: "Prove the website was fully delivered",
+    queryPath: [0, 1, 2, 3],
     receipts: [
       {
         domain: 'transaction' as ReceiptDomain,
@@ -127,7 +159,10 @@ const scenarios = {
         label: 'Payment',
         icon: '💳',
         description: '$2,500 paid',
-        domainLabel: 'Transaction'
+        domainLabel: 'Transaction',
+        parentIds: [],
+        relationType: undefined,
+        depth: 0
       },
       {
         domain: 'content' as ReceiptDomain,
@@ -135,7 +170,10 @@ const scenarios = {
         label: 'Website Files',
         icon: '📁',
         description: 'Dropbox delivery',
-        domainLabel: 'Content'
+        domainLabel: 'Content',
+        parentIds: ['rcpt_0'],
+        relationType: 'fulfills' as RelationType,
+        depth: 1
       },
       {
         domain: 'operations' as ReceiptDomain,
@@ -143,7 +181,10 @@ const scenarios = {
         label: 'Download Logs',
         icon: '📥',
         description: 'Client accessed',
-        domainLabel: 'Operations'
+        domainLabel: 'Operations',
+        parentIds: ['rcpt_1'],
+        relationType: 'evidences' as RelationType,
+        depth: 2
       },
       {
         domain: 'content' as ReceiptDomain,
@@ -151,56 +192,106 @@ const scenarios = {
         label: 'Live Site',
         icon: '🌐',
         description: 'Deployed + verified',
-        domainLabel: 'Content'
+        domainLabel: 'Content',
+        parentIds: ['rcpt_2'],
+        relationType: 'evidences' as RelationType,
+        depth: 3
       }
     ]
   },
   highticket: {
     name: "High-Ticket Sales",
     icon: "💎",
-    example: "Coaching programs, masterminds, enterprise",
-    customerPurchase: "Client pays $15,000 for coaching program (wire transfer)",
-    productDelivered: "Course materials delivered, portal access granted",
-    deliveryConfirmed: "8 sessions attended, 47 files downloaded",
-    painPoint: "Payment dispute filed",
-    chargebackClaim: "Claims 'services not delivered'",
-    yourDefense: "Transaction + Course Materials + Attendance + Session Recordings",
-    defenseAction: "Submit Receipt Graph",
-    resolutionTitle: "Dispute resolved",
+    example: "Coaching program with refund request (DAG demo)",
+    customerPurchase: "Client pays $15,000 for coaching program",
+    productDelivered: "Materials delivered, sessions attended",
+    deliveryConfirmed: "Client requests refund citing dissatisfaction",
+    painPoint: "CFO asks for proof",
+    chargebackClaim: "CFO: 'Prove this $15K refund was legitimate'",
+    yourDefense: "Full graph: Payment → Materials + Sessions → Complaint → Investigation → Refund",
+    defenseAction: "Query Receipt Graph",
+    resolutionTitle: "Refund justified & auditable",
     amountSaved: 15000.00,
     color: "orange",
+    cfoQuery: "CFO: Prove this $15K refund was legitimate",
+    queryPath: [0, 1, 2, 3, 4, 5, 6], // Full DAG path
     receipts: [
       {
         domain: 'transaction' as ReceiptDomain,
         type: 'wire-payment',
-        label: 'Wire Payment',
+        label: 'Payment',
         icon: '💳',
         description: '$15K paid',
-        domainLabel: 'Transaction'
+        domainLabel: 'Transaction',
+        parentIds: [],
+        relationType: undefined,
+        depth: 0
       },
       {
         domain: 'content' as ReceiptDomain,
         type: 'materials',
-        label: 'Course Materials',
+        label: 'Materials',
         icon: '📚',
-        description: '47 files delivered',
-        domainLabel: 'Content'
+        description: '47 files',
+        domainLabel: 'Content',
+        parentIds: ['rcpt_0'],
+        relationType: 'fulfills' as RelationType,
+        depth: 1
       },
       {
         domain: 'operations' as ReceiptDomain,
         type: 'attendance',
         label: '8 Sessions',
         icon: '📊',
-        description: 'Attended + logged',
-        domainLabel: 'Operations'
+        description: 'Attended',
+        domainLabel: 'Operations',
+        parentIds: ['rcpt_0'],
+        relationType: 'fulfills' as RelationType,
+        depth: 1
+      },
+      {
+        domain: 'operations' as ReceiptDomain,
+        type: 'complaint',
+        label: 'Complaint',
+        icon: '⚠️',
+        description: 'Dissatisfied',
+        domainLabel: 'Operations',
+        parentIds: ['rcpt_1', 'rcpt_2'],
+        relationType: 'causes' as RelationType,
+        depth: 2
       },
       {
         domain: 'content' as ReceiptDomain,
-        type: 'recordings',
-        label: 'Recordings',
-        icon: '🎥',
-        description: 'All sessions saved',
-        domainLabel: 'Content'
+        type: 'investigation',
+        label: 'Investigation',
+        icon: '🔍',
+        description: 'Review conducted',
+        domainLabel: 'Content',
+        parentIds: ['rcpt_3'],
+        relationType: 'evidences' as RelationType,
+        depth: 3
+      },
+      {
+        domain: 'operations' as ReceiptDomain,
+        type: 'approval',
+        label: 'Approval',
+        icon: '✅',
+        description: 'Manager approved',
+        domainLabel: 'Operations',
+        parentIds: ['rcpt_4'],
+        relationType: 'causes' as RelationType,
+        depth: 4
+      },
+      {
+        domain: 'transaction' as ReceiptDomain,
+        type: 'refund',
+        label: 'Refund',
+        icon: '💰',
+        description: '$15K refunded',
+        domainLabel: 'Transaction',
+        parentIds: ['rcpt_0', 'rcpt_3', 'rcpt_5'],
+        relationType: 'invalidates' as RelationType,
+        depth: 5
       }
     ]
   },
@@ -218,6 +309,8 @@ const scenarios = {
     resolutionTitle: "Video restored",
     amountSaved: 50000.00,
     color: "indigo",
+    cfoQuery: "Prove content is authentic and not AI-generated",
+    queryPath: [0, 1, 2, 3],
     receipts: [
       {
         domain: 'content' as ReceiptDomain,
@@ -225,7 +318,10 @@ const scenarios = {
         label: 'Original Hash',
         icon: '🎬',
         description: 'Video uploaded',
-        domainLabel: 'Content'
+        domainLabel: 'Content',
+        parentIds: [],
+        relationType: undefined,
+        depth: 0
       },
       {
         domain: 'operations' as ReceiptDomain,
@@ -233,7 +329,10 @@ const scenarios = {
         label: 'Blockchain',
         icon: '⛓️',
         description: 'Immutably anchored',
-        domainLabel: 'Operations'
+        domainLabel: 'Operations',
+        parentIds: ['rcpt_0'],
+        relationType: 'evidences' as RelationType,
+        depth: 1
       },
       {
         domain: 'operations' as ReceiptDomain,
@@ -241,7 +340,10 @@ const scenarios = {
         label: 'Published',
         icon: '📤',
         description: 'Live on platform',
-        domainLabel: 'Operations'
+        domainLabel: 'Operations',
+        parentIds: ['rcpt_1'],
+        relationType: 'continues' as RelationType,
+        depth: 2
       },
       {
         domain: 'transaction' as ReceiptDomain,
@@ -249,17 +351,32 @@ const scenarios = {
         label: 'Revenue',
         icon: '💰',
         description: '$50K earned',
-        domainLabel: 'Transaction'
+        domainLabel: 'Transaction',
+        parentIds: ['rcpt_2'],
+        relationType: 'evidences' as RelationType,
+        depth: 3
       }
     ]
   }
 };
 
+type PricingTier = 'free' | 'starter' | 'professional' | 'business' | 'enterprise';
+
+const tierLimits = {
+  free: { depth: 3, name: 'FREE', color: 'gray' },
+  starter: { depth: 5, name: 'STARTER', color: 'blue' },
+  professional: { depth: 10, name: 'PROFESSIONAL', color: 'purple' },
+  business: { depth: Infinity, name: 'BUSINESS', color: 'orange' },
+  enterprise: { depth: Infinity, name: 'ENTERPRISE', color: 'green' }
+};
+
 export default function ReceiptGraphMultiMode() {
-  const [mode, setMode] = useState<BusinessMode>('digital');
+  const [mode, setMode] = useState<BusinessMode>('highticket'); // Start with DAG demo
   const [step, setStep] = useState(0);
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [showChargeback, setShowChargeback] = useState(false);
+  const [selectedTier, setSelectedTier] = useState<PricingTier>('professional');
+  const [cfoQueryMode, setCfoQueryMode] = useState(false);
 
   const scenario = scenarios[mode];
 
@@ -332,12 +449,15 @@ export default function ReceiptGraphMultiMode() {
       // Add the next receipt from the scenario
       const receiptDef = scenarioReceipts[step];
       setReceipts(prev => [...prev, {
-        id: `rcpt_${receiptDef.type}_${Date.now()}`,
+        id: `rcpt_${step}`, // Consistent ID for DAG relationships
         domain: receiptDef.domain,
         type: receiptDef.type,
         label: receiptDef.label,
         status: step === 0 ? 'created' : 'linked',
-        data: receiptDef
+        data: receiptDef,
+        parentIds: receiptDef.parentIds || [],
+        relationType: receiptDef.relationType,
+        depth: receiptDef.depth || 0
       }]);
     } else if (step === scenarioReceipts.length) {
       // Show the dispute/chargeback
@@ -353,11 +473,25 @@ export default function ReceiptGraphMultiMode() {
     setStep(0);
     setReceipts([]);
     setShowChargeback(false);
+    setCfoQueryMode(false);
   };
 
   const handleModeChange = (newMode: BusinessMode) => {
     setMode(newMode);
     handleReset();
+  };
+
+  // Check if receipt is visible based on tier depth limit
+  const isReceiptVisible = (receipt: Receipt) => {
+    const depthLimit = tierLimits[selectedTier].depth;
+    return (receipt.depth || 0) < depthLimit;
+  };
+
+  // Check if receipt is in the CFO query path
+  const isInQueryPath = (index: number) => {
+    if (!cfoQueryMode) return false;
+    const queryPath = (scenario as any).queryPath || [];
+    return queryPath.includes(index);
   };
 
   return (
@@ -402,6 +536,50 @@ export default function ReceiptGraphMultiMode() {
             <div className="text-sm text-gray-600">{scenario.example}</div>
           </div>
         </div>
+      </div>
+
+      {/* Tier Selector & CFO Query */}
+      <div className="grid md:grid-cols-2 gap-4 mb-6">
+        {/* Tier Depth Limit Selector */}
+        <div className="bg-white rounded-lg p-4 border-2 border-gray-200">
+          <div className="text-sm font-semibold text-gray-700 mb-3">Simulate Pricing Tier (Graph Depth Limit)</div>
+          <div className="flex flex-wrap gap-2">
+            {(Object.keys(tierLimits) as PricingTier[]).map((tier) => (
+              <button
+                key={tier}
+                onClick={() => setSelectedTier(tier)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  selectedTier === tier
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {tierLimits[tier].name} ({tierLimits[tier].depth === Infinity ? '∞' : tierLimits[tier].depth} levels)
+              </button>
+            ))}
+          </div>
+          <div className="mt-3 text-xs text-gray-600">
+            Current tier shows up to <strong>{tierLimits[selectedTier].depth === Infinity ? 'unlimited' : tierLimits[selectedTier].depth} levels</strong> deep
+          </div>
+        </div>
+
+        {/* CFO Query Mode */}
+        {(scenario as any).cfoQuery && receipts.length >= (scenario.receipts?.length || 0) - 1 && (
+          <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-lg p-4 border-2 border-green-300">
+            <div className="text-sm font-semibold text-gray-900 mb-2">Enterprise Use Case</div>
+            <div className="text-xs text-gray-700 mb-3">"{(scenario as any).cfoQuery}"</div>
+            <button
+              onClick={() => setCfoQueryMode(!cfoQueryMode)}
+              className={`w-full px-4 py-2 rounded-lg font-semibold transition-all ${
+                cfoQueryMode
+                  ? 'bg-green-600 text-white shadow-lg'
+                  : 'bg-white text-green-700 border-2 border-green-600 hover:bg-green-50'
+              }`}
+            >
+              {cfoQueryMode ? '✓ Showing Proof Path' : '🔍 Query Receipt Graph'}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Progress Bar */}
@@ -485,47 +663,157 @@ export default function ReceiptGraphMultiMode() {
         </div>
       </div>
 
-      {/* Receipt Graph Visualization */}
+      {/* Receipt Graph Visualization - DAG Structure */}
       <div className="bg-white rounded-xl p-6 mb-6 shadow-lg">
-        <h4 className="font-bold text-gray-900 mb-4 text-center">Cross-Domain Receipt Graph</h4>
+        <h4 className="font-bold text-gray-900 mb-4 text-center">
+          Cross-Domain Receipt Graph (DAG)
+          {cfoQueryMode && <span className="text-green-600 ml-2">- Proof Path Highlighted</span>}
+        </h4>
 
-        <div className="flex items-center justify-center gap-4 min-h-[200px] flex-wrap">
-          {receipts.map((receipt, index) => {
-            const colors = getDomainColor(receipt.domain);
-            const receiptData = receipt.data as any;
+        <div className="relative min-h-[300px]">
+          {/* DAG Visualization by Depth Level */}
+          {receipts.length > 0 && (
+            <div className="space-y-6">
+              {Array.from(new Set(receipts.map(r => r.depth || 0))).sort((a, b) => a - b).map((depth) => {
+                const receiptsAtDepth = receipts.filter(r => (r.depth || 0) === depth);
 
-            return (
-              <div key={receipt.id} className="flex items-center">
-                {index > 0 && (
-                  <div className="flex-shrink-0 text-gray-400 font-bold text-3xl animate-pulse mx-2">→</div>
-                )}
-
-                <div className="transition-all duration-500 opacity-100 scale-100">
-                  <div className={`w-36 h-36 ${colors.bg} border-4 ${colors.border} rounded-lg flex flex-col items-center justify-center p-2`}>
-                    <div className="text-3xl mb-1">{receiptData.icon}</div>
-                    <div className="font-bold text-sm text-center">{receipt.label}</div>
-                    <div className={`text-xs ${colors.text} text-center mt-1`}>{receiptData.description}</div>
-                    <div className={`text-[10px] ${colors.text} font-bold mt-2 uppercase`}>
-                      {colors.emoji} {colors.label}
+                return (
+                  <div key={depth} className="relative">
+                    {/* Depth Level Label */}
+                    <div className="absolute -left-16 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">
+                      L{depth}
                     </div>
+
+                    {/* Receipts at this depth */}
+                    <div className="flex items-center justify-center gap-6 flex-wrap">
+                      {receiptsAtDepth.map((receipt, idx) => {
+                        const colors = getDomainColor(receipt.domain);
+                        const receiptData = receipt.data as any;
+                        const isVisible = isReceiptVisible(receipt);
+                        const receiptIndex = receipts.indexOf(receipt);
+                        const inQueryPath = isInQueryPath(receiptIndex);
+                        const hasMultipleParents = (receipt.parentIds?.length || 0) > 1;
+
+                        return (
+                          <div key={receipt.id} className="relative">
+                            {/* Multi-parent indicator */}
+                            {hasMultipleParents && (
+                              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap z-10">
+                                {receipt.parentIds?.length} PARENTS
+                              </div>
+                            )}
+
+                            {/* Receipt Card */}
+                            <div className={`transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-30'} ${inQueryPath ? 'ring-4 ring-green-500 scale-105' : ''}`}>
+                              <div className={`relative w-32 h-32 ${colors.bg} border-4 ${colors.border} rounded-lg flex flex-col items-center justify-center p-2 ${!isVisible ? 'grayscale' : ''}`}>
+                                {/* Query highlight */}
+                                {inQueryPath && (
+                                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                    ✓
+                                  </div>
+                                )}
+
+                                <div className="text-2xl mb-1">{receiptData.icon}</div>
+                                <div className="font-bold text-xs text-center">{receipt.label}</div>
+                                <div className={`text-[10px] ${colors.text} text-center mt-1`}>{receiptData.description}</div>
+
+                                {/* Relationship type label */}
+                                {receipt.relationType && (
+                                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-gray-700 text-white text-[9px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                                    {receipt.relationType}
+                                  </div>
+                                )}
+
+                                <div className={`text-[9px] ${colors.text} font-bold mt-1 uppercase`}>
+                                  {colors.emoji} {colors.label}
+                                </div>
+
+                                {/* Depth limit indicator */}
+                                {!isVisible && (
+                                  <div className="absolute inset-0 bg-gray-900/60 rounded-lg flex items-center justify-center">
+                                    <div className="text-center">
+                                      <div className="text-white text-xs font-bold">🔒</div>
+                                      <div className="text-white text-[9px]">Upgrade</div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Connecting lines to children (simplified) */}
+                    {depth < Math.max(...receipts.map(r => r.depth || 0)) && (
+                      <div className="flex justify-center mt-2 mb-2">
+                        <div className="text-gray-400 font-bold text-2xl">↓</div>
+                      </div>
+                    )}
                   </div>
-                </div>
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+          )}
 
           {receipts.length === 0 && (
-            <div className="text-gray-400 text-center py-8">
+            <div className="text-gray-400 text-center py-16">
               <p className="text-lg font-semibold">Click "Next" to start building the Receipt Graph</p>
+              <p className="text-sm mt-2">Watch the DAG structure emerge with branching and merging</p>
             </div>
           )}
         </div>
 
-        {receipts.length >= 3 && !showChargeback && (
-          <div className="text-center mt-4">
-            <div className="inline-block bg-gray-100 border border-gray-300 rounded-lg px-4 py-2">
-              <div className="text-sm font-semibold text-gray-900">{receipts.length} receipts linked across {new Set(receipts.map(r => r.domain)).size} domains</div>
+        {/* Graph Stats */}
+        {receipts.length >= 3 && (
+          <div className="mt-6">
+            <div className="flex justify-center gap-4 flex-wrap mb-4">
+              <div className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-2">
+                <div className="text-xs font-semibold text-gray-900">
+                  {receipts.length} receipts • {new Set(receipts.map(r => r.domain)).size} domains •
+                  {Math.max(...receipts.map(r => r.depth || 0)) + 1} levels deep
+                </div>
+              </div>
+
+              {receipts.some(r => !isReceiptVisible(r)) && (
+                <div className="bg-orange-100 border border-orange-400 rounded-lg px-4 py-2">
+                  <div className="text-xs font-bold text-orange-900">
+                    ⚠️ {receipts.filter(r => !isReceiptVisible(r)).length} receipts hidden by {tierLimits[selectedTier].name} tier limit
+                  </div>
+                </div>
+              )}
             </div>
+
+            {/* Upgrade CTA when depth limit is hit */}
+            {receipts.some(r => !isReceiptVisible(r)) && (
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-4 text-center">
+                <div className="text-white font-bold mb-2">
+                  🔓 Unlock Full Graph Visibility
+                </div>
+                <div className="text-blue-100 text-sm mb-3">
+                  Your graph is {Math.max(...receipts.map(r => r.depth || 0)) + 1} levels deep,
+                  but {tierLimits[selectedTier].name} tier only shows {tierLimits[selectedTier].depth} levels.
+                </div>
+                <div className="flex gap-2 justify-center flex-wrap">
+                  {selectedTier === 'free' && (
+                    <button
+                      onClick={() => setSelectedTier('professional')}
+                      className="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-all"
+                    >
+                      Try PROFESSIONAL (10 levels) →
+                    </button>
+                  )}
+                  {(selectedTier === 'free' || selectedTier === 'starter') && (
+                    <button
+                      onClick={() => setSelectedTier('enterprise')}
+                      className="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-green-600 transition-all"
+                    >
+                      Upgrade to ENTERPRISE (unlimited) →
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -573,7 +861,7 @@ export default function ReceiptGraphMultiMode() {
               <div className="text-center">
                 <div className="text-2xl mb-2">🟢🟣🟠</div>
                 <div className="font-semibold text-white text-sm">CertNode</div>
-                <div className="text-xs text-blue-100 mt-1">All three connected</div>
+                <div className="text-xs text-blue-100 mt-1">Cryptographic cross-linking</div>
               </div>
             </div>
           </div>

@@ -73,38 +73,38 @@ export default function ROICalculator() {
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
 
   const modes = [
-    { id: 'disputes' as CalculatorMode, icon: '🛒', label: 'Chargebacks & Disputes', subtitle: 'E-commerce, High-Ticket Sales' },
-    { id: 'compliance' as CalculatorMode, icon: '📋', label: 'Compliance Costs', subtitle: 'SaaS, Healthcare, Finance' },
-    { id: 'content' as CalculatorMode, icon: '🎨', label: 'Content Protection', subtitle: 'Platforms, Creators, Media' },
-    { id: 'operations' as CalculatorMode, icon: '📦', label: 'Operations Verification', subtitle: 'Logistics, B2B, Supply Chain' },
+    { id: 'disputes' as CalculatorMode, icon: '🛒', label: 'E-commerce & Retail', subtitle: 'Chargebacks, fraud, cart abandonment' },
+    { id: 'compliance' as CalculatorMode, icon: '📋', label: 'SaaS & Finance', subtitle: 'Audit prep, SOX, regulatory compliance' },
+    { id: 'content' as CalculatorMode, icon: '🎨', label: 'Media & Platforms', subtitle: 'IP protection, DMCA, content authenticity' },
+    { id: 'operations' as CalculatorMode, icon: '📦', label: 'Logistics & Supply Chain', subtitle: 'Proof of delivery, documentation errors' },
   ];
 
   const disputePresets = [
-    { id: 'small-ecommerce', label: 'Small Business', monthlyGMV: 25000, disputeRate: 2.5, avgDisputeValue: 75, hourlyRate: 40, hoursPerDispute: 4 },
+    { id: 'small-ecommerce', label: 'Small E-commerce', monthlyGMV: 25000, disputeRate: 2.5, avgDisputeValue: 75, hourlyRate: 40, hoursPerDispute: 4 },
+    { id: 'retail-store', label: 'Retail Store', monthlyGMV: 80000, disputeRate: 3.5, avgDisputeValue: 120, hourlyRate: 50, hoursPerDispute: 3.5 },
     { id: 'high-ticket', label: 'High-Ticket Sales', monthlyGMV: 150000, disputeRate: 8.0, avgDisputeValue: 10000, hourlyRate: 85, hoursPerDispute: 5 },
-    { id: 'mid-market', label: 'Growing Business', monthlyGMV: 250000, disputeRate: 1.5, avgDisputeValue: 150, hourlyRate: 75, hoursPerDispute: 3 },
-    { id: 'enterprise', label: 'High-Volume', monthlyGMV: 2000000, disputeRate: 1.0, avgDisputeValue: 3500, hourlyRate: 100, hoursPerDispute: 4 },
+    { id: 'subscription', label: 'Subscription Business', monthlyGMV: 200000, disputeRate: 1.2, avgDisputeValue: 99, hourlyRate: 60, hoursPerDispute: 2.5 },
   ];
 
   const compliancePresets = [
-    { id: 'startup-saas', label: 'Startup SaaS', annualRevenue: 1000000, currentAuditCost: 80000, auditPrepWeeks: 6, complianceFTEs: 1 },
-    { id: 'growth-saas', label: 'Growth SaaS', annualRevenue: 10000000, currentAuditCost: 150000, auditPrepWeeks: 8, complianceFTEs: 2 },
-    { id: 'healthcare', label: 'Healthcare Provider', annualRevenue: 25000000, currentAuditCost: 250000, auditPrepWeeks: 12, complianceFTEs: 3 },
-    { id: 'fintech', label: 'Fintech', annualRevenue: 50000000, currentAuditCost: 400000, auditPrepWeeks: 16, complianceFTEs: 4 },
+    { id: 'startup-saas', label: 'SaaS Startup (SOC 2)', annualRevenue: 1000000, currentAuditCost: 80000, auditPrepWeeks: 6, complianceFTEs: 1 },
+    { id: 'healthcare', label: 'Healthcare (HIPAA)', annualRevenue: 15000000, currentAuditCost: 200000, auditPrepWeeks: 10, complianceFTEs: 2.5 },
+    { id: 'fintech', label: 'Fintech (SOX/PCI)', annualRevenue: 30000000, currentAuditCost: 350000, auditPrepWeeks: 14, complianceFTEs: 3.5 },
+    { id: 'enterprise-saas', label: 'Enterprise SaaS', annualRevenue: 50000000, currentAuditCost: 400000, auditPrepWeeks: 16, complianceFTEs: 4 },
   ];
 
   const contentPresets = [
-    { id: 'small-platform', label: 'Small Platform', monthlyUploads: 1000, dmcaRate: 0.3, legalCostPerDispute: 3000, moderationHoursPerIncident: 3, moderationHourlyRate: 45 },
     { id: 'creator-platform', label: 'Creator Platform', monthlyUploads: 10000, dmcaRate: 0.5, legalCostPerDispute: 5000, moderationHoursPerIncident: 4, moderationHourlyRate: 50 },
-    { id: 'media-company', label: 'Media Company', monthlyUploads: 50000, dmcaRate: 0.8, legalCostPerDispute: 8000, moderationHoursPerIncident: 5, moderationHourlyRate: 65 },
-    { id: 'social-network', label: 'Social Network', monthlyUploads: 500000, dmcaRate: 0.4, legalCostPerDispute: 5000, moderationHoursPerIncident: 4, moderationHourlyRate: 55 },
+    { id: 'social-media', label: 'Social Media', monthlyUploads: 250000, dmcaRate: 0.3, legalCostPerDispute: 4000, moderationHoursPerIncident: 3.5, moderationHourlyRate: 55 },
+    { id: 'media-publisher', label: 'Media Publisher', monthlyUploads: 5000, dmcaRate: 0.8, legalCostPerDispute: 8000, moderationHoursPerIncident: 5, moderationHourlyRate: 65 },
+    { id: 'streaming-service', label: 'Streaming Service', monthlyUploads: 50000, dmcaRate: 0.6, legalCostPerDispute: 10000, moderationHoursPerIncident: 6, moderationHourlyRate: 70 },
   ];
 
   const operationsPresets = [
-    { id: 'small-logistics', label: 'Small Logistics', monthlyShipments: 2000, errorRate: 3.0, failedDeliveryCost: 150, supportHoursPerIssue: 2, supportHourlyRate: 40 },
     { id: 'ecommerce-fulfillment', label: 'E-commerce Fulfillment', monthlyShipments: 10000, errorRate: 2.0, failedDeliveryCost: 200, supportHoursPerIssue: 2, supportHourlyRate: 45 },
     { id: 'b2b-supplier', label: 'B2B Supplier', monthlyShipments: 5000, errorRate: 1.5, failedDeliveryCost: 500, supportHoursPerIssue: 3, supportHourlyRate: 60 },
-    { id: 'enterprise-logistics', label: 'Enterprise Logistics', monthlyShipments: 50000, errorRate: 1.0, failedDeliveryCost: 300, supportHoursPerIssue: 2.5, supportHourlyRate: 55 },
+    { id: 'logistics-provider', label: 'Logistics Provider', monthlyShipments: 30000, errorRate: 1.2, failedDeliveryCost: 250, supportHoursPerIssue: 2.5, supportHourlyRate: 50 },
+    { id: 'manufacturing', label: 'Manufacturing', monthlyShipments: 3000, errorRate: 2.5, failedDeliveryCost: 800, supportHoursPerIssue: 4, supportHourlyRate: 65 },
   ];
 
   const handleModeChange = (newMode: CalculatorMode) => {
@@ -278,17 +278,26 @@ export default function ROICalculator() {
 
   const getRecommendedPrice = () => {
     if (mode === 'disputes') {
-      // High-Ticket Shield plans for high-value disputes
+      // Calculate annual GMV from monthly
+      const annualGMV = disputeInputs.monthlyGMV * 12;
+
+      // High-Ticket or high-value disputes = Dispute Shield tiers
       const isHighTicket = selectedPreset === 'high-ticket' ||
-                           selectedPreset === 'enterprise' ||
                            disputeInputs.avgDisputeValue > 5000;
 
       if (isHighTicket) {
-        // Legal Shield ($12k/year = $1000/month) or Dispute Fortress ($30k/year = $2500/month)
-        return disputeInputs.monthlyGMV > 500000 ? 2500 : 1000;
+        // Dispute Shield Pro ($12k/year = $1000/month): GMV up to $2M/year
+        // Dispute Shield Elite ($30k/year = $2500/month): GMV $2M-$10M/year
+        if (annualGMV <= 2000000) {
+          return 1000; // Dispute Shield Pro
+        } else if (annualGMV <= 10000000) {
+          return 2500; // Dispute Shield Elite
+        } else {
+          return 2500; // Elite tier, but flag for custom pricing
+        }
       }
 
-      // Regular SMB tiers
+      // Regular Core Trust tiers for standard e-commerce
       return disputeInputs.monthlyGMV < 100000 ? 49 :
              disputeInputs.monthlyGMV < 300000 ? 199 :
              disputeInputs.monthlyGMV < 1000000 ? 499 : 999;
@@ -310,6 +319,25 @@ export default function ROICalculator() {
   const recommendedPrice = getRecommendedPrice();
   const monthlyROI = ((results.monthlyTotalSavings - recommendedPrice) / recommendedPrice) * 100;
   const paybackDays = Math.ceil((recommendedPrice / results.monthlyTotalSavings) * 30);
+
+  // Determine plan name for high-ticket disputes
+  const getPlanName = () => {
+    if (mode === 'disputes') {
+      const annualGMV = disputeInputs.monthlyGMV * 12;
+      const isHighTicket = selectedPreset === 'high-ticket' || disputeInputs.avgDisputeValue > 5000;
+
+      if (isHighTicket) {
+        if (annualGMV <= 2000000) {
+          return 'Dispute Shield Pro';
+        } else if (annualGMV <= 10000000) {
+          return 'Dispute Shield Elite';
+        } else {
+          return 'Dispute Shield Elite (Custom)';
+        }
+      }
+    }
+    return null;
+  };
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -333,13 +361,13 @@ export default function ROICalculator() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-block bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-3">
-            CALCULATE YOUR SAVINGS
+            INDUSTRY-SPECIFIC ROI CALCULATOR
           </div>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-            See How Much CertNode Saves Your Business
+            Calculate Savings for Your Industry
           </h2>
           <p className="text-gray-700 text-base md:text-lg mb-6">
-            Choose your biggest pain point to see customized ROI calculations
+            Select your industry to see how CertNode solves your specific pain points
           </p>
         </div>
 
@@ -507,7 +535,15 @@ export default function ROICalculator() {
             Start Saving {formatCurrency(results.monthlyTotalSavings)}/Month
           </h3>
           <p className="text-blue-100 mb-6">
-            Get started risk-free with our 60-day money-back guarantee.
+            {getPlanName() ? (
+              <>
+                Recommended: <strong className="text-white">{getPlanName()}</strong> at {formatCurrency(recommendedPrice)}/month
+                <br />
+                Get started with our 60-day money-back guarantee.
+              </>
+            ) : (
+              'Get started risk-free with our 60-day money-back guarantee.'
+            )}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -603,6 +639,8 @@ function DisputeCalculatorInputs({
         monthlyROI={monthlyROI}
         paybackDays={paybackDays}
         reductionRate={mode === 'disputes' ? reductionRate : 70}
+        selectedPreset={selectedPreset}
+        disputeInputs={disputeInputs}
       />
     </div>
   );
@@ -871,20 +909,86 @@ function InputField({ label, type, min, max, step, value, onChange, helpText }: 
 }
 
 // Results Display
-function ResultsDisplay({ mode, results, formatCurrency, formatNumber, monthlyROI, paybackDays, reductionRate }: any) {
+function ResultsDisplay({ mode, results, formatCurrency, formatNumber, monthlyROI, paybackDays, reductionRate, selectedPreset, disputeInputs }: any) {
   const getSavingsMessage = () => {
     switch (mode) {
-      case 'disputes': return `Cryptographic receipts reduce disputes and automate manual work based on your ${reductionRate}% reduction estimate.`;
-      case 'compliance': return 'Automated evidence collection reduces audit prep by 87.5% and external auditor costs by 73%.';
-      case 'content': return 'C2PA verification reduces false IP claims by 90% and automates moderation.';
-      case 'operations': return 'Cryptographic proof reduces documentation disputes by 95% and support costs.';
+      case 'disputes': {
+        if (selectedPreset === 'high-ticket') {
+          const annualGMV = (disputeInputs?.monthlyGMV || 0) * 12;
+          const shieldTier = annualGMV <= 2000000 ? 'Pro' : 'Elite';
+          const sla = annualGMV <= 2000000 ? '48-hour' : '24-hour priority';
+          return `Dispute Shield ${shieldTier}: ${sla} evidence SLA, cryptographic proof chain, and ${reductionRate}% reduction in high-value dispute losses.`;
+        } else if (selectedPreset === 'subscription') {
+          return `Automated payment verification reduces involuntary churn and failed payment disputes. ${reductionRate}% reduction in payment-related cancellations.`;
+        } else if (selectedPreset === 'retail-store') {
+          return `Fraud prevention and proof of purchase reduce return fraud and friendly fraud chargebacks. ${reductionRate}% reduction in fraudulent disputes.`;
+        } else {
+          return `Cryptographic receipts prevent chargebacks and reduce manual dispute handling. ${reductionRate}% reduction in dispute costs.`;
+        }
+      }
+      case 'compliance': {
+        if (selectedPreset === 'healthcare') {
+          return 'HIPAA-ready audit trails reduce patient data audit prep by 87.5% and demonstrate compliance automatically.';
+        } else if (selectedPreset === 'fintech') {
+          return 'SOX-compliant transaction records reduce regulatory audit costs by 73% and automate evidence collection.';
+        } else {
+          return 'SOC 2 automated evidence collection reduces audit prep by 87.5% and external auditor costs by 73%.';
+        }
+      }
+      case 'content': {
+        if (selectedPreset === 'creator-platform') {
+          return 'C2PA verification protects creators from false copyright claims and automates IP dispute resolution by 90%.';
+        } else if (selectedPreset === 'social-media') {
+          return 'Content authenticity verification prevents false takedowns and reduces moderation overhead by 90%.';
+        } else if (selectedPreset === 'streaming-service') {
+          return 'Licensing verification and content provenance reduce DMCA disputes and automate rights management by 90%.';
+        } else {
+          return 'Content authenticity and IP verification reduce legal disputes and moderation costs by 90%.';
+        }
+      }
+      case 'operations': {
+        if (selectedPreset === 'b2b-supplier') {
+          return 'Invoice verification and delivery proof reduce contract disputes and improve payment collection by 95%.';
+        } else if (selectedPreset === 'logistics-provider') {
+          return 'Cryptographic proof of delivery eliminates lost package claims and reduces support tickets by 95%.';
+        } else if (selectedPreset === 'manufacturing') {
+          return 'Quality documentation and compliance records reduce production disputes and regulatory issues by 95%.';
+        } else {
+          return 'Delivery verification and documentation proof reduce fulfillment disputes and support costs by 95%.';
+        }
+      }
     }
   };
 
   const getTimeframe = () => mode === 'compliance' ? 'year' : 'month';
 
+  // Check if this is a high-ticket dispute scenario
+  const isHighTicketDispute = mode === 'disputes' && (selectedPreset === 'high-ticket' || (disputeInputs?.avgDisputeValue || 0) > 5000);
+  const annualGMV = (disputeInputs?.monthlyGMV || 0) * 12;
+  const shieldTier = annualGMV <= 2000000 ? 'Pro' : 'Elite';
+  const shieldPrice = annualGMV <= 2000000 ? '$1,000' : '$2,500';
+
   return (
     <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-lg p-6">
+      {/* Dispute Shield Tier Badge - Only show for high-ticket disputes */}
+      {isHighTicketDispute && (
+        <div className="mb-4 bg-gradient-to-r from-amber-500 to-orange-600 rounded-lg p-4 border-2 border-amber-300">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-xs font-bold text-amber-100 uppercase tracking-wider mb-1">Recommended Plan</div>
+              <div className="text-xl font-bold text-white">Dispute Shield {shieldTier}</div>
+              <div className="text-sm text-amber-100 mt-1">
+                {annualGMV <= 2000000 ? '48-hour SLA • GMV up to $2M' : '24-hour Priority SLA • GMV $2M-$10M'}
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-white">{shieldPrice}</div>
+              <div className="text-xs text-amber-100">/month</div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <h3 className="font-bold mb-2 text-lg">Your Estimated Savings with CertNode</h3>
       <p className="text-blue-100 text-sm mb-6">{getSavingsMessage()}</p>
 

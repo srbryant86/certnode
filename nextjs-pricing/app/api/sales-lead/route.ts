@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend only if API key is provided
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function POST(request: NextRequest) {
   try {
@@ -118,20 +119,25 @@ export async function POST(request: NextRequest) {
 </html>
     `;
 
-    // Send email via Resend
-    try {
-      await resend.emails.send({
-        from: 'CertNode AI Agent <onboarding@resend.dev>', // Will need to update with verified domain
-        to: ['contact@certnode.io'],
-        subject: `🎯 New Lead: ${company || name} - ${recommendedTier || 'Tier TBD'}`,
-        html: emailHtml,
-        replyTo: email
-      });
+    // Send email via Resend (if configured)
+    if (resend) {
+      try {
+        await resend.emails.send({
+          from: 'CertNode AI Agent <onboarding@resend.dev>', // Will need to update with verified domain
+          to: ['contact@certnode.io'],
+          subject: `🎯 New Lead: ${company || name} - ${recommendedTier || 'Tier TBD'}`,
+          html: emailHtml,
+          replyTo: email
+        });
 
-      console.log('Email sent successfully to contact@certnode.io');
-    } catch (emailError) {
-      console.error('Error sending email:', emailError);
-      // Don't fail the request if email fails, just log it
+        console.log('Email sent successfully to contact@certnode.io via Resend');
+      } catch (emailError) {
+        console.error('Error sending email via Resend:', emailError);
+        // Don't fail the request if email fails, just log it
+      }
+    } else {
+      console.log('Email notification skipped - RESEND_API_KEY not configured');
+      console.log('Lead details:', { name, email, company, recommendedTier, recommendedPrice });
     }
 
     return NextResponse.json({

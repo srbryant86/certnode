@@ -39,7 +39,7 @@ export default function PlatformPage() {
               </h1>
 
               <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-8 leading-relaxed">
-                Transaction receipts link to content certifications, which link to operational attestations. Cross-merchant network effects, blockchain anchoring, and collective fraud defense create compounding trust that's <strong>impossible to replicate.</strong>
+                Transaction receipts link to content certifications, which link to operational attestations. Cross-merchant network effects, blockchain anchoring, and collective fraud defense create compounding trust that&apos;s <strong>impossible to replicate.</strong>
               </p>
 
               <div className="flex flex-wrap justify-center gap-4 mb-10">
@@ -99,9 +99,9 @@ export default function PlatformPage() {
                 Deterministic by Design
               </h3>
               <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
-                Receipts <strong>verify or they don't</strong> — no scoring, no black boxes, no vendor round-trip.
+                Receipts <strong>verify or they don&apos;t</strong> — no scoring, no black boxes, no vendor round-trip.
                 Cryptographic proof is binary and offline-verifiable. Unlike ML-based fraud detection (Stripe Radar),
-                our verification is mathematically provable and doesn't require trusting CertNode's servers.
+                our verification is mathematically provable and doesn&apos;t require trusting CertNode&apos;s servers.
               </p>
             </div>
           </div>

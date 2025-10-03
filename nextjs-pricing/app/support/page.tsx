@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
-import SupportAgent from '@/components/SupportAgent';
+import SalesAgent from '@/components/SalesAgent';
 
 export const metadata: Metadata = {
   title: 'Support - CertNode',

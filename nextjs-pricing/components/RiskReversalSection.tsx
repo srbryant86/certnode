@@ -16,7 +16,7 @@ export default function RiskReversalSection() {
   const guarantees: Guarantee[] = [
     {
       title: "60-Day Money-Back Guarantee",
-      description: "If CertNode doesn't deflect disputes and save you money within 60 days, get a full refund.",
+      description: "If CertNode doesn&apos;t deflect disputes and save you money within 60 days, get a full refund.",
       icon: "🛡️",
       feature: "dispute_deflection"
     },
@@ -61,7 +61,7 @@ export default function RiskReversalSection() {
             Risk-Free Guarantee
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We're so confident CertNode will protect your revenue that we offer a 60-day money-back guarantee.
+            We&apos;re so confident CertNode will protect your revenue that we offer a 60-day money-back guarantee.
           </p>
         </div>
 

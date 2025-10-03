@@ -44,7 +44,7 @@ export default function SecurityPage() {
                   Cryptographic Verification
                 </h3>
                 <p className="text-gray-600">
-                  Every receipt contains a cryptographic hash that can be verified offline. No need to trust CertNode's servers—verification is mathematically provable.
+                  Every receipt contains a cryptographic hash that can be verified offline. No need to trust CertNode&apos;s servers—verification is mathematically provable.
                 </p>
               </div>
 
@@ -64,7 +64,7 @@ export default function SecurityPage() {
                   Blockchain Anchoring
                 </h3>
                 <p className="text-gray-600">
-                  Critical receipts can be anchored to public blockchains, providing independent third-party verification that's auditable by anyone.
+                  Critical receipts can be anchored to public blockchains, providing independent third-party verification that&apos;s auditable by anyone.
                 </p>
               </div>
             </div>
@@ -249,7 +249,7 @@ export default function SecurityPage() {
                   Data Retention
                 </h3>
                 <p className="text-gray-600">
-                  Receipts are retained according to your plan's retention policy (typically 7 years for compliance). You can export or delete your data at any time. Blockchain-anchored receipts remain permanently verifiable.
+                  Receipts are retained according to your plan&apos;s retention policy (typically 7 years for compliance). You can export or delete your data at any time. Blockchain-anchored receipts remain permanently verifiable.
                 </p>
               </div>
 
@@ -285,7 +285,7 @@ export default function SecurityPage() {
                 Trustless Verification
               </h3>
               <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
-                Unlike fraud detection systems that require trusting a vendor's scoring algorithm, CertNode receipts are <strong>mathematically verifiable</strong>. You don't have to trust us—cryptographic proof either verifies or it doesn't. No black boxes, no vendor lock-in.
+                Unlike fraud detection systems that require trusting a vendor&apos;s scoring algorithm, CertNode receipts are <strong>mathematically verifiable</strong>. You don&apos;t have to trust us—cryptographic proof either verifies or it doesn&apos;t. No black boxes, no vendor lock-in.
               </p>
             </div>
           </div>
@@ -310,11 +310,11 @@ export default function SecurityPage() {
                   contact@certnode.io
                 </a>
                 <p className="text-sm text-gray-500 mt-2">
-                  Subject: "Security Disclosure"
+                  Subject: &quot;Security Disclosure&quot;
                 </p>
               </div>
               <p className="text-gray-600 mt-4 text-sm">
-                We'll acknowledge your report within 24 hours and provide a detailed response within 5 business days. We appreciate the security research community's efforts to keep our platform secure.
+                We&apos;ll acknowledge your report within 24 hours and provide a detailed response within 5 business days. We appreciate the security research community&apos;s efforts to keep our platform secure.
               </p>
             </div>
           </div>

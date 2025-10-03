@@ -1,12 +1,13 @@
-﻿# Billion Dollar Blueprint - Phase 1
+# Billion Dollar Blueprint - Phase 1
 
 ## Roadmap Rollup
-- [x] Completed item - Shipped Argon2id-backed NextAuth, overview telemetry, and the API key governance module
-- [ ] CURRENT PRIORITY - Land Stripe billing integration with portal handoff and plan telemetry
-- [ ] Next item - Ship receipt explorer usage metrics with enterprise telemetry hooks
+- [x] Completed item - Activated the AI support steward on /support with escalation-ready email handoff
+- [ ] CURRENT PRIORITY - Monitor agent conversations and tune escalation signal quality for Phase 1 prospects
+- [ ] Next item - Capture agent transcripts inside analytics for human handoff reporting
 
 ## Strategic Insights
 
+- Standing up the support steward shows CertNode owns the protocol guidance loop while preserving human escalation authority.
 - Launching the dedicated dashboard workspace locks Phase 1 around standards ownership with a Prisma schema that mirrors the protocol data model.
 - API key lifecycle governance with single-use secrets and audit trails positions CertNode as the protocol security authority.
 - Owning the credential flow with Argon2id-backed NextAuth sessions reinforces enterprise-grade trust while we scale standards adoption.
@@ -19,6 +20,7 @@
 
 ## Execution Notes
 
+- Launched the /support AI steward with a curated knowledge base and contextual mailto escalation so support and sales teams get structured transcripts.
 - Hardened the authentication perimeter with NextAuth v5, Argon2id hashing, and App Router guards so only verified enterprises reach Phase 1 surfaces.
 - Brought the overview telemetry online with Prisma aggregation, API surface, and seeded audit/receipt data to showcase the enterprise heartbeat.
 - Activated the API management module with rate limits, IP allowlisting, and audit trail generation for every key lifecycle event.

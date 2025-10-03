@@ -157,7 +157,7 @@ export default function SolutionsPage() {
                   Prove Content is Authentic and Unedited
                 </h2>
                 <p className="text-lg text-gray-600 mb-6">
-                  Defend against AI deepfake accusations with C2PA-based verification. Show exactly when content was created and if it's been altered.
+                  Defend against AI deepfake accusations with C2PA-based verification. Show exactly when content was created and if it&apos;s been altered.
                 </p>
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
@@ -188,7 +188,7 @@ export default function SolutionsPage() {
                 <div className="space-y-4 text-gray-700">
                   <div>
                     <p className="font-semibold text-gray-900">Bodycam Footage</p>
-                    <p className="text-sm text-gray-600">Prove video hasn't been edited since capture</p>
+                    <p className="text-sm text-gray-600">Prove video hasn&apos;t been edited since capture</p>
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">Photography</p>

@@ -60,7 +60,7 @@ export default function ReceiptGraphSimple() {
         <div className="text-center">
           <div className="inline-block bg-purple-100 border-2 border-purple-500 rounded-lg px-6 py-3">
             <div className="text-sm font-bold text-purple-900">🔒 Cryptographically Linked Chain</div>
-            <div className="text-xs text-gray-700 mt-1">Can't fake one without faking all three - exponentially harder to forge</div>
+            <div className="text-xs text-gray-700 mt-1">Can&apos;t fake one without faking all three - exponentially harder to forge</div>
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@ export default function ReceiptGraphSimple() {
             </div>
             <div className="flex items-start gap-2">
               <span>•</span>
-              <span>You: "Here's cryptographic proof: Payment → Product → Access Granted"</span>
+              <span>You: "Here&apos;s cryptographic proof: Payment → Product → Access Granted"</span>
             </div>
             <div className="flex items-start gap-2">
               <span>•</span>

@@ -58,7 +58,7 @@ export default function FAQSection() {
             FREQUENTLY ASKED QUESTIONS
           </div>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-            Got Questions? We've Got Answers
+            Got Questions? We&apos;ve Got Answers
           </h2>
           <p className="text-gray-700 text-base md:text-lg">
             Everything you need to know about CertNode pricing and platform.
@@ -116,7 +116,7 @@ export default function FAQSection() {
         <div className="mt-10 text-center p-6 bg-gray-50 rounded-lg border border-gray-200">
           <h3 className="font-bold text-gray-900 mb-2">Still have questions?</h3>
           <p className="text-gray-600 mb-4">
-            Our team is here to help. Get in touch and we'll answer any questions you have.
+            Our team is here to help. Get in touch and we&apos;ll answer any questions you have.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a

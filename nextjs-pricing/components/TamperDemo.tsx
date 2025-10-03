@@ -193,7 +193,7 @@ export default function TamperDemo() {
                   </h4>
                   <p className="text-gray-700 leading-relaxed mb-3">
                     An attacker changed the amount from <strong>$50,000</strong> to <strong>$5,000</strong>
-                    trying to steal money. But they couldn't change the cryptographic hash!
+                    trying to steal money. But they couldn&apos;t change the cryptographic hash!
                   </p>
                   <div className="p-3 bg-white rounded border border-orange-300">
                     <p className="text-sm text-gray-700 mb-2">
@@ -212,7 +212,7 @@ export default function TamperDemo() {
                   </h4>
                   <p className="text-gray-700 leading-relaxed mb-3">
                     When we validate the receipt, we recalculate the hash from the data.
-                    The hashes don't match → <strong className="text-red-600">TAMPERING DETECTED!</strong>
+                    The hashes don&apos;t match → <strong className="text-red-600">TAMPERING DETECTED!</strong>
                   </p>
                   <div className="p-3 bg-white rounded border border-red-600">
                     <code className="text-xs text-gray-700 block mb-2">
@@ -249,7 +249,7 @@ export default function TamperDemo() {
                 <li className="flex items-start gap-3">
                   <span className="text-green-600 font-bold">✓</span>
                   <span className="text-gray-700">
-                    <strong>Offline verifiable:</strong> Anyone can verify without CertNode's servers
+                    <strong>Offline verifiable:</strong> Anyone can verify without CertNode&apos;s servers
                   </span>
                 </li>
                 <li className="flex items-start gap-3">

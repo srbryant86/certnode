@@ -65,7 +65,7 @@ export default function PricingTabs() {
                 Core Trust - Cryptographic Receipt Platform
               </h3>
               <p className="text-gray-600 max-w-3xl mx-auto">
-                Generate cryptographic receipts for transactions, content, and operations. Enterprise-grade proof that's verifiable by anyone, anywhere, offline.
+                Generate cryptographic receipts for transactions, content, and operations. Enterprise-grade proof that&apos;s verifiable by anyone, anywhere, offline.
               </p>
             </div>
             <Suspense fallback={<div className="animate-pulse bg-gray-200 h-96 rounded-lg"></div>}>

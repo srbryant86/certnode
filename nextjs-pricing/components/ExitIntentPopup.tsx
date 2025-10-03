@@ -7,7 +7,7 @@ export default function ExitIntentPopup() {
   const [hasShown, setHasShown] = useState(false);
 
   useEffect(() => {
-    // Don't show again if already dismissed
+    // Don&apos;t show again if already dismissed
     if (hasShown || typeof window === 'undefined') return;
 
     const handleMouseLeave = (e: MouseEvent) => {
@@ -50,7 +50,7 @@ export default function ExitIntentPopup() {
                 <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-                <span className="text-gray-700"><strong>Full refund</strong> if you're not satisfied</span>
+                <span className="text-gray-700"><strong>Full refund</strong> if you&apos;re not satisfied</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -62,7 +62,7 @@ export default function ExitIntentPopup() {
                 <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-                <span className="text-gray-700"><strong>No questions asked</strong> if it doesn't work for you</span>
+                <span className="text-gray-700"><strong>No questions asked</strong> if it doesn&apos;t work for you</span>
               </li>
             </ul>
           </div>

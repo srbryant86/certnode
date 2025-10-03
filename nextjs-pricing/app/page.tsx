@@ -32,10 +32,10 @@ export default function HomePage() {
                 <span className="text-sm text-blue-100">Turnkey integrations for Shopify, Stripe, Kajabi • Setup in &lt;15 min</span>
               </div>
 
-              <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                 The Universal Receipt Protocol
               </h1>
-              <p className="text-2xl md:text-3xl text-blue-100 mb-4 leading-relaxed font-light">
+              <p className="text-xl md:text-2xl text-blue-100 mb-4 leading-relaxed">
                 Cryptographically link <span className="font-semibold text-white">payments</span>, <span className="font-semibold text-white">content</span>, and <span className="font-semibold text-white">operations</span> in one tamper-proof graph.
               </p>
               <p className="text-lg md:text-xl text-blue-200 mb-10 leading-relaxed">
@@ -61,15 +61,15 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/pricing"
-                  className="bg-white text-blue-700 hover:bg-gray-100 px-10 py-5 rounded-xl font-bold text-lg transition-all text-center shadow-2xl hover:shadow-3xl transform hover:scale-105"
+                  className="bg-white text-blue-700 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all text-center shadow-xl"
                 >
-                  Start Free Trial →
+                  View Pricing →
                 </Link>
                 <Link
                   href="/platform"
-                  className="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/20 px-10 py-5 rounded-xl font-bold text-lg transition-all text-center"
+                  className="bg-transparent border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-lg font-semibold text-lg transition-all text-center"
                 >
-                  See Receipt Graph Demo
+                  See How It Works
                 </Link>
               </div>
 
@@ -272,30 +272,30 @@ export default function HomePage() {
         </section>
 
         {/* Final CTA */}
-        <section className="py-24 bg-gradient-to-br from-blue-600 via-purple-700 to-pink-600 text-white">
+        <section className="py-24 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
           <div className="max-w-5xl mx-auto px-6 text-center">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6">
               <span className="text-sm font-semibold">✓ 60-Day Money-Back Guarantee</span>
             </div>
-            <h2 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
-              Start Proving What Happened
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Start Building with Cryptographic Receipts
             </h2>
-            <p className="text-xl md:text-2xl text-blue-100 mb-10 leading-relaxed max-w-3xl mx-auto">
-              Join businesses that have eliminated $2M+ in fraud, chargebacks, and compliance costs with the Universal Receipt Protocol.
+            <p className="text-xl text-blue-100 mb-8">
+              All plans include access to all three products. 60-day money-back guarantee.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link
                 href="/pricing"
-                className="bg-white text-blue-700 hover:bg-gray-100 px-10 py-5 rounded-xl font-bold text-lg transition-all shadow-2xl transform hover:scale-105"
+                className="bg-white text-blue-700 hover:bg-gray-100 px-8 py-4 rounded-lg font-semibold text-lg transition-all"
               >
-                Start Free Trial →
+                View Pricing
               </Link>
               <a
                 href="mailto:contact@certnode.io"
-                className="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white/20 px-10 py-5 rounded-xl font-bold text-lg transition-all"
+                className="bg-transparent border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-lg font-semibold text-lg transition-all"
               >
-                Talk to Sales
+                Contact Sales
               </a>
             </div>
 

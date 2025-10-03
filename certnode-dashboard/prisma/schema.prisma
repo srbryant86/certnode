@@ -26,6 +26,18 @@ enum EnterpriseTier {
   ENTERPRISE  @map("enterprise")
 }
 
+enum IndustryCategory {
+  ECOMMERCE   @map("ecommerce")
+  SAAS        @map("saas")
+  CONTENT     @map("content")
+  SERVICES    @map("services")
+  LOGISTICS   @map("logistics")
+  FINANCE     @map("finance")
+  HEALTHCARE  @map("healthcare")
+  OTHER       @map("other")
+  MULTIPLE    @map("multiple")
+}
+
 enum UserRole {
   ADMIN       @map("admin")
   USER        @map("user")
@@ -99,6 +111,7 @@ model Enterprise {
   domain               String?
   tier                 EnterpriseTier     @default(FREE)
   billingTier          EnterpriseTier     @default(FREE) @map("billing_tier")
+  industry             IndustryCategory?  // Optional: for UX personalization only
   settings             String             @default("{}")
   createdAt            DateTime           @default(now()) @map("created_at")
   updatedAt            DateTime           @updatedAt @map("updated_at")

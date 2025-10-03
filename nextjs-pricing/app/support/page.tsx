@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
-import SupportAgent from '@/components/SupportAgent';
+import TechnicalSupportAgent from '@/components/TechnicalSupportAgent';
 
 export const metadata: Metadata = {
   title: 'Support - CertNode',
@@ -136,16 +136,16 @@ export default function SupportPage() {
 
         </section>
 
-        {/* Support Agent */}
+        {/* Technical Support Agent */}
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-6">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center md:text-left">
-              Talk with the AI support steward
+              Get Technical Support
             </h2>
             <p className="text-gray-600 text-base md:text-lg mb-10 text-center md:text-left">
-              Ask integration, security, or pricing questions. The agent shares standards-aligned guidance and escalates to the CertNode team when a human needs to step in.
+              Ask about receipt creation, graph structures, API integration, troubleshooting, or any technical question. Our AI agent has deep knowledge of CertNode and can escalate to our support team when needed.
             </p>
-            <SupportAgent />
+            <TechnicalSupportAgent />
           </div>
         </section>
 
@@ -330,9 +330,6 @@ export default function SupportPage() {
       </div>
 
       <Footer />
-
-      {/* AI Sales Agent */}
-      <SupportAgent />
     </>
   );
 }

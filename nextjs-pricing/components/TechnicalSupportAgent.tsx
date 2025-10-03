@@ -63,16 +63,26 @@ const receipt = await fetch('https://certnode.io/api/receipts', {
 \`\`\`
 
 **The receipt is completely flexible** - you control the \`type\` label and \`data\` payload.`
-      stripeIntegration: {
+  },
+
+  stripeIntegration: {
     keywords: ['stripe', 'payment intent', 'charge succeeded', 'dispute', 'subscription'],
-    response: **Stripe Turnkey Integration:**
+    response: `**Stripe Turnkey Integration:**
 
 - Point Stripe webhooks to **https://certnode.io/api/integrations/stripe**.
 - Use your CertNode API key as the endpoint secret; we verify the Stripe signature (t=.../v1=...) before accepting the event.
-- The Integration Event Ledger dedupes retries and links charges, refunds, invoices, subscriptions, and disputes to the same DAG so your dispute packet is always ready.,
+- The Integration Event Ledger dedupes retries and links charges, refunds, invoices, subscriptions, and disputes to the same DAG so your dispute packet is always ready.`,
   },
 
-},
+  shopifyIntegration: {
+    keywords: ['shopify', 'ecommerce integration', 'orders/create', 'webhook ledger'],
+    response: `**Shopify Turnkey Integration:**
+
+- Configure Shopify to POST webhooks to **https://certnode.io/api/integrations/shopify**.
+- Use your CertNode API key as the webhook secret; the adapter validates the HMAC signature before processing.
+- Events flow into the Integration Event Ledger, so duplicate webhooks are suppressed and receipts stay linked to the canonical order graph.
+- Every order, fulfillment, refund, and dispute is written through \`createReceiptWithGraph\` with parent relationships intact for chargeback defense.`,
+  },
 
   // Receipt Graph & DAG
   graphStructure: {

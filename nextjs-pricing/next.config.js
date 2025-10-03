@@ -10,8 +10,8 @@ const nextConfig = {
   // Only enable standalone output when explicitly requested to avoid dev/start warnings
   output: enableStandaloneBuild ? 'standalone' : undefined,
 
-  // Assets are served from root domain
-  // assetPrefix: undefined,
+  // Assets are served from /nextjs-pricing prefix for multi-app routing
+  assetPrefix: '/nextjs-pricing',
 
   // Force cache invalidation for deployment pipelines
   generateBuildId: async () => {

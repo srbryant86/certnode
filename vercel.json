@@ -52,6 +52,7 @@
   "rewrites": [
     { "source": "/_next/(.*)", "destination": "/certnode-dashboard/_next/$1" },
     { "source": "/pricing/_next/(.*)", "destination": "/nextjs-pricing/_next/$1" },
+    { "source": "/nextjs-pricing/_next/(.*)", "destination": "/nextjs-pricing/_next/$1" },
     { "source": "/openapi.html", "destination": "/public/openapi.html" },
     { "source": "/openapi.json", "destination": "/public/openapi.json" },
     { "source": "/.well-known/jwks.json", "destination": "/public/.well-known/jwks.json" },

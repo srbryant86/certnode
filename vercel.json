@@ -63,7 +63,7 @@
     { "source": "/dashboard", "destination": "/certnode-dashboard/dashboard" },
     { "source": "/login", "destination": "/certnode-dashboard/login" },
     { "source": "/register", "destination": "/certnode-dashboard/register" },
-    { "source": "/platform", "destination": "/web/platform.html" },
+    { "source": "/platform", "destination": "/nextjs-pricing/platform" },
     { "source": "/solutions", "destination": "/web/solutions.html" },
     { "source": "/support", "destination": "/web/support.html" },
     { "source": "/security", "destination": "/web/security.html" },

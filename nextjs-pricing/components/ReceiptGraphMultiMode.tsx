@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { generateCryptoFields, type CryptoFields } from '@/lib/demoCrypto';
 
 type BusinessMode = 'ecommerce' | 'digital' | 'services' | 'highticket' | 'content';
 
@@ -18,6 +19,7 @@ type Receipt = {
   parentIds?: string[]; // DAG: Multiple parents
   relationType?: RelationType; // Relationship to parents
   depth?: number; // Graph depth level
+  crypto: CryptoFields; // Cryptographic fields
 };
 
 const scenarios = {
@@ -377,6 +379,7 @@ export default function ReceiptGraphMultiMode() {
   const [showChargeback, setShowChargeback] = useState(false);
   const [selectedTier, setSelectedTier] = useState<PricingTier>('professional');
   const [cfoQueryMode, setCfoQueryMode] = useState(false);
+  const [selectedReceipt, setSelectedReceipt] = useState<Receipt | null>(null);
 
   const scenario = scenarios[mode];
 
@@ -448,8 +451,17 @@ export default function ReceiptGraphMultiMode() {
     if (step < scenarioReceipts.length) {
       // Add the next receipt from the scenario
       const receiptDef = scenarioReceipts[step];
+      const receiptId = `rcpt_${step}`;
+
+      // Generate cryptographic fields with timestamp offset based on step
+      const crypto = generateCryptoFields(
+        receiptId,
+        receiptDef.parentIds,
+        step * -5 // Each receipt is 5 minutes older
+      );
+
       setReceipts(prev => [...prev, {
-        id: `rcpt_${step}`, // Consistent ID for DAG relationships
+        id: receiptId, // Consistent ID for DAG relationships
         domain: receiptDef.domain,
         type: receiptDef.type,
         label: receiptDef.label,
@@ -457,7 +469,8 @@ export default function ReceiptGraphMultiMode() {
         data: receiptDef,
         parentIds: receiptDef.parentIds || [],
         relationType: receiptDef.relationType,
-        depth: receiptDef.depth || 0
+        depth: receiptDef.depth || 0,
+        crypto
       }]);
     } else if (step === scenarioReceipts.length) {
       // Show the dispute/chargeback
@@ -474,6 +487,7 @@ export default function ReceiptGraphMultiMode() {
     setReceipts([]);
     setShowChargeback(false);
     setCfoQueryMode(false);
+    setSelectedReceipt(null);
   };
 
   const handleModeChange = (newMode: BusinessMode) => {
@@ -705,7 +719,10 @@ export default function ReceiptGraphMultiMode() {
 
                             {/* Receipt Card */}
                             <div className={`transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-30'} ${inQueryPath ? 'ring-4 ring-green-500 scale-105' : ''}`}>
-                              <div className={`relative w-32 h-32 ${colors.bg} border-4 ${colors.border} rounded-lg flex flex-col items-center justify-center p-2 ${!isVisible ? 'grayscale' : ''}`}>
+                              <div
+                                onClick={() => setSelectedReceipt(receipt)}
+                                className={`relative w-32 h-32 ${colors.bg} border-4 ${colors.border} rounded-lg flex flex-col items-center justify-center p-2 ${!isVisible ? 'grayscale' : ''} cursor-pointer hover:scale-105 transition-transform`}
+                              >
                                 {/* Query highlight */}
                                 {inQueryPath && (
                                   <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
@@ -763,6 +780,77 @@ export default function ReceiptGraphMultiMode() {
             </div>
           )}
         </div>
+
+        {/* Crypto Details Panel */}
+        {selectedReceipt && (
+          <div className="mt-6 bg-gradient-to-br from-green-50 to-blue-50 border-2 border-green-300 rounded-xl p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h5 className="text-lg font-bold text-gray-900 mb-1">
+                  Cryptographic Details
+                </h5>
+                <p className="text-sm text-gray-600">
+                  Receipt: {selectedReceipt.label} ({selectedReceipt.id})
+                </p>
+              </div>
+              <button
+                onClick={() => setSelectedReceipt(null)}
+                className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              <div className="bg-white rounded-lg p-3 border border-gray-200">
+                <div className="text-xs font-semibold text-gray-600 mb-1">Hash</div>
+                <code className="text-xs text-gray-900 break-all font-mono">
+                  {selectedReceipt.crypto.hash}
+                </code>
+              </div>
+
+              <div className="bg-white rounded-lg p-3 border border-gray-200">
+                <div className="text-xs font-semibold text-gray-600 mb-1">Signature</div>
+                <code className="text-xs text-gray-900 break-all font-mono">
+                  {selectedReceipt.crypto.signature}
+                </code>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-white rounded-lg p-3 border border-gray-200">
+                  <div className="text-xs font-semibold text-gray-600 mb-1">Timestamp</div>
+                  <code className="text-xs text-gray-900 font-mono">
+                    {selectedReceipt.crypto.timestamp}
+                  </code>
+                </div>
+
+                <div className="bg-white rounded-lg p-3 border border-gray-200">
+                  <div className="text-xs font-semibold text-gray-600 mb-1">Key ID</div>
+                  <code className="text-xs text-gray-900 font-mono">
+                    {selectedReceipt.crypto.jwksKeyId}
+                  </code>
+                </div>
+              </div>
+
+              {selectedReceipt.crypto.parentHash && (
+                <div className="bg-white rounded-lg p-3 border border-gray-200">
+                  <div className="text-xs font-semibold text-gray-600 mb-1">Parent Hash</div>
+                  <code className="text-xs text-gray-900 break-all font-mono">
+                    {selectedReceipt.crypto.parentHash}
+                  </code>
+                </div>
+              )}
+
+              <div className="pt-3 border-t border-gray-300">
+                <p className="text-xs text-gray-600">
+                  <strong>Domain:</strong> {selectedReceipt.domain} |
+                  <strong className="ml-2">Type:</strong> {selectedReceipt.type} |
+                  <strong className="ml-2">Depth:</strong> Level {selectedReceipt.depth}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Graph Stats */}
         {receipts.length >= 3 && (

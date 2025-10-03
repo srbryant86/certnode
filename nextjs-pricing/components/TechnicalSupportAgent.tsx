@@ -261,6 +261,115 @@ Webhooks retry 3 times with exponential backoff.`
 All use the same flexible API - just different receipt types and linking patterns.`
   },
 
+  // Kajabi/Course Platform Integration
+  kajabiIntegration: {
+    keywords: ['kajabi', 'teachable', 'thinkific', 'course platform', 'high ticket', 'login', 'content view', 'download'],
+    response: `**Kajabi/Course Platform Integration for High-Ticket Sales:**
+
+**How it works:**
+1. Use Kajabi webhooks to trigger CertNode receipt creation
+2. Create receipts for every student action (login, view, download)
+3. Link receipts to create a complete engagement graph
+
+**Example workflow:**
+
+\`\`\`typescript
+// 1. Payment receipt (when customer pays $15K)
+const payment = await createReceipt({
+  domain: 'transaction',
+  type: 'payment',
+  data: {
+    amount: 15000,
+    currency: 'USD',
+    kajabi_order_id: 'ord_123',
+    student_email: 'customer@example.com'
+  }
+});
+
+// 2. Course access granted
+const access = await createReceipt({
+  domain: 'operations',
+  type: 'course-access-granted',
+  data: {
+    kajabi_product_id: 'prod_456',
+    course_name: 'Elite Coaching Program',
+    access_date: '2025-10-03'
+  },
+  parentIds: [payment.id]
+});
+
+// 3. Student login (track every login via Kajabi webhook)
+const login = await createReceipt({
+  domain: 'operations',
+  type: 'student-login',
+  data: {
+    login_timestamp: '2025-10-03T14:30:00Z',
+    ip_address: '192.168.1.1',
+    device: 'Chrome on MacOS'
+  },
+  parentIds: [access.id]
+});
+
+// 4. Content view (lesson completed)
+const lessonView = await createReceipt({
+  domain: 'content',
+  type: 'lesson-viewed',
+  data: {
+    lesson_id: 'lesson_789',
+    lesson_title: 'Module 3: Advanced Strategies',
+    watch_time_minutes: 47,
+    completion_percentage: 100
+  },
+  parentIds: [login.id]
+});
+
+// 5. Resource download
+const download = await createReceipt({
+  domain: 'content',
+  type: 'resource-downloaded',
+  data: {
+    file_name: 'workbook.pdf',
+    file_size_mb: 2.4,
+    download_timestamp: '2025-10-03T15:15:00Z'
+  },
+  parentIds: [lessonView.id]
+});
+\`\`\`
+
+**Kajabi Webhook Setup:**
+
+1. **In Kajabi Admin:**
+   - Settings → Webhooks → Add Webhook
+   - URL: \`https://yourserver.com/kajabi-webhook\`
+   - Events: \`offer.purchased\`, \`course.completed\`, \`member.logged_in\`
+
+2. **Your webhook handler:**
+\`\`\`typescript
+app.post('/kajabi-webhook', async (req, res) => {
+  const event = req.body;
+
+  if (event.type === 'member.logged_in') {
+    await createReceipt({
+      domain: 'operations',
+      type: 'student-login',
+      data: event.data
+    });
+  }
+
+  res.status(200).send('OK');
+});
+\`\`\`
+
+**For refund disputes:**
+When a student requests a refund claiming "never got access", your receipt graph proves:
+- Payment receipt ✓
+- 47 logins ✓
+- 12 lessons completed (89 min watch time) ✓
+- 23 resource downloads ✓
+
+**This creates an irrefutable audit trail.**`
+  },
+
   // Troubleshooting
   troubleshooting: {
     keywords: ['error', 'debug', 'not working', 'broken', 'issue', 'problem'],

@@ -450,7 +450,7 @@ function detectIntent(input: string): IntentType {
   if (['create', 'post', 'first receipt', 'new receipt'].some(kw => normalized.includes(kw))) return 'technical';
   if (['graph', 'dag', 'link', 'parent', 'child'].some(kw => normalized.includes(kw))) return 'graph';
   if (['error', 'debug', 'not working', 'broken', 'issue'].some(kw => normalized.includes(kw))) return 'troubleshooting';
-  if (['integrate', 'sdk', 'shopify', 'stripe', 'plugin'].some(kw => normalized.includes(kw))) return 'integration';
+  if (['integrate', 'integration', 'webhook', 'kajabi', 'shopify', 'stripe', 'shippo', 'teachable', 'woocommerce', 'plugin', 'turnkey'].some(kw => normalized.includes(kw))) return 'integration';
   if (['pricing', 'billing', 'upgrade', 'invoice'].some(kw => normalized.includes(kw))) return 'billing';
 
   return 'general';
@@ -496,7 +496,7 @@ function generateResponse(input: string): string {
   }
 
   if (intent === 'integration') {
-    return `CertNode integrates with:\n\n**E-commerce:**\n• Shopify - Install CertNode app from app store\n• WooCommerce - Use our WordPress plugin\n• Stripe - Automatic receipt creation on charge.succeeded\n\n**Content Platforms:**\n• YouTube - Webhook on video upload\n• Vimeo - API integration for content verification\n\n**Development:**\n• REST API - Full control via HTTPS\n• SDKs - JavaScript, Python, Go, Ruby\n• Webhooks - Real-time event notifications\n\nWhich platform are you integrating with?`;
+    return `CertNode offers **turnkey integrations** - just point your platform webhooks to CertNode and we automatically create receipts.\n\n**🎓 High-Ticket Sales & Courses:**\n• Kajabi - Tracks purchases, logins, lessons, completions\n• Teachable - Course platform integration\n\n**🛒 E-Commerce:**\n• Shopify - Orders, fulfillment, refunds, disputes\n• WooCommerce - WordPress e-commerce\n\n**💳 Payments:**\n• Stripe - Charges, refunds, subscriptions, disputes\n\n**📦 Shipping:**\n• Shippo - Multi-carrier shipping labels & tracking\n• ShipStation - Order fulfillment automation\n\n**Setup is simple:**\n1. Go to your platform's webhook settings\n2. Point to: \`https://certnode.io/api/integrations/{platform}\`\n3. Receipts created automatically for every event\n4. All receipts linked to form a complete audit trail\n\n**Example:** Shopify order → Shippo label → FedEx tracking → Delivery → Stripe chargeback → Evidence\n\nWhich platform are you integrating? I can provide specific setup steps.`;
   }
 
   if (intent === 'billing') {

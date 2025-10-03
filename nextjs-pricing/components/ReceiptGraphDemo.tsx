@@ -125,9 +125,6 @@ export default function ReceiptGraphDemo() {
       {/* Introduction */}
       <div className="max-w-4xl mx-auto mb-10">
         <div className="text-center mb-6">
-          <div className="inline-block bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-3">
-            THE CERTNODE DIFFERENCE
-          </div>
           <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
             Receipt Graph: The Only Platform That Connects Everything
           </h3>

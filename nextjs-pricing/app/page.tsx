@@ -20,7 +20,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-
       <div className="min-h-screen bg-white">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white py-24 md:py-32">

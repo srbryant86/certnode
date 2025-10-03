@@ -160,7 +160,10 @@ export async function fireWebhook(
 
   // Filter to only webhooks subscribed to this event
   const webhooks = allWebhooks.filter(webhook => {
-    const events = webhook.events as unknown as string[]
+    // Parse JSON string to array (SQLite stores as JSON string)
+    const events = typeof webhook.events === 'string'
+      ? JSON.parse(webhook.events)
+      : webhook.events as unknown as string[]
     return events.includes(event)
   })
 

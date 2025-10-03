@@ -37,6 +37,7 @@ interface OperationsInputs {
 
 export default function ROICalculator() {
   const [mode, setMode] = useState<CalculatorMode>('disputes');
+  const [reductionRate, setReductionRate] = useState(70); // Adjustable reduction percentage
 
   const [disputeInputs, setDisputeInputs] = useState<DisputeInputs>({
     monthlyGMV: 100000,
@@ -80,7 +81,7 @@ export default function ROICalculator() {
 
   const disputePresets = [
     { id: 'small-ecommerce', label: 'Small Business', monthlyGMV: 25000, disputeRate: 2.5, avgDisputeValue: 75, hourlyRate: 40, hoursPerDispute: 4 },
-    { id: 'high-ticket', label: 'High-Ticket Sales', monthlyGMV: 150000, disputeRate: 2.2, avgDisputeValue: 10000, hourlyRate: 85, hoursPerDispute: 5 },
+    { id: 'high-ticket', label: 'High-Ticket Sales', monthlyGMV: 150000, disputeRate: 8.0, avgDisputeValue: 10000, hourlyRate: 85, hoursPerDispute: 5 },
     { id: 'mid-market', label: 'Growing Business', monthlyGMV: 250000, disputeRate: 1.5, avgDisputeValue: 150, hourlyRate: 75, hoursPerDispute: 3 },
     { id: 'enterprise', label: 'High-Volume', monthlyGMV: 2000000, disputeRate: 1.0, avgDisputeValue: 3500, hourlyRate: 100, hoursPerDispute: 4 },
   ];
@@ -156,26 +157,34 @@ export default function ROICalculator() {
 
   // Dispute Calculations
   const calculateDisputes = () => {
-    const monthlyDisputes = (disputeInputs.monthlyGMV * disputeInputs.disputeRate) / 100;
-    const monthlyDisputeCosts = monthlyDisputes * disputeInputs.avgDisputeValue;
-    const monthlyLaborCosts = monthlyDisputes * disputeInputs.hoursPerDispute * disputeInputs.hourlyRate;
+    // Calculate total dollar amount in disputes
+    const monthlyDisputeAmount = (disputeInputs.monthlyGMV * disputeInputs.disputeRate) / 100;
 
-    const disputeReductionRate = 0.70;
-    const laborReductionRate = 0.80;
+    // Calculate number of disputes
+    const numberOfDisputes = monthlyDisputeAmount / disputeInputs.avgDisputeValue;
+
+    // Cost of disputes = amount being disputed
+    const monthlyDisputeCosts = monthlyDisputeAmount;
+
+    // Labor cost = number of disputes * hours * rate
+    const monthlyLaborCosts = numberOfDisputes * disputeInputs.hoursPerDispute * disputeInputs.hourlyRate;
+
+    const disputeReductionRate = reductionRate / 100;
+    const laborReductionRate = Math.min((reductionRate + 10) / 100, 0.90); // Labor is slightly higher, capped at 90%
 
     const monthlyDisputeSavings = monthlyDisputeCosts * disputeReductionRate;
     const monthlyLaborSavings = monthlyLaborCosts * laborReductionRate;
     const monthlyTotalSavings = monthlyDisputeSavings + monthlyLaborSavings;
 
     return {
-      monthlyDisputes,
+      monthlyDisputes: numberOfDisputes,
       monthlyDisputeSavings,
       monthlyLaborSavings,
       monthlyTotalSavings,
       annualTotalSavings: monthlyTotalSavings * 12,
-      metric1: { label: 'Monthly Disputes', value: monthlyDisputes },
-      metric2: { label: 'Dispute Cost Savings (70% reduction)', value: monthlyDisputeSavings },
-      metric3: { label: 'Labor Cost Savings (80% reduction)', value: monthlyLaborSavings },
+      metric1: { label: 'Monthly Disputes', value: numberOfDisputes },
+      metric2: { label: `Dispute Cost Savings (${reductionRate}% reduction)`, value: monthlyDisputeSavings },
+      metric3: { label: `Labor Cost Savings (${Math.round(laborReductionRate * 100)}% reduction)`, value: monthlyLaborSavings },
     };
   };
 
@@ -269,9 +278,20 @@ export default function ROICalculator() {
 
   const getRecommendedPrice = () => {
     if (mode === 'disputes') {
+      // High-Ticket Shield plans for high-value disputes
+      const isHighTicket = selectedPreset === 'high-ticket' ||
+                           selectedPreset === 'enterprise' ||
+                           disputeInputs.avgDisputeValue > 5000;
+
+      if (isHighTicket) {
+        // Legal Shield ($12k/year = $1000/month) or Dispute Fortress ($30k/year = $2500/month)
+        return disputeInputs.monthlyGMV > 500000 ? 2500 : 1000;
+      }
+
+      // Regular SMB tiers
       return disputeInputs.monthlyGMV < 100000 ? 49 :
              disputeInputs.monthlyGMV < 300000 ? 199 :
-             disputeInputs.monthlyGMV < 1000000 ? 499 : 1500;
+             disputeInputs.monthlyGMV < 1000000 ? 499 : 999;
     } else if (mode === 'compliance') {
       return complianceInputs.annualRevenue < 5000000 ? 199 :
              complianceInputs.annualRevenue < 20000000 ? 499 :
@@ -346,6 +366,66 @@ export default function ROICalculator() {
           ))}
         </div>
 
+        {/* Reduction Rate Selector */}
+        {mode === 'disputes' && (
+          <div className="bg-white rounded-lg border-2 border-gray-200 p-6 mb-8">
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Estimated Reduction Rate: <span className="text-blue-600">{reductionRate}%</span>
+              </label>
+              <p className="text-xs text-gray-600 mb-4">
+                Adjust how conservative or aggressive you want the savings estimate to be
+              </p>
+            </div>
+
+            <div className="flex gap-3 mb-4">
+              <button
+                onClick={() => setReductionRate(40)}
+                className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                  reductionRate === 40
+                    ? 'bg-orange-600 text-white shadow-lg'
+                    : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-orange-600'
+                }`}
+              >
+                Conservative (40%)
+              </button>
+              <button
+                onClick={() => setReductionRate(70)}
+                className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                  reductionRate === 70
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-600'
+                }`}
+              >
+                Realistic (70%)
+              </button>
+              <button
+                onClick={() => setReductionRate(85)}
+                className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                  reductionRate === 85
+                    ? 'bg-green-600 text-white shadow-lg'
+                    : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-green-600'
+                }`}
+              >
+                Aggressive (85%)
+              </button>
+            </div>
+
+            <input
+              type="range"
+              min={30}
+              max={90}
+              step={5}
+              value={reductionRate}
+              onChange={(e) => setReductionRate(Number(e.target.value))}
+              className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer"
+              style={{
+                background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${((reductionRate - 30) / 60) * 100}%, #E5E7EB ${((reductionRate - 30) / 60) * 100}%, #E5E7EB 100%)`
+              }}
+            />
+          </div>
+        )}
+
         {/* Presets */}
         <div className="flex flex-wrap justify-center gap-3 mb-8">
           {mode === 'disputes' && disputePresets.map((preset) => (
@@ -418,6 +498,7 @@ export default function ROICalculator() {
           formatNumber={formatNumber}
           monthlyROI={monthlyROI}
           paybackDays={paybackDays}
+          reductionRate={reductionRate}
         />
 
         {/* CTA */}
@@ -471,7 +552,8 @@ function DisputeCalculatorInputs({
   formatCurrency,
   formatNumber,
   monthlyROI,
-  paybackDays
+  paybackDays,
+  reductionRate
 }: any) {
   return (
     <div className="grid md:grid-cols-2 gap-8 mb-8">
@@ -520,6 +602,7 @@ function DisputeCalculatorInputs({
         formatNumber={formatNumber}
         monthlyROI={monthlyROI}
         paybackDays={paybackDays}
+        reductionRate={mode === 'disputes' ? reductionRate : 70}
       />
     </div>
   );
@@ -543,11 +626,11 @@ function DisputeInputFields({ inputs, setInputs, setSelectedPreset }: any) {
         label="Dispute/Chargeback Rate (%)"
         type="percentage"
         min={0}
-        max={5}
+        max={20}
         step={0.1}
         value={inputs.disputeRate}
         onChange={(val: number) => { setInputs({ ...inputs, disputeRate: val }); setSelectedPreset(null); }}
-        helpText="Industry average: 1-2%"
+        helpText="E-commerce: 1-2% | High-ticket sales: 5-15%"
       />
 
       <InputField
@@ -788,10 +871,10 @@ function InputField({ label, type, min, max, step, value, onChange, helpText }: 
 }
 
 // Results Display
-function ResultsDisplay({ mode, results, formatCurrency, formatNumber, monthlyROI, paybackDays }: any) {
+function ResultsDisplay({ mode, results, formatCurrency, formatNumber, monthlyROI, paybackDays, reductionRate }: any) {
   const getSavingsMessage = () => {
     switch (mode) {
-      case 'disputes': return 'Cryptographic receipts reduce disputes by 70% and automate 80% of manual work.';
+      case 'disputes': return `Cryptographic receipts reduce disputes and automate manual work based on your ${reductionRate}% reduction estimate.`;
       case 'compliance': return 'Automated evidence collection reduces audit prep by 87.5% and external auditor costs by 73%.';
       case 'content': return 'C2PA verification reduces false IP claims by 90% and automates moderation.';
       case 'operations': return 'Cryptographic proof reduces documentation disputes by 95% and support costs.';

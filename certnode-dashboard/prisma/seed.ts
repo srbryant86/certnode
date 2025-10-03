@@ -1,4 +1,4 @@
-import { KeyStatus, PlanTier, PrismaClient, UserRole, VerificationStatus } from "@prisma/client";
+import { KeyStatus, EnterpriseTier, PrismaClient, UserRole, VerificationStatus } from "@prisma/client";
 import { hashPassword } from "@/lib/password";
 
 const prisma = new PrismaClient();
@@ -15,8 +15,9 @@ async function main() {
       data: {
         name: "CertNode Reference Enterprise",
         domain: "reference.certnode.io",
-        billingTier: PlanTier.FOUNDATION,
-        settings: {},
+        tier: EnterpriseTier.PRO,
+        billingTier: EnterpriseTier.PRO,
+        settings: JSON.stringify({}),
       },
     });
   }
@@ -27,23 +28,22 @@ async function main() {
     where: { email: "owner@certnode.io" },
     update: {
       name: "CertNode Owner",
-      role: UserRole.OWNER,
+      role: UserRole.ADMIN,
       enterpriseId: enterprise.id,
       passwordHash: ownerPasswordHash,
     },
     create: {
       email: "owner@certnode.io",
       name: "CertNode Owner",
-      role: UserRole.OWNER,
+      role: UserRole.ADMIN,
       enterpriseId: enterprise.id,
       passwordHash: ownerPasswordHash,
     },
   });
 
   const apiKey = await seedApiKey(enterprise.id, owner.id);
-  await seedReceipts(enterprise.id, apiKey.id);
+  await seedReceipts(enterprise.id, apiKey.id, owner.id);
   await seedAuditLogs(enterprise.id, owner.id);
-  await seedUsageMetrics(enterprise.id);
 }
 
 async function seedApiKey(enterpriseId: string, userId: string) {
@@ -65,16 +65,16 @@ async function seedApiKey(enterpriseId: string, userId: string) {
       name: "Seed API Key",
       keyHash,
       keyPreview: keySecret.slice(0, 12),
-      permissions: ["receipts:read", "receipts:write"],
+      permissions: JSON.stringify(["receipts:read", "receipts:write"]),
       rateLimit: 2000,
       rateLimitWindow: "1m",
-      ipRestrictions: [],
+      ipRestrictions: JSON.stringify([]),
       status: KeyStatus.ACTIVE,
     },
   });
 }
 
-async function seedReceipts(enterpriseId: string, apiKeyId: string) {
+async function seedReceipts(enterpriseId: string, apiKeyId: string, userId: string) {
   const existing = await prisma.receipt.count({ where: { enterpriseId } });
   if (existing > 0) {
     return;
@@ -101,8 +101,6 @@ async function seedReceipts(enterpriseId: string, apiKeyId: string) {
           },
           verificationStatus:
             index % 5 === 0 ? VerificationStatus.FAILED : VerificationStatus.VERIFIED,
-          amountCents: BigInt((index % 4 === 0 ? 120000 : 80000) + index * 2500),
-          currency: "USD",
           createdAt: new Date(now - index * 1000 * 60 * 60 * 6),
         },
       })
@@ -112,14 +110,13 @@ async function seedReceipts(enterpriseId: string, apiKeyId: string) {
   await prisma.auditLog.createMany({
     data: receipts.map((receipt, index) => ({
       enterpriseId,
-      userId: null,
+      userId,
       action: index % 5 === 0 ? "receipt.verification_failed" : "receipt.generated",
       resourceType: "receipt",
       resourceId: receipt.id,
-      details: {
+      details: JSON.stringify({
         transactionId: receipt.transactionId,
-        amountCents: Number(receipt.amountCents),
-      },
+      }),
       createdAt: receipt.createdAt,
       ipAddress: "127.0.0.1",
       userAgent: "seed-script",

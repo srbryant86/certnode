@@ -1,12 +1,15 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { KeyStatus } from "@prisma/client";
-import crypto from "crypto";
+import { verifyPassword } from "@/lib/password";
 
 export interface ApiAuthResult {
   success: boolean;
   enterpriseId?: string;
   apiKeyId?: string;
+  user?: any;
+  enterprise?: any;
+  apiKey?: any;
   error?: string;
 }
 
@@ -24,13 +27,9 @@ export async function authenticateApiKey(request: NextRequest): Promise<ApiAuthR
   }
 
   try {
-    // Hash the provided API key to compare with stored hash
-    const keyHash = crypto.createHash('sha256').update(apiKeyHeader).digest('hex');
-
-    // Find the API key in database
-    const apiKey = await prisma.apiKey.findUnique({
+    // Find all active API keys
+    const apiKeys = await prisma.apiKey.findMany({
       where: {
-        keyHash,
         status: KeyStatus.ACTIVE
       },
       include: {
@@ -43,17 +42,23 @@ export async function authenticateApiKey(request: NextRequest): Promise<ApiAuthR
       }
     });
 
-    if (!apiKey) {
-      return {
-        success: false,
-        error: "Invalid or revoked API key"
-      };
+    // Check each key to find a match
+    for (const apiKey of apiKeys) {
+      const isValid = await verifyPassword(apiKeyHeader, apiKey.keyHash);
+      if (isValid) {
+        return {
+          success: true,
+          enterpriseId: apiKey.enterpriseId,
+          apiKeyId: apiKey.id,
+          enterprise: apiKey.enterprise,
+          apiKey: apiKey
+        };
+      }
     }
 
     return {
-      success: true,
-      enterpriseId: apiKey.enterpriseId,
-      apiKeyId: apiKey.id
+      success: false,
+      error: "Invalid or revoked API key"
     };
 
   } catch (error) {

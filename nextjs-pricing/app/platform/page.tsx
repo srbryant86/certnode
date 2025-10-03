@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Footer from '@/components/Footer';
-import ReceiptGraph from '@/components/ReceiptGraph';
+import ReceiptGraphMultiMode from '@/components/ReceiptGraphMultiMode';
 import PlatformPillars from '@/components/PlatformPillars';
 import PlatformBenefits from '@/components/PlatformBenefits';
 import PlatformStats from '@/components/PlatformStats';
@@ -126,7 +126,7 @@ export default function PlatformPage() {
         {/* Receipt Graph */}
         <section className="py-16 bg-gray-50">
           <div className="max-w-7xl mx-auto px-6">
-            <ReceiptGraph />
+            <ReceiptGraphMultiMode />
           </div>
         </section>
 

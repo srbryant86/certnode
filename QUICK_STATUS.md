@@ -1,5 +1,5 @@
 # CertNode Status - Quick Reference
-**Last Updated:** 2025-10-02 (Session Complete!)
+**Last Updated:** 2025-10-02 19:30 CDT (Webhooks TESTED & WORKING!)
 
 ## ✅ DONE (Working APIs)
 - **Receipt Graph DAG:** Fully working (`lib/graph/receipt-graph-service.ts`)
@@ -16,12 +16,15 @@
 3. **Batch Operations** - Process 1,000+ receipts in parallel
 4. **Webhook Notifications** - Real-time events with HMAC signatures (ACTIVATED!)
 
-## ✅ WEBHOOKS FULLY INTEGRATED
+## ✅ WEBHOOKS FULLY TESTED & WORKING
 - **Database:** Migration applied (`20251002170349_add_webhook_models`)
 - **APIs:** All webhook management endpoints working
-- **Integration:** Webhooks fire automatically on receipt creation
+- **Integration:** Webhooks fire automatically on receipt creation ✅ TESTED
 - **Events:** receipt.created, receipt.verified, content.flagged, graph.linked
 - **Coverage:** Content receipts, graph receipts, batch operations all fire webhooks
+- **Delivery:** HMAC-SHA256 signatures, exponential backoff retry, 5/5 deliveries successful
+- **Bug Fixed:** JSON parsing for SQLite event arrays (lib/webhooks/webhook-service.ts:164)
+- **Verified:** webhook.site received all 5 POST requests with proper payload & signatures
 
 ## 💡 BIGGEST MOAT (Month 2-3)
 **Cross-Merchant Network:** Customer trust scores based on receipts across ALL merchants

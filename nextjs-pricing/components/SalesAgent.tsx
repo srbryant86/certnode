@@ -46,6 +46,24 @@ export default function SalesAgent() {
     scrollToBottom();
   }, [messages]);
 
+  const addAgentMessage = useCallback((content: string) => {
+    setIsTyping(true);
+
+    const timer = window.setTimeout(() => {
+      setMessages(prev => [
+        ...prev,
+        {
+          role: 'agent',
+          content,
+          timestamp: new Date(),
+        },
+      ]);
+      setIsTyping(false);
+    }, 800);
+
+    return () => { window.clearTimeout(timer); setIsTyping(false); };
+  }, []);
+
   useEffect(() => {
     if (!isOpen || messages.length > 0) {
       return;
@@ -73,24 +91,6 @@ export default function SalesAgent() {
       cleanupCallbacks.forEach(cancel => cancel());
     };
   }, [isOpen, messages.length, addAgentMessage]);
-
-  const addAgentMessage = useCallback((content: string) => {
-    setIsTyping(true);
-
-    const timer = window.setTimeout(() => {
-      setMessages(prev => [
-        ...prev,
-        {
-          role: 'agent',
-          content,
-          timestamp: new Date(),
-        },
-      ]);
-      setIsTyping(false);
-    }, 800);
-
-    return () => { window.clearTimeout(timer); setIsTyping(false); };
-  }, []);
 
   const addUserMessage = (content: string) => {
     setMessages(prev => [...prev, {

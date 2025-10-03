@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import TrustBadges from '@/components/TrustBadges';
 import ThreeProductShowcase from '@/components/ThreeProductShowcase';
@@ -21,7 +20,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <Navigation />
 
       <div className="min-h-screen bg-white">
         {/* Hero Section */}

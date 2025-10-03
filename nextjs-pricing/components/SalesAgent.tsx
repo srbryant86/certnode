@@ -80,60 +80,107 @@ export default function SalesAgent() {
     }]);
   };
 
-  const getRecommendation = (data: LeadData): { tier: string; price: string; reason: string } => {
+  const estimateReceipts = (volumeNum: number, businessType?: string): number => {
+    // Estimate monthly receipts based on business type and volume
+    const type = businessType?.toLowerCase() || '';
+
+    if (type.includes('ecommerce') || type.includes('retail')) {
+      // E-commerce: ~1 receipt per transaction
+      return volumeNum / 100; // Assuming $100 avg transaction
+    } else if (type.includes('saas') || type.includes('software')) {
+      // SaaS: receipts for subscriptions, usage events, invoices
+      return Math.floor(volumeNum / 50); // Fewer transactions, higher value
+    } else if (type.includes('content') || type.includes('media')) {
+      // Content: receipts for uploads, downloads, verifications
+      return Math.floor(volumeNum / 20); // High frequency, lower value
+    } else if (type.includes('logistics') || type.includes('supply')) {
+      // Logistics: receipts for shipments, deliveries, confirmations
+      return Math.floor(volumeNum / 200); // Fewer, higher value
+    } else if (type.includes('financial') || type.includes('fintech')) {
+      // Fintech: receipts for transactions, verifications, compliance
+      return Math.floor(volumeNum / 75);
+    } else {
+      // Default estimate
+      return Math.floor(volumeNum / 100);
+    }
+  };
+
+  const getRecommendation = (data: LeadData): { tier: string; price: string; reason: string; receipts?: number } => {
     const { businessType, monthlyVolume, painPoint } = data;
+    const volumeNum = parseVolume(monthlyVolume || '');
+    const annualGMV = volumeNum * 12;
+    const estimatedReceipts = estimateReceipts(volumeNum, businessType);
 
     // High-ticket or dispute-heavy = Dispute Shield
     if (painPoint?.toLowerCase().includes('dispute') ||
         painPoint?.toLowerCase().includes('chargeback') ||
         painPoint?.toLowerCase().includes('fraud')) {
 
-      const volumeNum = parseVolume(monthlyVolume || '');
-      const annualGMV = volumeNum * 12;
-
       if (annualGMV > 2000000) {
         return {
           tier: 'Dispute Shield Elite',
           price: '$2,500/month ($30K/year)',
-          reason: 'Your volume and dispute prevention needs require our premium tier with 24-hour priority SLA, processor advocacy, and performance guarantees.'
+          reason: `Your ${formatNumber(annualGMV)} annual GMV and dispute prevention needs require our premium tier with 24-hour priority SLA, processor advocacy, and performance guarantees. Includes unlimited receipts (estimated ${formatNumber(estimatedReceipts)}/month needed).`,
+          receipts: estimatedReceipts
         };
       } else {
         return {
           tier: 'Dispute Shield Pro',
           price: '$1,000/month ($12K/year)',
-          reason: 'Perfect for dispute prevention with 48-hour evidence SLA, automated receipt generation, and quarterly optimization reviews.'
+          reason: `Perfect for dispute prevention with 48-hour evidence SLA, automated receipt generation, and quarterly optimization reviews. GMV up to $2M/year. Includes unlimited receipts (estimated ${formatNumber(estimatedReceipts)}/month needed).`,
+          receipts: estimatedReceipts
         };
       }
     }
 
-    // Volume-based recommendations for general use
-    const volumeNum = parseVolume(monthlyVolume || '');
-
-    if (volumeNum < 100000) {
+    // Receipt-based recommendations for general use
+    if (estimatedReceipts <= 1000) {
       return {
         tier: 'Starter',
-        price: '$49/month',
-        reason: 'Great starting point with all core features and 1,000 receipts/month.'
+        price: '$49/month ($490/year)',
+        reason: `Perfect for your volume - includes 1,000 receipts/month (you need ~${formatNumber(estimatedReceipts)}). All core features: Transactions, Content, Operations verification.`,
+        receipts: estimatedReceipts
       };
-    } else if (volumeNum < 300000) {
+    } else if (estimatedReceipts <= 5000) {
       return {
         tier: 'Professional',
-        price: '$199/month',
-        reason: 'Includes webhooks, advanced analytics, and 5,000 receipts/month.'
+        price: '$199/month ($1,990/year)',
+        reason: `Recommended for your volume - includes 5,000 receipts/month (you need ~${formatNumber(estimatedReceipts)}). Webhooks, advanced analytics, priority support. Overage: $0.05/receipt.`,
+        receipts: estimatedReceipts
       };
-    } else if (volumeNum < 1000000) {
+    } else if (estimatedReceipts <= 10000) {
       return {
         tier: 'Scale',
-        price: '$499/month',
-        reason: 'Multi-tenant, SSO, compliance reporting, and 10,000 receipts/month.'
+        price: '$499/month ($4,990/year)',
+        reason: `Best fit for your volume - includes 10,000 receipts/month (you need ~${formatNumber(estimatedReceipts)}). Multi-tenant, SSO, compliance reporting. Overage: $0.03/receipt.`,
+        receipts: estimatedReceipts
       };
-    } else {
+    } else if (estimatedReceipts <= 100000) {
+      const basePrice = 25000;
+      const ceilingPrice = 75000;
+      const estimatedAnnual = basePrice + Math.floor((estimatedReceipts / 100000) * (ceilingPrice - basePrice));
       return {
         tier: 'Enterprise Core Trust',
-        price: 'Starting at $2,083/month ($25K/year)',
-        reason: 'Unlimited receipts, dedicated support, custom SLAs, and enterprise features.'
+        price: `~$${Math.round(estimatedAnnual/12).toLocaleString()}/month ($${(estimatedAnnual/1000).toFixed(0)}K/year)`,
+        reason: `For your volume (~${formatNumber(estimatedReceipts)} receipts/month), estimated at $${(estimatedAnnual/1000).toFixed(0)}K/year base + metered events. Includes unlimited receipts, dedicated support, custom SLAs, enterprise features.`,
+        receipts: estimatedReceipts
+      };
+    } else {
+      const basePrice = 60000;
+      const estimatedAnnual = basePrice + Math.floor(estimatedReceipts * 0.002 * 12); // $0.002 per receipt
+      return {
+        tier: 'Platform Edition',
+        price: `~$${Math.round(estimatedAnnual/12).toLocaleString()}/month ($${(estimatedAnnual/1000).toFixed(0)}K/year)`,
+        reason: `For your high volume (~${formatNumber(estimatedReceipts)} receipts/month), Platform Edition provides white-label infrastructure, multi-merchant support, custom pricing based on merchant count and GMV.`,
+        receipts: estimatedReceipts
       };
     }
+  };
+
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+    if (num >= 1000) return `${(num / 1000).toFixed(0)}K`;
+    return num.toFixed(0);
   };
 
   const parseVolume = (volume: string): number => {

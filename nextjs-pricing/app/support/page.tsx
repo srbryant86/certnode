@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
-import SalesAgent from '@/components/SalesAgent';
+import SupportAgent from '@/components/SupportAgent';
 
 export const metadata: Metadata = {
-  title: 'Support — CertNode',
+  title: 'Support - CertNode',
   description: 'Get help with CertNode cryptographic receipts. Documentation, API references, and direct contact for technical support.',
 };
 
@@ -27,60 +27,125 @@ export default function SupportPage() {
         </section>
 
         {/* Contact Options */}
+
         <section className="py-16 bg-gray-50">
+
           <div className="max-w-7xl mx-auto px-6">
+
             <div className="grid md:grid-cols-3 gap-8">
+
               {/* Email Support */}
+
               <div className="bg-white rounded-xl p-8 border-2 border-gray-200 hover:border-blue-500 transition-all">
-                <div className="text-4xl mb-4">📧</div>
+
+                <p className="text-xs font-semibold uppercase tracking-wide text-blue-600 mb-3">Direct support</p>
+
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">
+
                   Email Support
+
                 </h3>
+
                 <p className="text-gray-600 mb-6">
+
                   Reach out for technical questions, billing inquiries, or general support.
+
                 </p>
+
                 <a
+
                   href="mailto:contact@certnode.io"
+
                   className="inline-block bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition-all"
+
                 >
+
                   contact@certnode.io
+
                 </a>
+
               </div>
 
               {/* Sales Inquiries */}
+
               <div className="bg-white rounded-xl p-8 border-2 border-gray-200 hover:border-blue-500 transition-all">
-                <div className="text-4xl mb-4">💼</div>
+
+                <p className="text-xs font-semibold uppercase tracking-wide text-purple-600 mb-3">Enterprise sales</p>
+
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">
+
                   Sales & Demos
+
                 </h3>
+
                 <p className="text-gray-600 mb-6">
+
                   Schedule a demo or discuss enterprise pricing for your team.
+
                 </p>
+
                 <a
+
                   href="mailto:contact@certnode.io?subject=Sales%20Inquiry"
+
                   className="inline-block bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition-all"
+
                 >
+
                   Schedule a Demo
+
                 </a>
+
               </div>
 
               {/* Documentation */}
+
               <div className="bg-white rounded-xl p-8 border-2 border-gray-200 hover:border-blue-500 transition-all">
-                <div className="text-4xl mb-4">📚</div>
+
+                <p className="text-xs font-semibold uppercase tracking-wide text-green-600 mb-3">Self-serve docs</p>
+
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">
+
                   Documentation
+
                 </h3>
+
                 <p className="text-gray-600 mb-6">
+
                   API references, integration guides, and technical documentation.
+
                 </p>
+
                 <Link
+
                   href="/platform"
+
                   className="inline-block bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition-all"
+
                 >
+
                   View Platform Docs
+
                 </Link>
+
               </div>
+
             </div>
+
+          </div>
+
+        </section>
+
+        {/* Support Agent */}
+        <section className="py-16 bg-white">
+          <div className="max-w-4xl mx-auto px-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center md:text-left">
+              Talk with the AI support steward
+            </h2>
+            <p className="text-gray-600 text-base md:text-lg mb-10 text-center md:text-left">
+              Ask integration, security, or pricing questions. The agent shares standards-aligned guidance and escalates to the CertNode team when a human needs to step in.
+            </p>
+            <SupportAgent />
           </div>
         </section>
 
@@ -138,7 +203,7 @@ export default function SupportPage() {
                   How does pricing work?
                 </h3>
                 <p className="text-gray-600">
-                  Core Trust plans are tiered based on monthly transaction volume (GMV). Platform Edition pricing is custom based on the number of merchants and total GMV. All pricing is transparent—see our <Link href="/pricing" className="text-blue-600 hover:underline">pricing page</Link> for details.
+                  Core Trust plans are tiered based on monthly transaction volume (GMV). Platform Edition pricing is custom based on the number of merchants and total GMV. All pricing is transparent - see our <Link href="/pricing" className="text-blue-600 hover:underline">pricing page</Link> for details.
                 </p>
               </div>
 
@@ -194,7 +259,7 @@ export default function SupportPage() {
                   href="/platform"
                   className="text-blue-600 hover:underline font-semibold"
                 >
-                  View Platform Details →
+                  View Platform Details -&gt;
                 </Link>
               </div>
 
@@ -209,7 +274,7 @@ export default function SupportPage() {
                   href="/solutions"
                   className="text-blue-600 hover:underline font-semibold"
                 >
-                  Explore Solutions →
+                  Explore Solutions -&gt;
                 </Link>
               </div>
 
@@ -224,7 +289,7 @@ export default function SupportPage() {
                   href="/security"
                   className="text-blue-600 hover:underline font-semibold"
                 >
-                  View Security →
+                  View Security -&gt;
                 </Link>
               </div>
 
@@ -239,13 +304,12 @@ export default function SupportPage() {
                   href="/pricing"
                   className="text-blue-600 hover:underline font-semibold"
                 >
-                  View Pricing →
+                  View Pricing -&gt;
                 </Link>
               </div>
             </div>
           </div>
         </section>
-
         {/* CTA */}
         <section className="py-16 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
           <div className="max-w-4xl mx-auto px-6 text-center">

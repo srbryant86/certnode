@@ -52,7 +52,7 @@ export default function SalesAgent() {
     }
 
     const cleanupCallbacks: Array<() => void> = [];
-    const timers: ReturnType<typeof setTimeout>[] = [];
+    const timers: number[] = [];
 
     const greetingLines = [
       `Hi! I'm the CertNode sales assistant. I'll help you find the right plan for your business.\n\nWhat type of business are you running?`,

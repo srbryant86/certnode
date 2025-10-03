@@ -66,7 +66,7 @@
     { "source": "/register", "destination": "/certnode-dashboard/register" },
     { "source": "/platform", "destination": "/nextjs-pricing/platform" },
     { "source": "/solutions", "destination": "/web/solutions.html" },
-    { "source": "/support", "destination": "/web/support.html" },
+    { "source": "/support", "destination": "/nextjs-pricing/support" },
     { "source": "/security", "destination": "/web/security.html" },
     { "source": "/account", "destination": "/web/account.html" },
     { "source": "/compliance-calculator", "destination": "/web/compliance-calculator.html" },

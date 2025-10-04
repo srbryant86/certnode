@@ -56,15 +56,21 @@ export default function UploadPage() {
       setProgress(10)
       const sha256Hash = await computeFileSHA256(file)
 
-      // Step 1.5: Check for duplicate content (fraud detection)
+      // Step 1.5: Check for duplicate content (fraud detection) via API
       setProgress(20)
-      const { data: existingContent } = await supabase
-        .from('content')
-        .select('user_id, filename, created_at')
-        .eq('sha256_hash', sha256Hash)
-        .single()
+      const duplicateResponse = await fetch('/api/content/check-duplicate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sha256Hash }),
+      })
 
-      if (existingContent && existingContent.user_id !== user.id) {
+      if (!duplicateResponse.ok) {
+        throw new Error('Failed to check for duplicates')
+      }
+
+      const { isDuplicate, existingContent } = await duplicateResponse.json()
+
+      if (isDuplicate && existingContent && existingContent.user_id !== user.id) {
         const uploadDate = new Date(existingContent.created_at).toLocaleDateString()
         const proceed = window.confirm(
           `⚠️ PROVENANCE WARNING\n\n` +

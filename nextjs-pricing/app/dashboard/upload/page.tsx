@@ -68,9 +68,19 @@ export default function UploadPage() {
         throw new Error('Failed to check for duplicates')
       }
 
-      const { isDuplicate, existingContent } = await duplicateResponse.json()
+      const { isDuplicate, isOwnUpload, existingContent } = await duplicateResponse.json()
 
-      if (isDuplicate && existingContent && existingContent.user_id !== user.id) {
+      if (isDuplicate && isOwnUpload) {
+        // User already uploaded this exact file - block it
+        const uploadDate = new Date(existingContent.created_at).toLocaleDateString()
+        throw new Error(
+          `You already uploaded this file on ${uploadDate}. ` +
+          `Original filename: ${existingContent.filename}`
+        )
+      }
+
+      if (isDuplicate && !isOwnUpload && existingContent) {
+        // Another user uploaded this file - show provenance warning
         const uploadDate = new Date(existingContent.created_at).toLocaleDateString()
         const proceed = window.confirm(
           `⚠️ PROVENANCE WARNING\n\n` +

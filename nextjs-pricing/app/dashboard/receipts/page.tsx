@@ -33,7 +33,7 @@ export default function ReceiptsPage() {
 
   useEffect(() => {
     if (isLoaded && !user) {
-      router.push('/sign-in')
+      router.push('/sign-in' as any)
       return
     }
 

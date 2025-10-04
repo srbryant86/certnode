@@ -76,6 +76,37 @@ export default function ReceiptsPage() {
     })
   }
 
+  const downloadReceipt = (receipt: Receipt) => {
+    // Create receipt object with all details
+    const receiptData = {
+      receipt_id: receipt.id,
+      content_hash: receipt.hash,
+      signature: receipt.signature,
+      content: {
+        filename: receipt.content.filename,
+        content_type: receipt.content.content_type,
+        file_size: receipt.content.file_size,
+      },
+      certified_at: receipt.created_at,
+      algorithm: 'ES256',
+      issuer: 'CertNode',
+    }
+
+    // Convert to JSON
+    const json = JSON.stringify(receiptData, null, 2)
+    const blob = new Blob([json], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+
+    // Trigger download
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `receipt-${receipt.id}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
   if (!isLoaded || loading) {
     return (
       <div className="min-h-screen bg-gray-50 py-12">
@@ -179,13 +210,22 @@ export default function ReceiptsPage() {
                     </div>
 
                     <div className="ml-6 flex flex-col gap-2">
-                      <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                      <button
+                        onClick={() => alert('View Details - Coming soon!')}
+                        className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                      >
                         View Details
                       </button>
-                      <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                      <button
+                        onClick={() => downloadReceipt(receipt)}
+                        className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                      >
                         Download Receipt
                       </button>
-                      <button className="text-sm text-gray-600 hover:text-gray-700 font-medium">
+                      <button
+                        onClick={() => alert('Verify - Coming soon!')}
+                        className="text-sm text-gray-600 hover:text-gray-700 font-medium"
+                      >
                         Verify
                       </button>
                     </div>

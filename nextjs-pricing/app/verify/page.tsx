@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
@@ -18,7 +18,7 @@ interface VerificationResult {
   payload?: any
 }
 
-export default function VerifyPage() {
+function VerifyContent() {
   const searchParams = useSearchParams()
   const [receiptId, setReceiptId] = useState('')
   const [receiptFile, setReceiptFile] = useState<File | null>(null)
@@ -294,5 +294,17 @@ export default function VerifyPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 py-12 flex items-center justify-center">
+        <div className="text-gray-600">Loading verification page...</div>
+      </div>
+    }>
+      <VerifyContent />
+    </Suspense>
   )
 }

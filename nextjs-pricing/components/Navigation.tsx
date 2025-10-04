@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import AuthButtons from "./AuthButtons"
 
 type NavLink = {
   href: string
@@ -95,7 +96,7 @@ export default function Navigation() {
             </svg>
           </button>
 
-          <div className="nav-links hidden md:flex items-center gap-8">
+          <div className="nav-links hidden md:flex items-center gap-6">
             {NAV_LINKS.map((link) => {
               const active = linkIsActive(pathname, link.href)
               return (
@@ -113,6 +114,11 @@ export default function Navigation() {
                 </Link>
               )
             })}
+
+            {/* Auth Buttons - will be added via client component */}
+            <div className="flex items-center gap-3 ml-2 border-l border-gray-200 pl-6">
+              <AuthButtons />
+            </div>
           </div>
         </nav>
       </div>

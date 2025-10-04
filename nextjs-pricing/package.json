@@ -14,7 +14,8 @@
     "playwright:install": "playwright install"
   },
   "dependencies": {
-    "next": "14.2.15",
+    "@clerk/nextjs": "^6.33.2",
+    "next": "^15.5.4",
     "react": "^18",
     "react-dom": "^18",
     "resend": "^6.1.2",

@@ -1,27 +1,17 @@
 import { Metadata } from 'next';
 import Footer from '@/components/Footer';
 import ReceiptGraphMultiMode from '@/components/ReceiptGraphMultiMode';
-import PlatformPillars from '@/components/PlatformPillars';
-import PlatformBenefits from '@/components/PlatformBenefits';
-import PlatformStats from '@/components/PlatformStats';
 import CompetitorComparison from '@/components/CompetitorComparison';
 
-import { SLA_UPTIME } from '@/lib/config';
-
 export const metadata: Metadata = {
-  title: 'Platform — CertNode Cryptographic Receipt Infrastructure',
-  description: 'Cryptographic verification infrastructure for transactions, content authenticity, and operational compliance. Cross-domain receipt graph with tamper-evident audit trails. Content certification API for YouTube, Instagram, Getty Images.',
-  keywords: 'cryptographic receipts, content certification, C2PA, provenance proof, platform API, YouTube verification, Instagram authenticity, cross-domain verification, tamper detection',
+  title: 'Platform Architecture — CertNode Receipt Graph',
+  description: 'Technical deep-dive into CertNode\'s cross-domain receipt graph. Cryptographic linking, DAG structure, ES256 signatures, and blockchain anchoring.',
+  keywords: 'receipt graph, DAG, cryptographic receipts, ES256, SHA-256, blockchain anchoring, cross-domain verification, merkle tree',
   openGraph: {
-    title: 'Platform — CertNode Cryptographic Receipt Infrastructure',
-    description: 'Enterprise cryptographic receipt platform with cross-domain verification. Connect transactions, content, and operations in one system. Platform API for content certification.',
+    title: 'Platform Architecture — CertNode Receipt Graph',
+    description: 'Technical documentation for CertNode\'s cryptographic receipt infrastructure. DAG-based linking, ES256 signatures, blockchain anchoring.',
     type: 'website',
     url: 'https://certnode.io/platform',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Platform — CertNode',
-    description: 'Cryptographic verification infrastructure with cross-domain receipt graph and content certification API.',
   },
 };
 
@@ -30,289 +20,416 @@ export default function PlatformPage() {
     <>
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white py-20">
+        <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-white py-20">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center">
-              <div className="inline-block bg-yellow-400 text-gray-900 text-xs font-bold px-4 py-1.5 rounded-full mb-4">
-                THE ONLY UNIFIED CRYPTOGRAPHIC VERIFICATION PLATFORM
+            <div className="max-w-4xl">
+              <div className="inline-block bg-blue-500/20 border border-blue-400/30 text-blue-200 text-xs font-mono px-4 py-1.5 rounded mb-4">
+                TECHNICAL DOCUMENTATION
               </div>
 
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Four Compounding Advantages.<br/>One Verification Graph.
+                Cross-Domain Receipt Graph Architecture
               </h1>
 
-              <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-8 leading-relaxed">
-                Transaction receipts link to content certifications, which link to operational attestations. Cross-merchant network effects, blockchain anchoring, and collective fraud defense create compounding trust that&apos;s <strong>impossible to replicate.</strong>
+              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                A directed acyclic graph (DAG) linking cryptographic receipts across transactions, content, and operations.
+                ES256 signatures, SHA-256 hashing, blockchain anchoring, and deterministic verification.
               </p>
 
-              <div className="flex flex-wrap justify-center gap-4 mb-10">
-                <div className="bg-blue-500/20 border border-blue-400/30 text-blue-100 px-6 py-3 rounded-full text-sm font-medium">
-                  Cross-Domain Graph
+              <div className="grid md:grid-cols-3 gap-4 mb-8">
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4">
+                  <div className="text-sm text-gray-400 mb-1">Signature Algorithm</div>
+                  <div className="font-mono text-lg font-bold">ES256 (ECDSA)</div>
                 </div>
-                <div className="bg-blue-500/20 border border-blue-400/30 text-blue-100 px-6 py-3 rounded-full text-sm font-medium">
-                  Cross-Merchant Network
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4">
+                  <div className="text-sm text-gray-400 mb-1">Hashing</div>
+                  <div className="font-mono text-lg font-bold">SHA-256</div>
                 </div>
-                <div className="bg-blue-500/20 border border-blue-400/30 text-blue-100 px-6 py-3 rounded-full text-sm font-medium">
-                  Blockchain Anchored
-                </div>
-                <div className="bg-blue-500/20 border border-blue-400/30 text-blue-100 px-6 py-3 rounded-full text-sm font-medium">
-                  Collective Defense
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4">
+                  <div className="text-sm text-gray-400 mb-1">Graph Structure</div>
+                  <div className="font-mono text-lg font-bold">DAG</div>
                 </div>
               </div>
 
-              <div className="flex flex-col items-center gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <a
-                  href="/pricing"
-                  className="bg-white text-blue-700 hover:bg-gray-100 px-10 py-4 rounded-lg font-bold text-lg transition-all transform hover:scale-105 shadow-2xl inline-block"
+                  href="#architecture"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-all text-center"
                 >
-                  View Pricing Plans
+                  View Architecture
                 </a>
-                <p className="text-blue-200 text-sm">
-                  Trusted by companies building secure, verifiable transaction workflows
-                </p>
-              </div>
-
-              {/* Customer Logos Placeholder */}
-              <div className="mt-12 pt-8 border-t border-blue-400/20">
-                <p className="text-blue-300 text-xs uppercase tracking-wider mb-6 text-center">Trusted By</p>
-                <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-                  <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20">
-                    <span className="text-white font-semibold text-sm">Your Company</span>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20">
-                    <span className="text-white font-semibold text-sm">Next Customer</span>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-lg border border-white/20">
-                    <span className="text-white font-semibold text-sm">Future Partner</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Deterministic Verification Badge */}
-        <section className="py-8 bg-white border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-xl p-6 text-center">
-              <div className="inline-block bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold mb-3">
-                THE CERTNODE DIFFERENCE
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Deterministic by Design
-              </h3>
-              <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
-                Receipts <strong>verify or they don&apos;t</strong> — no scoring, no black boxes, no vendor round-trip.
-                Cryptographic proof is binary and offline-verifiable. Unlike ML-based fraud detection (Stripe Radar),
-                our verification is mathematically provable and doesn&apos;t require trusting CertNode&apos;s servers.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Platform Pillars */}
-        <PlatformPillars />
-
-        {/* Benefits Section */}
-        <PlatformBenefits />
-
-        {/* Stats Section */}
-        <PlatformStats />
-
-        {/* Competitor Comparison */}
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-6">
-            <CompetitorComparison />
-          </div>
-        </section>
-
-        {/* Content Certification */}
-        <section className="py-20 bg-gradient-to-br from-orange-50 to-purple-50">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 rounded-full px-4 py-2 mb-4 text-sm font-semibold">
-                🚀 CONTENT CERTIFICATION
-              </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                Platform Verification API
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Cryptographic content verification for YouTube, Instagram, TikTok, Getty Images, and more. Prove provenance at scale.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8 items-center mb-12">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Hardware-Backed Provenance Proof
-                </h3>
-                <p className="text-gray-700 mb-6">
-                  As AI floods the internet with synthetic content, <strong>cryptographic proof of provenance</strong> becomes essential. Our Platform API verifies content authenticity via device signatures (C2PA), pixel-perfect tamper detection, and chain of custody tracking.
-                </p>
-                <ul className="space-y-3 mb-8">
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 font-bold">✓</span>
-                    <span className="text-gray-700">Device-level verification (Canon, Sony, iPhone)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 font-bold">✓</span>
-                    <span className="text-gray-700">Tamper detection (1 pixel change breaks signature)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 font-bold">✓</span>
-                    <span className="text-gray-700">C2PA standard compliance</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 font-bold">✓</span>
-                    <span className="text-gray-700">Real-time verification at billions/month scale</span>
-                  </li>
-                </ul>
                 <a
                   href="/platform-api"
-                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
+                  className="bg-transparent border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-lg font-semibold transition-all text-center"
                 >
-                  View API Documentation →
+                  API Documentation
                 </a>
-              </div>
-              <div className="bg-gray-900 rounded-xl p-6 border border-gray-700">
-                <div className="text-xs text-gray-400 mb-2">API Response Example</div>
-                <pre className="text-sm overflow-x-auto text-green-400">
-{`{
-  "verified": true,
-  "provenance": {
-    "device": "Canon EOS R5",
-    "capture_time": "2025-10-03T12:00:00Z",
-    "chain": [
-      "capture",
-      "upload",
-      "publish"
-    ],
-    "tampered": false,
-    "c2pa_compliant": true
-  }
-}`}
-                </pre>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-white rounded-xl p-6 border border-gray-200">
-                <div className="text-3xl mb-3">📹</div>
-                <h4 className="font-bold text-gray-900 mb-2">For Platforms</h4>
-                <p className="text-sm text-gray-600">
-                  YouTube, Instagram, TikTok verify content authenticity. Combat deepfakes and AI-generated fraud.
-                </p>
-              </div>
-              <div className="bg-white rounded-xl p-6 border border-gray-200">
-                <div className="text-3xl mb-3">👨‍🎨</div>
-                <h4 className="font-bold text-gray-900 mb-2">For Creators</h4>
-                <p className="text-sm text-gray-600">
-                  Photographers and videographers prove authenticity. Command 3-10x premium for verified content.
-                </p>
-              </div>
-              <div className="bg-white rounded-xl p-6 border border-gray-200">
-                <div className="text-3xl mb-3">🖼️</div>
-                <h4 className="font-bold text-gray-900 mb-2">For Marketplaces</h4>
-                <p className="text-sm text-gray-600">
-                  Getty Images, Shutterstock create premium tiers for CertNode-verified authentic content.
-                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Receipt Graph */}
-        <section className="py-16 bg-gray-50">
+        {/* How It Works */}
+        <section id="architecture" className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12">How Receipt Linking Works</h2>
+
+            <div className="grid md:grid-cols-2 gap-12 mb-12">
+              {/* Left: Explanation */}
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">1. Receipt Creation</h3>
+                <p className="text-gray-700 mb-6">
+                  Every event (transaction, content upload, operation) generates a cryptographic receipt:
+                </p>
+                <div className="bg-gray-900 text-gray-100 rounded-xl p-6 font-mono text-sm overflow-x-auto mb-6">
+                  <pre>{`{
+  "id": "rcpt_abc123",
+  "type": "transaction",
+  "hash": "sha256:f7a8b...",
+  "signature": "ES256:9k2l...",
+  "timestamp": "2025-10-04T12:00:00Z",
+  "data": {
+    "amount": 199.00,
+    "merchant": "shop.example"
+  },
+  "parentIds": [],
+  "depth": 0
+}`}</pre>
+                </div>
+
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">2. Graph Linking</h3>
+                <p className="text-gray-700 mb-6">
+                  Receipts reference parent receipts via <code className="bg-gray-100 px-2 py-1 rounded">parentIds</code>,
+                  creating a tamper-evident chain:
+                </p>
+                <div className="bg-gray-900 text-gray-100 rounded-xl p-6 font-mono text-sm overflow-x-auto">
+                  <pre>{`{
+  "id": "rcpt_xyz789",
+  "type": "shipment",
+  "hash": "sha256:a3c9d...",
+  "signature": "ES256:7h4m...",
+  "parentIds": ["rcpt_abc123"],
+  "depth": 1,
+  "relationType": "fulfillment"
+}`}</pre>
+                </div>
+              </div>
+
+              {/* Right: Visual */}
+              <div>
+                <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-8 border border-blue-200">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6">Example: E-Commerce Flow</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                        1
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">Order Receipt</div>
+                        <div className="text-sm text-gray-600 font-mono">rcpt_order_001</div>
+                        <div className="text-xs text-gray-500">Depth: 0, Parents: []</div>
+                      </div>
+                    </div>
+                    <div className="ml-4 border-l-2 border-blue-300 h-6"></div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                        2
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">Payment Receipt</div>
+                        <div className="text-sm text-gray-600 font-mono">rcpt_payment_001</div>
+                        <div className="text-xs text-gray-500">Depth: 1, Parents: [rcpt_order_001]</div>
+                      </div>
+                    </div>
+                    <div className="ml-4 border-l-2 border-blue-300 h-6"></div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                        3
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">Shipment Receipt</div>
+                        <div className="text-sm text-gray-600 font-mono">rcpt_ship_001</div>
+                        <div className="text-xs text-gray-500">Depth: 2, Parents: [rcpt_payment_001]</div>
+                      </div>
+                    </div>
+                    <div className="ml-4 border-l-2 border-blue-300 h-6"></div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                        4
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">Delivery Receipt</div>
+                        <div className="text-sm text-gray-600 font-mono">rcpt_delivery_001</div>
+                        <div className="text-xs text-gray-500">Depth: 3, Parents: [rcpt_ship_001]</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-6 pt-6 border-t border-blue-200">
+                    <div className="text-sm text-gray-700">
+                      <strong>Result:</strong> Tamper-evident chain from order → delivery.
+                      Any modification breaks the cryptographic signatures.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Cryptographic Details */}
+        <section className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12">Cryptographic Specifications</h2>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {/* ES256 Signatures */}
+              <div className="bg-white rounded-xl p-8 border border-gray-200">
+                <div className="text-3xl mb-4">🔐</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">ES256 Signatures</h3>
+                <p className="text-gray-700 mb-4">
+                  ECDSA with P-256 curve and SHA-256. Industry standard used by JWT, WebAuthn, and Apple.
+                </p>
+                <div className="bg-gray-50 rounded-lg p-4 font-mono text-xs">
+                  <div className="text-gray-600 mb-2">// Signature format</div>
+                  <div>ES256:base64(r||s)</div>
+                  <div className="text-gray-600 mt-2">// 64 bytes total</div>
+                </div>
+              </div>
+
+              {/* SHA-256 Hashing */}
+              <div className="bg-white rounded-xl p-8 border border-gray-200">
+                <div className="text-3xl mb-4">🔗</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">SHA-256 Hashing</h3>
+                <p className="text-gray-700 mb-4">
+                  Content-addressable receipts. Hash includes all receipt data + parent hashes for Merkle tree properties.
+                </p>
+                <div className="bg-gray-50 rounded-lg p-4 font-mono text-xs">
+                  <div className="text-gray-600 mb-2">// Hash input</div>
+                  <div>SHA256(data + metadata + parentHashes)</div>
+                  <div className="text-gray-600 mt-2">// Output: 32 bytes</div>
+                </div>
+              </div>
+
+              {/* Blockchain Anchoring */}
+              <div className="bg-white rounded-xl p-8 border border-gray-200">
+                <div className="text-3xl mb-4">⛓️</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Blockchain Anchoring</h3>
+                <p className="text-gray-700 mb-4">
+                  Merkle root of receipt batches anchored to Ethereum mainnet every 24 hours for timestamping.
+                </p>
+                <div className="bg-gray-50 rounded-lg p-4 font-mono text-xs">
+                  <div className="text-gray-600 mb-2">// Anchor transaction</div>
+                  <div>0x7f9a3b...</div>
+                  <div className="text-gray-600 mt-2">// Block: 18,234,567</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Verification Code Example */}
+            <div className="mt-12">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Offline Verification Example</h3>
+              <div className="bg-gray-900 text-gray-100 rounded-xl p-8">
+                <div className="text-sm text-gray-400 mb-4">Node.js / TypeScript</div>
+                <pre className="overflow-x-auto text-sm font-mono">{`import { createHash } from 'crypto';
+import { verify } from 'jsonwebtoken';
+
+// Verify receipt signature (offline, no API call)
+function verifyReceipt(receipt: Receipt, publicKey: string): boolean {
+  // 1. Recompute hash
+  const computedHash = createHash('sha256')
+    .update(JSON.stringify({
+      id: receipt.id,
+      type: receipt.type,
+      data: receipt.data,
+      parentIds: receipt.parentIds,
+      timestamp: receipt.timestamp
+    }))
+    .digest('hex');
+
+  // 2. Verify hash matches
+  if (computedHash !== receipt.hash) {
+    return false;
+  }
+
+  // 3. Verify ES256 signature
+  try {
+    verify(receipt.signature, publicKey, {
+      algorithms: ['ES256']
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// Verify entire graph chain
+function verifyReceiptChain(receipts: Receipt[]): boolean {
+  const receiptMap = new Map(receipts.map(r => [r.id, r]));
+
+  for (const receipt of receipts) {
+    // Verify this receipt
+    if (!verifyReceipt(receipt, PUBLIC_KEY)) {
+      return false;
+    }
+
+    // Verify parent links
+    for (const parentId of receipt.parentIds) {
+      const parent = receiptMap.get(parentId);
+      if (!parent || parent.depth >= receipt.depth) {
+        return false; // Invalid DAG structure
+      }
+    }
+  }
+
+  return true;
+}`}</pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Interactive Receipt Graph */}
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Interactive Receipt Graph Explorer
+              </h2>
+              <p className="text-xl text-gray-600">
+                Explore how receipts link across different domains and industries
+              </p>
+            </div>
             <ReceiptGraphMultiMode />
           </div>
         </section>
 
-        {/* Get Started CTA */}
-        <section className="py-16 bg-white">
-          <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Start Building Today
-            </h2>
-            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-              Choose the plan that fits your needs. All plans include access to all three verification domains (transactions, content, and operations).
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/pricing"
-                className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-4 rounded-lg font-semibold text-lg transition-all shadow-lg"
-              >
-                View Pricing Plans
-              </a>
-              <a
-                href="mailto:contact@certnode.io"
-                className="bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-lg font-semibold text-lg transition-all"
-              >
-                Schedule a Demo
-              </a>
+        {/* Technical Comparison */}
+        <section className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12">Technical Comparison</h2>
+            <CompetitorComparison />
+
+            {/* Why DAG vs Linear Chain */}
+            <div className="mt-12 bg-white rounded-xl p-8 border border-gray-200">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Why DAG Instead of Linear Blockchain?</h3>
+              <div className="grid md:grid-cols-2 gap-8">
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-3">✓ DAG Advantages</h4>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 font-bold">•</span>
+                      <span><strong>Parallel receipts:</strong> Multiple branches can evolve simultaneously (e.g., order + payment + shipment)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 font-bold">•</span>
+                      <span><strong>Cross-domain linking:</strong> Receipt from one merchant can reference another merchant&apos;s receipts</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 font-bold">•</span>
+                      <span><strong>No global ordering:</strong> Don&apos;t need consensus on sequence, only parentage</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-green-600 font-bold">•</span>
+                      <span><strong>Efficient verification:</strong> Verify sub-graph without loading entire chain</span>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-3">✗ Linear Chain Limitations</h4>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <span className="text-red-600 font-bold">•</span>
+                      <span><strong>Sequential only:</strong> Can&apos;t represent parallel events</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-red-600 font-bold">•</span>
+                      <span><strong>Single domain:</strong> Hard to link across merchants/systems</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-red-600 font-bold">•</span>
+                      <span><strong>Global state:</strong> Requires consensus mechanism</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-red-600 font-bold">•</span>
+                      <span><strong>Verification overhead:</strong> Must process entire chain</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Final CTA */}
-        <section className="py-16 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white">
-          <div className="max-w-4xl mx-auto px-6">
-            {/* Value Proposition */}
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-8 mb-10">
-              <h3 className="text-2xl font-bold text-white mb-4">Built for Engineering Teams</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <svg className="w-6 h-6 text-blue-300 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <p className="text-white leading-relaxed">
-                    <strong>One API</strong> instead of three separate vendors for transactions, content, and operations
-                  </p>
+        {/* Integration Guide */}
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12">Integration Options</h2>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {/* REST API */}
+              <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-8 border border-blue-200">
+                <div className="text-3xl mb-4">🔌</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">REST API</h3>
+                <p className="text-gray-700 mb-6">
+                  Simple HTTP endpoints for receipt creation, verification, and graph traversal.
+                </p>
+                <a
+                  href="/platform-api"
+                  className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700"
+                >
+                  View API Docs →
+                </a>
+              </div>
+
+              {/* Webhooks */}
+              <div className="bg-gradient-to-br from-purple-50 to-white rounded-xl p-8 border border-purple-200">
+                <div className="text-3xl mb-4">🔔</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Webhooks</h3>
+                <p className="text-gray-700 mb-6">
+                  Real-time notifications when receipts are created, linked, or verified.
+                </p>
+                <div className="text-gray-500 text-sm font-mono">
+                  POST /api/webhooks
                 </div>
-                <div className="flex items-start gap-3">
-                  <svg className="w-6 h-6 text-blue-300 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <p className="text-white leading-relaxed">
-                    <strong>Compliance-ready</strong> with automated SOX/SOC 2/HIPAA evidence collection
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <svg className="w-6 h-6 text-blue-300 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <p className="text-white leading-relaxed">
-                    <strong>Cryptographically verifiable</strong> receipts that work offline without trusting CertNode
-                  </p>
+              </div>
+
+              {/* SDKs */}
+              <div className="bg-gradient-to-br from-green-50 to-white rounded-xl p-8 border border-green-200">
+                <div className="text-3xl mb-4">📦</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">SDKs</h3>
+                <p className="text-gray-700 mb-6">
+                  Native libraries for Node.js, Python, Ruby, Go, and PHP.
+                </p>
+                <div className="text-gray-500 text-sm font-mono">
+                  npm install @certnode/sdk
                 </div>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* CTA */}
-            <div className="text-center">
-              <h2 className="text-4xl font-bold mb-4">
-                Start Building Tamper-Proof Receipts Today
-              </h2>
-              <p className="text-xl text-blue-100 mb-8">
-                Join companies building cryptographic verification into their transaction workflows. All plans include full platform access.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="/pricing"
-                  className="bg-white text-blue-700 hover:bg-gray-100 px-10 py-4 rounded-lg font-bold text-lg transition-all shadow-2xl"
-                >
-                  View Pricing Plans
-                </a>
-                <a
-                  href="mailto:contact@certnode.io"
-                  className="bg-transparent border-2 border-white text-white hover:bg-white/10 px-10 py-4 rounded-lg font-bold text-lg transition-all"
-                >
-                  Book a Demo
-                </a>
-              </div>
-              <p className="text-blue-200 text-sm mt-6">
-                Enterprise-ready infrastructure • SOC 2 readiness • {SLA_UPTIME} uptime SLA
-              </p>
+        {/* CTA */}
+        <section className="py-20 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Ready to Build?
+            </h2>
+            <p className="text-xl text-gray-300 mb-8">
+              Start creating cryptographic receipts and building tamper-proof audit trails.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="/pricing"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-lg font-bold text-lg transition-all"
+              >
+                View Pricing
+              </a>
+              <a
+                href="mailto:contact@certnode.io?subject=Technical Integration"
+                className="bg-transparent border-2 border-white text-white hover:bg-white/10 px-10 py-4 rounded-lg font-bold text-lg transition-all"
+              >
+                Contact Engineering
+              </a>
             </div>
           </div>
         </section>

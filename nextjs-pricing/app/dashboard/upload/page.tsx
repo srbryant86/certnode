@@ -45,6 +45,13 @@ export default function UploadPage() {
     try {
       const supabase = createClient()
 
+      // Step 0: Ensure user exists in database
+      setProgress(5)
+      await fetch('/api/users/ensure', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+
       // Step 1: Compute SHA-256 hash
       setProgress(10)
       const sha256Hash = await computeFileSHA256(file)

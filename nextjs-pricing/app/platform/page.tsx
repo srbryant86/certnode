@@ -190,9 +190,9 @@ export default function PlatformPage() {
                   ECDSA with P-256 curve and SHA-256. Industry standard used by JWT, WebAuthn, and Apple.
                 </p>
                 <div className="bg-gray-50 rounded-lg p-4 font-mono text-xs">
-                  <div className="text-gray-600 mb-2">// Signature format</div>
+                  <div className="text-gray-600 mb-2">{'//'} Signature format</div>
                   <div>ES256:base64(r||s)</div>
-                  <div className="text-gray-600 mt-2">// 64 bytes total</div>
+                  <div className="text-gray-600 mt-2">{'//'} 64 bytes total</div>
                 </div>
               </div>
 
@@ -204,9 +204,9 @@ export default function PlatformPage() {
                   Content-addressable receipts. Hash includes all receipt data + parent hashes for Merkle tree properties.
                 </p>
                 <div className="bg-gray-50 rounded-lg p-4 font-mono text-xs">
-                  <div className="text-gray-600 mb-2">// Hash input</div>
+                  <div className="text-gray-600 mb-2">{'//'} Hash input</div>
                   <div>SHA256(data + metadata + parentHashes)</div>
-                  <div className="text-gray-600 mt-2">// Output: 32 bytes</div>
+                  <div className="text-gray-600 mt-2">{'//'} Output: 32 bytes</div>
                 </div>
               </div>
 
@@ -218,9 +218,9 @@ export default function PlatformPage() {
                   Merkle root of receipt batches anchored to Ethereum mainnet every 24 hours for timestamping.
                 </p>
                 <div className="bg-gray-50 rounded-lg p-4 font-mono text-xs">
-                  <div className="text-gray-600 mb-2">// Anchor transaction</div>
+                  <div className="text-gray-600 mb-2">{'//'} Anchor transaction</div>
                   <div>0x7f9a3b...</div>
-                  <div className="text-gray-600 mt-2">// Block: 18,234,567</div>
+                  <div className="text-gray-600 mt-2">{'//'} Block: 18,234,567</div>
                 </div>
               </div>
             </div>

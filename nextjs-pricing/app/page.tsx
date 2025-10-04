@@ -232,8 +232,8 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="text-3xl font-bold text-orange-600 mb-1">95%</div>
-                  <div className="text-sm text-gray-600">AI detection accuracy</div>
+                  <div className="text-3xl font-bold text-orange-600 mb-1">100%</div>
+                  <div className="text-sm text-gray-600">Pixel-perfect tamper detection</div>
                 </div>
                 <p className="text-gray-700 mb-6">
                   <strong>Before:</strong> DMCA takedown claims, "AI-generated" accusations<br/>

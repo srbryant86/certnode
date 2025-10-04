@@ -29,7 +29,7 @@ export async function signReceipt(data: any, privateKeyJWK: string): Promise<str
     .setIssuedAt()
     .sign(privateKey)
 
-  return `ES256:${jwt}`
+  return jwt
 }
 
 /**
@@ -41,7 +41,6 @@ export async function signReceipt(data: any, privateKeyJWK: string): Promise<str
 export async function verifyReceipt(signature: string, publicKeyJWK: string): Promise<boolean> {
   try {
     const publicKey = await importJWK(JSON.parse(publicKeyJWK), 'ES256')
-    const jwt = signature.replace('ES256:', '')
 
     // Verification is handled by jose library
     // If this doesn't throw, the signature is valid

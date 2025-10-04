@@ -35,7 +35,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate ES256 key pair for this receipt
-    const { publicKey, privateKey } = await generateES256KeyPair()
+    let publicKey: string, privateKey: string
+    try {
+      const keyPair = await generateES256KeyPair()
+      publicKey = keyPair.publicKey
+      privateKey = keyPair.privateKey
+    } catch (error) {
+      console.error('Key generation failed:', error)
+      return NextResponse.json(
+        { error: 'Failed to generate cryptographic keys. Please try again.' },
+        { status: 500 }
+      )
+    }
 
     // Generate receipt ID
     const receiptId = `rcpt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
@@ -59,17 +70,35 @@ export async function POST(request: NextRequest) {
     }
 
     // Compute receipt hash (SHA-256 of receipt data)
-    const receiptDataString = JSON.stringify({
-      id: receiptData.id,
-      type: receiptData.type,
-      data: receiptData.data,
-      parent_ids: receiptData.parent_ids,
-      depth: receiptData.depth,
-    })
-    const receiptHash = await computeStringSHA256(receiptDataString)
+    let receiptHash: string
+    try {
+      const receiptDataString = JSON.stringify({
+        id: receiptData.id,
+        type: receiptData.type,
+        data: receiptData.data,
+        parent_ids: receiptData.parent_ids,
+        depth: receiptData.depth,
+      })
+      receiptHash = await computeStringSHA256(receiptDataString)
+    } catch (error) {
+      console.error('Hash computation failed:', error)
+      return NextResponse.json(
+        { error: 'Failed to compute receipt hash. Please try again.' },
+        { status: 500 }
+      )
+    }
 
     // Sign the receipt with ES256
-    const signature = await signReceipt(receiptData, privateKey)
+    let signature: string
+    try {
+      signature = await signReceipt(receiptData, privateKey)
+    } catch (error) {
+      console.error('Signature generation failed:', error)
+      return NextResponse.json(
+        { error: `Failed to sign receipt: ${error instanceof Error ? error.message : 'Unknown error'}` },
+        { status: 500 }
+      )
+    }
 
     // Store receipt in database
     const { data: receipt, error: receiptError } = await supabase

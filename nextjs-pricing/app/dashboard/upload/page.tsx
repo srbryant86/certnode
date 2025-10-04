@@ -97,7 +97,8 @@ export default function UploadPage() {
       })
 
       if (!response.ok) {
-        throw new Error('Failed to generate receipt')
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+        throw new Error(errorData.error || 'Failed to generate receipt')
       }
 
       const { receipt } = await response.json()

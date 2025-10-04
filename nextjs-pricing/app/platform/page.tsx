@@ -20,7 +20,7 @@ export default function PlatformPage() {
     <>
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-white py-20">
+        <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white py-20">
           <div className="max-w-7xl mx-auto px-6">
             <div className="max-w-4xl">
               <div className="inline-block bg-blue-500/20 border border-blue-400/30 text-blue-200 text-xs font-mono px-4 py-1.5 rounded mb-4">
@@ -409,7 +409,7 @@ function verifyReceiptChain(receipts: Receipt[]): boolean {
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white">
+        <section className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white">
           <div className="max-w-4xl mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Ready to Build?

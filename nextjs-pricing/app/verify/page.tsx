@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
 interface VerificationResult {
@@ -18,10 +19,19 @@ interface VerificationResult {
 }
 
 export default function VerifyPage() {
+  const searchParams = useSearchParams()
   const [receiptId, setReceiptId] = useState('')
   const [receiptFile, setReceiptFile] = useState<File | null>(null)
   const [verifying, setVerifying] = useState(false)
   const [result, setResult] = useState<VerificationResult | null>(null)
+
+  // Pre-fill receipt ID from URL query parameter
+  useEffect(() => {
+    const receiptIdFromUrl = searchParams.get('receiptId')
+    if (receiptIdFromUrl) {
+      setReceiptId(receiptIdFromUrl)
+    }
+  }, [searchParams])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]

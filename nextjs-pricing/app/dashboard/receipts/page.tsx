@@ -222,12 +222,12 @@ export default function ReceiptsPage() {
                       >
                         Download Receipt
                       </button>
-                      <button
-                        onClick={() => alert('Verify - Coming soon!')}
+                      <Link
+                        href={`/verify?receiptId=${receipt.id}`}
                         className="text-sm text-gray-600 hover:text-gray-700 font-medium"
                       >
                         Verify
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

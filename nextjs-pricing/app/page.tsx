@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Footer from '@/components/Footer';
 import TrustBadges from '@/components/TrustBadges';
 import ThreeProductShowcase from '@/components/ThreeProductShowcase';
-import ReceiptGraphDemo from '@/components/ReceiptGraphDemo';
+import ReceiptGraphMultiMode from '@/components/ReceiptGraphMultiMode';
 
 export const metadata: Metadata = {
   title: 'CertNode — Universal Receipt Protocol for Transactions, Content & Operations',
@@ -125,15 +125,7 @@ export default function HomePage() {
                 No competitor links payments, content, and operations in one cryptographic DAG. This is your moat.
               </p>
             </div>
-            <ReceiptGraphDemo />
-            <div className="mt-12 text-center">
-              <Link
-                href="/platform"
-                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-lg"
-              >
-                Explore the Receipt Graph →
-              </Link>
-            </div>
+            <ReceiptGraphMultiMode />
           </div>
         </section>
 

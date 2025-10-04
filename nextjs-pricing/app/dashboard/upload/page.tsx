@@ -87,18 +87,25 @@ export default function UploadPage() {
         }
       }
 
-      // Step 2: Upload to Supabase Storage
+      // Step 2: Upload to Supabase Storage via API (bypasses RLS)
       setProgress(30)
       const fileName = `${Date.now()}-${file.name}`
-      const filePath = `${user.id}/${fileName}`
 
-      const { error: uploadError } = await supabase.storage
-        .from('content-uploads')
-        .upload(filePath, file)
+      const uploadFormData = new FormData()
+      uploadFormData.append('file', file)
+      uploadFormData.append('fileName', fileName)
 
-      if (uploadError) {
-        throw new Error(`Upload failed: ${uploadError.message}`)
+      const uploadResponse = await fetch('/api/storage/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      })
+
+      if (!uploadResponse.ok) {
+        const errorData = await uploadResponse.json().catch(() => ({ error: 'Unknown error' }))
+        throw new Error(errorData.error || 'Upload failed')
       }
+
+      const { storagePath } = await uploadResponse.json()
 
       // Step 3: Create content record via API (bypasses RLS)
       setProgress(60)
@@ -109,7 +116,7 @@ export default function UploadPage() {
           filename: file.name,
           contentType: file.type,
           fileSize: file.size,
-          storagePath: filePath,
+          storagePath: storagePath,
           sha256Hash,
           deviceInfo: existingContent ? {
             duplicate_detection: {

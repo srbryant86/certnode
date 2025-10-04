@@ -4,6 +4,9 @@ import { createAdminClient } from '@/lib/supabase/server'
 import { generateES256KeyPair, signReceipt } from '@/lib/crypto/sign'
 import { computeStringSHA256 } from '@/lib/crypto/hash'
 
+// Force Node.js runtime for crypto APIs
+export const runtime = 'nodejs'
+
 export async function POST(request: NextRequest) {
   try {
     console.log('[Receipt API] Starting receipt creation...')

@@ -1,9 +1,21 @@
 # Upload Flow Issue - Storage RLS Policy Blocking Uploads
 
-## Problem Summary
-File uploads are failing with error: **"Upload failed: new row violates row-level security policy"**
+## ✅ SOLUTION IMPLEMENTED (2025-10-04)
 
-Despite moving all database operations to server-side APIs (which successfully bypass RLS), the **storage upload** is still blocked by RLS policies.
+**Server-side storage upload has been implemented and deployed.**
+
+All Supabase operations (database + storage) now go through server-side APIs using admin client (service_role key), completely bypassing RLS policies.
+
+**Test the fix at:** https://certnode-ggxtyqcr5-steven-bryants-projects.vercel.app/dashboard/upload
+
+⚠️ **IMPORTANT:** Make sure you're testing on the LATEST deployment URL above. Old deployment URLs won't have the fix.
+
+---
+
+## Problem Summary (RESOLVED)
+File uploads were failing with error: **"Upload failed: new row violates row-level security policy"**
+
+Despite moving all database operations to server-side APIs (which successfully bypass RLS), the **storage upload** was still blocked by RLS policies.
 
 ## Root Cause
 **Supabase Storage bucket RLS policies use `auth.uid()` which returns `null` for Clerk-authenticated users.**
@@ -14,19 +26,20 @@ Despite moving all database operations to server-side APIs (which successfully b
 - Since users aren't in Supabase Auth, `auth.uid()` = `null`
 - Policies fail and block uploads
 
-## Current Architecture
+## Final Architecture (ALL SERVER-SIDE)
 
-### ✅ Working (Server-side with admin client):
+### ✅ All Operations Server-Side with Admin Client:
 ```
 /api/users/ensure          - Creates user if missing (bypasses RLS)
 /api/content/check-duplicate - Checks for SHA-256 duplicates (bypasses RLS)
+/api/storage/upload        - Uploads file to storage (bypasses RLS) ← NEW
 /api/content/create        - Creates content record (bypasses RLS)
 /api/receipts/create       - Generates receipt (bypasses RLS)
 ```
 
-### ❌ Broken (Client-side storage upload):
+### ❌ Old Broken Approach (Client-side storage):
 ```javascript
-// File: app/dashboard/upload/page.tsx:87-95
+// OLD: File: app/dashboard/upload/page.tsx:87-95
 const { error: uploadError } = await supabase.storage
   .from('content-uploads')
   .upload(filePath, file)
@@ -37,153 +50,179 @@ const { error: uploadError } = await supabase.storage
 ## Storage Bucket Configuration
 
 **Bucket:** `content-uploads`
-**Current RLS Policies:**
+**Current RLS Policies:** ✅ **DELETED** (not needed with admin client)
 
-### Policy 1 - INSERT (Allow user uploads to own folder)
-```sql
-((bucket_id = 'content-uploads'::text) AND ((storage.foldername(name))[1] = (auth.uid())::text))
-```
-❌ **Problem:** `auth.uid()` is null for Clerk users
+All storage bucket policies were deleted because:
+- Admin client (service_role key) bypasses ALL policies
+- Client-side storage access is not used anywhere in the app
+- All storage operations go through `/api/storage/upload` endpoint
 
-### Policy 2 - SELECT (Allow users to read own files)
-```sql
-((bucket_id = 'content-uploads'::text) AND ((storage.foldername(name))[1] = (auth.uid())::text))
-```
-❌ **Problem:** Same issue
+**Supabase Dashboard Status:**
+- CONTENT-UPLOADS bucket: No policies created
+- OTHER POLICIES UNDER STORAGE.OBJECTS: No policies created
+- POLICIES UNDER STORAGE.BUCKETS: No policies created
 
-### Policy 3 - DELETE (Allow users to delete own files)
-```sql
-((bucket_id = 'content-uploads'::text) AND ((storage.foldername(name))[1] = (auth.uid())::text))
-```
-❌ **Problem:** Same issue
+This is the correct configuration ✅
 
-## Solution Options
+---
 
-### Option 1: Make Storage Bucket Public (Quick Fix)
-**Location:** Supabase Dashboard → Storage → content-uploads → Policies
+## Implementation Details
 
-Replace all 3 policies with:
-```sql
-true
-```
+### ✅ Server-Side Storage Upload (IMPLEMENTED)
 
-**Pros:**
-- Immediate fix
-- No code changes
-
-**Cons:**
-- Anyone can upload/read/delete (security risk)
-- Not production-ready
-
-### Option 2: Server-Side Storage Upload (Recommended)
-Move storage upload to API route using service role key.
-
-**Changes needed:**
-
-1. **Create `/api/storage/upload` endpoint:**
+**File Created:** `app/api/storage/upload/route.ts`
 ```typescript
-// app/api/storage/upload/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { createAdminClient } from '@/lib/supabase/server'
 
 export async function POST(request: NextRequest) {
-  const { userId } = await auth()
-  if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  try {
+    const { userId } = await auth()
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
 
-  const formData = await request.formData()
-  const file = formData.get('file') as File
-  const fileName = formData.get('fileName') as string
+    const formData = await request.formData()
+    const file = formData.get('file') as File
+    const fileName = formData.get('fileName') as string
 
-  const supabase = createAdminClient()
+    if (!file || !fileName) {
+      return NextResponse.json({ error: 'Missing file or fileName' }, { status: 400 })
+    }
 
-  const { error } = await supabase.storage
-    .from('content-uploads')
-    .upload(`${userId}/${fileName}`, file)
+    // Convert File to ArrayBuffer for Supabase
+    const arrayBuffer = await file.arrayBuffer()
+    const fileBuffer = new Uint8Array(arrayBuffer)
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    const supabase = createAdminClient()
 
-  return NextResponse.json({ success: true, path: `${userId}/${fileName}` })
+    // Upload using admin client (bypasses RLS)
+    const filePath = `${userId}/${fileName}`
+    const { error: uploadError } = await supabase.storage
+      .from('content-uploads')
+      .upload(filePath, fileBuffer, {
+        contentType: file.type,
+        upsert: false,
+      })
+
+    if (uploadError) {
+      console.error('[Storage Upload] Failed:', uploadError)
+      return NextResponse.json({
+        error: `Upload failed: ${uploadError.message}`
+      }, { status: 500 })
+    }
+
+    return NextResponse.json({
+      success: true,
+      storagePath: filePath
+    })
+
+  } catch (error) {
+    console.error('[Storage Upload] Error:', error)
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Internal server error' },
+      { status: 500 }
+    )
+  }
 }
 ```
 
-2. **Update upload page (app/dashboard/upload/page.tsx:87-95):**
+**File Updated:** `app/dashboard/upload/page.tsx` (lines 90-108)
 ```typescript
-// Replace direct storage upload:
-const formData = new FormData()
-formData.append('file', file)
-formData.append('fileName', fileName)
+// OLD (client-side, blocked by RLS):
+const { error: uploadError } = await supabase.storage
+  .from('content-uploads')
+  .upload(filePath, file)
+
+// NEW (server-side via API, bypasses RLS):
+const fileName = `${Date.now()}-${file.name}`
+
+const uploadFormData = new FormData()
+uploadFormData.append('file', file)
+uploadFormData.append('fileName', fileName)
 
 const uploadResponse = await fetch('/api/storage/upload', {
   method: 'POST',
-  body: formData,
+  body: uploadFormData,
 })
 
 if (!uploadResponse.ok) {
-  const errorData = await uploadResponse.json()
-  throw new Error(`Upload failed: ${errorData.error}`)
+  const errorData = await uploadResponse.json().catch(() => ({ error: 'Unknown error' }))
+  throw new Error(errorData.error || 'Upload failed')
 }
 
-const { path: storagePath } = await uploadResponse.json()
+const { storagePath } = await uploadResponse.json()
 ```
 
-**Pros:**
-- Secure (uses service_role key, bypasses RLS)
-- Consistent with other API routes
-- Proper access control
+### Files Changed in Implementation
 
-**Cons:**
-- Requires code changes
-- File goes through server (might be slower for large files)
+1. ✅ **Created:** `nextjs-pricing/app/api/storage/upload/route.ts`
+2. ✅ **Modified:** `nextjs-pricing/app/dashboard/upload/page.tsx`
+   - Removed direct client-side storage upload
+   - Added FormData upload to `/api/storage/upload`
+   - Updated progress tracking for storage step
 
-### Option 3: Sync Clerk Users to Supabase Auth (Complex)
-Use Clerk webhooks to create matching Supabase Auth users.
+### Git Commit
+```bash
+git commit -m "feat: move storage upload to server-side API to bypass RLS
 
-**Not recommended** - Too complex for this use case.
+Final fix for upload flow - storage uploads now go through
+/api/storage/upload endpoint using admin client.
 
-## Files Affected
+This completes the architecture where ALL Supabase operations
+(database + storage) use server-side APIs with service_role key,
+bypassing RLS policies that conflict with Clerk authentication."
+```
 
-### Primary File with Issue:
-- `app/dashboard/upload/page.tsx:87-95` - Direct storage upload
+**Deployed:** https://certnode-ggxtyqcr5-steven-bryants-projects.vercel.app
 
-### Storage Policies:
-- Supabase Dashboard → Storage → Buckets → content-uploads → Policies
+## Testing Instructions
 
-### Related Files:
-- `lib/supabase/client.ts` - Client-side Supabase (uses anon key)
-- `lib/supabase/server.ts` - Server-side Supabase (has admin client)
+⚠️ **CRITICAL:** Make sure you're testing on the LATEST deployment URL:
+**https://certnode-ggxtyqcr5-steven-bryants-projects.vercel.app**
 
-## Recommended Fix for Codex
+Old deployment URLs (like `certnode-m6nslmbk-*` or `certnode-rn6nslmbk-*`) do NOT have the fix!
 
-**Implement Option 2: Server-Side Storage Upload**
-
-1. Create `app/api/storage/upload/route.ts` as shown above
-2. Update `app/dashboard/upload/page.tsx` to use FormData and call `/api/storage/upload`
-3. Storage policies can remain as-is (admin client bypasses them)
-
-This maintains security while fixing the auth mismatch issue.
-
-## Testing After Fix
-
-1. Sign in to https://certnode.io/sign-in
-2. Go to https://certnode.io/dashboard/upload
+### Test Steps:
+1. Sign in: https://certnode-ggxtyqcr5-steven-bryants-projects.vercel.app/sign-in
+2. Go to upload: https://certnode-ggxtyqcr5-steven-bryants-projects.vercel.app/dashboard/upload
 3. Upload test file (sample-photo.png or test-upload.png)
-4. Should see:
-   - ✅ SHA-256 hash computed
-   - ✅ Duplicate check (no duplicates first time)
-   - ✅ Storage upload succeeds
-   - ✅ Content record created
-   - ✅ Receipt generated
+4. Expected flow:
+   - ✅ SHA-256 hash computed (10%)
+   - ✅ Duplicate check (20%)
+   - ✅ Storage upload via /api/storage/upload (30-60%)
+   - ✅ Content record created (60-80%)
+   - ✅ Receipt generated with ES256 signature (80-100%)
    - ✅ Redirect to /dashboard/receipts
 
 ## Environment Details
 
 - **Auth:** Clerk (NOT Supabase Auth)
-- **Database:** Supabase PostgreSQL with RLS
-- **Storage:** Supabase Storage with RLS policies
+- **Database:** Supabase PostgreSQL with RLS (admin client bypasses)
+- **Storage:** Supabase Storage with NO policies (admin client has full access)
 - **Deployment:** Vercel
-- **Current URL:** https://certnode-rn6nslmbk-steven-bryants-projects.vercel.app
+- **Latest URL:** https://certnode-ggxtyqcr5-steven-bryants-projects.vercel.app
+- **Supabase Project:** obasoslqkymvjyjbmlfv.supabase.co
 
-## Contact
+## Key Environment Variables (Vercel)
+```
+NEXT_PUBLIC_SUPABASE_URL=https://obasoslqkymvjyjbmlfv.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... (admin access)
+```
+
+## Summary for Codex
+
+**Problem:** Clerk-authenticated users couldn't upload files because Supabase RLS policies check `auth.uid()` which is null for Clerk users.
+
+**Solution:** Moved ALL Supabase operations (database + storage) to server-side API routes that use `createAdminClient()` with service_role key, completely bypassing RLS.
+
+**Status:** ✅ Implemented and deployed
+
+**Test URL:** https://certnode-ggxtyqcr5-steven-bryants-projects.vercel.app/dashboard/upload
+
+---
+
 Created: 2025-10-04
-Issue: Storage RLS blocking Clerk-authenticated users from uploading files
+Updated: 2025-10-04 (Solution implemented)

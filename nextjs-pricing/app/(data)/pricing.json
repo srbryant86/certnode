@@ -64,48 +64,74 @@
                                        ]
                       }
                   ],
+    "disputeShieldTiers":  [
+                               {
+                                   "id":  "dispute-shield-pro",
+                                   "name":  "Dispute Shield Pro",
+                                   "priceYearly":  12000,
+                                   "priceMonthly":  1000,
+                                   "maxGMV":  2000000,
+                                   "tagline":  "Premium transaction protection with white-glove service",
+                                   "pricing":  "$12K/year",
+                                   "features":  [
+                                                    "Unlimited receipts up to $2M annual sales",
+                                                    "Priority dispute-deflection support",
+                                                    "Dedicated merchant success manager",
+                                                    "Advanced chargeback protection",
+                                                    "Real-time fraud monitoring",
+                                                    "Custom integration support",
+                                                    "24-hour priority support SLA",
+                                                    "Evidence package auto-generation",
+                                                    "Processor liaison service"
+                                                ]
+                               },
+                               {
+                                   "id":  "dispute-shield-elite",
+                                   "name":  "Dispute Shield Elite",
+                                   "priceYearly":  30000,
+                                   "priceMonthly":  2500,
+                                   "maxGMV":  10000000,
+                                   "tagline":  "SLA-backed dispute commitment with revenue protection guarantee",
+                                   "pricing":  "$30K/year",
+                                   "features":  [
+                                                    "Unlimited receipts up to $10M annual sales",
+                                                    "SLA-backed dispute-deflection commitment",
+                                                    "Affiliate attribution receipts included",
+                                                    "White-glove onboarding",
+                                                    "24/7 priority support",
+                                                    "Custom compliance reporting",
+                                                    "Revenue protection guarantee",
+                                                    "Dedicated dispute response team",
+                                                    "Legal evidence packages",
+                                                    "Expert witness support available"
+                                                ]
+                               }
+                           ],
     "enterpriseTiers":  [
                             {
-                                "id":  "enterprise-core",
-                                "name":  "Enterprise Core",
-                                "priceYearly":  25000,
-                                "tagline":  "Full tri-pillar platform with unlimited graph depth and compliance automation",
-                                "pricing":  "$25K/year base, $0.02/receipt over 100K/month",
-                                "features":  [
-                                                 "100,000 receipts/month included (~$0.025/receipt)",
-                                                 "Everything in Business tier",
-                                                 "Receipt Graph (unlimited depth)",
-                                                 "Graph pattern detection",
-                                                 "Custom compliance reports",
-                                                 "99.9% uptime SLA",
-                                                 "Dedicated account manager",
-                                                 "Phone support (4-hour response)",
-                                                 "Overage at $0.02 per receipt"
-                                             ]
-                            },
-                            {
                                 "id":  "enterprise-platform",
-                                "name":  "Enterprise Platform",
+                                "name":  "Platform Edition",
                                 "priceYearly":  60000,
-                                "tagline":  "White-label receipt infrastructure for marketplaces and processors",
-                                "pricing":  "$60K/year base, $0.01/receipt over 500K/month",
+                                "tagline":  "Multi-merchant infrastructure for marketplaces and platforms",
+                                "pricing":  "$60K/year",
                                 "features":  [
-                                                 "500,000 receipts/month included (~$0.012/receipt)",
+                                                 "500,000 receipts/month included",
                                                  "Multi-merchant infrastructure",
                                                  "White-label receipt graph",
                                                  "Custom graph queries \u0026 APIs",
                                                  "Real-time graph webhooks",
                                                  "Dedicated engineering support",
                                                  "Custom SLA (99.95%+)",
-                                                 "Overage at $0.01 per receipt"
+                                                 "Platform-level analytics",
+                                                 "Sub-account management"
                                              ]
                             },
                             {
-                                "id":  "enterprise-unlimited",
-                                "name":  "Enterprise Unlimited",
+                                "id":  "enterprise-custom",
+                                "name":  "Custom Enterprise",
                                 "priceYearly":  null,
                                 "tagline":  "Custom infrastructure for Fortune 500, banks, and government",
-                                "pricing":  "Starts at $150K/year (custom quote)",
+                                "pricing":  "Contact Sales (starts at $150K/year)",
                                 "features":  [
                                                  "Unlimited receipts",
                                                  "Dedicated infrastructure or on-premise",
@@ -113,7 +139,8 @@
                                                  "Graph intelligence tailored to your workflows",
                                                  "Custom compliance frameworks",
                                                  "Dedicated on-call engineering team",
-                                                 "Joint roadmap planning"
+                                                 "Joint roadmap planning",
+                                                 "Custom SLA guarantees"
                                              ]
                             }
                         ],

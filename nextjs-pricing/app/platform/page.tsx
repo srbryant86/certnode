@@ -10,17 +10,18 @@ import { SLA_UPTIME } from '@/lib/config';
 
 export const metadata: Metadata = {
   title: 'Platform — CertNode Cryptographic Receipt Infrastructure',
-  description: 'Cryptographic verification infrastructure for transactions, content authenticity, and operational compliance. Cross-domain receipt graph with tamper-evident audit trails.',
+  description: 'Cryptographic verification infrastructure for transactions, content authenticity, and operational compliance. Cross-domain receipt graph with tamper-evident audit trails. Content certification API for YouTube, Instagram, Getty Images.',
+  keywords: 'cryptographic receipts, content certification, C2PA, provenance proof, platform API, YouTube verification, Instagram authenticity, cross-domain verification, tamper detection',
   openGraph: {
     title: 'Platform — CertNode Cryptographic Receipt Infrastructure',
-    description: 'Enterprise cryptographic receipt platform with cross-domain verification. Connect transactions, content, and operations in one system.',
+    description: 'Enterprise cryptographic receipt platform with cross-domain verification. Connect transactions, content, and operations in one system. Platform API for content certification.',
     type: 'website',
     url: 'https://certnode.io/platform',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Platform — CertNode',
-    description: 'Cryptographic verification infrastructure with cross-domain receipt graph.',
+    description: 'Cryptographic verification infrastructure with cross-domain receipt graph and content certification API.',
   },
 };
 
@@ -122,6 +123,101 @@ export default function PlatformPage() {
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-6">
             <CompetitorComparison />
+          </div>
+        </section>
+
+        {/* Content Certification */}
+        <section className="py-20 bg-gradient-to-br from-orange-50 to-purple-50">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 rounded-full px-4 py-2 mb-4 text-sm font-semibold">
+                🚀 CONTENT CERTIFICATION
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Platform Verification API
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Cryptographic content verification for YouTube, Instagram, TikTok, Getty Images, and more. Prove provenance at scale.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 items-center mb-12">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  Hardware-Backed Provenance Proof
+                </h3>
+                <p className="text-gray-700 mb-6">
+                  As AI floods the internet with synthetic content, <strong>cryptographic proof of provenance</strong> becomes essential. Our Platform API verifies content authenticity via device signatures (C2PA), pixel-perfect tamper detection, and chain of custody tracking.
+                </p>
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 font-bold">✓</span>
+                    <span className="text-gray-700">Device-level verification (Canon, Sony, iPhone)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 font-bold">✓</span>
+                    <span className="text-gray-700">Tamper detection (1 pixel change breaks signature)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 font-bold">✓</span>
+                    <span className="text-gray-700">C2PA standard compliance</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 font-bold">✓</span>
+                    <span className="text-gray-700">Real-time verification at billions/month scale</span>
+                  </li>
+                </ul>
+                <a
+                  href="/platform-api"
+                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
+                >
+                  View API Documentation →
+                </a>
+              </div>
+              <div className="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                <div className="text-xs text-gray-400 mb-2">API Response Example</div>
+                <pre className="text-sm overflow-x-auto text-green-400">
+{`{
+  "verified": true,
+  "provenance": {
+    "device": "Canon EOS R5",
+    "capture_time": "2025-10-03T12:00:00Z",
+    "chain": [
+      "capture",
+      "upload",
+      "publish"
+    ],
+    "tampered": false,
+    "c2pa_compliant": true
+  }
+}`}
+                </pre>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-white rounded-xl p-6 border border-gray-200">
+                <div className="text-3xl mb-3">📹</div>
+                <h4 className="font-bold text-gray-900 mb-2">For Platforms</h4>
+                <p className="text-sm text-gray-600">
+                  YouTube, Instagram, TikTok verify content authenticity. Combat deepfakes and AI-generated fraud.
+                </p>
+              </div>
+              <div className="bg-white rounded-xl p-6 border border-gray-200">
+                <div className="text-3xl mb-3">👨‍🎨</div>
+                <h4 className="font-bold text-gray-900 mb-2">For Creators</h4>
+                <p className="text-sm text-gray-600">
+                  Photographers and videographers prove authenticity. Command 3-10x premium for verified content.
+                </p>
+              </div>
+              <div className="bg-white rounded-xl p-6 border border-gray-200">
+                <div className="text-3xl mb-3">🖼️</div>
+                <h4 className="font-bold text-gray-900 mb-2">For Marketplaces</h4>
+                <p className="text-sm text-gray-600">
+                  Getty Images, Shutterstock create premium tiers for CertNode-verified authentic content.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 

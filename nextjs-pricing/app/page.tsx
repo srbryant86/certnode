@@ -74,8 +74,8 @@ export default function HomePage() {
 
               {/* Integration Badges */}
               <div className="mt-12 pt-8 border-t border-white/20">
-                <p className="text-sm text-blue-200 mb-4 uppercase tracking-wide font-semibold">Turnkey Integrations</p>
-                <div className="flex flex-wrap gap-4 items-center">
+                <p className="text-sm text-blue-200 mb-4 uppercase tracking-wide font-semibold">Integrations & Platform API</p>
+                <div className="flex flex-wrap gap-4 items-center mb-6">
                   <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-2 text-sm font-semibold">
                     🛒 Shopify
                   </div>
@@ -91,6 +91,24 @@ export default function HomePage() {
                   <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-2 text-sm font-semibold">
                     🔧 REST API
                   </div>
+                </div>
+                <p className="text-sm text-blue-200 mb-3 uppercase tracking-wide font-semibold">Content Verification API</p>
+                <div className="flex flex-wrap gap-4 items-center">
+                  <div className="bg-orange-500/20 backdrop-blur-sm border border-orange-400/30 rounded-lg px-4 py-2 text-sm font-semibold">
+                    📹 YouTube
+                  </div>
+                  <div className="bg-orange-500/20 backdrop-blur-sm border border-orange-400/30 rounded-lg px-4 py-2 text-sm font-semibold">
+                    📸 Instagram
+                  </div>
+                  <div className="bg-orange-500/20 backdrop-blur-sm border border-orange-400/30 rounded-lg px-4 py-2 text-sm font-semibold">
+                    🖼️ Getty Images
+                  </div>
+                  <Link
+                    href="/platform-api"
+                    className="bg-white/20 backdrop-blur-sm border border-white/40 rounded-lg px-4 py-2 text-sm font-semibold hover:bg-white/30 transition-all"
+                  >
+                    View API Docs →
+                  </Link>
                 </div>
               </div>
             </div>
@@ -285,10 +303,16 @@ export default function HomePage() {
                 <p className="text-gray-700 mb-6">
                   <strong>Prove your work is authentic.</strong> Hardware-backed device signatures (C2PA) prove human creation at source. Command premium prices.
                 </p>
-                <div className="bg-gradient-to-br from-green-50 to-white rounded-lg p-4 border border-green-200">
+                <div className="bg-gradient-to-br from-green-50 to-white rounded-lg p-4 border border-green-200 mb-4">
                   <div className="text-2xl font-bold text-green-600 mb-1">3-10x</div>
                   <div className="text-sm text-gray-600">Premium for verified content</div>
                 </div>
+                <a
+                  href="mailto:contact@certnode.io?subject=Creator API Access"
+                  className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-semibold text-sm"
+                >
+                  Get Creator Access →
+                </a>
               </div>
 
               {/* For Platforms */}
@@ -298,10 +322,16 @@ export default function HomePage() {
                 <p className="text-gray-700 mb-6">
                   <strong>Verify at scale.</strong> YouTube, Instagram, TikTok can verify authenticity with our Platform API. No manual review needed.
                 </p>
-                <div className="bg-gradient-to-br from-blue-50 to-white rounded-lg p-4 border border-blue-200">
+                <div className="bg-gradient-to-br from-blue-50 to-white rounded-lg p-4 border border-blue-200 mb-4">
                   <div className="text-2xl font-bold text-blue-600 mb-1">Billions</div>
                   <div className="text-sm text-gray-600">Content verifications/month</div>
                 </div>
+                <Link
+                  href="/platform-api"
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm"
+                >
+                  View API Docs →
+                </Link>
               </div>
 
               {/* For Brands */}
@@ -311,10 +341,16 @@ export default function HomePage() {
                 <p className="text-gray-700 mb-6">
                   <strong>Protect your assets.</strong> Cryptographic receipts for official brand materials. Prevent counterfeits and unauthorized use.
                 </p>
-                <div className="bg-gradient-to-br from-purple-50 to-white rounded-lg p-4 border border-purple-200">
+                <div className="bg-gradient-to-br from-purple-50 to-white rounded-lg p-4 border border-purple-200 mb-4">
                   <div className="text-2xl font-bold text-purple-600 mb-1">100%</div>
                   <div className="text-sm text-gray-600">Tamper detection accuracy</div>
                 </div>
+                <a
+                  href="mailto:contact@certnode.io?subject=Brand Protection Suite"
+                  className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 font-semibold text-sm"
+                >
+                  Contact Sales →
+                </a>
               </div>
             </div>
 

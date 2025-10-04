@@ -23,14 +23,21 @@ export default async function ProofPage({ params }: PageProps) {
       public_key,
       created_at,
       metadata,
-      content:content_id (
-        filename,
-        content_type,
-        file_size
-      )
+      content_id
     `)
     .eq('id', receiptId)
     .single()
+
+  // Fetch related content separately
+  let content = null
+  if (receipt && receipt.content_id) {
+    const { data: contentData } = await supabase
+      .from('content')
+      .select('filename, content_type, file_size')
+      .eq('id', receipt.content_id)
+      .single()
+    content = contentData
+  }
 
   if (error || !receipt) {
     notFound()
@@ -90,18 +97,18 @@ export default async function ProofPage({ params }: PageProps) {
 
           {/* Content details */}
           <div className="p-8">
-            {receipt.content && (
+            {content && (
               <div className="mb-8 pb-8 border-b border-gray-200">
                 <div className="flex items-center gap-4 mb-4">
                   <span className="text-4xl">
-                    {receipt.content.content_type?.startsWith('image/') ? '🖼️' : '🎥'}
+                    {content.content_type?.startsWith('image/') ? '🖼️' : '🎥'}
                   </span>
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900">
-                      {receipt.content.filename}
+                      {content.filename}
                     </h2>
                     <p className="text-gray-600">
-                      {receipt.content.content_type} • {formatFileSize(receipt.content.file_size)}
+                      {content.content_type} • {formatFileSize(content.file_size)}
                     </p>
                   </div>
                 </div>

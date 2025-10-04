@@ -1,17 +1,54 @@
-import { SignJWT, generateKeyPair, exportJWK, importJWK } from 'jose'
+import { SignJWT, exportJWK, importJWK } from 'jose'
+import { generateKeyPairSync } from 'crypto'
 
 /**
  * Generate ES256 key pair for receipt signing
+ * Uses Node.js native crypto for better Vercel compatibility
  * @returns Public and private keys in JWK format
  */
 export async function generateES256KeyPair() {
-  const { publicKey, privateKey } = await generateKeyPair('ES256')
-  const publicJWK = await exportJWK(publicKey)
-  const privateJWK = await exportJWK(privateKey)
+  try {
+    // Use Node.js native crypto instead of jose generateKeyPair
+    const { publicKey, privateKey } = generateKeyPairSync('ec', {
+      namedCurve: 'P-256',
+      publicKeyEncoding: {
+        type: 'spki',
+        format: 'pem'
+      },
+      privateKeyEncoding: {
+        type: 'pkcs8',
+        format: 'pem'
+      }
+    })
 
-  return {
-    publicKey: JSON.stringify(publicJWK),
-    privateKey: JSON.stringify(privateJWK),
+    // Import PEM keys to CryptoKey objects
+    const publicCryptoKey = await crypto.subtle.importKey(
+      'spki',
+      Buffer.from(publicKey.replace(/-----BEGIN PUBLIC KEY-----|\n|-----END PUBLIC KEY-----/g, ''), 'base64'),
+      { name: 'ECDSA', namedCurve: 'P-256' },
+      true,
+      ['verify']
+    )
+
+    const privateCryptoKey = await crypto.subtle.importKey(
+      'pkcs8',
+      Buffer.from(privateKey.replace(/-----BEGIN PRIVATE KEY-----|\n|-----END PRIVATE KEY-----/g, ''), 'base64'),
+      { name: 'ECDSA', namedCurve: 'P-256' },
+      true,
+      ['sign']
+    )
+
+    // Export as JWK
+    const publicJWK = await exportJWK(publicCryptoKey)
+    const privateJWK = await exportJWK(privateCryptoKey)
+
+    return {
+      publicKey: JSON.stringify(publicJWK),
+      privateKey: JSON.stringify(privateJWK),
+    }
+  } catch (error) {
+    console.error('[generateES256KeyPair] Detailed error:', error)
+    throw new Error(`Key generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 

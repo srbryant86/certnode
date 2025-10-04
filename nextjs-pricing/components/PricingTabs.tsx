@@ -104,9 +104,12 @@ export default function PricingTabs() {
                     ))}
                   </ul>
 
-                  <button className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                  <a
+                    href={`mailto:contact@certnode.io?subject=${tier.id === 'enterprise-platform' ? 'Platform Edition Inquiry' : 'Custom Enterprise Inquiry'}`}
+                    className="block w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center"
+                  >
                     Contact Sales
-                  </button>
+                  </a>
                 </div>
               ))}
             </div>

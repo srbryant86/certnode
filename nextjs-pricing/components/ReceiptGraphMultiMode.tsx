@@ -89,19 +89,19 @@ const scenarios = {
   digital: {
     name: "Digital Products",
     icon: "💻",
-    example: "Online course or software license",
+    example: "Online course with C2PA content certification",
     customerPurchase: "Customer buys $89 online course",
-    productDelivered: "AI-generated course content delivered",
+    productDelivered: "C2PA-certified video content delivered with access tracking",
     deliveryConfirmed: "Customer completed 12 lessons (47 min watch time)",
     painPoint: "Chargeback filed",
-    chargebackClaim: "60 days later: 'Never got access'",
-    yourDefense: "Transaction + AI Content Receipt + Lesson Completion Logs",
+    chargebackClaim: "60 days later: 'Never got access' or 'content was AI-generated'",
+    yourDefense: "Transaction + C2PA Content Receipt + Access Logs + Completion Tracking",
     defenseAction: "Submit Receipt Graph",
     resolutionTitle: "Chargeback reversed",
     amountSaved: 89.00,
     color: "purple",
-    cfoQuery: "Prove customer had full access to the course",
-    queryPath: [0, 1, 2],
+    cfoQuery: "Prove customer had authentic content access",
+    queryPath: [0, 1, 2, 3, 4],
     receipts: [
       {
         domain: 'transaction' as ReceiptDomain,
@@ -116,10 +116,10 @@ const scenarios = {
       },
       {
         domain: 'content' as ReceiptDomain,
-        type: 'ai-content',
-        label: 'AI Course',
-        icon: '🤖',
-        description: 'Generated + delivered',
+        type: 'c2pa-cert',
+        label: 'C2PA Receipt',
+        icon: '🔐',
+        description: 'Content certified',
         domainLabel: 'Content',
         parentIds: ['rcpt_0'],
         relationType: 'fulfills' as RelationType,
@@ -127,33 +127,55 @@ const scenarios = {
       },
       {
         domain: 'operations' as ReceiptDomain,
-        type: 'access-log',
-        label: '12 Lessons',
-        icon: '📊',
-        description: '47 min watched',
+        type: 'access-grant',
+        label: 'Access Grant',
+        icon: '🔑',
+        description: 'License issued',
         domainLabel: 'Operations',
         parentIds: ['rcpt_1'],
-        relationType: 'evidences' as RelationType,
+        relationType: 'causes' as RelationType,
         depth: 2
+      },
+      {
+        domain: 'operations' as ReceiptDomain,
+        type: 'access-log',
+        label: '47 Logins',
+        icon: '📊',
+        description: '12 lessons viewed',
+        domainLabel: 'Operations',
+        parentIds: ['rcpt_2'],
+        relationType: 'evidences' as RelationType,
+        depth: 3
+      },
+      {
+        domain: 'content' as ReceiptDomain,
+        type: 'completion',
+        label: 'Completion',
+        icon: '✅',
+        description: 'Certificate issued',
+        domainLabel: 'Content',
+        parentIds: ['rcpt_3'],
+        relationType: 'evidences' as RelationType,
+        depth: 4
       }
     ]
   },
   services: {
     name: "Professional Services",
     icon: "🎯",
-    example: "Consulting, agency work, freelancing",
-    customerPurchase: "Client pays $2,500 for website design",
-    productDelivered: "Website files delivered via Dropbox",
-    deliveryConfirmed: "Client downloaded files, site deployed live",
+    example: "Consulting with contract signing and compliance",
+    customerPurchase: "Client pays $2,500 for website design with SOW",
+    productDelivered: "Contract signed, website delivered with compliance docs",
+    deliveryConfirmed: "Client downloaded files, site deployed, compliance verified",
     painPoint: "Chargeback filed",
     chargebackClaim: "Claims 'work never completed' (site is live)",
-    yourDefense: "Transaction + File Delivery + Download Logs + Live Site",
+    yourDefense: "Contract Signature + File Delivery + Compliance Docs + Live Site",
     defenseAction: "Submit Receipt Graph",
     resolutionTitle: "Chargeback reversed",
     amountSaved: 2500.00,
     color: "blue",
-    cfoQuery: "Prove the website was fully delivered",
-    queryPath: [0, 1, 2, 3],
+    cfoQuery: "Prove the website was fully delivered with compliance",
+    queryPath: [0, 1, 2, 3, 4],
     receipts: [
       {
         domain: 'transaction' as ReceiptDomain,
@@ -168,36 +190,47 @@ const scenarios = {
       },
       {
         domain: 'content' as ReceiptDomain,
-        type: 'file-delivery',
-        label: 'Website Files',
-        icon: '📁',
-        description: 'Dropbox delivery',
+        type: 'contract-signature',
+        label: 'SOW Signed',
+        icon: '✍️',
+        description: 'Contract executed',
         domainLabel: 'Content',
         parentIds: ['rcpt_0'],
-        relationType: 'fulfills' as RelationType,
+        relationType: 'evidences' as RelationType,
         depth: 1
       },
       {
-        domain: 'operations' as ReceiptDomain,
-        type: 'download-log',
-        label: 'Download Logs',
-        icon: '📥',
-        description: 'Client accessed',
-        domainLabel: 'Operations',
+        domain: 'content' as ReceiptDomain,
+        type: 'file-delivery',
+        label: 'Website Files',
+        icon: '📁',
+        description: 'Deliverables sent',
+        domainLabel: 'Content',
         parentIds: ['rcpt_1'],
-        relationType: 'evidences' as RelationType,
+        relationType: 'fulfills' as RelationType,
         depth: 2
       },
       {
-        domain: 'content' as ReceiptDomain,
-        type: 'screenshot',
-        label: 'Live Site',
-        icon: '🌐',
-        description: 'Deployed + verified',
-        domainLabel: 'Content',
+        domain: 'operations' as ReceiptDomain,
+        type: 'compliance-check',
+        label: 'Compliance',
+        icon: '✅',
+        description: 'WCAG verified',
+        domainLabel: 'Operations',
         parentIds: ['rcpt_2'],
         relationType: 'evidences' as RelationType,
         depth: 3
+      },
+      {
+        domain: 'content' as ReceiptDomain,
+        type: 'deployment',
+        label: 'Live Site',
+        icon: '🌐',
+        description: 'Deployed + tested',
+        domainLabel: 'Content',
+        parentIds: ['rcpt_3'],
+        relationType: 'evidences' as RelationType,
+        depth: 4
       }
     ]
   },
@@ -508,10 +541,42 @@ export default function ReceiptGraphMultiMode() {
     return queryPath.includes(index);
   };
 
+  const handleExportJSON = () => {
+    const graphData = {
+      scenario: {
+        name: scenario.name,
+        mode: mode,
+        tier: selectedTier
+      },
+      receipts: receipts.map(r => ({
+        id: r.id,
+        domain: r.domain,
+        type: r.type,
+        label: r.label,
+        parentIds: r.parentIds,
+        relationType: r.relationType,
+        depth: r.depth,
+        crypto: r.crypto
+      }))
+    };
+
+    const dataStr = JSON.stringify(graphData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `receipt-graph-${mode}-${Date.now()}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl border-2 border-blue-200 p-8">
       {/* Header */}
       <div className="text-center mb-8">
+        <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 rounded-full px-4 py-1.5 mb-3 text-sm font-bold">
+          ✓ CRYPTOGRAPHICALLY VERIFIABLE
+        </div>
         <h3 className="text-3xl font-bold text-gray-900 mb-3">
           Cross-Domain Receipt Graph
         </h3>
@@ -552,11 +617,22 @@ export default function ReceiptGraphMultiMode() {
         </div>
       </div>
 
-      {/* Tier Selector & CFO Query */}
+      {/* Tier Selector, Export & CFO Query */}
       <div className="grid md:grid-cols-2 gap-4 mb-6">
-        {/* Tier Depth Limit Selector */}
+        {/* Tier Depth Limit Selector with Export */}
         <div className="bg-white rounded-lg p-4 border-2 border-gray-200">
-          <div className="text-sm font-semibold text-gray-700 mb-3">Simulate Pricing Tier (Graph Depth Limit)</div>
+          <div className="flex items-center justify-between mb-3">
+            <div className="text-sm font-semibold text-gray-700">Simulate Pricing Tier (Graph Depth Limit)</div>
+            {receipts.length > 0 && (
+              <button
+                onClick={handleExportJSON}
+                className="flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-all"
+              >
+                <span>📥</span>
+                <span>Export JSON</span>
+              </button>
+            )}
+          </div>
           <div className="flex flex-wrap gap-2">
             {(Object.keys(tierLimits) as PricingTier[]).map((tier) => (
               <button

@@ -254,8 +254,8 @@ export default function PlatformAPIPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Free Pilot</h3>
-                  <p className="text-gray-600 mb-4">30-day trial</p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Pilot Program</h3>
+                  <p className="text-gray-600 mb-4">Contact for pricing</p>
                   <ul className="space-y-2 text-sm text-gray-600">
                     <li>✓ Top 1,000 creators</li>
                     <li>✓ Dedicated support</li>

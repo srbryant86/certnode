@@ -44,8 +44,8 @@ export default function HomePage() {
               {/* Stats */}
               <div className="grid grid-cols-3 gap-6 mb-10 max-w-2xl">
                 <div>
-                  <div className="text-4xl md:text-5xl font-bold mb-1">70%</div>
-                  <div className="text-sm text-blue-200">Fewer chargebacks</div>
+                  <div className="text-4xl md:text-5xl font-bold mb-1">Crypto</div>
+                  <div className="text-sm text-blue-200">Tamper-proof evidence</div>
                 </div>
                 <div>
                   <div className="text-4xl md:text-5xl font-bold mb-1">&lt;15min</div>
@@ -160,8 +160,8 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="mb-6">
-                  <div className="text-3xl font-bold text-blue-600 mb-1">70% ↓</div>
-                  <div className="text-sm text-gray-600">Chargeback win rate improvement</div>
+                  <div className="text-3xl font-bold text-blue-600 mb-1">&lt;30s</div>
+                  <div className="text-sm text-gray-600">Evidence generation time</div>
                 </div>
                 <p className="text-gray-700 mb-6">
                   <strong>Before:</strong> Manual evidence gathering, $50K/month lost to chargebacks<br/>

@@ -148,6 +148,13 @@ export async function POST(request: NextRequest) {
     }
     console.log('[Receipt API] Receipt stored successfully:', receipt.id)
 
+    // Update content status to certified
+    console.log('[Receipt API] Updating content status to certified...')
+    await supabase
+      .from('content')
+      .update({ status: 'certified' })
+      .eq('id', contentId)
+
     return NextResponse.json({
       success: true,
       receipt: {

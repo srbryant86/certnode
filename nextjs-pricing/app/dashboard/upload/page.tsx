@@ -94,19 +94,18 @@ export default function UploadPage() {
         throw new Error(`Upload failed: ${uploadError.message}`)
       }
 
-      // Step 3: Create content record
+      // Step 3: Create content record via API (bypasses RLS)
       setProgress(60)
-      const { data: content, error: contentError } = await supabase
-        .from('content')
-        .insert({
-          user_id: user.id,
+      const contentResponse = await fetch('/api/content/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           filename: file.name,
-          content_type: file.type,
-          file_size: file.size,
-          storage_path: filePath,
-          sha256_hash: sha256Hash,
-          status: 'processing',
-          device_info: existingContent ? {
+          contentType: file.type,
+          fileSize: file.size,
+          storagePath: filePath,
+          sha256Hash,
+          deviceInfo: existingContent ? {
             duplicate_detection: {
               is_original_upload: false,
               duplicate_of_user: existingContent.user_id,
@@ -114,13 +113,15 @@ export default function UploadPage() {
               warning_acknowledged: true,
             }
           } : null,
-        })
-        .select()
-        .single()
+        }),
+      })
 
-      if (contentError) {
-        throw new Error(`Failed to create content record: ${contentError.message}`)
+      if (!contentResponse.ok) {
+        const errorData = await contentResponse.json().catch(() => ({ error: 'Unknown error' }))
+        throw new Error(errorData.error || 'Failed to create content record')
       }
+
+      const { content } = await contentResponse.json()
 
       // Step 4: Generate cryptographic receipt
       setProgress(80)
@@ -143,12 +144,7 @@ export default function UploadPage() {
 
       const { receipt } = await response.json()
 
-      // Step 5: Update content status
-      await supabase
-        .from('content')
-        .update({ status: 'certified' })
-        .eq('id', content.id)
-
+      // Content status is updated to 'certified' by the receipt API
       setProgress(100)
       setSuccess(true)
 

@@ -105,7 +105,7 @@ export default function HomePage() {
                   </div>
                   <Link
                     href="/platform-api"
-                    className="bg-white/20 backdrop-blur-sm border border-white/40 rounded-lg px-4 py-2 text-sm font-semibold hover:bg-white/30 transition-all"
+                    className="bg-white text-blue-700 border border-white rounded-lg px-4 py-2 text-sm font-semibold hover:bg-gray-100 transition-all shadow-lg"
                   >
                     View API Docs →
                   </Link>

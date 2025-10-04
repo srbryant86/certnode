@@ -22,16 +22,29 @@ export async function generateES256KeyPair() {
  * @returns ES256 signature
  */
 export async function signReceipt(data: any, privateKeyJWK: string): Promise<string> {
-  const privateKey = await importJWK(JSON.parse(privateKeyJWK), 'ES256')
+  try {
+    const privateKey = await importJWK(JSON.parse(privateKeyJWK), 'ES256')
 
-  // Put receipt data in a claim instead of as the root payload
-  const jwt = await new SignJWT({ receipt: data })
-    .setProtectedHeader({ alg: 'ES256' })
-    .setIssuedAt()
-    .setIssuer('certnode')
-    .sign(privateKey)
+    // Simplified payload - just the essential identifiers
+    const payload = {
+      receiptId: data.id,
+      userId: data.user_id,
+      contentId: data.content_id,
+      timestamp: Date.now()
+    }
 
-  return jwt
+    const jwt = await new SignJWT(payload)
+      .setProtectedHeader({ alg: 'ES256' })
+      .setIssuedAt()
+      .setIssuer('certnode')
+      .setSubject(data.id)
+      .sign(privateKey)
+
+    return jwt
+  } catch (error) {
+    console.error('[signReceipt] Error:', error)
+    throw error
+  }
 }
 
 /**

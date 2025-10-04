@@ -56,6 +56,31 @@ export default function UploadPage() {
       setProgress(10)
       const sha256Hash = await computeFileSHA256(file)
 
+      // Step 1.5: Check for duplicate content (fraud detection)
+      setProgress(20)
+      const { data: existingContent } = await supabase
+        .from('content')
+        .select('user_id, filename, created_at')
+        .eq('sha256_hash', sha256Hash)
+        .single()
+
+      if (existingContent && existingContent.user_id !== user.id) {
+        const uploadDate = new Date(existingContent.created_at).toLocaleDateString()
+        const proceed = window.confirm(
+          `⚠️ PROVENANCE WARNING\n\n` +
+          `This exact file was already certified by another user on ${uploadDate}.\n\n` +
+          `Original filename: ${existingContent.filename}\n\n` +
+          `Uploading this file does NOT prove you created it. It only proves you have a copy.\n\n` +
+          `Do you still want to upload?`
+        )
+
+        if (!proceed) {
+          setUploading(false)
+          setProgress(0)
+          return
+        }
+      }
+
       // Step 2: Upload to Supabase Storage
       setProgress(30)
       const fileName = `${Date.now()}-${file.name}`
@@ -81,6 +106,14 @@ export default function UploadPage() {
           storage_path: filePath,
           sha256_hash: sha256Hash,
           status: 'processing',
+          device_info: existingContent ? {
+            duplicate_detection: {
+              is_original_upload: false,
+              duplicate_of_user: existingContent.user_id,
+              original_upload_date: existingContent.created_at,
+              warning_acknowledged: true,
+            }
+          } : null,
         })
         .select()
         .single()
@@ -212,7 +245,9 @@ export default function UploadPage() {
                 />
               </div>
               <div className="mt-2 text-sm text-gray-500">
-                {progress < 30 && 'Computing SHA-256 hash...'}
+                {progress < 10 && 'Preparing upload...'}
+                {progress >= 10 && progress < 20 && 'Computing SHA-256 hash...'}
+                {progress >= 20 && progress < 30 && 'Checking for duplicates...'}
                 {progress >= 30 && progress < 60 && 'Uploading to secure storage...'}
                 {progress >= 60 && progress < 80 && 'Creating content record...'}
                 {progress >= 80 && progress < 100 && 'Generating cryptographic receipt...'}
@@ -240,16 +275,33 @@ export default function UploadPage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-blue-600 font-bold">2.</span>
-                <span><strong>Secure Storage:</strong> File uploaded to encrypted cloud storage</span>
+                <span><strong>Duplicate Detection:</strong> Check if this exact file was already certified by someone else</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-blue-600 font-bold">3.</span>
-                <span><strong>ES256 Signature:</strong> Generate cryptographic proof using ECDSA</span>
+                <span><strong>Secure Storage:</strong> File uploaded to encrypted cloud storage</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-blue-600 font-bold">4.</span>
+                <span><strong>ES256 Signature:</strong> Generate cryptographic proof using ECDSA</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-600 font-bold">5.</span>
                 <span><strong>Receipt Creation:</strong> Tamper-evident receipt linking to the content</span>
               </li>
+            </ul>
+          </div>
+
+          {/* Provenance Warning */}
+          <div className="mt-4 p-6 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h3 className="font-bold text-gray-900 mb-2">⚠️ Important: Provenance vs. Possession</h3>
+            <p className="text-sm text-gray-700 mb-3">
+              A receipt proves <strong>you uploaded</strong> this file, not that <strong>you created</strong> it.
+            </p>
+            <ul className="space-y-1 text-sm text-gray-600">
+              <li>• If someone else already certified this exact file, you&apos;ll be warned</li>
+              <li>• Downloading a file and re-uploading it doesn&apos;t transfer ownership</li>
+              <li>• For true provenance, upload directly from your camera/phone</li>
             </ul>
           </div>
         </div>

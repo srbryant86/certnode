@@ -1,5 +1,6 @@
 import { auth, currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 
 export default async function DashboardPage() {
   const { userId } = await auth()
@@ -36,17 +37,29 @@ export default async function DashboardPage() {
           </div>
 
           <div className="mt-8 grid md:grid-cols-3 gap-6">
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+            <Link
+              href="/dashboard/upload"
+              className="bg-gradient-to-br from-blue-50 to-white rounded-lg p-6 border-2 border-blue-200 hover:border-blue-400 transition-all hover:shadow-lg"
+            >
               <div className="text-3xl mb-3">📸</div>
               <h3 className="font-bold text-gray-900 mb-2">Upload Content</h3>
-              <p className="text-sm text-gray-600">Coming soon: Upload and certify your content</p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+              <p className="text-sm text-gray-600">Upload and certify your photos/videos with cryptographic receipts</p>
+              <div className="mt-4 text-blue-600 font-semibold text-sm">
+                Get Started →
+              </div>
+            </Link>
+            <Link
+              href="/dashboard/receipts"
+              className="bg-gray-50 rounded-lg p-6 border border-gray-200 hover:border-gray-300 transition-all hover:shadow-lg"
+            >
               <div className="text-3xl mb-3">📋</div>
               <h3 className="font-bold text-gray-900 mb-2">View Receipts</h3>
-              <p className="text-sm text-gray-600">Coming soon: Manage your cryptographic receipts</p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+              <p className="text-sm text-gray-600">Manage your cryptographic receipts and provenance proof</p>
+              <div className="mt-4 text-gray-600 font-semibold text-sm">
+                View All →
+              </div>
+            </Link>
+            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 opacity-50">
               <div className="text-3xl mb-3">⚙️</div>
               <h3 className="font-bold text-gray-900 mb-2">Settings</h3>
               <p className="text-sm text-gray-600">Coming soon: Configure your account</p>

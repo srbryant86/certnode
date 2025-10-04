@@ -210,12 +210,13 @@ export default function ReceiptsPage() {
                     </div>
 
                     <div className="ml-6 flex flex-col gap-2">
-                      <button
-                        onClick={() => alert('View Details - Coming soon!')}
+                      <Link
+                        href={`/proof/${receipt.id}`}
+                        target="_blank"
                         className="text-sm text-blue-600 hover:text-blue-700 font-medium"
                       >
-                        View Details
-                      </button>
+                        📋 Share Proof
+                      </Link>
                       <button
                         onClick={() => downloadReceipt(receipt)}
                         className="text-sm text-blue-600 hover:text-blue-700 font-medium"
